@@ -1,0 +1,21 @@
+{
+  "short_name": "Aprender",
+  "name": "Aprender e Brincar",
+  "icons": [
+    {
+      "src": "/assets/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#e0f2fe",
+  "theme_color": "#0284c7",
+  "display": "standalone",
+  "orientation": "landscape"
+}
