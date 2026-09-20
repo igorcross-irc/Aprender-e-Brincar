@@ -1,54 +1,194 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@keyframes floatClouds {
-  0% { transform: translateX(-5%); }
-  50% { transform: translateX(5%); }
-  100% { transform: translateX(-5%); }
-}
-
-.animate-clouds {
-  animation: floatClouds 15s ease-in-out infinite;
-}
-
-.game-card {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fredoka', 'Nunito', 'Segoe UI', Roboto, sans-serif;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.game-card:active {
-  transform: scale(0.93);
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+body {
+  background: linear-[#e0f2fe], #bae6fd);
+  background-attachment: fixed;
+  color: #1e293b;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.memory-grid {
-  display: grid;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
 }
 
-.memory-grid.level-1 { grid-template-columns: repeat(2, 1fr); }
-.memory-grid.level-2 { grid-template-columns: repeat(3, 1fr); }
-.memory-grid.level-3 { grid-template-columns: repeat(4, 1fr); }
+/* Header Fixo e Moderno */
+header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
 
-.memory-card {
-  aspect-ratio: 1;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  font-size: 2.25rem;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #4f46e5;
+}
+
+.version-badge {
+  font-size: 0.75rem;
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-board {
+  background: #fef3c7;
+  color: #92400e;
+  border: 2px solid #fde68a;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-icon {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.memory-card.flipped {
-  transform: rotateY(180deg);
-  background-color: #fef08a;
+.btn-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.btn-icon:hover {
+  background: #e2e8f0;
+  transform: scale(1.05);
+}
+
+/* Área Central de Jogos */
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.age-selection-container {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 650px;
+  justify-content: center;
+}
+
+.game-card-btn {
+  flex: 1;
+  background: #ffffff;
+  border: none;
+  border-radius: 28px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 4px solid transparent;
+}
+
+.game-card-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.game-card-btn:active {
+  transform: scale(0.96);
+}
+
+.game-card-btn.card-pink {
+  background: linear-gradient(135deg, #fbcfe8, #f472b6);
+  border-color: #f472b6;
+  color: #ffffff;
+}
+
+.game-card-btn.card-blue {
+  background: linear-gradient(135deg, #bae6fd, #38bdf8);
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.card-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-tag {
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 8px;
+  font-size: 0.7rem;
+  color: #64748b;
+  background: rgba(255, 255, 255, 0.5);
 }
