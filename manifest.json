@@ -3,14 +3,9 @@
   "name": "Aprender e Brincar",
   "icons": [
     {
-      "src": "/assets/images/icon-192.png",
+      "src": "/assets/images/icon-master.png",
       "type": "image/png",
       "sizes": "192x192"
-    },
-    {
-      "src": "/assets/images/icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": "/",

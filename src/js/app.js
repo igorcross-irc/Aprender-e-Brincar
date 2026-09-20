@@ -44,7 +44,7 @@ class App {
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
       <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl flex flex-col items-center gap-4 text-center">
-        <div class="text-4xl">🔒</div>
+        <img src="/assets/images/icon-settings.png" class="w-12 h-12" />
         <h3 class="text-xl font-bold text-slate-800">Área dos Pais</h3>
         <p class="text-sm text-slate-500">Para continuar, resolva a conta:</p>
         <div class="text-2xl font-bold text-indigo-600 bg-indigo-50 px-6 py-2 rounded-xl">${n1} + ${n2} = ?</div>
@@ -81,7 +81,9 @@ class App {
     modal.innerHTML = `
       <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-4">
         <div class="flex justify-between items-center border-b pb-3">
-          <h3 class="text-xl font-bold text-slate-800">⚙️ Configurações dos Pais</h3>
+          <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <img src="/assets/images/icon-settings.png" class="w-6 h-6" /> Configurações dos Pais
+          </h3>
           <button id="btn-close-settings" class="text-slate-400 text-2xl font-bold">✕</button>
         </div>
 
@@ -131,13 +133,13 @@ class App {
     this.container.innerHTML = `
       <div class="flex flex-col md:flex-row gap-6 w-full max-w-xl p-4">
         <button id="btn-2-3" class="game-card flex-1 bg-pink-400 hover:bg-pink-500 text-white p-6 rounded-3xl shadow-lg flex flex-col items-center gap-4">
-          <span class="text-6xl">🍦🚚</span>
+          <img src="/assets/images/icon-animais.png" class="w-20 h-20 drop-shadow-md" />
           <span class="text-2xl font-bold">2 a 3 anos</span>
           <span class="text-sm bg-pink-600/40 px-3 py-1 rounded-full">Primeiras Descobertas</span>
         </button>
 
         <button id="btn-4-5" class="game-card flex-1 bg-sky-400 hover:bg-sky-500 text-white p-6 rounded-3xl shadow-lg flex flex-col items-center gap-4">
-          <span class="text-6xl">🚌🏫</span>
+          <img src="/assets/images/icon-numeros.png" class="w-20 h-20 drop-shadow-md" />
           <span class="text-2xl font-bold">4 a 5 anos</span>
           <span class="text-sm bg-sky-600/40 px-3 py-1 rounded-full">Aprendizado & Frases</span>
         </button>
@@ -158,11 +160,19 @@ class App {
   renderMenu2to3() {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col gap-4">
-        <button id="btn-back" class="self-start bg-white/80 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow-sm">⬅️ Voltar</button>
+        <button id="btn-back" class="self-start bg-white/80 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow-sm flex items-center gap-2">
+          <img src="/assets/images/icon-arrow-left.png" class="w-5 h-5" /> Voltar
+        </button>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <button id="g-colors" class="game-card bg-rose-200 p-6 rounded-2xl text-center text-xl font-bold text-rose-800 shadow">🎨 Cores</button>
-          <button id="g-animals" class="game-card bg-amber-200 p-6 rounded-2xl text-center text-xl font-bold text-amber-800 shadow">🐶 Animais</button>
-          <button id="g-canvas" class="game-card bg-emerald-200 p-6 rounded-2xl text-center text-xl font-bold text-emerald-800 shadow">✏️ Lousa</button>
+          <button id="g-colors" class="game-card bg-rose-200 p-6 rounded-2xl text-center text-xl font-bold text-rose-800 shadow flex flex-col items-center gap-2">
+            <span class="text-4xl">🎨</span> Cores
+          </button>
+          <button id="g-animals" class="game-card bg-amber-200 p-6 rounded-2xl text-center text-xl font-bold text-amber-800 shadow flex flex-col items-center gap-2">
+            <img src="/assets/images/icon-animais.png" class="w-12 h-12" /> Animais
+          </button>
+          <button id="g-canvas" class="game-card bg-emerald-200 p-6 rounded-2xl text-center text-xl font-bold text-emerald-800 shadow flex flex-col items-center gap-2">
+            <img src="/assets/images/icon-desenhos.png" class="w-12 h-12" /> Lousa
+          </button>
         </div>
       </div>
     `;
@@ -194,11 +204,19 @@ class App {
   renderMenu4to5() {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col gap-4">
-        <button id="btn-back" class="self-start bg-white/80 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow-sm">⬅️ Voltar</button>
+        <button id="btn-back" class="self-start bg-white/80 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow-sm flex items-center gap-2">
+          <img src="/assets/images/icon-arrow-left.png" class="w-5 h-5" /> Voltar
+        </button>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <button id="g-phrases" class="game-card bg-indigo-200 p-6 rounded-2xl text-center text-xl font-bold text-indigo-800 shadow">🗣️ Frases</button>
-          <button id="g-memory" class="game-card bg-purple-200 p-6 rounded-2xl text-center text-xl font-bold text-purple-800 shadow">🧠 Memória</button>
-          <button id="g-puzzle" class="game-card bg-teal-200 p-6 rounded-2xl text-center text-xl font-bold text-teal-800 shadow">🧩 Encaixe</button>
+          <button id="g-phrases" class="game-card bg-indigo-200 p-6 rounded-2xl text-center text-xl font-bold text-indigo-800 shadow flex flex-col items-center gap-2">
+            <img src="/assets/images/icon-alfabeto.png" class="w-12 h-12" /> Frases
+          </button>
+          <button id="g-memory" class="game-card bg-purple-200 p-6 rounded-2xl text-center text-xl font-bold text-purple-800 shadow flex flex-col items-center gap-2">
+            <img src="/assets/images/icon-numeros.png" class="w-12 h-12" /> Memória
+          </button>
+          <button id="g-puzzle" class="game-card bg-teal-200 p-6 rounded-2xl text-center text-xl font-bold text-teal-800 shadow flex flex-col items-center gap-2">
+            <span class="text-4xl">🧩</span> Encaixe
+          </button>
         </div>
       </div>
     `;
