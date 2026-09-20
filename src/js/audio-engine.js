@@ -11,7 +11,7 @@ export class AudioEngine {
         await audio.play();
         return;
       } catch (err) {
-        console.warn(`Áudio ${audioFileName} não encontrado. Usando fallback por voz.`);
+        // Fallback automático caso o ficheiro mp3 não exista
       }
     }
 

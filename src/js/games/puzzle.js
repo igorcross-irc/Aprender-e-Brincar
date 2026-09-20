@@ -6,26 +6,23 @@ export class PuzzleGame {
   }
 
   start(animalsData) {
-    // Pega 3 animais aleatórios para a partida
     const puzzleItems = [...animalsData].sort(() => Math.random() - 0.5).slice(0, 3);
 
     this.container.innerHTML = `
       <div class="w-full max-w-xl flex flex-col items-center gap-6">
         <h2 class="text-2xl font-bold text-indigo-700">🧩 Encaixe as Formas</h2>
 
-        <!-- Área dos Alvos (Silhuetas) -->
         <div id="targets-area" class="flex justify-center gap-6 w-full">
           ${puzzleItems.map(item => `
-            <div data-target="${item.id}" class="puzzle-target w-24 h-24 bg-slate-200/80 rounded-2xl border-4 border-dashed border-slate-400 flex items-center justify-center text-5xl grayscale opacity-50 shadow-inner">
+            <div data-target="${item.id}" class="puzzle-target w-20 h-20 bg-slate-200/80 rounded-2xl border-4 border-dashed border-slate-400 flex items-center justify-center text-4xl grayscale opacity-50 shadow-inner">
               ${item.icon}
             </div>
           `).join('')}
         </div>
 
-        <!-- Área das Peças MÓVEIS -->
-        <div id="pieces-area" class="flex justify-center gap-6 w-full min-h-[100px]">
+        <div id="pieces-area" class="flex justify-center gap-6 w-full min-h-[90px]">
           ${[...puzzleItems].sort(() => Math.random() - 0.5).map(item => `
-            <div data-piece="${item.id}" class="puzzle-piece game-card w-24 h-24 bg-white rounded-2xl shadow-lg border-2 border-indigo-200 flex items-center justify-center text-5xl cursor-grab touch-none select-none">
+            <div data-piece="${item.id}" class="puzzle-piece game-card w-20 h-20 bg-white rounded-2xl shadow-lg border-2 border-indigo-200 flex items-center justify-center text-4xl cursor-grab touch-none select-none">
               ${item.icon}
             </div>
           `).join('')}
@@ -36,21 +33,18 @@ export class PuzzleGame {
     let matches = 0;
 
     this.container.querySelectorAll('.puzzle-piece').forEach(piece => {
-      let initialX = 0, initialY = 0;
-
       const onTouchMove = (e) => {
         const touch = e.touches ? e.touches[0] : e;
         piece.style.position = 'fixed';
         piece.style.zIndex = '1000';
-        piece.style.left = `${touch.clientX - 48}px`;
-        piece.style.top = `${touch.clientY - 48}px`;
+        piece.style.left = `${touch.clientX - 40}px`;
+        piece.style.top = `${touch.clientY - 40}px`;
       };
 
       const onTouchEnd = (e) => {
         const touch = e.changedTouches ? e.changedTouches[0] : e;
         piece.style.zIndex = '1';
         
-        // Esconde temporariamente para pegar o elemento embaixo do ponto de toque
         piece.style.display = 'none';
         const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
         piece.style.display = 'flex';
@@ -58,7 +52,6 @@ export class PuzzleGame {
         const targetEl = elemBelow ? elemBelow.closest('.puzzle-target') : null;
 
         if (targetEl && targetEl.dataset.target === piece.dataset.piece) {
-          // Acerto!
           targetEl.classList.remove('grayscale', 'opacity-50', 'border-dashed');
           targetEl.classList.add('border-solid', 'border-emerald-500', 'bg-emerald-100');
           piece.remove();
@@ -69,12 +62,11 @@ export class PuzzleGame {
           matches++;
           if (matches === puzzleItems.length) {
             setTimeout(() => {
-              this.audio.play(null, 'Parabéns! Você completou o quebra-cabeça!');
+              this.audio.play(null, 'Parabéns!');
               if (this.onComplete) this.onComplete();
             }, 800);
           }
         } else {
-          // Erro: Retorna para o local inicial
           piece.style.position = 'static';
           piece.style.left = 'auto';
           piece.style.top = 'auto';
@@ -86,12 +78,12 @@ export class PuzzleGame {
         window.removeEventListener('mouseup', onTouchEnd);
       };
 
-      piece.addEventListener('touchstart', (e) => {
+      piece.addEventListener('touchstart', () => {
         window.addEventListener('touchmove', onTouchMove);
         window.addEventListener('touchend', onTouchEnd);
       });
 
-      piece.addEventListener('mousedown', (e) => {
+      piece.addEventListener('mousedown', () => {
         window.addEventListener('mousemove', onTouchMove);
         window.addEventListener('mouseup', onTouchEnd);
       });

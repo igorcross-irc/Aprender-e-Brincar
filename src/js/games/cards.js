@@ -7,7 +7,6 @@ export class CardsGame {
     this.sentenceShelf = [];
   }
 
-  // Renderiza jogos de clicar e ouvir (Cores, Animais, Formas, Frutas)
   renderGrid(items, title, category) {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col items-center gap-4">
@@ -40,7 +39,6 @@ export class CardsGame {
     });
   }
 
-  // Renderiza o Construtor de Frases (CAA)
   renderPhraseBuilder(wordsData) {
     this.sentenceShelf = [];
     const childName = this.storage.getChildName();
@@ -50,7 +48,7 @@ export class CardsGame {
       if (!shelfEl) return;
 
       shelfEl.innerHTML = this.sentenceShelf.length === 0 
-        ? `<span class="text-slate-400 italic">Toque nas cartas abaixo para montar a frase...</span>`
+        ? `<span class="text-slate-400 italic">Toque nas cartas para montar a frase...</span>`
         : this.sentenceShelf.map((word, idx) => `
             <button data-idx="${idx}" class="remove-word-btn bg-indigo-500 text-white px-3 py-2 rounded-xl text-lg font-bold flex items-center gap-1 shadow">
               <span>${word.icon}</span>
@@ -68,14 +66,12 @@ export class CardsGame {
       });
     };
 
-    // Atualiza a primeira carta ("Eu") com o nome personalizado
     const words = wordsData.map(w => w.id === 'eu' ? { ...w, label: childName } : w);
 
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col items-center gap-4">
         <h2 class="text-2xl font-bold text-indigo-700">🗣️ Montar Frases</h2>
         
-        <!-- Prateleira de Montagem -->
         <div class="w-full bg-white/90 p-4 rounded-2xl shadow-inner border-2 border-indigo-200 min-h-[80px] flex items-center justify-between gap-2">
           <div id="sentence-shelf" class="flex flex-wrap gap-2 flex-1"></div>
           <button id="btn-speak-sentence" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
@@ -84,7 +80,6 @@ export class CardsGame {
           </button>
         </div>
 
-        <!-- Banco de Cartas -->
         <div class="grid grid-cols-3 md:grid-cols-4 gap-3 w-full max-h-[300px] overflow-y-auto p-2">
           ${words.map(w => `
             <button data-id="${w.id}" class="word-card game-card bg-white p-3 rounded-xl shadow border border-slate-200 flex flex-col items-center gap-1">

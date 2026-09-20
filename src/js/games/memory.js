@@ -13,10 +13,10 @@ export class MemoryGame {
     this.matchedPairs = 0;
     this.flippedCards = [];
 
-    // Define quantidade de pares de acordo com o nível
-    const pairCount = level === 1 ? 2 : level === 2 ? 4 : 6;
+    const pairCount = level === 1 ? 2 : level === 2 ? 3 : 4;
     const selected = items.slice(0, pairCount);
     const deck = [...selected, ...selected].sort(() => Math.random() - 0.5);
+    this.cards = deck;
 
     const grid = document.createElement('div');
     grid.className = `memory-grid level-${level}`;
@@ -26,7 +26,7 @@ export class MemoryGame {
       card.className = 'memory-card';
       card.dataset.id = item.id;
       card.dataset.index = index;
-      card.innerHTML = `<span class="card-back">❓</span><span class="card-front">${item.icon || '🎨'}</span>`;
+      card.innerHTML = `<span class="card-back">❓</span><span class="card-front hidden">${item.icon || '🎨'}</span>`;
       
       card.addEventListener('click', () => this.flipCard(card, item));
       grid.appendChild(card);
@@ -39,6 +39,9 @@ export class MemoryGame {
     if (this.flippedCards.length === 2 || card.classList.contains('flipped')) return;
 
     card.classList.add('flipped');
+    card.querySelector('.card-back').classList.add('hidden');
+    card.querySelector('.card-front').classList.remove('hidden');
+
     this.flippedCards.push({ card, item });
     this.audio.play(item.audio, item.label);
 
@@ -53,17 +56,27 @@ export class MemoryGame {
     if (first.item.id === second.item.id) {
       this.matchedPairs++;
       this.flippedCards = [];
-      this.audio.play('par_correto.mp3', 'Muito bem! Você encontrou um par!');
+      
+      setTimeout(() => {
+        this.audio.play(null, 'Muito bem! Um par!');
+      }, 500);
 
       if (this.matchedPairs === this.cards.length / 2) {
         setTimeout(() => {
+          this.audio.play(null, 'Parabéns! Você venceu!');
           if (this.onComplete) this.onComplete();
-        }, 1000);
+        }, 1200);
       }
     } else {
       setTimeout(() => {
         first.card.classList.remove('flipped');
+        first.card.querySelector('.card-back').classList.remove('hidden');
+        first.card.querySelector('.card-front').classList.add('hidden');
+
         second.card.classList.remove('flipped');
+        second.card.querySelector('.card-back').classList.remove('hidden');
+        second.card.querySelector('.card-front').classList.add('hidden');
+
         this.flippedCards = [];
       }, 1200);
     }

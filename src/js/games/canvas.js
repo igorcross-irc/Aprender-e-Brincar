@@ -5,7 +5,7 @@ export class CanvasGame {
     this.onComplete = onComplete;
     this.isDrawing = false;
     this.currentColor = '#EF4444';
-    this.currentTool = 'pen'; // 'pen' ou 'stamp'
+    this.currentTool = 'pen';
     this.currentStamp = '⭐';
   }
 
@@ -19,10 +19,8 @@ export class CanvasGame {
           </button>
         </div>
 
-        <!-- Tela de Desenho -->
-        <canvas id="magic-canvas" class="bg-white rounded-2xl shadow-lg border-4 border-indigo-200 touch-none w-full h-[320px] cursor-crosshair"></canvas>
+        <canvas id="magic-canvas" class="bg-white rounded-2xl shadow-lg border-4 border-indigo-200 touch-none w-full h-[300px] cursor-crosshair"></canvas>
 
-        <!-- Barra de Cores e Ferramentas -->
         <div class="flex flex-wrap justify-center gap-2 bg-white/80 p-2 rounded-2xl shadow w-full">
           ${['#EF4444', '#3B82F6', '#22C55E', '#EAB308', '#A855F7', '#EC4899', '#1F2937'].map(color => `
             <button data-color="${color}" class="color-btn w-8 h-8 rounded-full shadow border-2 border-white" style="background-color: ${color};"></button>
@@ -38,7 +36,6 @@ export class CanvasGame {
     const canvas = document.getElementById('magic-canvas');
     const ctx = canvas.getContext('2d');
 
-    // Ajusta resolução do Canvas internamente
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     ctx.lineWidth = 6;
@@ -85,7 +82,6 @@ export class CanvasGame {
       }
     };
 
-    // Eventos Mouse e Touch
     canvas.addEventListener('mousedown', startDraw);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDraw);
@@ -94,7 +90,6 @@ export class CanvasGame {
     canvas.addEventListener('touchmove', draw);
     canvas.addEventListener('touchend', stopDraw);
 
-    // Binds das cores
     this.container.querySelectorAll('.color-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         this.currentColor = btn.dataset.color;
@@ -102,7 +97,6 @@ export class CanvasGame {
       });
     });
 
-    // Binds dos carimbos
     this.container.querySelectorAll('.stamp-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         this.currentStamp = btn.dataset.stamp;
@@ -110,7 +104,6 @@ export class CanvasGame {
       });
     });
 
-    // Limpar Lousa
     document.getElementById('btn-clear-canvas').addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       this.audio.play(null, 'Lousa limpa!');

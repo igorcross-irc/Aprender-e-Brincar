@@ -35,7 +35,6 @@ class App {
     }
   }
 
-  // Desafio Matemático / Portão Parental
   openParentalGate() {
     const n1 = Math.floor(Math.random() * 5) + 1;
     const n2 = Math.floor(Math.random() * 5) + 1;
@@ -76,7 +75,6 @@ class App {
     });
   }
 
-  // Modal de Configurações
   openSettingsModal() {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
@@ -129,7 +127,6 @@ class App {
     });
   }
 
-  // Tela Inicial (Seleção de Idade)
   renderAgeSelection() {
     this.container.innerHTML = `
       <div class="flex flex-col md:flex-row gap-6 w-full max-w-xl p-4">
@@ -158,7 +155,6 @@ class App {
     });
   }
 
-  // Menu 2-3 Anos
   renderMenu2to3() {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col gap-4">
@@ -195,7 +191,6 @@ class App {
     });
   }
 
-  // Menu 4-5 Anos
   renderMenu4to5() {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col gap-4">
