@@ -11,21 +11,30 @@
   
   <div id="app" class="h-screen w-screen flex flex-col justify-between">
     <!-- Header Fixo -->
-    <header class="p-4 bg-white/80 backdrop-blur-md shadow-md flex justify-between items-center z-10">
-      <h1 class="text-xl font-bold text-indigo-600">Aprender & Brincar 🍦</h1>
-      <div id="score-board" class="flex items-center gap-2 bg-amber-100 px-3 py-1 rounded-full text-amber-700 font-bold">
-        ⭐ <span id="star-count">0</span>
+    <header class="p-3 bg-white/80 backdrop-blur-md shadow-sm flex justify-between items-center z-10">
+      <h1 class="text-lg font-bold text-indigo-600 flex items-center gap-2">
+        <span>Aprender & Brincar</span>
+        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-normal">v0.2</span>
+      </h1>
+      
+      <div class="flex items-center gap-3">
+        <div id="score-board" class="flex items-center gap-1.5 bg-amber-100 px-3 py-1 rounded-full text-amber-800 font-bold text-sm border border-amber-200">
+          ⭐ <span id="star-count">0</span>
+        </div>
+        <button id="btn-settings" class="bg-slate-100 hover:bg-slate-200 p-2 rounded-full text-slate-600 transition shadow-sm" title="Área dos Pais">
+          ⚙️
+        </button>
       </div>
     </header>
 
     <!-- Área Principal de Jogos -->
     <main id="game-container" class="flex-1 overflow-y-auto p-4 flex flex-col items-center justify-center">
-      <!-- Módulos injetados via JS -->
+      <!-- Conteúdo injetado via JS -->
     </main>
 
     <!-- Rodapé -->
-    <footer class="p-2 text-center text-xs text-slate-400">
-      v0.2.0 - Edição Modular Vercel
+    <footer class="p-1.5 text-center text-[10px] text-slate-400 bg-white/40">
+      Aprender & Brincar v0.2.0 • Edição Modular Vercel
     </footer>
   </div>
 
