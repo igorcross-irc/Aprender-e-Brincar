@@ -25,7 +25,7 @@ export class CardsGame {
             <button 
               data-id="${item.id}" 
               class="card-item game-card p-6 rounded-2xl flex flex-col items-center justify-center gap-2 shadow-md ${item.border ? 'border-4 border-slate-300' : 'border-2 border-indigo-100'}"
-              style="background-color: ${item.hex || '#FFFFFF'}; color: ${item.textDark ? '#1F2937' : '#FFFFFF'};"
+              style="background-color: ${item.hex \vert{}\vert{} '#FFFFFF'}; color: ${item.textDark ? '#1F2937' : '#FFFFFF'};"
             >
               <span class="text-5xl">${item.icon || '🎨'}</span>
               <span class="text-lg font-bold ${item.textDark ? '' : 'drop-shadow-md'}">${item.label}</span>
