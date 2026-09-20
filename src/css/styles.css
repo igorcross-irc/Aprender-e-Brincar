@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animação suave para nuvens do fundo */
+@keyframes floatClouds {
+  0% { transform: translateX(-10%); }
+  50% { transform: translateX(10%); }
+  100% { transform: translateX(-10%); }
+}
+
+.animate-clouds {
+  animation: floatClouds 20s ease-in-out infinite;
+}
+
+/* Efeito de Toldo de Sorveteria (Awnings) */
+.awning-striped {
+  background: repeating-linear-gradient(
+    45deg,
+    #f472b6,
+    #f472b6 20px,
+    #ffffff 20px,
+    #ffffff 40px
+  );
+}
+
+/* Cartões com toque com resposta tátil visual */
+.game-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-card:active {
+  transform: scale(0.92);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
+}
+
+/* Estilo das cartas do Jogo da Memória */
+.memory-grid {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.memory-grid.level-1 { grid-template-columns: repeat(2, 1fr); }
+.memory-grid.level-2 { grid-template-columns: repeat(3, 1fr); }
+.memory-grid.level-3 { grid-template-columns: repeat(4, 1fr); }
+
+.memory-card {
+  aspect-ratio: 1;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.memory-card.flipped {
+  transform: rotateY(180deg);
+  background-color: #fef08a;
+}
