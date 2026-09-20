@@ -1,51 +1,63 @@
 export class CanvasGame {
-  constructor(containerId, audioEngine, onComplete) {
+  constructor(containerId, audioEngine, onBack) {
     this.container = document.getElementById(containerId);
     this.audio = audioEngine;
-    this.onComplete = onComplete;
+    this.onBack = onBack;
     this.isDrawing = false;
     this.currentColor = '#EF4444';
-    this.currentTool = 'pen';
+    this.currentTool = 'pen'; // 'pen', 'eraser', 'stamp'
     this.currentStamp = '⭐';
+    this.history = [];
   }
 
   start() {
     this.container.innerHTML = `
-      <div class="w-full max-w-xl flex flex-col items-center gap-3">
-        <div class="flex justify-between items-center w-full px-2">
-          <h2 class="text-xl font-bold text-indigo-700">🎨 Lousa Mágica</h2>
-          <button id="btn-clear-canvas" class="bg-rose-500 text-white text-xs px-3 py-1.5 rounded-full font-bold shadow">
-            🗑️ Limpar
+      <div class="w-full max-w-xl flex flex-col items-center gap-3 my-auto">
+        <div class="flex justify-between items-center w-full">
+          <button id="btn-back-canvas" class="bg-white/90 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow">
+            ⬅️ Voltar
           </button>
+
+          <div class="flex gap-2">
+            <button id="btn-undo" class="bg-amber-400 text-white p-3 rounded-full shadow font-bold min-w-[48px]">↩️</button>
+            <button id="btn-clear" class="bg-rose-500 text-white p-3 rounded-full shadow font-bold min-w-[48px]">🗑️</button>
+          </div>
         </div>
 
-        <canvas id="magic-canvas" class="bg-white rounded-2xl shadow-lg border-4 border-indigo-200 touch-none w-full h-[300px] cursor-crosshair"></canvas>
+        <canvas id="magic-canvas" class="bg-white rounded-3xl shadow-lg border-4 border-indigo-200 touch-none w-full h-[280px] cursor-crosshair"></canvas>
 
-        <div class="flex flex-wrap justify-center gap-2 bg-white/80 p-2 rounded-2xl shadow w-full">
-          ${['#EF4444', '#3B82F6', '#22C55E', '#EAB308', '#A855F7', '#EC4899', '#1F2937'].map(color => `
-            <button data-color="${color}" class="color-btn w-8 h-8 rounded-full shadow border-2 border-white" style="background-color: ${color};"></button>
+        <!-- Paleta com Botões de 56px para Dedos Infantis -->
+        <div class="flex flex-wrap justify-center gap-3 bg-white/90 p-3 rounded-3xl shadow w-full">
+          ${['#EF4444', '#3B82F6', '#22C55E', '#FACC15', '#A855F7'].map(c => `
+            <button data-color="${c}" class="tool-btn w-14 h-14 rounded-full shadow-md border-4 ${c === '#EF4444' ? 'border-slate-800 scale-110' : 'border-white'}" style="background-color: ${c}"></button>
           `).join('')}
-          <div class="h-8 w-px bg-slate-300 my-auto"></div>
-          ${['⭐', '🐾', '❤️', '🎈'].map(stamp => `
-            <button data-stamp="${stamp}" class="stamp-btn w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-lg shadow-sm">${stamp}</button>
+          <button id="btn-eraser" class="tool-btn w-14 h-14 rounded-2xl bg-slate-100 border-2 border-slate-300 flex items-center justify-center text-2xl shadow-sm">🧽</button>
+          ${['⭐', '🐾', '❤️'].map(s => `
+            <button data-stamp="${s}" class="tool-btn w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shadow-sm">${s}</button>
           `).join('')}
         </div>
       </div>
     `;
 
+    document.getElementById('btn-back-canvas').addEventListener('click', () => this.onBack());
+
     const canvas = document.getElementById('magic-canvas');
     const ctx = canvas.getContext('2d');
-
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    ctx.lineWidth = 6;
     ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    const saveState = () => {
+      if (this.history.length > 10) this.history.shift();
+      this.history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    };
+
+    saveState();
 
     const getCoords = (e) => {
       const rect = canvas.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      return { x: clientX - rect.left, y: clientY - rect.top };
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
     const startDraw = (e) => {
@@ -53,23 +65,30 @@ export class CanvasGame {
       const { x, y } = getCoords(e);
 
       if (this.currentTool === 'stamp') {
-        ctx.font = '30px serif';
+        ctx.font = '36px serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(this.currentStamp, x, y);
-        this.audio.play(null, 'Carimbo!');
+        saveState();
         this.isDrawing = false;
-        if (this.onComplete) this.onComplete();
         return;
       }
 
       ctx.beginPath();
       ctx.moveTo(x, y);
-      ctx.strokeStyle = this.currentColor;
+      // Ponto imediato no toque único
+      ctx.arc(x, y, this.currentTool === 'eraser' ? 12 : 3, 0, Math.PI * 2);
+      ctx.fillStyle = this.currentTool === 'eraser' ? '#FFFFFF' : this.currentColor;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.strokeStyle = this.currentTool === 'eraser' ? '#FFFFFF' : this.currentColor;
+      ctx.lineWidth = this.currentTool === 'eraser' ? 24 : 6;
     };
 
     const draw = (e) => {
-      if (!this.isDrawing || this.currentTool !== 'pen') return;
+      if (!this.isDrawing) return;
       const { x, y } = getCoords(e);
       ctx.lineTo(x, y);
       ctx.stroke();
@@ -78,35 +97,48 @@ export class CanvasGame {
     const stopDraw = () => {
       if (this.isDrawing) {
         this.isDrawing = false;
-        if (this.onComplete) this.onComplete();
+        saveState();
       }
     };
 
-    canvas.addEventListener('mousedown', startDraw);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDraw);
+    // Pointer Events Globais para não prender o traço se o dedo sair do Canvas
+    canvas.addEventListener('pointerdown', startDraw);
+    canvas.addEventListener('pointermove', draw);
+    window.addEventListener('pointerup', stopDraw);
+    window.addEventListener('pointercancel', stopDraw);
 
-    canvas.addEventListener('touchstart', startDraw);
-    canvas.addEventListener('touchmove', draw);
-    canvas.addEventListener('touchend', stopDraw);
-
-    this.container.querySelectorAll('.color-btn').forEach(btn => {
+    // Binds das Ferramentas
+    this.container.querySelectorAll('.tool-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        this.currentColor = btn.dataset.color;
-        this.currentTool = 'pen';
+        this.container.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('border-slate-800', 'scale-110'));
+        btn.classList.add('border-slate-800', 'scale-110');
+
+        if (btn.dataset.color) {
+          this.currentColor = btn.dataset.color;
+          this.currentTool = 'pen';
+        } else if (btn.dataset.stamp) {
+          this.currentStamp = btn.dataset.stamp;
+          this.currentTool = 'stamp';
+        }
       });
     });
 
-    this.container.querySelectorAll('.stamp-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this.currentStamp = btn.dataset.stamp;
-        this.currentTool = 'stamp';
-      });
+    document.getElementById('btn-eraser').addEventListener('click', (e) => {
+      this.currentTool = 'eraser';
+      this.container.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('border-slate-800', 'scale-110'));
+      e.currentTarget.classList.add('border-slate-800', 'scale-110');
     });
 
-    document.getElementById('btn-clear-canvas').addEventListener('click', () => {
+    document.getElementById('btn-undo').addEventListener('click', () => {
+      if (this.history.length > 1) {
+        this.history.pop();
+        ctx.putImageData(this.history[this.history.length - 1], 0, 0);
+      }
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      this.audio.play(null, 'Lousa limpa!');
+      saveState();
     });
   }
 }

@@ -1,92 +1,105 @@
 export class PuzzleGame {
-  constructor(containerId, audioEngine, onComplete) {
+  constructor(containerId, audioEngine, onComplete, onBack) {
     this.container = document.getElementById(containerId);
     this.audio = audioEngine;
     this.onComplete = onComplete;
+    this.onBack = onBack;
   }
 
-  start(animalsData) {
-    const puzzleItems = [...animalsData].sort(() => Math.random() - 0.5).slice(0, 3);
+  start(itemsData) {
+    const puzzleItems = [...itemsData].sort(() => Math.random() - 0.5).slice(0, 3);
+    let matches = 0;
 
     this.container.innerHTML = `
-      <div class="w-full max-w-xl flex flex-col items-center gap-6">
-        <h2 class="text-2xl font-bold text-indigo-700">🧩 Encaixe as Formas</h2>
+      <div class="w-full max-w-xl flex flex-col items-center gap-6 my-auto">
+        <div class="w-full flex justify-between items-center">
+          <button id="btn-back-game" class="bg-white/90 hover:bg-white text-slate-700 px-5 py-2.5 rounded-full font-bold shadow flex items-center gap-2">
+            ⬅️ Voltar
+          </button>
+          <h2 class="text-2xl font-bold text-indigo-700">🧩 Encaixe as Formas</h2>
+        </div>
 
-        <div id="targets-area" class="flex justify-center gap-6 w-full">
+        <div class="flex justify-center gap-4 w-full">
           ${puzzleItems.map(item => `
-            <div data-target="${item.id}" class="puzzle-target w-20 h-20 bg-slate-200/80 rounded-2xl border-4 border-dashed border-slate-400 flex items-center justify-center text-4xl grayscale opacity-50 shadow-inner">
+            <div data-target="${item.id}" class="puzzle-target w-24 h-24 bg-slate-200/80 rounded-2xl border-4 border-dashed border-slate-400 flex items-center justify-center text-5xl opacity-40 grayscale">
               ${item.icon}
             </div>
           `).join('')}
         </div>
 
-        <div id="pieces-area" class="flex justify-center gap-6 w-full min-h-[90px]">
+        <div id="pieces-container" class="flex justify-center gap-4 w-full min-h-[100px]">
           ${[...puzzleItems].sort(() => Math.random() - 0.5).map(item => `
-            <div data-piece="${item.id}" class="puzzle-piece game-card w-20 h-20 bg-white rounded-2xl shadow-lg border-2 border-indigo-200 flex items-center justify-center text-4xl cursor-grab touch-none select-none">
-              ${item.icon}
+            <div class="puzzle-wrapper w-24 h-24">
+              <div data-piece="${item.id}" class="puzzle-piece w-24 h-24 bg-white rounded-2xl shadow-lg border-2 border-indigo-200 flex items-center justify-center text-5xl cursor-grab touch-none">
+                ${item.icon}
+              </div>
             </div>
           `).join('')}
         </div>
       </div>
     `;
 
-    let matches = 0;
+    document.getElementById('btn-back-game').addEventListener('click', () => this.onBack());
 
     this.container.querySelectorAll('.puzzle-piece').forEach(piece => {
-      const onTouchMove = (e) => {
-        const touch = e.touches ? e.touches[0] : e;
+      let active = false;
+
+      const onPointerDown = (e) => {
+        active = true;
+        piece.style.transition = 'none'; // Elimina o delay visual no toque!
         piece.style.position = 'fixed';
         piece.style.zIndex = '1000';
-        piece.style.left = `${touch.clientX - 40}px`;
-        piece.style.top = `${touch.clientY - 40}px`;
+        piece.setPointerCapture(e.pointerId);
+        moveAt(e.clientX, e.clientY);
       };
 
-      const onTouchEnd = (e) => {
-        const touch = e.changedTouches ? e.changedTouches[0] : e;
+      const moveAt = (pageX, pageY) => {
+        if (!active) return;
+        piece.style.left = `${pageX - 48}px`;
+        piece.style.top = `${pageY - 48}px`;
+      };
+
+      const onPointerMove = (e) => {
+        if (active) moveAt(e.clientX, e.clientY);
+      };
+
+      const onPointerUp = (e) => {
+        if (!active) return;
+        active = false;
         piece.style.zIndex = '1';
-        
+
         piece.style.display = 'none';
-        const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        const elemBelow = document.elementFromPoint(e.clientX, e.clientY);
         piece.style.display = 'flex';
 
         const targetEl = elemBelow ? elemBelow.closest('.puzzle-target') : null;
 
         if (targetEl && targetEl.dataset.target === piece.dataset.piece) {
-          targetEl.classList.remove('grayscale', 'opacity-50', 'border-dashed');
+          targetEl.classList.remove('opacity-40', 'grayscale', 'border-dashed');
           targetEl.classList.add('border-solid', 'border-emerald-500', 'bg-emerald-100');
           piece.remove();
 
           const item = puzzleItems.find(i => i.id === targetEl.dataset.target);
-          this.audio.play(item ? item.audio : null, `Muito bem! ${item ? item.label : ''}`);
-          
+          this.audio.play(item?.audio, `Muito bem! ${item?.label}`);
           matches++;
+
           if (matches === puzzleItems.length) {
             setTimeout(() => {
-              this.audio.play(null, 'Parabéns!');
+              this.audio.play(null, 'Parabéns! Você completou tudo!');
               if (this.onComplete) this.onComplete();
-            }, 800);
+            }, 600);
           }
         } else {
+          // Retorna à posição original de forma limpa
           piece.style.position = 'static';
-          piece.style.left = 'auto';
-          piece.style.top = 'auto';
+          piece.style.transition = 'all 0.2s ease';
         }
-
-        window.removeEventListener('touchmove', onTouchMove);
-        window.removeEventListener('touchend', onTouchEnd);
-        window.removeEventListener('mousemove', onTouchMove);
-        window.removeEventListener('mouseup', onTouchEnd);
       };
 
-      piece.addEventListener('touchstart', () => {
-        window.addEventListener('touchmove', onTouchMove);
-        window.addEventListener('touchend', onTouchEnd);
-      });
-
-      piece.addEventListener('mousedown', () => {
-        window.addEventListener('mousemove', onTouchMove);
-        window.addEventListener('mouseup', onTouchEnd);
-      });
+      piece.addEventListener('pointerdown', onPointerDown);
+      piece.addEventListener('pointermove', onPointerMove);
+      piece.addEventListener('pointerup', onPointerUp);
+      piece.addEventListener('pointercancel', onPointerUp);
     });
   }
 }

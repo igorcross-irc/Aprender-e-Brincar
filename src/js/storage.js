@@ -5,25 +5,52 @@ export class StorageManager {
   }
 
   getStars() {
-    return parseInt(localStorage.getItem(this.SCORE_KEY) || '0', 10);
+    try {
+      return parseInt(localStorage.getItem(this.SCORE_KEY) || '0', 10);
+    } catch (e) {
+      return 0;
+    }
   }
 
   addStar() {
     const current = this.getStars() + 1;
-    localStorage.setItem(this.SCORE_KEY, current.toString());
+    try {
+      localStorage.setItem(this.SCORE_KEY, current.toString());
+    } catch (e) {}
     return current;
   }
 
   resetStars() {
-    localStorage.setItem(this.SCORE_KEY, '0');
+    try {
+      localStorage.setItem(this.SCORE_KEY, '0');
+    } catch (e) {}
     return 0;
   }
 
   getChildName() {
-    return localStorage.getItem(this.CHILD_NAME_KEY) || 'Você';
+    try {
+      const name = localStorage.getItem(this.CHILD_NAME_KEY);
+      return name ? name.trim().slice(0, 15) : '';
+    } catch (e) {
+      return '';
+    }
   }
 
   setChildName(name) {
-    localStorage.setItem(this.CHILD_NAME_KEY, name.trim() || 'Você');
+    const clean = name.trim().slice(0, 15);
+    try {
+      localStorage.setItem(this.CHILD_NAME_KEY, clean);
+    } catch (e) {}
+  }
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    }[m]));
   }
 }
