@@ -6,51 +6,37 @@ export class StorageManager {
 
   getStars() {
     try {
-      return parseInt(localStorage.getItem(this.SCORE_KEY) || '0', 10);
-    } catch (e) {
-      return 0;
-    }
+      const value = parseInt(localStorage.getItem(this.SCORE_KEY) || '0', 10);
+      return Number.isFinite(value) && value >= 0 ? value : 0;
+    } catch { return 0; }
   }
 
-  addStar() {
-    const current = this.getStars() + 1;
-    try {
-      localStorage.setItem(this.SCORE_KEY, current.toString());
-    } catch (e) {}
-    return current;
+  addStar() { return this.syncStars(this.getStars() + 1); }
+
+  syncStars(value) {
+    const safe = Math.max(0, Number.parseInt(value, 10) || 0);
+    try { localStorage.setItem(this.SCORE_KEY, String(safe)); } catch {}
+    return safe;
   }
 
-  resetStars() {
-    try {
-      localStorage.setItem(this.SCORE_KEY, '0');
-    } catch (e) {}
-    return 0;
-  }
+  resetStars() { return this.syncStars(0); }
 
   getChildName() {
     try {
       const name = localStorage.getItem(this.CHILD_NAME_KEY);
       return name ? name.trim().slice(0, 15) : '';
-    } catch (e) {
-      return '';
-    }
+    } catch { return ''; }
   }
 
   setChildName(name) {
-    const clean = name.trim().slice(0, 15);
-    try {
-      localStorage.setItem(this.CHILD_NAME_KEY, clean);
-    } catch (e) {}
+    const clean = String(name || '').trim().slice(0, 15);
+    try { localStorage.setItem(this.CHILD_NAME_KEY, clean); } catch {}
+    return clean;
   }
 
   escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>"']/g, (m) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
+    return String(str || '').replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
     }[m]));
   }
 }
