@@ -14,7 +14,7 @@ Implementada nesta etapa.
 - Identidade visual de navegação sem substituir os motores existentes.
 
 ## Fase 8 — Profundidade de Conteúdo
-Em execução — primeira camada implementada.
+Em execução — expansão profunda implementada: catálogo ampliado, experiências progressivas por mundo, progressão persistente e novos caminhos de conteúdo.
 - Reescrever e aprofundar cada experiência atual.
 - Criar múltiplas variações por idade e dificuldade.
 - Vocabulário temático por animais, casa, alimentos, corpo, natureza e cotidiano.
