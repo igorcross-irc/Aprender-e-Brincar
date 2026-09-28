@@ -28,3 +28,9 @@
 - Área da Família ganhou resumo de progresso e privacidade.
 - Melhorada a hierarquia visual dos cartões e navegação.
 - Mantidos os jogos, atividades, áudio e assets existentes.
+
+
+## 2026-09-28 — Fase 8 — Primeira camada de profundidade
+- Ampliados datasets reutilizáveis de objetos, corpo, categorias, opostos, ritmos e movimentos.
+- Conectadas novas experiências ao motor universal em vez de deixá-las como telas demonstrativas.
+- Melhorada a garantia de opções válidas em associação e classificação.
