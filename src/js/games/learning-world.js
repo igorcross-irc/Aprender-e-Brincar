@@ -303,21 +303,20 @@ export class LearningWorldGame {
   }
 
   renderMatchPairs() {
-    const pool = this.shuffle(this.items).slice(0, 4);
-    const target = pool[Math.floor(Math.random() * pool.length)];
+    const target = this.items[Math.floor(Math.random() * this.items.length)];
     const pairMap = { bola:'boneca', boneca:'bola', carro:'aviao', aviao:'carro', casa:'arvore', arvore:'casa', maca:'banana', banana:'maca' };
     const correctId = pairMap[target.id] || target.id;
-    const options = pool.map((item) => ({ ...item, label: item.id === correctId ? item.label : item.label }));
-    this.renderChoice('🧩 Encontre o Par', `O que combina com ${target.label}?`, options, correctId);
+    const correct = this.items.find((item) => item.id === correctId) || target;
+    const distractors = this.shuffle(this.items.filter((item) => item.id !== correct.id && item.id !== target.id)).slice(0, 3);
+    this.renderChoice('🧩 Encontre o Par', `O que combina com ${target.label}?`, this.shuffle([correct, ...distractors]), correct.id);
   }
 
   renderClassify() {
-    const pool = this.shuffle(this.items).slice(0, 4);
-    const target = pool[Math.floor(Math.random() * pool.length)];
-    const choices = this.shuffle(this.items);
-    const sameGroup = choices.filter((item) => item.group === target.group);
-    const correct = sameGroup.find((item) => item.id !== target.id) || target;
-    this.renderChoice('🐾 Classificar', `O que pertence ao mesmo grupo de ${target.label}?`, this.shuffle(choices).slice(0, 4), correct.id);
+    const target = this.items[Math.floor(Math.random() * this.items.length)];
+    const sameGroup = this.items.filter((item) => item.group === target.group && item.id !== target.id);
+    const correct = sameGroup[0] || target;
+    const distractors = this.shuffle(this.items.filter((item) => item.group !== target.group)).slice(0, 3);
+    this.renderChoice('🐾 Classificar', `O que pertence ao mesmo grupo de ${target.label}?`, this.shuffle([correct, ...distractors]), correct.id);
   }
 
   renderOpposites() {
