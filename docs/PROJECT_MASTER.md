@@ -1,40 +1,45 @@
-# Aprender & Brincar — PROJECT MASTER
+# Aprender & Brincar — Documento Mestre
 
 ## Visão
-Aplicação infantil web-first, preparada para PWA e futura distribuição Android, para crianças de 6 meses a 5 anos. A experiência combina atividades livres, jogos educativos, exploração, áudio amigável em português do Brasil e recompensas não competitivas.
+Aplicativo infantil web/PWA para crianças de 6 meses a 5 anos, com experiências de descoberta, brincadeira, aprendizagem e estímulo do desenvolvimento.
 
 ## Princípios
-- Criança primeiro: interface simples, grandes áreas de toque, feedback visual e sonoro curto.
-- Desenvolvimento por faixa etária: conteúdo configurável por idade, sem transformar o app em ferramenta de diagnóstico.
-- Local-first: progresso e preferências ficam no dispositivo por padrão.
-- Privacidade: zero publicidade, zero rastreamento comportamental e nenhuma coleta desnecessária.
-- Áudio ElevenLabs é o recurso principal quando o arquivo existir; speechSynthesis é apenas fallback.
-- Reaproveitar código funcional antes de substituir. Não simplificar removendo capacidades existentes.
-- Jogos e atividades são módulos independentes registrados em um núcleo comum.
-- Toda alteração deve preservar regressão: build, navegação, áudio, toque e conteúdo existente.
+- Criança no centro: interfaces grandes, simples, alegres e seguras.
+- Local-first e privacidade por padrão.
+- Zero publicidade e sem perfil comportamental infantil.
+- Atividades não precisam ter pontuação.
+- Jogos podem ter desafio e recompensa, mas não são a única forma de aprendizagem.
+- Idade define complexidade, não apenas velocidade.
+- Reaproveitar conteúdo e áudio antes de criar novos assets.
+- Nenhum conteúdo clínico deve se apresentar como diagnóstico ou tratamento.
+- Novas locuções serão acumuladas em uma fila única e gravadas em lote quando o catálogo estiver maduro.
 
-## Faixas de conteúdo
-- 6–12 meses: descoberta sensorial e causa/efeito.
-- 12–18 meses: toque, arraste simples, reconhecimento.
-- 18–24 meses: associação e vocabulário inicial.
-- 2–3 anos: cores, animais, formas, sons, coordenação e linguagem.
-- 3–4 anos: memória, associação, números, letras e sequências.
-- 4–5 anos: desafios graduais, linguagem, lógica, números e criatividade.
+## Universo de desenvolvimento
+O produto passa a considerar, de forma lúdica:
+- comunicação e linguagem;
+- fala e consciência fonológica;
+- audição e atenção auditiva;
+- cognição e memória;
+- funções executivas iniciais;
+- percepção visual;
+- motricidade fina;
+- motricidade ampla;
+- criatividade;
+- interação e comunicação funcional;
+- pré-alfabetização;
+- matemática inicial.
 
-## Arquitetura alvo
-CORE: App Core, Activity Registry, Audio Engine, Progress Store, Reward Engine, Accessibility, Storage.
-CONTENT: catálogo por idade, habilidades, dificuldade, áudio e disponibilidade offline.
-GAMES: módulos independentes existentes e futuros.
-PARENT: configurações protegidas por barreira infantil, sem tratar a barreira como autenticação.
-PLATFORM: Vite, PWA, Web APIs, futura camada Android.
+## Fonoaudiologia como referência
+A Fonoaudiologia serve como referência para organização de experiências de estímulo. O aplicativo não substitui avaliação profissional, não diagnostica e não promete tratar alterações de fala, linguagem, audição ou desenvolvimento.
 
-## Segurança e privacidade
-A barreira dos pais é UX, não autenticação criptográfica. Dados locais podem ser alterados por quem controla o dispositivo. Nunca colocar segredos, tokens ou credenciais no frontend.
+## Faixas
+6–12m, 12–18m, 18–24m, 2–3y, 3–4y e 4–5y.
 
-## Regra de evolução
-1. Auditar estado atual.
-2. Reutilizar o que funciona.
-3. Implementar em camadas.
-4. Testar build e referências.
-5. Registrar estado e mudanças.
-6. Só remover legado quando houver substituto funcional ou quando estiver comprovadamente órfão.
+## Conteúdo existente
+Os 329 áudios existentes são patrimônio do projeto e devem ser reaproveitados sempre que semanticamente adequados. Arquivos não devem ser renomeados sem necessidade.
+
+## Arquitetura
+CORE → catálogo → motores de experiência → interface → PWA. O catálogo central declara idade, domínio, habilidade, dificuldade e necessidades de áudio.
+
+## Locuções
+Quando o catálogo estiver consolidado, gerar uma lista única de todas as locuções necessárias, eliminando duplicidades e retirando tudo o que já existir nos 329 áudios.
