@@ -193,6 +193,10 @@ class App {
     const onBack = () => this.renderAgeHub(ageId);
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
 
+    if (gameId === 'discovery-sounds') {
+      this.audio.preload(vocabularyData.animals.map((x) => x.audio));
+      return world.start('attention', { items: vocabularyData.animals });
+    }
     if (gameId === 'discovery-animals' || gameId === 'animals') {
       this.audio.preload(vocabularyData.animals.map((x) => x.audio));
       return world.start('discover-animals', { items: vocabularyData.animals });
@@ -218,7 +222,7 @@ class App {
       return world.start('attention', { items: vocabularyData.animals });
     }
     if (gameId === 'phrases' || gameId === 'communication') {
-      return new CardsGame('game-container', this.audio, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
+      return new CardsGame('game-container', this.audio, this.storage, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
     }
     if (gameId === 'canvas') return new CanvasGame('game-container', this.audio, onBack).start();
     if (gameId === 'memory') return new MemoryGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals, ageId === '4-5y' ? 4 : ageId === '3-4y' ? 3 : 2);
@@ -232,7 +236,15 @@ class App {
       rhymes: { icon: '🎵', title: 'Rimas Divertidas', text: 'Ouça as palavras e encontre as que terminam de um jeito parecido.', cards: [['Gato','🐱'],['Rato','🐭'],['Bola','⚽'],['Mola','🌀']] },
       'sound-initial': { icon: '🔤', title: 'Com Que Som Começa?', text: 'Ouça a palavra e observe seu começo.', cards: [['Macaco','🐒'],['Mala','🧳'],['Bola','⚽'],['Gato','🐱']] },
       'story-sequence': { icon: '📖', title: 'Hora da História', text: 'Coloque as cenas na ordem e conte o que aconteceu.', cards: [['Primeiro','1️⃣'],['Depois','2️⃣'],['Por fim','3️⃣']] },
-      movement: { icon: '🏃', title: 'Mexa o Corpo!', text: 'Levante, imite e brinque junto.', cards: [['Bata palmas','👏'],['Dê tchau','👋'],['Pule','🦘'],['Dance','💃']] }
+      movement: { icon: '🏃', title: 'Mexa o Corpo!', text: 'Levante, imite e brinque junto.', cards: [['Bata palmas','👏'],['Dê tchau','👋'],['Pule','🦘'],['Dance','💃']] },
+      'discover-objects': { icon: '🔎', title: 'Descobrir Objetos', text: 'Toque, veja e descubra nomes de coisas do dia a dia.', cards: [['Bola','⚽'],['Casa','🏠'],['Carro','🚗'],['Maçã','🍎']] },
+      'body-parts': { icon: '🧍', title: 'Meu Corpo', text: 'Vamos descobrir partes do corpo.', cards: [['Cabeça','🙂'],['Mão','✋'],['Pé','🦶'],['Olho','👀']] },
+      'match-pairs': { icon: '🧩', title: 'Encontre o Par', text: 'Procure coisas que combinam.', cards: [['Bola','⚽'],['Casa','🏠'],['Carro','🚗'],['Maçã','🍎']] },
+      'classify-animals': { icon: '🐾', title: 'Quem Pertence ao Grupo?', text: 'Observe e descubra o que combina.', cards: [['Animais','🐶'],['Comida','🍎'],['Brinquedos','🧸'],['Natureza','🌳']] },
+      opposites: { icon: '↔️', title: 'Opostos Divertidos', text: 'Brinque com ideias que são diferentes.', cards: [['Grande / pequeno','🐘🐜'],['Alto / baixo','📏'],['Cheio / vazio','🥛'],['Dia / noite','☀️🌙']] },
+      'sound-sequence': { icon: '👂', title: 'Sequência de Sons', text: 'Ouça uma sequência e tente lembrar.', cards: [['Um som','🔔'],['Dois sons','🔔🥁'],['Três sons','🔔🥁👏'],['Ouvir de novo','🔊']] },
+      rhythm: { icon: '🎵', title: 'Brinque com o Ritmo', text: 'Imite o ritmo e movimente-se.', cards: [['Palmas','👏'],['Tum tum','🥁'],['Palma e pausa','👏⏸️'],['Dance','💃']] },
+      'guided-movement': { icon: '🏃', title: 'Desafio do Movimento', text: 'Siga o comando e faça junto.', cards: [['Bata palmas','👏'],['Pule','🦘'],['Gire','🔄'],['Dê tchau','👋']] }
     };
     const data = guided[gameId] || { icon: '✨', title: 'Nova Brincadeira', text: 'Explore e descubra!', cards: [['Vamos brincar','🌟']] };
     this.container.innerHTML = `
