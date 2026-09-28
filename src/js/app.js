@@ -143,17 +143,37 @@ class App {
     const available = this.core.activities.forAge(ageId);
     const supported = available.filter((a) => ['colors','animals','canvas','phrases','memory','puzzle','balloons'].includes(a.id));
     if (ageId === '6-12m' || ageId === '12-18m') {
-      this.container.innerHTML = `
-        <div class="w-full max-w-xl text-center my-auto bg-white/90 rounded-3xl p-7 shadow-lg">
-          <div class="text-6xl mb-3">${ageId === '6-12m' ? '🌱' : '🧸'}</div>
-          <h2 class="text-2xl font-black text-indigo-700">${labels[ageId]}</h2>
-          <p class="text-slate-600 mt-3">A fundação para essas faixas já está pronta. O catálogo específico está sendo expandido sem retirar os recursos existentes.</p>
-          <button id="btn-back-age" class="mt-6 bg-indigo-600 text-white font-bold px-6 py-3 rounded-2xl touch-target">⬅️ Escolher outra faixa</button>
-        </div>`;
-      document.getElementById('btn-back-age').addEventListener('click', () => this.renderAgeSelection());
+      this.renderDiscovery(ageId, labels[ageId]);
       return;
     }
     this.renderGamesForAge(ageId, labels[ageId], supported);
+  }
+
+  renderDiscovery(ageId, title) {
+    const items = vocabularyData.animals.slice(0, ageId === '6-12m' ? 3 : 4);
+    this.audio.preload(items.map((item) => item.audio));
+    this.container.innerHTML = `
+      <div class="w-full max-w-xl flex flex-col gap-5 my-auto">
+        <div class="flex items-center justify-between gap-3">
+          <button id="btn-back-discovery" class="bg-white/90 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
+          <h2 class="text-xl md:text-2xl font-black text-indigo-700">${title}</h2>
+        </div>
+        <div class="bg-white/90 rounded-3xl p-4 shadow-lg text-center">
+          <p class="text-slate-600 font-semibold mb-4">Toque para ouvir e descobrir.</p>
+          <div class="grid grid-cols-2 gap-4">
+            ${items.map((item) => `
+              <button data-discovery="${item.id}" class="game-card bg-sky-50 border-b-4 border-sky-200 rounded-3xl p-5 min-h-[150px] flex flex-col items-center justify-center gap-2 focus-visible:ring-4 focus-visible:ring-indigo-300">
+                <span class="text-6xl" aria-hidden="true">${item.icon}</span>
+                <span class="text-lg font-black text-sky-800">${item.label}</span>
+              </button>`).join('')}
+          </div>
+        </div>
+      </div>`;
+    document.getElementById('btn-back-discovery').addEventListener('click', () => this.renderAgeSelection());
+    this.container.querySelectorAll('[data-discovery]').forEach((button) => {
+      const item = items.find((entry) => entry.id === button.dataset.discovery);
+      button.addEventListener('click', () => this.audio.play(item.audio, item.label));
+    });
   }
 
   renderGamesForAge(ageId, title, activities) {
