@@ -9,7 +9,19 @@ import { CardsGame } from './games/cards.js';
 import { CanvasGame } from './games/canvas.js';
 import { PuzzleGame } from './games/puzzle.js';
 import { BalloonPopGame } from './games/balloon-pop.js';
+import { LearningWorldGame } from './games/learning-world.js';
 import { vocabularyData } from '../data/vocabulary.js';
+import { developmentContent } from '../content/development-content.js';
+
+const GAME_ICONS = {
+  'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨',
+  'attention-auditory': '👂', colors: '🎨', 'find-color': '🌈', animals: '🐶',
+  'find-animal': '🔎', 'sound-guess': '🔊', 'shape-match': '🔷', 'odd-one-out': '🧩',
+  'size-sort': '📏', sequence: '🔁', count: '🔢', 'number-match': '🔢',
+  balloons: '🎈', phrases: '🗣️', syllables: '👄', rhymes: '🎵',
+  'sound-initial': '🔤', 'story-sequence': '📖', communication: '💬',
+  memory: '🧠', puzzle: '🧩', canvas: '🎨', movement: '🏃'
+};
 
 class App {
   constructor() {
@@ -112,17 +124,18 @@ class App {
 
   renderAgeSelection() {
     this.container.innerHTML = `
-      <div class="w-full max-w-3xl my-auto">
+      <div class="w-full max-w-4xl my-auto">
         <div class="text-center mb-5">
+          <div class="text-5xl mb-2">🌈🧸</div>
           <h2 class="text-2xl md:text-3xl font-black text-indigo-700">Vamos brincar!</h2>
-          <p class="text-slate-600 mt-1">Escolha a faixa etária</p>
+          <p class="text-slate-600 mt-1">Escolha a faixa etária para ver experiências adequadas.</p>
         </div>
         <div class="age-grid">
           ${AGE_BANDS.map((age) => `
             <button data-age="${age.id}" class="game-card bg-white p-5 rounded-3xl shadow-lg border-b-4 border-indigo-200 flex flex-col items-center gap-2 min-h-[150px] focus-visible:ring-4 focus-visible:ring-indigo-300">
-              <span class="text-4xl">${age.id === '6-12m' ? '🌱' : age.id === '12-18m' ? '🧸' : age.id === '18-24m' ? '🐾' : age.id === '2-3y' ? '🎨' : age.id === '3-4y' ? '🧠' : '🚀'}</span>
+              <span class="text-4xl">${this.ageIcon(age.id)}</span>
               <span class="text-xl font-black text-indigo-700">${age.label}</span>
-              <span class="text-xs text-slate-500">Explorar e brincar</span>
+              <span class="text-xs text-slate-500">Explorar • brincar • desenvolver</span>
             </button>`).join('')}
         </div>
       </div>`;
@@ -131,87 +144,117 @@ class App {
     });
   }
 
+  ageIcon(ageId) {
+    return ({'6-12m':'🌱','12-18m':'🧸','18-24m':'🐾','2-3y':'🎨','3-4y':'🧠','4-5y':'🚀'})[ageId];
+  }
+
   renderAgeHub(ageId) {
     const labels = {
       '6-12m': '🌱 Primeiras Descobertas',
-      '12-18m': '🧸 Descobrir e Tocar',
+      '12-18m': '🧸 Descobrir e Comunicar',
       '18-24m': '🐾 Explorar e Associar',
-      '2-3y': '🎨 Primeiras Brincadeiras',
+      '2-3y': '🎨 Brincar e Aprender',
       '3-4y': '🧠 Aprender Brincando',
       '4-5y': '🚀 Desafios e Descobertas'
     };
     const available = this.core.activities.forAge(ageId);
-    const supported = available.filter((a) => ['colors','animals','canvas','phrases','memory','puzzle','balloons'].includes(a.id));
-    if (ageId === '6-12m' || ageId === '12-18m') {
-      this.renderDiscovery(ageId, labels[ageId]);
-      return;
-    }
-    this.renderGamesForAge(ageId, labels[ageId], supported);
-  }
-
-  renderDiscovery(ageId, title) {
-    const items = vocabularyData.animals.slice(0, ageId === '6-12m' ? 3 : 4);
-    this.audio.preload(items.map((item) => item.audio));
-    this.container.innerHTML = `
-      <div class="w-full max-w-xl flex flex-col gap-5 my-auto">
-        <div class="flex items-center justify-between gap-3">
-          <button id="btn-back-discovery" class="bg-white/90 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
-          <h2 class="text-xl md:text-2xl font-black text-indigo-700">${title}</h2>
-        </div>
-        <div class="bg-white/90 rounded-3xl p-4 shadow-lg text-center">
-          <p class="text-slate-600 font-semibold mb-4">Toque para ouvir e descobrir.</p>
-          <div class="grid grid-cols-2 gap-4">
-            ${items.map((item) => `
-              <button data-discovery="${item.id}" class="game-card bg-sky-50 border-b-4 border-sky-200 rounded-3xl p-5 min-h-[150px] flex flex-col items-center justify-center gap-2 focus-visible:ring-4 focus-visible:ring-indigo-300">
-                <span class="text-6xl" aria-hidden="true">${item.icon}</span>
-                <span class="text-lg font-black text-sky-800">${item.label}</span>
-              </button>`).join('')}
-          </div>
-        </div>
-      </div>`;
-    document.getElementById('btn-back-discovery').addEventListener('click', () => this.renderAgeSelection());
-    this.container.querySelectorAll('[data-discovery]').forEach((button) => {
-      const item = items.find((entry) => entry.id === button.dataset.discovery);
-      button.addEventListener('click', () => this.audio.play(item.audio, item.label));
-    });
+    this.renderGamesForAge(ageId, labels[ageId], available);
   }
 
   renderGamesForAge(ageId, title, activities) {
+    const groups = [...new Set(activities.map((a) => a.category))];
     this.container.innerHTML = `
-      <div class="w-full max-w-2xl flex flex-col gap-4 my-auto">
+      <div class="w-full max-w-4xl flex flex-col gap-4 my-auto">
         <div class="flex items-center justify-between gap-3">
-          <button id="btn-back-menu" class="bg-white/90 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
-          <h2 class="text-xl md:text-2xl font-black text-indigo-700 text-right">${title}</h2>
+          <button id="btn-back-menu" class="bg-white/95 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
+          <div class="text-right">
+            <h2 class="text-xl md:text-2xl font-black text-indigo-700">${title}</h2>
+            <p class="text-xs text-slate-500">${activities.length} experiências disponíveis</p>
+          </div>
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          ${activities.map((a) => `<button data-game="${a.id}" class="game-card bg-white p-5 rounded-2xl text-lg font-black text-indigo-800 shadow border-b-4 border-indigo-100 min-h-[120px] focus-visible:ring-4 focus-visible:ring-indigo-300"><span class="text-3xl block mb-2">${({colors:'🎨',animals:'🐶',canvas:'✏️',phrases:'🗣️',memory:'🧠',puzzle:'🧩',balloons:'🎈'})[a.id]}</span>${a.title}</button>`).join('')}
+        <div class="flex flex-wrap gap-2 justify-center">
+          ${groups.map((group) => `<span class="bg-white/80 rounded-full px-3 py-1 text-xs font-bold text-indigo-600">${group}</span>`).join('')}
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          ${activities.map((a) => `
+            <button data-game="${a.id}" class="game-card bg-white p-5 rounded-3xl text-base font-black text-indigo-800 shadow border-b-4 border-indigo-100 min-h-[145px] focus-visible:ring-4 focus-visible:ring-indigo-300">
+              <span class="text-4xl block mb-2">${GAME_ICONS[a.id] || '✨'}</span>
+              <span>${a.title}</span>
+              <span class="block text-[11px] text-slate-400 mt-2">${a.skills?.slice(0,2).join(' • ') || ''}</span>
+            </button>`).join('')}
         </div>
       </div>`;
-    document.getElementById('btn-back-menu').addEventListener('click', () => this.renderAgeSelection());
+    this.container.querySelector('#btn-back-menu').addEventListener('click', () => this.renderAgeSelection());
     this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, ageId)));
   }
 
   launchGame(gameId, ageId) {
     const onWin = () => this.complete(gameId);
     const onBack = () => this.renderAgeHub(ageId);
-    if (gameId === 'colors') {
-      const cards = new CardsGame('game-container', this.audio, this.storage, onWin, onBack);
-      cards.renderGrid(vocabularyData.colors, '🎨 Aprender Cores');
-    } else if (gameId === 'animals') {
-      const cards = new CardsGame('game-container', this.audio, this.storage, onWin, onBack);
+    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
+
+    if (gameId === 'discovery-animals' || gameId === 'animals') {
       this.audio.preload(vocabularyData.animals.map((x) => x.audio));
-      cards.renderGrid(vocabularyData.animals, '🐶 Som dos Animais');
-    } else if (gameId === 'canvas') {
-      new CanvasGame('game-container', this.audio, onBack).start();
-    } else if (gameId === 'phrases') {
-      new CardsGame('game-container', this.audio, this.storage, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
-    } else if (gameId === 'memory') {
-      new MemoryGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals, ageId === '4-5y' ? 3 : 2);
-    } else if (gameId === 'puzzle') {
-      new PuzzleGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals);
-    } else if (gameId === 'balloons') {
-      new BalloonPopGame('game-container', this.audio, onWin, onBack).start();
+      return world.start('discover-animals', { items: vocabularyData.animals });
     }
+    if (gameId === 'discovery-colors' || gameId === 'colors') {
+      return world.start('discover-colors', { items: vocabularyData.colors });
+    }
+    if (gameId === 'find-color') return world.start('find-color', { items: vocabularyData.colors });
+    if (gameId === 'find-animal') return world.start('find-animal', { items: vocabularyData.animals });
+    if (gameId === 'sound-guess') {
+      this.audio.preload(vocabularyData.animals.map((x) => x.audio));
+      return world.start('sound-guess', { items: vocabularyData.animals });
+    }
+    if (gameId === 'shape-match') return world.start('shape-match');
+    if (gameId === 'odd-one-out') return world.start('odd-one-out');
+    if (gameId === 'size-sort') return world.start('size-sort');
+    if (gameId === 'count') return world.start('count');
+    if (gameId === 'number-match') return world.start('number-match');
+    if (gameId === 'sequence') return world.start('sequence');
+    if (gameId === 'syllables') return world.start('syllables');
+    if (gameId === 'attention-auditory') {
+      this.audio.preload(vocabularyData.animals.map((x) => x.audio));
+      return world.start('attention', { items: vocabularyData.animals });
+    }
+    if (gameId === 'phrases' || gameId === 'communication') {
+      return new CardsGame('game-container', this.audio, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
+    }
+    if (gameId === 'canvas') return new CanvasGame('game-container', this.audio, onBack).start();
+    if (gameId === 'memory') return new MemoryGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals, ageId === '4-5y' ? 4 : ageId === '3-4y' ? 3 : 2);
+    if (gameId === 'puzzle') return new PuzzleGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals);
+    if (gameId === 'balloons') return new BalloonPopGame('game-container', this.audio, onWin, onBack).start();
+    return this.renderGuidedExperience(gameId, ageId, onWin, onBack);
+  }
+
+  renderGuidedExperience(gameId, ageId, onWin, onBack) {
+    const guided = {
+      rhymes: { icon: '🎵', title: 'Rimas Divertidas', text: 'Ouça as palavras e encontre as que terminam de um jeito parecido.', cards: [['Gato','🐱'],['Rato','🐭'],['Bola','⚽'],['Mola','🌀']] },
+      'sound-initial': { icon: '🔤', title: 'Com Que Som Começa?', text: 'Ouça a palavra e observe seu começo.', cards: [['Macaco','🐒'],['Mala','🧳'],['Bola','⚽'],['Gato','🐱']] },
+      'story-sequence': { icon: '📖', title: 'Hora da História', text: 'Coloque as cenas na ordem e conte o que aconteceu.', cards: [['Primeiro','1️⃣'],['Depois','2️⃣'],['Por fim','3️⃣']] },
+      movement: { icon: '🏃', title: 'Mexa o Corpo!', text: 'Levante, imite e brinque junto.', cards: [['Bata palmas','👏'],['Dê tchau','👋'],['Pule','🦘'],['Dance','💃']] }
+    };
+    const data = guided[gameId] || { icon: '✨', title: 'Nova Brincadeira', text: 'Explore e descubra!', cards: [['Vamos brincar','🌟']] };
+    this.container.innerHTML = `
+      <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
+        <div class="flex justify-between items-center gap-3">
+          <button id="guided-back" class="bg-white/95 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
+          <h2 class="text-xl md:text-2xl font-black text-indigo-700">${data.icon} ${data.title}</h2>
+        </div>
+        <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
+          <p class="text-slate-600 font-semibold mb-5">${data.text}</p>
+          <div class="grid grid-cols-2 gap-4">
+            ${data.cards.map(([label, icon], index) => `<button data-guided="${index}" class="bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[145px] shadow touch-target"><span class="text-6xl block">${icon}</span><span class="font-black text-sky-800">${label}</span></button>`).join('')}
+          </div>
+        </div>
+      </div>`;
+    this.container.querySelector('#guided-back').addEventListener('click', onBack);
+    let touched = 0;
+    this.container.querySelectorAll('[data-guided]').forEach((button) => button.addEventListener('click', () => {
+      touched++;
+      this.audio.play(null, button.textContent.trim());
+      if (touched >= data.cards.length) { onWin(); setTimeout(() => onBack(), 700); }
+    }));
   }
 }
 
