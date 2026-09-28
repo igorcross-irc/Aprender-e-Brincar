@@ -1,31 +1,25 @@
-# Aprender & Brincar — CURRENT STATE
+# Estado Atual — Fase 6
 
-## Estado desta execução
-A base existente foi preservada e está sendo evoluída para uma arquitetura por núcleo. O app já possui Vite, módulos ES, jogos separados, áudio resiliente, armazenamento local, manifesto e catálogo de vocabulário.
+## Base
+- Fases 0–5 incorporadas em main.
+- PWA/Vite/Tailwind/Service Worker/CI ativos.
+- 329 MP3s preservados.
+- Catálogo central de atividades ativo.
 
-## Reaproveitado
-- ResilientAudioEngine com MP3 + fallback pt-BR.
-- MemoryGame, CardsGame, CanvasGame, PuzzleGame e BalloonPopGame.
-- Catálogo vocabulary.js.
-- Assets PNG e biblioteca de MP3 existentes.
-- Vite e deploy compatível com Vercel.
+## Expansão implementada
+- Motor reutilizável `LearningWorldGame`.
+- Catálogo expandido por idade, domínio, habilidade e dificuldade.
+- Menu mostra experiências adequadas a cada faixa.
+- Memória ganhou níveis 1–5, mais pares, contador de jogadas e progressão.
+- Balões ganharam níveis 1–5 e números progressivos.
+- Quebra-cabeça ganhou níveis progressivos e contador de tentativas.
+- Fala, linguagem, audição, atenção, cognição, motricidade, criatividade e movimento entraram no mapa de experiências.
+- Fila de futuras locuções registrada.
 
-## Fundação adicionada nas fases 0–5
-- documentação de fonte de verdade;
-- núcleo de atividades e faixas etárias;
-- progresso local estruturado;
-- proteção de conteúdo inserido no DOM;
-- PWA com service worker e cache runtime;
-- Tailwind compilado pelo build, sem CDN;
-- acessibilidade/touch baseline;
-- smoke checks e CI de build;
-- área dos pais preparada para evoluir sem expor dados em rede.
-
-## Pendências deliberadas
-- Migração completa de todos os jogos para TypeScript.
-- Backend/sincronização entre dispositivos.
-- App Android nativo.
-- Catálogo completo 6 meses–5 anos.
-- Testes E2E em navegador real.
-
-Essas pendências não justificam apagar os jogos atuais: eles continuam sendo conteúdo funcional e devem ser migrados gradualmente.
+## Próxima evolução
+- aprofundar rimas, histórias, comunicação e consciência fonológica;
+- ampliar conteúdos por idade;
+- criar personagens e ilustrações próprias;
+- progresso por domínio sem avaliação clínica;
+- ampliar offline;
+- testes de interação e acessibilidade.
