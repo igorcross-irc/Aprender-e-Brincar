@@ -134,3 +134,5 @@ button:focus-visible, input:focus-visible {
   .world-path, .activity-grid { gap: .75rem; }
   .world-card, .activity-card { min-height: 155px; padding: 1rem; }
 }
+
+.progress-track{height:.45rem;background:#e2e8f0;border-radius:999px;overflow:hidden}.progress-track span{display:block;height:100%;background:linear-gradient(90deg,#34d399,#60a5fa);border-radius:inherit;transition:width .35s ease}.world-card::after{content:'✦';position:absolute;right:-.25rem;bottom:-.6rem;font-size:4rem;opacity:.06;transform:rotate(-12deg)}.activity-card::after{content:'•';position:absolute;right:.65rem;bottom:.25rem;font-size:2rem;opacity:.08}
