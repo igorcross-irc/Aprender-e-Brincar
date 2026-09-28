@@ -30,6 +30,48 @@ export const developmentContent = {
     { id: 'abc', label: 'Formas', items: ['🔵','🔺','⭐','🔵','🔺'], answer: '⭐' },
     { id: 'size', label: 'Tamanhos', items: ['🐜','🐘','🐜','🐘'], answer: '🐜' }
   ]
+  ],
+  objectsAdvanced: [
+    { id:'copo', label:'Copo', icon:'🥛', group:'casa' },
+    { id:'colher', label:'Colher', icon:'🥄', group:'casa' },
+    { id:'sapato', label:'Sapato', icon:'👟', group:'roupas' },
+    { id:'camisa', label:'Camisa', icon:'👕', group:'roupas' },
+    { id:'escova', label:'Escova', icon:'🪥', group:'cuidados' },
+    { id:'livro', label:'Livro', icon:'📚', group:'estudo' }
+  ],
+  bodyParts: [
+    { id:'cabeca', label:'Cabeça', icon:'🙂' },
+    { id:'olho', label:'Olho', icon:'👀' },
+    { id:'nariz', label:'Nariz', icon:'👃' },
+    { id:'boca', label:'Boca', icon:'👄' },
+    { id:'mao', label:'Mão', icon:'✋' },
+    { id:'pe', label:'Pé', icon:'🦶' }
+  ],
+  categories: [
+    { id:'animal', label:'Animais', icon:'🐶', group:'seres-vivos' },
+    { id:'fruta', label:'Frutas', icon:'🍎', group:'alimentos' },
+    { id:'brinquedo', label:'Brinquedos', icon:'🧸', group:'objetos' },
+    { id:'veiculo', label:'Veículos', icon:'🚗', group:'transportes' }
+  ],
+  opposites: [
+    { id:'big', label:'Grande', pair:'Pequeno', icon:'🐘', pairIcon:'🐜' },
+    { id:'up', label:'Alto', pair:'Baixo', icon:'⬆️', pairIcon:'⬇️' },
+    { id:'day', label:'Dia', pair:'Noite', icon:'☀️', pairIcon:'🌙' },
+    { id:'full', label:'Cheio', pair:'Vazio', icon:'🥛', pairIcon:'🥣' }
+  ],
+  rhythms: [
+    { id:'one', label:'1 palma', pattern:['👏'] },
+    { id:'two', label:'2 palmas', pattern:['👏','👏'] },
+    { id:'mixed', label:'Palma e pausa', pattern:['👏','⏸️','👏'] },
+    { id:'triple', label:'3 palmas', pattern:['👏','👏','👏'] }
+  ],
+  movements: [
+    { id:'clap', label:'Bata palmas', icon:'👏' },
+    { id:'wave', label:'Dê tchau', icon:'👋' },
+    { id:'jump', label:'Pule', icon:'🦘' },
+    { id:'spin', label:'Gire', icon:'🔄' },
+    { id:'dance', label:'Dance', icon:'💃' }
+  ]
 };
 
 export const developmentAudioQueue = [
