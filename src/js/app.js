@@ -20,7 +20,7 @@ const GAME_ICONS = {
   phrases:'🗣️',syllables:'👄',rhymes:'🎵','sound-initial':'🔤','story-sequence':'📖',
   communication:'💬',memory:'🧠',puzzle:'🧩',canvas:'🎨',movement:'🏃','discover-objects':'🔎',
   'body-parts':'🧍','match-pairs':'🧩','classify-animals':'🐾',opposites:'↔️','sound-sequence':'👂',
-  rhythm:'🎵','guided-movement':'🏃','baby-discover':'🌱','baby-colors':'🌈','vocabulary':'🗣️','story-interactive':'📖','music-rhythm':'🎵','sort-groups':'🧩'
+  rhythm:'🎵','guided-movement':'🏃','baby-discover':'🌱','baby-colors':'🌈','vocabulary':'🗣️','story-interactive':'📖','music-rhythm':'🎵','sort-groups':'🧩','object-hunt':'🔎','animal-families':'🐾','action-words':'🗣️','story-choices':'📖','phrase-builder-2':'💬','color-hunt-2':'🌈','shape-sequence':'🔷','compare-sizes':'📏','animal-sound-memory':'🔊','animal-homes':'🏠','count-more':'🔢','number-order':'🔢','memory-objects':'🧠','attention-path':'👀','rhythm-copy':'🎵','movement-copy':'🏃'
 };
 
 const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
@@ -255,6 +255,22 @@ class App {
     if (gameId === 'story-interactive') return world.start('story-interactive');
     if (gameId === 'music-rhythm') return world.start('music-rhythm');
     if (gameId === 'sort-groups') return world.start('sort-groups');
+    if (gameId === 'object-hunt') return world.start('discover-objects');
+    if (gameId === 'animal-families') return world.start('classify-animals');
+    if (gameId === 'action-words') return world.start('vocabulary');
+    if (gameId === 'story-choices') return world.start('story-interactive');
+    if (gameId === 'phrase-builder-2') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
+    if (gameId === 'color-hunt-2') return world.start('find-color',{items:vocabularyData.colors});
+    if (gameId === 'shape-sequence') return world.start('sequence');
+    if (gameId === 'compare-sizes') return world.start('size-sort');
+    if (gameId === 'animal-sound-memory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals}); }
+    if (gameId === 'animal-homes') return world.start('find-animal',{items:vocabularyData.animals});
+    if (gameId === 'count-more') return world.start('count');
+    if (gameId === 'number-order') return world.start('sequence');
+    if (gameId === 'memory-objects') return world.start('match-pairs');
+    if (gameId === 'attention-path') return world.start('attention',{items:vocabularyData.animals});
+    if (gameId === 'rhythm-copy') return world.start('music-rhythm');
+    if (gameId === 'movement-copy') return world.start('guided-movement');
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onBack).start();
