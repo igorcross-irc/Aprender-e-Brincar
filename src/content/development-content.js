@@ -72,6 +72,34 @@ export const developmentContent = {
     { id:'spin', label:'Gire', icon:'🔄' },
     { id:'dance', label:'Dance', icon:'💃' }
   ]
+  ,babyDiscoveries: [
+    { id:'light', label:'Luz', icon:'☀️', sound:'Luz!' },
+    { id:'ball', label:'Bola', icon:'⚽', sound:'Bola!' },
+    { id:'flower', label:'Flor', icon:'🌸', sound:'Flor!' },
+    { id:'star', label:'Estrela', icon:'⭐', sound:'Estrela!' },
+    { id:'heart', label:'Coração', icon:'❤️', sound:'Coração!' },
+    { id:'music', label:'Música', icon:'🎵', sound:'Música!' }
+  ],
+  colorsAdvanced: [
+    { id:'red', label:'Vermelho', icon:'🔴' }, { id:'blue', label:'Azul', icon:'🔵' },
+    { id:'yellow', label:'Amarelo', icon:'🟡' }, { id:'green', label:'Verde', icon:'🟢' },
+    { id:'orange', label:'Laranja', icon:'🟠' }, { id:'purple', label:'Roxo', icon:'🟣' }
+  ],
+  vocabulary: [
+    { id:'agua', label:'Água', icon:'💧', group:'rotina' }, { id:'comida', label:'Comida', icon:'🍽️', group:'rotina' },
+    { id:'mamae', label:'Mamãe', icon:'👩', group:'pessoas' }, { id:'papai', label:'Papai', icon:'👨', group:'pessoas' },
+    { id:'cachorro', label:'Cachorro', icon:'🐶', group:'animais' }, { id:'gato', label:'Gato', icon:'🐱', group:'animais' },
+    { id:'casa', label:'Casa', icon:'🏠', group:'lugares' }, { id:'parque', label:'Parque', icon:'🌳', group:'lugares' }
+  ],
+  stories: [
+    { id:'morning', title:'Bom dia!', scenes:['☀️','🧸','🍎'], words:['acordou','brincou','comeu'] },
+    { id:'park', title:'No parque', scenes:['🏠','🌳','⚽'], words:['saiu','brincou','voltou'] },
+    { id:'rain', title:'Dia de chuva', scenes:['☁️','🌧️','🌈'], words:['nuvem','chuva','arco-íris'] }
+  ],
+  musicPatterns: [
+    { id:'p1', label:'Palma', pattern:['👏'] }, { id:'p2', label:'Duas palmas', pattern:['👏','👏'] },
+    { id:'p3', label:'Palma e pausa', pattern:['👏','⏸️','👏'] }, { id:'p4', label:'Palma, palma, pausa', pattern:['👏','👏','⏸️'] }
+  ]
 };
 
 export const developmentAudioQueue = [
