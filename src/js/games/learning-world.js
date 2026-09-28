@@ -43,7 +43,14 @@ export class LearningWorldGame {
       count: developmentContent.numbers,
       'number-match': developmentContent.numbers,
       syllables: developmentContent.syllables,
-      sequence: developmentContent.sequences
+      sequence: developmentContent.sequences,
+      'discover-objects': developmentContent.objectsAdvanced,
+      'body-parts': developmentContent.bodyParts,
+      'match-pairs': developmentContent.objects,
+      'classify-animals': developmentContent.categories,
+      opposites: developmentContent.opposites,
+      rhythm: developmentContent.rhythms,
+      'guided-movement': developmentContent.movements
     };
     this.items = sources[mode] || [];
     this.renderRound();
@@ -91,7 +98,14 @@ export class LearningWorldGame {
       'number-match': () => this.renderNumberMatch(),
       syllables: () => this.renderSyllables(),
       sequence: () => this.renderSequence(),
-      attention: () => this.renderAttention()
+      attention: () => this.renderAttention(),
+      'discover-objects': () => this.renderDiscoverObjects(),
+      'body-parts': () => this.renderBodyParts(),
+      'match-pairs': () => this.renderMatchPairs(),
+      'classify-animals': () => this.renderClassify(),
+      opposites: () => this.renderOpposites(),
+      rhythm: () => this.renderRhythm(),
+      'guided-movement': () => this.renderMovement()
     };
     (renderers[this.mode] || renderers['discover-animals'])();
   }
@@ -274,6 +288,68 @@ export class LearningWorldGame {
     this.container.querySelector('#listen-again').addEventListener('click', () => this.speak(target.label, target.audio));
     this.bindChoice(target.id, 'Muito bem! Você encontrou.', 'Vamos ouvir mais uma vez.');
     this.speak(target.label, target.audio);
+  }
+
+
+  renderDiscoverObjects() {
+    const pool = this.shuffle(this.items).slice(0, 4);
+    this.renderChoice('🔎 Descobrir Objetos', 'Toque em um objeto para descobrir o nome.', pool, pool[0]?.id);
+  }
+
+  renderBodyParts() {
+    const pool = this.shuffle(this.items).slice(0, 4);
+    const target = pool[Math.floor(Math.random() * pool.length)];
+    this.renderChoice('🧍 Meu Corpo', `Onde está a ${target.label.toLowerCase()}?`, pool, target.id);
+  }
+
+  renderMatchPairs() {
+    const pool = this.shuffle(this.items).slice(0, 4);
+    const target = pool[Math.floor(Math.random() * pool.length)];
+    const pairMap = { bola:'boneca', boneca:'bola', carro:'aviao', aviao:'carro', casa:'arvore', arvore:'casa', maca:'banana', banana:'maca' };
+    const correctId = pairMap[target.id] || target.id;
+    const options = pool.map((item) => ({ ...item, label: item.id === correctId ? item.label : item.label }));
+    this.renderChoice('🧩 Encontre o Par', `O que combina com ${target.label}?`, options, correctId);
+  }
+
+  renderClassify() {
+    const pool = this.shuffle(this.items).slice(0, 4);
+    const target = pool[Math.floor(Math.random() * pool.length)];
+    const choices = this.shuffle(this.items);
+    const sameGroup = choices.filter((item) => item.group === target.group);
+    const correct = sameGroup.find((item) => item.id !== target.id) || target;
+    this.renderChoice('🐾 Classificar', `O que pertence ao mesmo grupo de ${target.label}?`, this.shuffle(choices).slice(0, 4), correct.id);
+  }
+
+  renderOpposites() {
+    const item = this.items[Math.floor(Math.random() * this.items.length)];
+    const options = this.shuffle(this.items.map((entry) => ({ id: entry.pair, label: entry.pair, icon: entry.pairIcon })));
+    this.renderChoice('↔️ Opostos', `Qual é o contrário de ${item.label}?`, options, item.pair);
+  }
+
+  renderRhythm() {
+    const item = this.items[this.round % this.items.length];
+    this.shell('🎵 Brinque com o Ritmo', `
+      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
+        <div class="text-7xl mb-4">${item.pattern.join(' ')}</div>
+        <p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p>
+        <div class="grid grid-cols-2 gap-3">${this.shuffle(this.items).map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.pattern.join(' ')}</button>`).join('')}</div>
+      </div>`, 'Você pode bater palmas junto.');
+    this.bindChoice(item.id, 'Muito bem! Ritmo combinado.', 'Vamos observar de novo.');
+  }
+
+  renderMovement() {
+    const item = this.items[Math.floor(Math.random() * this.items.length)];
+    this.shell('🏃 Desafio do Movimento', `
+      <div class="bg-white/95 rounded-3xl p-8 shadow-xl text-center">
+        <div class="text-8xl mb-5">${item.icon}</div>
+        <h3 class="text-3xl font-black text-indigo-700 mb-3">${this.escape(item.label)}</h3>
+        <p class="text-slate-600 mb-6">Faça o movimento e toque quando terminar.</p>
+        <button id="movement-done" class="bg-emerald-500 text-white font-black text-xl px-8 py-5 rounded-3xl shadow-lg touch-target">✅ Fiz!</button>
+      </div>`, 'Vamos brincar juntos!');
+    this.container.querySelector('#movement-done').addEventListener('click', () => {
+      this.score += 1; this.speak('Muito bem!'); setTimeout(() => this.nextRound(), 500);
+    });
+    this.speak(item.label);
   }
 
   finish() {
