@@ -8,6 +8,7 @@ export class MemoryGame {
     this.level = 1;
     this.flippedCards = [];
     this.matchedPairs = 0;
+    this.moves = 0;
   }
 
   shuffle(array) {
@@ -20,100 +21,88 @@ export class MemoryGame {
 
   start(items, level = 1) {
     this.items = items;
-    this.level = level;
+    this.level = Math.max(1, Math.min(5, level));
     this.matchedPairs = 0;
     this.flippedCards = [];
-
-    const pairCount = level === 1 ? 2 : level === 2 ? 3 : 4;
+    this.moves = 0;
+    const pairCount = Math.min(6, this.level + 1);
     const selected = this.shuffle([...items]).slice(0, pairCount);
     const deck = this.shuffle([...selected, ...selected]);
 
     this.container.innerHTML = `
-      <div class="w-full max-w-xl flex flex-col items-center gap-4 my-auto">
-        <div class="w-full flex justify-between items-center">
-          <button id="btn-back-memory" class="bg-white/90 hover:bg-white text-slate-700 px-5 py-2.5 rounded-full font-bold shadow">
-            ⬅️ Voltar
-          </button>
-          <h2 class="text-2xl font-bold text-indigo-700">🧠 Jogo da Memória</h2>
+      <div class="w-full max-w-3xl flex flex-col items-center gap-4 my-auto">
+        <div class="w-full flex justify-between items-center gap-2">
+          <button id="btn-back-memory" class="bg-white/95 text-slate-700 px-5 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
+          <div class="text-right"><h2 class="text-2xl font-black text-indigo-700">🧠 Memória</h2><p class="text-xs text-slate-500">Nível ${this.level} • ${pairCount} pares</p></div>
         </div>
-
-        <div class="memory-grid level-${level} gap-4 w-full">
+        <div class="w-full flex justify-center gap-2 text-xs font-black text-indigo-700">
+          <span class="bg-white/90 px-3 py-2 rounded-full shadow">Pares: <b id="memory-pairs">0</b>/${pairCount}</span>
+          <span class="bg-white/90 px-3 py-2 rounded-full shadow">Jogadas: <b id="memory-moves">0</b></span>
+        </div>
+        <div class="memory-grid level-${this.level} gap-3 w-full">
           ${deck.map((item, idx) => `
-            <button data-id="${item.id}" data-idx="${idx}" class="memory-card bg-white rounded-3xl p-4 h-28 flex items-center justify-center text-5xl shadow-md border-4 border-slate-200">
+            <button data-id="${item.id}" data-idx="${idx}" aria-label="Carta da memória" class="memory-card bg-white rounded-3xl p-3 min-h-[105px] md:min-h-[125px] flex items-center justify-center text-5xl shadow-md border-4 border-slate-200 touch-target">
               <span class="card-back">❓</span>
               <span class="card-front hidden">${item.icon}</span>
-            </button>
-          `).join('')}
+            </button>`).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
 
     document.getElementById('btn-back-memory').addEventListener('click', () => this.onBack());
-
-    this.container.querySelectorAll('.memory-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.dataset.id;
-        const item = items.find(i => i.id === id);
-        this.flipCard(card, item, deck.length / 2);
-      });
-    });
+    this.container.querySelectorAll('.memory-card').forEach((card) => card.addEventListener('click', () => {
+      const item = items.find((i) => i.id === card.dataset.id);
+      this.flipCard(card, item, pairCount);
+    }));
   }
 
   flipCard(card, item, totalPairs) {
-    if (this.flippedCards.length === 2 || card.classList.contains('flipped')) return;
-
+    if (!item || this.flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
     card.classList.add('flipped');
     card.querySelector('.card-back').classList.add('hidden');
     card.querySelector('.card-front').classList.remove('hidden');
-    
     this.audio.play(item.audio, item.label);
     this.flippedCards.push({ card, item });
 
     if (this.flippedCards.length === 2) {
+      this.moves++;
+      const movesEl = document.getElementById('memory-moves');
+      if (movesEl) movesEl.textContent = this.moves;
       const [first, second] = this.flippedCards;
       if (first.item.id === second.item.id) {
         this.matchedPairs++;
+        first.card.classList.add('matched', 'border-emerald-400', 'bg-emerald-50');
+        second.card.classList.add('matched', 'border-emerald-400', 'bg-emerald-50');
         this.flippedCards = [];
-
-        if (this.matchedPairs === totalPairs) {
-          setTimeout(() => {
-            this.audio.play(null, 'Parabéns! Você encontrou todos os pares!');
-            if (this.onComplete) this.onComplete();
-            this.showVictoryModal();
-          }, 800);
-        }
+        const pairsEl = document.getElementById('memory-pairs');
+        if (pairsEl) pairsEl.textContent = this.matchedPairs;
+        if (this.matchedPairs === totalPairs) setTimeout(() => this.finish(), 700);
       } else {
         setTimeout(() => {
-          first.card.classList.remove('flipped');
-          first.card.querySelector('.card-back').classList.remove('hidden');
-          first.card.querySelector('.card-front').classList.add('hidden');
-
-          second.card.classList.remove('flipped');
-          second.card.querySelector('.card-back').classList.remove('hidden');
-          second.card.querySelector('.card-front').classList.add('hidden');
+          [first.card, second.card].forEach((c) => {
+            c.classList.remove('flipped');
+            c.querySelector('.card-back').classList.remove('hidden');
+            c.querySelector('.card-front').classList.add('hidden');
+          });
           this.flippedCards = [];
-        }, 1000);
+        }, this.level >= 4 ? 750 : 1000);
       }
     }
   }
 
-  showVictoryModal() {
+  finish() {
+    this.audio.play(null, 'Parabéns! Você encontrou todos os pares!');
+    this.onComplete?.();
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
-      <div class="bg-white rounded-3xl p-6 text-center shadow-2xl flex flex-col items-center gap-4 max-w-sm">
-        <span class="text-6xl">🏆</span>
-        <h3 class="text-2xl font-bold text-indigo-600">Você Venceu!</h3>
-        <p class="text-slate-600 font-medium">+1 Estrela Conquistada! ⭐</p>
-        <button id="btn-restart" class="bg-emerald-500 text-white font-bold px-6 py-3 rounded-2xl shadow-lg text-lg w-full">
-          🔄 Jogar Novamente
-        </button>
-      </div>
-    `;
+      <div class="bg-white rounded-3xl p-7 text-center shadow-2xl max-w-sm w-full">
+        <div class="text-7xl mb-3">🏆</div>
+        <h3 class="text-3xl font-black text-indigo-600">Memória completa!</h3>
+        <p class="text-slate-600 mt-2">Você encontrou ${this.matchedPairs} pares em ${this.moves} jogadas.</p>
+        <div class="flex gap-3 mt-6"><button id="memory-menu" class="flex-1 bg-slate-100 font-black py-3 rounded-2xl touch-target">Menu</button><button id="memory-next" class="flex-1 bg-emerald-500 text-white font-black py-3 rounded-2xl touch-target">Próximo nível</button></div>
+      </div>`;
     document.body.appendChild(modal);
-    modal.querySelector('#btn-restart').addEventListener('click', () => {
-      modal.remove();
-      this.start(this.items, this.level);
-    });
+    modal.querySelector('#memory-menu').addEventListener('click', () => { modal.remove(); this.onBack(); });
+    modal.querySelector('#memory-next').addEventListener('click', () => { modal.remove(); this.start(this.items, Math.min(5, this.level + 1)); });
   }
 }
