@@ -3,6 +3,9 @@ export const futureAudioPlan = {
   rule: 'Reaproveitar primeiro os 329 MP3 existentes; gravar apenas o que estiver realmente faltando.',
   voice: 'Português do Brasil, voz infantil/amigável, clara e curta.',
   groups: [
+    { id: 'baby', title: 'Descobertas para bebes', phrases: ['Olha!', 'Que legal!', 'Toque!', 'Escute!', 'Veja!', 'Mais uma vez!', 'Bola!', 'Luz!', 'Flor!', 'Musica!'] },
+    { id: 'vocabulary', title: 'Vocabulario cotidiano', phrases: ['Agua.', 'Comida.', 'Mamãe.', 'Papai.', 'Cachorro.', 'Gato.', 'Casa.', 'Parque.'] },
+    { id: 'stories', title: 'Historias interativas', phrases: ['Vamos continuar?', 'O que aconteceu?', 'E depois?', 'Onde está?', 'Quem apareceu?', 'Vamos contar juntos!'] },
     {
       id: 'core',
       title: 'Núcleo da aplicação',
