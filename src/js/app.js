@@ -20,7 +20,7 @@ const GAME_ICONS = {
   phrases:'🗣️',syllables:'👄',rhymes:'🎵','sound-initial':'🔤','story-sequence':'📖',
   communication:'💬',memory:'🧠',puzzle:'🧩',canvas:'🎨',movement:'🏃','discover-objects':'🔎',
   'body-parts':'🧍','match-pairs':'🧩','classify-animals':'🐾',opposites:'↔️','sound-sequence':'👂',
-  rhythm:'🎵','guided-movement':'🏃'
+  rhythm:'🎵','guided-movement':'🏃','baby-discover':'🌱','baby-colors':'🌈','vocabulary':'🗣️','story-interactive':'📖','music-rhythm':'🎵','sort-groups':'🧩'
 };
 
 const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
@@ -248,7 +248,7 @@ class App {
     if (gameId === 'classify-animals') return world.start('classify-animals');
     if (gameId === 'opposites') return world.start('opposites');
     if (gameId === 'rhythm') return world.start('rhythm');
-    if (gameId === 'guided-movement') return world.start('guided-movement');
+    if (gameId === 'guided-movement') return world.start('guided-movement');\n    if (gameId === 'baby-discover') return world.start('baby-discover');\n    if (gameId === 'baby-colors') return world.start('baby-colors');\n    if (gameId === 'vocabulary') return world.start('vocabulary');\n    if (gameId === 'story-interactive') return world.start('story-interactive');\n    if (gameId === 'music-rhythm') return world.start('music-rhythm');\n    if (gameId === 'sort-groups') return world.start('sort-groups');
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onBack).start();

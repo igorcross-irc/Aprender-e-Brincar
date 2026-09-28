@@ -37,6 +37,14 @@ O catálogo atual cobre:
 - histórias e sequência;
 - movimento, ritmo e criatividade.
 
+## Expansão implementada nesta etapa
+- Experiências específicas para 6–18 meses: descoberta e cores.
+- Vocabulário cotidiano reutilizável.
+- Histórias interativas curtas.
+- Música e ritmo.
+- Classificação adicional.
+- Plano de locuções ampliado para os novos mundos.
+
 ## Próxima profundidade
 A arquitetura está pronta para multiplicar conteúdo sem criar centenas de motores independentes. A próxima expansão deve aumentar a variedade dentro de cada mundo, incluindo:
 - vocabulário temático;

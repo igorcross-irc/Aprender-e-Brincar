@@ -3,19 +3,19 @@ export const learningWorlds = [
     id: 'discover', title: 'Descobrir', icon: '🌱', color: 'emerald',
     description: 'Experiências livres para observar, tocar, ouvir e descobrir.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['discovery-sounds','discovery-animals','discovery-colors','discover-objects','animals','body-parts']
+    activityIds: ['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts']
   },
   {
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',
     description: 'Palavras, comunicação, sílabas, rimas e histórias.',
     ages: ['2-3y','3-4y','4-5y'],
-    activityIds: ['phrases','communication','syllables','rhymes','sound-initial','story-sequence','opposites']
+    activityIds: ['phrases','communication','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites']
   },
   {
     id: 'colors-shapes', title: 'Cores & Formas', icon: '🎨', color: 'sky',
     description: 'Perceber, nomear, comparar e combinar formas e cores.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['discovery-colors','colors','find-color','shape-match','size-sort']
+    activityIds: ['discovery-colors','baby-colors','colors','find-color','shape-match','size-sort']
   },
   {
     id: 'animals-sounds', title: 'Animais & Sons', icon: '🐾', color: 'amber',
@@ -27,7 +27,7 @@ export const learningWorlds = [
     id: 'numbers-logic', title: 'Números & Lógica', icon: '🔢', color: 'indigo',
     description: 'Contagem, quantidades, padrões, classificação e raciocínio.',
     ages: ['2-3y','3-4y','4-5y'],
-    activityIds: ['count','number-match','balloons','odd-one-out','match-pairs','classify-animals','sequence']
+    activityIds: ['count','number-match','balloons','odd-one-out','match-pairs','classify-animals','sort-groups','sequence']
   },
   {
     id: 'memory-attention', title: 'Memória & Atenção', icon: '🧠', color: 'rose',
@@ -39,7 +39,7 @@ export const learningWorlds = [
     id: 'create-move', title: 'Criar & Mexer', icon: '✨', color: 'orange',
     description: 'Desenho, movimento, ritmo e expressão pelo brincar.',
     ages: ['18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['canvas','puzzle','movement','rhythm','guided-movement']
+    activityIds: ['canvas','puzzle','movement','rhythm','music-rhythm','guided-movement']
   }
 ];
 
