@@ -193,7 +193,11 @@ class App {
     const onBack = () => this.renderAgeHub(ageId);
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
 
-    if (gameId === 'discovery-sounds') {\n      this.audio.preload(vocabularyData.animals.map((x) => x.audio));\n      return world.start('attention', { items: vocabularyData.animals });\n    }\n    if (gameId === 'discovery-animals' || gameId === 'animals') {
+    if (gameId === 'discovery-sounds') {
+      this.audio.preload(vocabularyData.animals.map((x) => x.audio));
+      return world.start('attention', { items: vocabularyData.animals });
+    }
+    if (gameId === 'discovery-animals' || gameId === 'animals') {
       this.audio.preload(vocabularyData.animals.map((x) => x.audio));
       return world.start('discover-animals', { items: vocabularyData.animals });
     }
