@@ -242,6 +242,13 @@ class App {
     if (gameId === 'number-match') return world.start('number-match');
     if (gameId === 'sequence') return world.start('sequence');
     if (gameId === 'syllables') return world.start('syllables');
+    if (gameId === 'discover-objects') return world.start('discover-objects');
+    if (gameId === 'body-parts') return world.start('body-parts');
+    if (gameId === 'match-pairs') return world.start('match-pairs');
+    if (gameId === 'classify-animals') return world.start('classify-animals');
+    if (gameId === 'opposites') return world.start('opposites');
+    if (gameId === 'rhythm') return world.start('rhythm');
+    if (gameId === 'guided-movement') return world.start('guided-movement');
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onBack).start();
