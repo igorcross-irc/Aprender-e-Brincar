@@ -1,72 +1,93 @@
-/* Resets táticos para touch */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ab-focus: #4f46e5;
+  --ab-safe-top: env(safe-area-inset-top, 0px);
+  --ab-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  box-sizing: border-box;
 }
 
-/* Animação de tremor para erros pedagógicos */
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-8px); }
-  40%, 80% { transform: translateX(8px); }
+html, body { overscroll-behavior: none; }
+
+button, input { font: inherit; }
+
+button { -webkit-user-select: none; user-select: none; }
+
+button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--ab-focus);
+  outline-offset: 3px;
 }
 
-.animate-shake {
-  animation: shake 0.4s ease-in-out;
+.touch-target { min-width: 48px; min-height: 48px; }
+
+.safe-area-top { padding-top: max(0.75rem, var(--ab-safe-top)); }
+
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
 }
 
-/* Efeito de Botão 3D para os Game Cards */
+.modal-card {
+  width: 100%; max-width: 24rem;
+  background: white; border-radius: 1.5rem;
+  padding: 1.5rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,.25);
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+}
+
+.age-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) { .age-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
 .game-card {
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform .15s cubic-bezier(.4,0,.2,1), filter .15s ease;
   cursor: pointer;
-  border-bottom-width: 6px;
   position: relative;
   overflow: hidden;
 }
 
-.game-card:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
+.game-card:hover { transform: translateY(-2px); filter: brightness(1.03); }
+.game-card:active { transform: translateY(2px); filter: brightness(.97); }
+
+.animate-shake {
+  animation: shake .4s ease-in-out;
 }
 
-.game-card:active {
-  transform: translateY(4px);
-  border-bottom-width: 2px;
-  filter: brightness(0.95);
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-8px); }
+  40%,80% { transform: translateX(8px); }
 }
 
-/* Grid da Memória */
 .memory-grid {
-  display: grid;
-  gap: 1rem;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+  display: grid; gap: 1rem; width: 100%; max-width: 600px; margin: 0 auto;
 }
-
 .memory-grid.level-1 { grid-template-columns: repeat(2, 1fr); }
 .memory-grid.level-2 { grid-template-columns: repeat(3, 1fr); }
 .memory-grid.level-3 { grid-template-columns: repeat(4, 1fr); }
 
 .memory-card {
-  aspect-ratio: 1;
-  background-color: #ffffff;
-  border-radius: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 4px solid #e2e8f0;
+  aspect-ratio: 1; background: #fff; border-radius: 1.25rem;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.1); cursor: pointer;
+  transition: transform .4s cubic-bezier(.4,0,.2,1); border: 4px solid #e2e8f0;
 }
+.memory-card.flipped { transform: rotateY(180deg); background: #fef08a; border-color: #fde047; }
+.memory-card .card-front { transform: rotateY(180deg); }
 
-.memory-card.flipped {
-  transform: rotateY(180deg);
-  background-color: #fef08a;
-  border-color: #fde047;
-}
-
-.memory-card .card-front {
-  transform: rotateY(180deg);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
