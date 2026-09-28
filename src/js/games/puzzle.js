@@ -8,6 +8,7 @@ export class PuzzleGame {
   }
 
   start(itemsData, level = this.level) {
+    this.itemsData = itemsData;
     this.level = Math.max(1, Math.min(4, level));
     const count = Math.min(itemsData.length, this.level + 2);
     const puzzleItems = [...itemsData].sort(() => Math.random() - 0.5).slice(0, count);
