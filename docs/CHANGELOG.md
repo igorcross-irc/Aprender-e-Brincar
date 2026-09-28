@@ -18,3 +18,13 @@
 - Melhorada segurança de interpolação do nome da criança.
 - Adicionado baseline de acessibilidade e touch.
 - Adicionado smoke check e workflow de CI.
+
+
+## 2026-09-28 — Fase 7 — Universo Navegável
+- Criado o Mapa do Aprender & Brincar.
+- Adicionados 7 mundos temáticos.
+- Atividades passaram a ter mundo principal.
+- Criado fluxo idade → mundo → experiência.
+- Área da Família ganhou resumo de progresso e privacidade.
+- Melhorada a hierarquia visual dos cartões e navegação.
+- Mantidos os jogos, atividades, áudio e assets existentes.

@@ -1,37 +1,58 @@
-# Estado Atual — Fase 6 — Reengenharia do Universo
+# Estado Atual — Fase 7 — Universo Navegável
 
-## Base
-- Fases 0–5 incorporadas em main.
+## Base consolidada
+- Fases 0–6 incorporadas em `main`.
 - Vite + Tailwind compilado + PWA + Service Worker + CI.
 - 329 MP3s existentes preservados.
-- Catálogo central por faixa etária e domínio.
+- Catálogo central por faixa etária, domínio e habilidade.
+- Motor `LearningWorldGame` reutilizado para experiências progressivas.
 
-## Reengenharia realizada nesta etapa
-- Motor LearningWorldGame reescrito para usar um contrato único de pergunta/resposta.
-- Corrigida a lógica de acerto dos desafios de cores, animais, formas, classificação, tamanho e sílabas.
-- Corrigido o fluxo de montagem de frases para receber corretamente o StorageManager.
-- Adicionada descoberta sonora ao fluxo de experiências.
-- Catálogo ampliado com descoberta de objetos, corpo, associação, classificação, opostos, sequência sonora, ritmo e movimento guiado.
-- Criada fila central de futuras locuções em src/content/audio-plan.js.
-- Mantida a distinção entre atividade, jogo e experiência criativa.
+## Fase 7 implementada
+- Criado o **Mapa do Aprender & Brincar**, com navegação em três níveis: idade → mundo → experiência.
+- Criados 7 mundos reutilizáveis:
+  - 🌱 Descobrir
+  - 🗣️ Falar & Comunicar
+  - 🎨 Cores & Formas
+  - 🐾 Animais & Sons
+  - 🔢 Números & Lógica
+  - 🧠 Memória & Atenção
+  - ✨ Criar & Mexer
+- Cada experiência agora pertence a um mundo principal e continua filtrada pela faixa etária.
+- A tela de mundo mostra objetivo, quantidade de brincadeiras, dificuldade e se a experiência já foi explorada.
+- O fluxo infantil evita competição: estrelas são recompensa simples, não ranking.
+- A Área da Família passou a apresentar estrelas, experiências exploradas, total disponível, nome da criança, privacidade e reset protegido.
+- A navegação mantém retorno claro entre idade, mundo e experiência.
+- A experiência visual ganhou cartões, caminhos, etapas, estados de progresso e hierarquia infantil.
 
-## Universo de desenvolvimento
-As experiências agora podem trabalhar:
+## Conteúdo
+O catálogo atual cobre:
+- descoberta e causa/efeito;
+- cores e formas;
+- animais e sons;
+- atenção e memória;
+- números e quantidades;
+- classificação e lógica;
+- linguagem e comunicação;
+- sílabas, rimas e consciência fonológica inicial;
+- histórias e sequência;
+- movimento, ritmo e criatividade.
+
+## Próxima profundidade
+A arquitetura está pronta para multiplicar conteúdo sem criar centenas de motores independentes. A próxima expansão deve aumentar a variedade dentro de cada mundo, incluindo:
+- vocabulário temático;
+- histórias interativas;
+- música;
+- memória auditiva;
 - comunicação funcional;
-- linguagem receptiva e expressiva;
-- fala e consciência fonológica;
-- audição e atenção auditiva;
-- memória e cognição;
-- classificação, associação e lógica;
-- percepção visual;
-- motricidade fina e ampla;
-- criatividade;
-- ritmo e imitação;
-- pré-alfabetização;
-- matemática inicial.
+- padrões e lógica;
+- desafios motores;
+- experiências específicas para 6–24 meses;
+- personagens e identidade visual própria.
 
-## Locuções
-Nenhuma gravação nova é obrigatória para esta etapa. O aplicativo usa os áudios existentes e fallback pt-BR quando necessário. A lista futura será consolidada em lote, removendo duplicidades e tudo que já existir.
+## Áudio
+- Reutilizar primeiro os 329 MP3s existentes.
+- Fallback pt-BR permanece disponível.
+- Novas gravações serão consolidadas posteriormente em uma lista única, sem duplicidades.
 
 ## Limite clínico
 As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem clínica ou promessa de tratamento.

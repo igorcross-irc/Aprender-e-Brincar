@@ -91,3 +91,46 @@ button:focus-visible, input:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+.world-path, .activity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.world-card, .activity-card {
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.world-card:hover, .activity-card:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.02);
+  box-shadow: 0 16px 32px -18px rgba(15,23,42,.45);
+}
+.world-card:active, .activity-card:active { transform: translateY(1px); }
+.world-step {
+  display: grid; place-items: center; width: 2rem; height: 2rem;
+  border-radius: 999px; background: #eef2ff; color: #4f46e5; font-weight: 900;
+}
+.world-card-emerald { background: linear-gradient(135deg,#ecfdf5,#ffffff); }
+.world-card-violet { background: linear-gradient(135deg,#f5f3ff,#ffffff); }
+.world-card-sky { background: linear-gradient(135deg,#f0f9ff,#ffffff); }
+.world-card-amber { background: linear-gradient(135deg,#fffbeb,#ffffff); }
+.world-card-indigo { background: linear-gradient(135deg,#eef2ff,#ffffff); }
+.world-card-rose { background: linear-gradient(135deg,#fff1f2,#ffffff); }
+.world-card-orange { background: linear-gradient(135deg,#fff7ed,#ffffff); }
+.nav-pill {
+  background: rgba(255,255,255,.95);
+  color: #334155; padding: .7rem 1rem; border-radius: 999px;
+  font-weight: 800; box-shadow: 0 4px 12px rgba(15,23,42,.08);
+}
+.difficulty { letter-spacing: -0.12em; }
+@media (min-width: 900px) {
+  .world-path { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .activity-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+@media (max-width: 480px) {
+  .world-path, .activity-grid { gap: .75rem; }
+  .world-card, .activity-card { min-height: 155px; padding: 1rem; }
+}
