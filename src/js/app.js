@@ -193,7 +193,7 @@ class App {
     const onBack = () => this.renderAgeHub(ageId);
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
 
-    if (gameId === 'discovery-animals' || gameId === 'animals') {
+    if (gameId === 'discovery-sounds') {\n      this.audio.preload(vocabularyData.animals.map((x) => x.audio));\n      return world.start('attention', { items: vocabularyData.animals });\n    }\n    if (gameId === 'discovery-animals' || gameId === 'animals') {
       this.audio.preload(vocabularyData.animals.map((x) => x.audio));
       return world.start('discover-animals', { items: vocabularyData.animals });
     }
@@ -218,7 +218,7 @@ class App {
       return world.start('attention', { items: vocabularyData.animals });
     }
     if (gameId === 'phrases' || gameId === 'communication') {
-      return new CardsGame('game-container', this.audio, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
+      return new CardsGame('game-container', this.audio, this.storage, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases);
     }
     if (gameId === 'canvas') return new CanvasGame('game-container', this.audio, onBack).start();
     if (gameId === 'memory') return new MemoryGame('game-container', this.audio, onWin, onBack).start(vocabularyData.animals, ageId === '4-5y' ? 4 : ageId === '3-4y' ? 3 : 2);
