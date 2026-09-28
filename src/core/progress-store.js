@@ -1,6 +1,6 @@
 const KEY = 'aprender_brincar_progress_v1';
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
-const DEFAULT = { version: 1, stars: 0, activities: {}, updatedAt: null };
+const DEFAULT = { version: 2, stars: 0, activities: {}, worlds: {}, updatedAt: null };
 
 function read() {
   try {
@@ -10,7 +10,7 @@ function read() {
       return { ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 };
     }
     const parsed = JSON.parse(raw);
-    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {} };
+    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {} };
   } catch { return structuredClone(DEFAULT); }
 }
 
@@ -30,6 +30,9 @@ export class ProgressStore {
     current.completions += 1;
     if (Number.isFinite(extra.score)) current.bestScore = Math.max(current.bestScore, extra.score);
     current.lastPlayedAt = new Date().toISOString();
+    current.level = Math.min(5, Math.max(1, current.completions + 1));
+    current.explored = true;
+    current.lastScore = Number.isFinite(extra.score) ? extra.score : current.lastScore || 0;
     this.state.activities[activityId] = current;
     this.persist();
     return current;
