@@ -50,7 +50,13 @@ export class LearningWorldGame {
       'classify-animals': developmentContent.categories,
       opposites: developmentContent.opposites,
       rhythm: developmentContent.rhythms,
-      'guided-movement': developmentContent.movements
+      'guided-movement': developmentContent.movements,
+      'baby-discover': developmentContent.babyDiscoveries,
+      'baby-colors': developmentContent.colorsAdvanced,
+      vocabulary: developmentContent.vocabulary,
+      'story-interactive': developmentContent.stories,
+      'music-rhythm': developmentContent.musicPatterns,
+      'sort-groups': developmentContent.categories
     };
     this.items = sources[mode] || [];
     this.renderRound();
@@ -105,7 +111,13 @@ export class LearningWorldGame {
       'classify-animals': () => this.renderClassify(),
       opposites: () => this.renderOpposites(),
       rhythm: () => this.renderRhythm(),
-      'guided-movement': () => this.renderMovement()
+      'guided-movement': () => this.renderMovement(),
+      'baby-discover': () => this.renderDiscover('🌱 Descobertas do Bebê', 'Toque para descobrir. Não há respostas certas ou erradas.', true),
+      'baby-colors': () => this.renderDiscover('🌈 Cores para Descobrir', 'Toque em uma cor e observe.', false),
+      vocabulary: () => this.renderVocabulary(),
+      'story-interactive': () => this.renderStory(),
+      'music-rhythm': () => this.renderMusic(),
+      'sort-groups': () => this.renderSortGroups()
     };
     (renderers[this.mode] || renderers['discover-animals'])();
   }
@@ -290,6 +302,46 @@ export class LearningWorldGame {
     this.speak(target.label, target.audio);
   }
 
+
+
+  renderVocabulary() {
+    const target = this.items[Math.floor(Math.random() * this.items.length)];
+    const pool = this.shuffle(this.items).slice(0, 4);
+    if (!pool.some((x) => x.id === target.id)) pool[0] = target;
+    this.renderChoice('🗣️ Palavras do Dia a Dia', `Onde está ${target.label.toLowerCase()}?`, pool, target.id);
+  }
+
+  renderStory() {
+    const story = this.items[this.round % this.items.length];
+    const scene = story.scenes[this.round % story.scenes.length];
+    this.shell('📖 História Interativa', `
+      <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center">
+        <div class="text-8xl mb-4">${scene}</div>
+        <h3 class="text-2xl font-black text-indigo-700 mb-2">${this.escape(story.title)}</h3>
+        <p class="text-slate-600 mb-5">O que aconteceu nesta parte?</p>
+        <button id="story-next" class="bg-violet-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">Continuar ▶️</button>
+      </div>`, 'Vamos descobrir a história juntos.');
+    this.container.querySelector('#story-next').addEventListener('click', () => { this.score += 1; this.nextRound(); });
+  }
+
+  renderMusic() {
+    const pattern = this.items[this.round % this.items.length];
+    this.shell('🎵 Música e Ritmo', `
+      <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center">
+        <div class="text-7xl mb-4">${pattern.pattern.join(' ')}</div>
+        <h3 class="text-2xl font-black text-indigo-700">${this.escape(pattern.label)}</h3>
+        <p class="text-slate-600 my-4">Faça o ritmo junto comigo.</p>
+        <button id="music-done" class="bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">👏 Fiz o ritmo!</button>
+      </div>`, 'Observe, imite e brinque com o ritmo.');
+    this.container.querySelector('#music-done').addEventListener('click', () => { this.score += 1; this.speak('Muito bem!'); setTimeout(() => this.nextRound(), 400); });
+  }
+
+  renderSortGroups() {
+    const target = this.items[Math.floor(Math.random() * this.items.length)];
+    const same = this.items.filter((x) => x.group === target.group && x.id !== target.id)[0] || target;
+    const others = this.shuffle(this.items.filter((x) => x.group !== target.group)).slice(0, 3);
+    this.renderChoice('🧩 Quem Combina?', `Quem combina com ${target.label}?`, this.shuffle([same, ...others]), same.id);
+  }
 
   renderDiscoverObjects() {
     const pool = this.shuffle(this.items).slice(0, 4);
