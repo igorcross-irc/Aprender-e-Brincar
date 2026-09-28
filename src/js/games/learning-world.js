@@ -407,7 +407,7 @@ export class LearningWorldGame {
     if (this.completed) return;
     this.completed = true;
     this.speak('Muito bem! Você terminou a brincadeira!');
-    this.onComplete?.();
+    this.onComplete?.({ score: this.score, rounds: 5 });
     this.container.innerHTML = `
       <div class="w-full max-w-md bg-white rounded-[2rem] p-8 shadow-2xl text-center my-auto">
         <div class="text-7xl mb-4">🌟</div>
