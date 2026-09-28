@@ -1,3 +1,4 @@
+import { inject } from '@vercel/analytics';
 import { ResilientAudioEngine } from './engine/audio-engine.js';
 import { StorageManager } from './storage.js';
 import { AppCore } from '../core/app-core.js';
@@ -12,6 +13,9 @@ import { BalloonPopGame } from './games/balloon-pop.js';
 import { LearningWorldGame } from './games/learning-world.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
+
+// Initialize Vercel Web Analytics
+inject();
 
 const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨',
