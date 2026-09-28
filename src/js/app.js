@@ -213,7 +213,7 @@ class App {
             const progress = this.core.progress.getActivity(activity.id);
             return `
               <button data-game="${activity.id}" class="activity-card bg-white rounded-[1.75rem] p-5 text-left shadow-lg border-2 border-slate-100 min-h-[170px] focus-visible:ring-4 focus-visible:ring-indigo-300">
-                <div class="flex justify-between items-start"><span class="text-4xl">${GAME_ICONS[activity.id] || '✨'}</span>${progress ? '<span class="text-xs font-black text-emerald-600">✓ explorado</span>' : ''}</div>
+                <div class="flex justify-between items-start"><span class="text-4xl">${GAME_ICONS[activity.id] || '✨'}</span>${progress ? `<span class="text-xs font-black text-emerald-600">✓ nível ${progress.level || 1}</span>` : ''}</div>
                 <h3 class="text-lg font-black text-indigo-800 mt-3">${this.escape(activity.title)}</h3>
                 <p class="text-xs text-slate-500 mt-1">${activity.skills?.slice(0,2).map((x)=>this.escape(x)).join(' • ') || ''}</p>
                 <div class="mt-3 flex gap-2"><span class="difficulty">${'⭐'.repeat(Math.min(activity.difficulty || 1,3))}</span><span class="text-[10px] text-slate-400">${activity.type === 'activity' ? 'livre' : activity.type === 'creative' ? 'criativa' : 'jogo'}</span></div>
@@ -226,7 +226,7 @@ class App {
   }
 
   launchGame(gameId, ageId) {
-    const onWin = () => this.complete(gameId);
+    const onWin = (result = {}) => this.complete(gameId, { score: result.score ?? 0 });
     const onBack = () => this.renderWorld(this.currentWorld);
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
     if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
