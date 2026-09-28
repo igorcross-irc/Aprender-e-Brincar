@@ -1,50 +1,55 @@
 # Roadmap — Aprender & Brincar
 
 ## Fase 0 — Auditoria
-Status: CONCLUÍDA nesta execução.
-- mapear arquitetura, assets, jogos e pontos de risco;
-- registrar o que é reutilizável;
-- identificar lacunas de PWA, segurança, progressão e escalabilidade.
+Concluída.
 
-## Fase 1 — Fundação
-Status: IMPLEMENTADA nesta execução.
-- núcleo comum;
-- catálogo de atividades;
-- armazenamento de progresso;
-- design/touch baseline;
-- Tailwind compilado;
-- CI de build.
+## Fases 1–5 — Fundação
+Concluídas e incorporadas em main.
 
-## Fase 2 — Conteúdo
-Status: FUNDAÇÃO IMPLEMENTADA.
-- catálogo por idade;
-- metadados de habilidades/dificuldade;
-- mapeamento de jogos existentes;
-- estrutura pronta para expansão sem reescrever o app.
+## Fase 6 — Reengenharia e Universo de Desenvolvimento
+Em execução:
+1. Motor universal de experiências.
+2. Catálogo por idade e domínio.
+3. Reescrita progressiva dos jogos atuais.
+4. Expansão de fala, linguagem e audição.
+5. Cognição, atenção, memória e funções executivas iniciais.
+6. Motricidade e criatividade.
+7. Fila central de novas locuções.
+8. Documentação mestre.
 
-## Fase 3 — Progresso local
-Status: IMPLEMENTADA.
-- estrelas preservadas;
-- progresso por atividade;
-- contadores de conclusão;
-- preferências locais;
-- schema versionado.
+## Fase 7 — Profundidade de Conteúdo
+- dezenas de experiências por faixa;
+- variações por dificuldade;
+- histórias;
+- rimas;
+- consciência fonológica;
+- vocabulário;
+- sequência narrativa;
+- atividades físicas guiadas;
+- música e ritmo;
+- classificação e lógica.
 
-## Fase 4 — PWA/offline
-Status: IMPLEMENTADA.
-- service worker;
-- app shell cache;
-- cache runtime de assets e áudio;
-- atualização por versão;
-- registro automático.
+## Fase 8 — Experiência Infantil
+- identidade visual própria;
+- personagens;
+- animações;
+- feedback visual;
+- recompensas não competitivas;
+- navegação simples.
 
-## Fase 5 — Área dos pais
-Status: BASE IMPLEMENTADA.
-- barreira infantil mantida;
-- nome sanitizado;
-- configurações locais;
-- reset de progresso;
-- base para controles futuros.
+## Fase 9 — Área dos Pais
+- histórico de brincadeiras;
+- habilidades trabalhadas;
+- preferências;
+- áudio;
+- privacidade;
+- explicação do objetivo de cada experiência.
 
-## Próxima evolução
-Migrar cada jogo para o Activity Registry, adicionar níveis por faixa etária, completar catálogo de 6 meses a 5 anos, criar testes E2E e somente então considerar sincronização/Android.
+## Fase 10 — Plataforma
+- PWA offline aprofundada;
+- instalação;
+- Android;
+- sincronização opcional e segura, se necessária.
+
+### Regra
+Não criar centenas de jogos isolados. Criar motores reutilizáveis e combiná-los com conteúdos diferentes.
