@@ -34,3 +34,10 @@
 - Ampliados datasets reutilizáveis de objetos, corpo, categorias, opostos, ritmos e movimentos.
 - Conectadas novas experiências ao motor universal em vez de deixá-las como telas demonstrativas.
 - Melhorada a garantia de opções válidas em associação e classificação.
+
+## 2026-09-28 — Expansão do Universo
+- Adicionadas experiências específicas para bebês.
+- Ampliados vocabulário cotidiano, histórias interativas e música/ritmo.
+- Expandido o catálogo de atividades e conectados os novos conteúdos aos mundos.
+- Ampliado o plano central de futuras locuções.
+- Mantidos os motores existentes e a arquitetura reutilizável.
