@@ -84,7 +84,7 @@ export class LearningWorldGame {
         </div>
       </div>`);
     this.container.querySelectorAll('.learning-option').forEach((button) => button.addEventListener('click', () => {
-      const correct = button.dataset.answer === item.id;
+      const correct = button.dataset.answer === String(item.parts.length);
       if (correct) {
         this.score++;
         this.round++;
@@ -214,13 +214,15 @@ export class LearningWorldGame {
     const item = this.shuffle(this.items)[0];
     this.current = item;
     this.prompt = `Vamos separar ${item.label} em partes.`;
-    const options = this.shuffle(this.items).slice(0, 3);
+    const counts = [...new Set(this.items.map((x) => x.parts.length))];
+    while (counts.length < 3) counts.push(counts.length + 1);
+    const options = this.shuffle(counts.slice(0, 3)).map((count) => ({ id: String(count), label: String(count) }));
     this.shell('🗣️ Sílabas e Palavras', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <div class="text-7xl mb-3">${item.icon}</div>
         <p class="text-2xl font-black text-indigo-700 mb-2">${item.label}</p>
         <p class="text-slate-600 mb-5">Quantas partes ouvimos?</p>
-        <div class="grid grid-cols-3 gap-3">${options.map((x) => `<button data-answer="${x.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${x.parts.length} sílabas</button>`).join('')}</div>
+        <div class="grid grid-cols-3 gap-3">${options.map((x) => `<button data-answer="${x.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${x.label} ${Number(x.label) === 1 ? 'sílaba' : 'sílabas'}</button>`).join('')}</div>
         <button id="speak-word" class="mt-4 bg-emerald-500 text-white font-black px-6 py-3 rounded-2xl touch-target">🔊 Ouvir palavra</button>
       </div>`);
     this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label));
