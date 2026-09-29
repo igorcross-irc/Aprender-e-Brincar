@@ -10,6 +10,13 @@ const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
 const audio = read('src/js/engine/audio-engine.js');
+
+// Detecta corrupção comum de geração de código: \\n literal fora de strings/template literals.
+const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js'];
+for (const file of sourceFiles) {
+  const content = read(file);
+  if (/\\);\\n\\s*(?:this\\.|const\\s|let\\s|return\\s|if\\s*\\()/.test(content)) fail(`escape literal suspeito em ${file}`);
+}
 const vocabularySource = read('src/data/vocabulary.js');
 const animals = [...vocabularySource.matchAll(/\{ id: \"([^\"]+)\", label: \"[^\"]+\", icon: \"[^\"]+\", sound: \"[^\"]+\", audio: \"([^\"]+)\" \}/g)].map((m) => ({ id: m[1], audio: m[2] }));
 
