@@ -26,6 +26,7 @@ export class MemoryGame {
     this.matchedPairs = 0;
     this.flippedCards = [];
     this.moves = 0;
+    this.finished = false;
     const pairCount = Math.min(6, this.level + 1);
     const selected = this.shuffle([...items]).slice(0, pairCount);
     const deck = this.shuffle([...selected, ...selected]);
@@ -57,7 +58,7 @@ export class MemoryGame {
   }
 
   flipCard(card, item, totalPairs) {
-    if (!item || this.flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    if (!item || this.flippedCards.length === 2 || card.classList.contains('flipped') || card.classList.contains('matched') || this.finished) return;
     card.classList.add('flipped');
     card.querySelector('.card-back').classList.add('hidden');
     card.querySelector('.card-front').classList.remove('hidden');
@@ -78,7 +79,9 @@ export class MemoryGame {
         if (pairsEl) pairsEl.textContent = this.matchedPairs;
         if (this.matchedPairs === totalPairs) setTimeout(() => this.finish(), 700);
       } else {
+        this.audio.play(null, 'Vamos comparar as duas cartas e tentar de novo!');
         setTimeout(() => {
+          if (this.finished) return;
           [first.card, second.card].forEach((c) => {
             c.classList.remove('flipped');
             c.querySelector('.card-back').classList.remove('hidden');
