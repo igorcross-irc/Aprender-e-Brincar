@@ -17,6 +17,21 @@ export function getContentReadiness(activityId) {
   };
 }
 
+export function getCatalogIntegrity() {
+  const errors = [];
+  const ids = new Set();
+  for (const activity of activityCatalog) {
+    if (!activity?.id) { errors.push('atividade sem id'); continue; }
+    if (ids.has(activity.id)) errors.push(`id duplicado: ${activity.id}`);
+    ids.add(activity.id);
+    if (!Array.isArray(activity.ages) || !activity.ages.length) errors.push(`sem faixa etária: ${activity.id}`);
+    if (!Array.isArray(activity.skills) || !activity.skills.length) errors.push(`sem habilidade: ${activity.id}`);
+    if (!activity.world) errors.push(`sem mundo: ${activity.id}`);
+    if (activity.audioNeeds && (!Array.isArray(activity.audioNeeds) || activity.audioNeeds.some((item) => !String(item || '').trim()))) errors.push(`plano de áudio inválido: ${activity.id}`);
+  }
+  return { valid: errors.length === 0, errors, total: activityCatalog.length };
+}
+
 export function getContentSummary() {
   const total = activityCatalog.length;
   const withAudioPlan = activityCatalog.filter((item) => Array.isArray(item.audioNeeds) && item.audioNeeds.length).length;
