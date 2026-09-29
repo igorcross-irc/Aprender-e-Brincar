@@ -3,12 +3,6 @@ import { activityCatalog } from '../content/activity-catalog.js';
 export class LearningEngine {
   constructor(progressStore){this.progress=progressStore; this.historyKey='learning_recent_v1'; this.skills=null;}
   setSkillProgress(skillProgress){this.skills=skillProgress; return this;}
-  getProfile(){
-    const s=this.progress.snapshot(), entries=Object.entries(s.activities||{});
-    const weak=entries.map(([id,p])=>({id,p,a:activityCatalog.find(x=>x.id===id)})).filter(x=>x.a)
-      .sort((a,b)=>Number(a.p.mastery||0)-Number(b.p.mastery||0));
-    return {snapshot:s,weak};
-  }
   getDifficulty(activity){
     const p=this.progress.getActivity(activity.id)||{}, mastery=Number(p.mastery||0), base=Number(activity.difficulty||1);
     let level=Math.max(1,Math.min(5,base+Math.floor(mastery/2)));
@@ -49,8 +43,9 @@ export class LearningEngine {
     const entries=Object.values(snapshot.activities||{});
     const evaluated=entries.filter(p=>Number(p.evaluationCount||0)>0);
     const exploration=entries.reduce((sum,p)=>sum+Number(p.explorationCount||0),0);
-    const accuracy=evaluated.length?Math.round(evaluated.reduce((sum,p)=>sum+Number(p.accuracy||0),0)/evaluated.length):null;
-    return {strengths,areas,exploration,evaluated: evaluated.length,accuracy,streak:Number(snapshot.sessions?.streak||0)};
+    const accuracy=evaluated.length?Math.round(evaluated.reduce((sum,p)=>sum+Number(p.recentAccuracy ?? p.accuracy ?? 0),0)/evaluated.length):null;
+    const improving=evaluated.filter(p=>Array.isArray(p.accuracyHistory)&&p.accuracyHistory.length>=2&&Number(p.accuracyHistory.at(-1))>Number(p.accuracyHistory.at(-2))).length;
+    return {strengths,areas,exploration,evaluated: evaluated.length,accuracy,improving,streak:Number(snapshot.sessions?.streak||0)};
   }
   getOutcome(activityId){
     const p=this.progress.getActivity(activityId)||{};
