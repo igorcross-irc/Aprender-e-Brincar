@@ -9,6 +9,7 @@ export class MemoryGame {
     this.flippedCards = [];
     this.matchedPairs = 0;
     this.moves = 0;
+    this.finished = false;
   }
 
   shuffle(array) {
@@ -90,8 +91,12 @@ export class MemoryGame {
   }
 
   finish() {
+    if (this.finished) return;
+    this.finished = true;
+    const rounds = Math.max(1, this.matchedPairs);
+    const score = Math.max(0, Math.min(rounds, Math.round((rounds / Math.max(rounds, this.moves)) * rounds)));
     this.audio.play(null, 'Parabéns! Você encontrou todos os pares!');
-    this.onComplete?.();
+    this.onComplete?.({ score, rounds });
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
