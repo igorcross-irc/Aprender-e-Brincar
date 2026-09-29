@@ -99,7 +99,7 @@ export class MemoryGame {
     const rounds = Math.max(1, this.matchedPairs);
     const score = Math.max(0, Math.min(rounds, Math.round((rounds / Math.max(rounds, this.moves)) * rounds)));
     this.audio.play(null, 'Parabéns! Você encontrou todos os pares!');
-    this.onComplete?.({ score, rounds });
+    this.onComplete?.({ score, rounds, correct: this.matchedPairs, attempts: this.moves, maxScore: rounds, completedRounds: this.matchedPairs, difficulty: this.level });
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
