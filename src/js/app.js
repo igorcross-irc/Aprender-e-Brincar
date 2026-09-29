@@ -357,10 +357,10 @@ class App {
     if (gameId === 'movement-copy') return world.start('guided-movement');
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
-    if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onBack).start();
-    if (gameId === 'memory') return new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,ageId==='4-5y'?4:ageId==='3-4y'?3:2);
-    if (gameId === 'puzzle') return new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals);
-    if (gameId === 'balloons') return new BalloonPopGame('game-container',this.audio,onWin,onBack).start();
+    if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level);
+    if (gameId === 'memory') return new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level);
+    if (gameId === 'puzzle') return new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level);
+    if (gameId === 'balloons') return new BalloonPopGame('game-container',this.audio,onWin,onBack).start(adaptive.level);
     return this.renderGuidedExperience(gameId,onWin,onBack);
   }
 
