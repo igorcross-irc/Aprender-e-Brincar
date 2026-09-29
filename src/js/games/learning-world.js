@@ -240,7 +240,8 @@ export class LearningWorldGame {
   }
 
   renderFindColor() {
-    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);\n    const pool = this.shuffle(this.items).slice(0, poolSize);
+    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
+    const pool = this.shuffle(this.items).slice(0, poolSize);
     const target = pool[Math.floor(Math.random() * pool.length)];
     this.renderChoice('🎨 Encontre a Cor', `Onde está a cor ${target.label}?`, pool, target.id, target.audio);
     pool.forEach((item) => {
