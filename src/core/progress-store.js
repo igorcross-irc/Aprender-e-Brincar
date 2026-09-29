@@ -5,7 +5,7 @@ const HISTORY_LIMIT = 30;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
 import { normalizeExperienceResult, getAccuracy } from './experience-result.js';
 import { sanitizeProgressState } from './experience-health.js';
-const DEFAULT = { version: 7, stars: 0, activities: {}, worlds: {}, rewards: {}, history: [], sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, lastSessionAt: null }, updatedAt: null };
+const DEFAULT = { version: 8, stars: 0, activities: {}, worlds: {}, rewards: {}, history: [], sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, totalDurationMs: 0, lastDurationMs: 0, lastSessionAt: null }, updatedAt: null };
 
 function parseStored(raw) { try { return raw ? JSON.parse(raw) : null; } catch { return null; } }
 
@@ -97,6 +97,8 @@ export class ProgressStore {
     this.state.sessions.activities += 1;
     this.state.sessions.explorations += result.mode === 'explore' ? 1 : 0;
     this.state.sessions.evaluations += result.mode === 'evaluate' ? 1 : 0;
+    this.state.sessions.totalDurationMs = Math.max(0, Number(this.state.sessions.totalDurationMs) || 0) + Math.max(0, Number(result.durationMs) || 0);
+    this.state.sessions.lastDurationMs = Math.max(0, Number(result.durationMs) || 0);
     this.state.sessions.lastSessionAt = current.lastPlayedAt;
     this.state.activities[activityId] = current;
     this.state.history = [{ activityId, mode: result.mode, accuracy, difficulty: result.difficulty, completedAt: current.lastPlayedAt }].concat(this.getHistory(HISTORY_LIMIT - 1));
@@ -111,6 +113,24 @@ export class ProgressStore {
     return this.persist(previous);
   }
   getActivity(activityId) { return this.state.activities[activityId] || null; }
+  getSessionSummary() {
+    const sessions = this.state.sessions || {};
+    return {
+      totalActivities: Math.max(0, Number(sessions.activities) || 0),
+      explorations: Math.max(0, Number(sessions.explorations) || 0),
+      evaluations: Math.max(0, Number(sessions.evaluations) || 0),
+      streak: Math.max(0, Number(sessions.streak) || 0),
+      totalDurationMs: Math.max(0, Number(sessions.totalDurationMs) || 0),
+      lastDurationMs: Math.max(0, Number(sessions.lastDurationMs) || 0),
+      lastSessionAt: sessions.lastSessionAt || null
+    };
+  }
+  getWorldProgress(worldId, activityIds = []) {
+    const ids = Array.isArray(activityIds) ? activityIds.filter(Boolean) : [];
+    const activities = ids.map((id) => this.state.activities[id]).filter(Boolean);
+    const explored = activities.filter((item) => item.explored).length;
+    return { worldId, total: ids.length, explored, percentage: ids.length ? Math.round((explored / ids.length) * 100) : 0 };
+  }
   award(rewardId) { if (!rewardId || this.state.rewards[rewardId]) return false; const previous = structuredClone(this.state); this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; return this.persist(previous); }
   grantReward(rewardId) { if (!rewardId || this.state.rewards[rewardId]) return false; const previous = structuredClone(this.state); this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; this.state.stars = this.getStars() + 1; return this.persist(previous); }
   hasReward(rewardId) { return Boolean(this.state.rewards[rewardId]); }
