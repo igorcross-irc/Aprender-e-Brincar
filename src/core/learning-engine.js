@@ -29,5 +29,13 @@ export class LearningEngine {
       return {activity,score,reason:!p?'Nova descoberta':mastery<3?'Vale praticar novamente':'Boa hora para variar'};
     }).sort((a,b)=>b.score-a.score).slice(0,limit);
   }
+  getOutcome(activityId){
+    const p=this.progress.getActivity(activityId)||{};
+    const accuracy=p.accuracy==null?null:Number(p.accuracy);
+    if (accuracy==null) return {type:'explore',label:'Exploração',message:'Vamos conhecer mais antes de aumentar o desafio.'};
+    if (accuracy>=85) return {type:'advance',label:'Avançando',message:'Já está dominando este desafio. Podemos experimentar algo um pouco mais difícil.'};
+    if (accuracy>=60) return {type:'practice',label:'Praticar',message:'Está no caminho. Repetir ou variar ajuda a consolidar.'};
+    return {type:'support',label:'Reforçar',message:'Vamos voltar a uma proposta mais simples e tentar novamente.'};
+  }
   labelDomain(d){return d;}
 }
