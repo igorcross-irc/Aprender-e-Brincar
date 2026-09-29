@@ -464,4 +464,7 @@ class App {
   }
 }
 
-document.addEventListener('DOMContentLoaded',()=>{window.app=new App();});
+document.addEventListener('DOMContentLoaded',()=>{
+  window.app=new App();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch((error)=>console.warn('[pwa] service worker indisponível',error));
+});
