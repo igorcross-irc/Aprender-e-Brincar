@@ -261,12 +261,17 @@ class App {
   }
 
   launchGame(gameId, ageId) {
+    this.core.session.ensure(ageId, this.currentWorld);
     this.core.learning.remember(gameId);
     let finished = false;
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      this.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
+      const sessionResult = this.core.session.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
+      if (sessionResult.completed) {
+        this.evaluateRewards(gameId);
+        this.updateScoreUI();
+      }
     };
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);\n    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };\n    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
