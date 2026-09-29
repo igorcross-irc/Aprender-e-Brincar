@@ -184,7 +184,7 @@ export class LearningWorldGame {
       button.classList.add('border-emerald-400', 'bg-emerald-50');
       if (withAudio && item.audio) {
         this.speak(item.label, item.audio);
-        if (item.sound) window.setTimeout(() => this.speak(item.sound), 900);
+        if (item.sound) window.setTimeout(() => this.speak(item.sound), 1200);
       } else {
         this.speak(item.sound ? `${item.label}. ${item.sound}` : item.label);
       }
