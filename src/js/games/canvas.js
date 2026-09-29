@@ -11,9 +11,15 @@ export class CanvasGame {
     this.history = [];
     this.interactions = 0;
     this.completed = false;
+    this._windowStopDraw = null;
   }
 
   start(level = 1) {
+    if (this._windowStopDraw) {
+      window.removeEventListener('pointerup', this._windowStopDraw);
+      window.removeEventListener('pointercancel', this._windowStopDraw);
+      this._windowStopDraw = null;
+    }
     this.level = Math.max(1, Math.min(3, Number(level) || 1));
     this.interactions = 0;
     this.completed = false;
@@ -41,7 +47,10 @@ export class CanvasGame {
         <div class="text-xs font-bold text-slate-500">Faça ${this.level === 1 ? 3 : this.level === 2 ? 4 : 5} movimentos para concluir ✨</div>
       </div>`;
 
-    document.getElementById('btn-back-canvas').addEventListener('click', () => this.onBack());
+    document.getElementById('btn-back-canvas').addEventListener('click', () => {
+      this.cleanupListeners();
+      this.onBack();
+    });
     const canvas = document.getElementById('magic-canvas');
     const ctx = canvas.getContext('2d');
     const rect = canvas.getBoundingClientRect();
@@ -112,8 +121,9 @@ export class CanvasGame {
 
     canvas.addEventListener('pointerdown', startDraw);
     canvas.addEventListener('pointermove', draw);
-    window.addEventListener('pointerup', stopDraw);
-    window.addEventListener('pointercancel', stopDraw);
+    this._windowStopDraw = stopDraw;
+    window.addEventListener('pointerup', this._windowStopDraw);
+    window.addEventListener('pointercancel', this._windowStopDraw);
 
     this.container.querySelectorAll('.tool-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -143,5 +153,12 @@ export class CanvasGame {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       saveState();
     });
+  }
+
+  cleanupListeners() {
+    if (!this._windowStopDraw) return;
+    window.removeEventListener('pointerup', this._windowStopDraw);
+    window.removeEventListener('pointercancel', this._windowStopDraw);
+    this._windowStopDraw = null;
   }
 }
