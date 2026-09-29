@@ -380,15 +380,17 @@ class App {
     const next = result.next || [];
     const current = activityCatalog.find((a) => a.id === result.activityId);
     const progress = result.progress || {};
+    const outcome = result.outcome || null;
     this.container.innerHTML = `
       <div class="w-full max-w-2xl my-auto flex flex-col gap-5">
         <div class="bg-white/95 rounded-[2rem] p-7 shadow-xl text-center">
           <div class="text-6xl mb-2">🌟</div>
           <h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2>
           <p class="text-slate-600 mt-2">${this.escape(current?.title || 'Brincadeira')} concluída.</p>
+          ${outcome ? '<div class="mt-4 rounded-2xl bg-violet-50 border border-violet-100 p-4 text-left"><strong class="text-violet-800">' + this.escape(outcome.label) + '</strong><p class="text-sm text-slate-600 mt-1">' + this.escape(outcome.message) + '</p></div>' : ''}
           <div class="grid grid-cols-3 gap-2 mt-5">
             <div class="bg-amber-50 rounded-2xl p-3"><div class="text-2xl">⭐</div><strong>+1</strong><small class="block text-slate-500">estrela</small></div>
-            <div class="bg-emerald-50 rounded-2xl p-3"><div class="text-2xl">🎯</div><strong>${progress.accuracy || 0}%</strong><small class="block text-slate-500">aproveitamento</small></div>
+            <div class="bg-emerald-50 rounded-2xl p-3"><div class="text-2xl">🎯</div><strong>${progress.accuracy == null ? 'Exploração' : progress.accuracy + '%'}</strong><small class="block text-slate-500">aproveitamento</small></div>
             <div class="bg-violet-50 rounded-2xl p-3"><div class="text-2xl">🔥</div><strong>${this.core.progress.snapshot().sessions?.streak || 0}</strong><small class="block text-slate-500">dias</small></div>
           </div>
         </div>
