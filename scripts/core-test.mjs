@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import { normalizeExperienceResult, getAccuracy } from '../src/core/experience-result.js';
 import { LearningEngine } from '../src/core/learning-engine.js';
 import { SkillProgress } from '../src/core/skill-progress.js';
+import { getAgeExperienceConfig } from '../src/core/age-experience-policy.js';
+import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experience-health.js';
+import { getContentReadiness, getContentSummary } from '../src/core/content-readiness.js';
+import { ProgressStore } from '../src/core/progress-store.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -20,6 +24,7 @@ assert.equal(getAccuracy(memory), 60);
 const overcounted = normalizeExperienceResult({ correct: 9, attempts: 4, maxScore: 9 });
 assert.equal(overcounted.correct, 4);
 assert.equal(getAccuracy(overcounted), 100);
+assert.equal(getAccuracy({ mode: 'evaluate', attempts: 3, correct: 5 }), 100);
 
 const exploration = normalizeExperienceResult({ mode: 'explore', score: 5, rounds: 5 });
 assert.equal(exploration.mode, 'explore');
@@ -43,6 +48,8 @@ const engine = new LearningEngine({
   state: progressStates[0]
 });
 assert.equal(engine.getDifficulty(activity).level, 2);
+assert.equal(getAgeExperienceConfig('6-12m', 5).level, 1);
+assert.equal(getAgeExperienceConfig('4-5y', 5).level, 5);
 engine.progress.state = progressStates[1];
 assert.ok(engine.getDifficulty(activity).level >= 3);
 engine.progress.state = progressStates[2];
@@ -63,4 +70,25 @@ assert.equal(skills['memória'].evaluations, 2);
 assert.equal(skills['memória'].attempts, 20);
 assert.equal(skillProgress.weakest(1)[0][0], 'memória');
 
-console.log('CORE PASS — contrato, adaptação e agregação por habilidade');
+const defaults = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0 } };
+const repaired = sanitizeProgressState({ stars: -4, activities: { bad: null, ok: { attempts: 4, correct: 9, mastery: 9 } }, sessions: { total: -2 } }, defaults);
+assert.equal(repaired.stars, 0);
+assert.equal(repaired.activities.bad, undefined);
+assert.equal(repaired.activities.ok.correct, 4);
+assert.equal(repaired.activities.ok.mastery, 5);
+assert.equal(isProgressStateUsable(repaired), true);
+
+const progress = new ProgressStore();
+progress.complete('explore-then-evaluate', { mode: 'explore', attempts: 0, correct: 5, rounds: 5 });
+assert.equal(progress.getActivity('explore-then-evaluate').attempts, 0);
+progress.complete('explore-then-evaluate', { mode: 'evaluate', attempts: 10, correct: 7, rounds: 10 });
+assert.equal(progress.getActivity('explore-then-evaluate').correct, 7);
+assert.equal(progress.getActivity('explore-then-evaluate').recentAccuracy, 70);
+assert.equal(progress.getActivity('explore-then-evaluate').mastery, 3.5);
+assert.equal(progress.grantReward('activity:test'), true);
+assert.equal(progress.grantReward('activity:test'), false);
+assert.equal(progress.getStars(), 1);
+assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
+assert.equal(getContentReadiness('canvas').ready, true);
+assert.ok(getContentSummary().total >= 1);
+console.log('CORE PASS — contrato, adaptação, idade, conteúdo e resiliência');

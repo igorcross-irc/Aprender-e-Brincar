@@ -18,9 +18,8 @@ export class AppCore {
 
   rewardActivity(activityId) {
     const rewardId = `activity:${activityId}`;
-    if (!this.progress.award(rewardId)) return false;
-    this.progress.addStar();
-    this.storage?.syncStars?.(this.progress.getStars());
+    if (!this.progress.grantReward(rewardId)) return false;
+    try { this.storage?.syncStars?.(this.progress.getStars()); } catch (error) { console.warn('[stars] sincronização externa falhou; progresso local preservado', error); }
     return true;
   }
 

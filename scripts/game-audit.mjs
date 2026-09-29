@@ -6,10 +6,14 @@ const read = (file) => readFileSync(resolve(root, file), 'utf8');
 const fail = (message) => { console.error(`GAME AUDIT FAIL — ${message}`); process.exit(1); };
 
 const app = read('src/js/app.js');
+const experienceController = read('src/js/controllers/experience-controller.js');
+const appScreens = read('src/js/ui/app-screens.js');
 const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
 const audio = read('src/js/engine/audio-engine.js');
+const health = read('src/core/experience-health.js');
+const readiness = read('src/core/content-readiness.js');
 
 // Detecta corrupção comum de geração de código: \\n literal fora de strings/template literals.
 const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js', 'src/js/game-registry.js', 'src/js/games/independent/odd-one-out.js', 'src/js/games/independent/number-order.js', 'src/js/games/independent/color-hunt.js', 'src/js/games/independent/rhythm-copy.js', 'src/js/games/independent/sound-sequence.js'];
@@ -29,7 +33,10 @@ for (const animal of animals) {
 
 const activityIds = [...world.matchAll(/activityIds:\s*\[([\s\S]*?)\]/g)]
   .flatMap((m) => [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
-const catalogIds = new Set([...catalog.matchAll(/\{ id: '([^']+)'/g)].map((m) => m[1]));
+const catalogMatches = [...catalog.matchAll(/\{ id: '([^']+)'/g)].map((m) => m[1]);
+const duplicateCatalogIds = catalogMatches.filter((id, index) => catalogMatches.indexOf(id) !== index);
+if (duplicateCatalogIds.length) fail(`IDs duplicados no catálogo: ${[...new Set(duplicateCatalogIds)].join(', ')}`);
+const catalogIds = new Set(catalogMatches);
 const registry = read('src/js/game-registry.js');
 for (const id of activityIds) {
   if (!catalogIds.has(id)) fail(`atividade do mundo sem catálogo: ${id}`);
@@ -40,6 +47,8 @@ for (const id of catalogIds) {
 }
 if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
 if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
+const guidedIds = [...registry.matchAll(/addGuided\(\[([^\]]+)\]\)/g)].flatMap((m) => [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
+if (!guidedIds.length || !app.includes('renderGuidedExperience')) fail('atividades guiadas sem renderer de experiência');
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
   if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score')) fail(`jogo independente sem contrato de resultado: ${file}`);
 }
@@ -50,15 +59,20 @@ if (!discoverBlock) fail('renderDiscover não encontrado');
 if (/this\.nextRound\(\)/.test(discoverBlock[0])) fail('descoberta ainda avança automaticamente');
 if (!audio.includes('inferAudioName')) fail('motor de áudio sem descoberta automática de MP3');
 if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelamento seguro da fala');
+if (!audio.includes('diagnostics()')) fail('diagnóstico do motor de áudio ausente');
+if (!health.includes('sanitizeProgressState')) fail('reparo de persistência ausente');
+if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
+if (!experienceController.includes('getContentReadiness') || !experienceController.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
-if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
-if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
-if (!app.includes('onWin({score:touched,rounds:cards.length})')) fail('experiências guiadas sem pontuação real');
-if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
-if (!app.includes('renderSessionResult') || !app.includes('data-next')) fail('tela de resultado da sessão ausente');
+if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
+if (!appScreens.includes('learning.recommend') || !experienceController.includes('getDifficulty')) fail('integração adaptativa incompleta');
+if (!appScreens.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
+if (!experienceController.includes('core.session.ensure') || !experienceController.includes('core.session.complete')) fail('controlador central de sessão não integrado');
+if (!appScreens.includes('renderSessionResult') || !appScreens.includes('data-next')) fail('tela de resultado da sessão ausente');
+if (!appScreens.includes('journeyStage') || !appScreens.includes('journey-node')) fail('jornada dinâmica ausente');
 if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
@@ -85,9 +99,10 @@ console.log('Game audit OK');
 
 const core = await read('src/core/app-core.js');
 if (!core.includes('rewardActivity(activityId)')) fail('recompensa central nao encontrada');
-if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempotencia');
+if (!core.includes('this.progress.grantReward(rewardId)')) fail('recompensa sem transação local');
 
 const engine = await read('src/core/learning-engine.js');
 if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
 if (!engine.includes("recentAccuracy != null && recentAccuracy >= 85")) fail('regra de avanço ausente');
+if (!engine.includes('level = clamp(level, base - 1, base + 1)')) fail('dificuldade pode variar mais de uma faixa por chamada');
 if (!engine.includes("accuracy >= 60")) fail('regra de prática ausente');

@@ -25,7 +25,7 @@ export function normalizeExperienceResult(result = {}) {
 export function getAccuracy(result) {
   const normalized = normalizeExperienceResult(result);
   if (normalized.mode === 'explore' || normalized.attempts <= 0) return null;
-  return Math.round((normalized.correct / normalized.attempts) * 100);
+  return Math.max(0, Math.min(100, Math.round((normalized.correct / normalized.attempts) * 100)));
 }
 
 export { MODES };
