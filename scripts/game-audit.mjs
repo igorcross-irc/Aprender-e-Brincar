@@ -35,7 +35,7 @@ for (const id of activityIds) {
   if (!app.includes(`gameId === '${id}'`)) fail(`atividade sem rota explícita em app.js: ${id}`);
 }
 
-const rendererIds = [...learning.matchAll(/'([^']+)': \(\) => this\./g)].map((m) => m[1]);
+const rendererIds = [...learning.matchAll(/(?:['\"]([^'\"]+)['\"]|([A-Za-z0-9-]+))\s*:\s*\(\)\s*=>\s*this\./g)].map((m) => m[1] || m[2]);
 const supportedModes = new Set(rendererIds);
 for (const mode of ['discover-animals','discover-colors','find-color','find-animal','sound-guess','shape-match','odd-one-out','size-sort','count','number-match','syllables','sequence','attention','discover-objects','body-parts','match-pairs','classify-animals','opposites','rhythm','guided-movement','baby-discover','baby-colors','vocabulary','story-interactive','music-rhythm','sort-groups']) {
   if (!supportedModes.has(mode)) fail(`modo sem renderer: ${mode}`);
