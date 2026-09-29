@@ -29,7 +29,6 @@ export const developmentContent = {
     { id: 'ab', label: 'Cores alternadas', items: ['🔴','🔵','🔴','🔵'], answer: '🔴' },
     { id: 'abc', label: 'Formas', items: ['🔵','🔺','⭐','🔵','🔺'], answer: '⭐' },
     { id: 'size', label: 'Tamanhos', items: ['🐜','🐘','🐜','🐘'], answer: '🐜' }
-  ]
   ],
   objectsAdvanced: [
     { id:'copo', label:'Copo', icon:'🥛', group:'casa' },
@@ -71,8 +70,8 @@ export const developmentContent = {
     { id:'jump', label:'Pule', icon:'🦘' },
     { id:'spin', label:'Gire', icon:'🔄' },
     { id:'dance', label:'Dance', icon:'💃' }
-  ]
-  ,babyDiscoveries: [
+  ],
+  babyDiscoveries: [
     { id:'light', label:'Luz', icon:'☀️', sound:'Luz!' },
     { id:'ball', label:'Bola', icon:'⚽', sound:'Bola!' },
     { id:'flower', label:'Flor', icon:'🌸', sound:'Flor!' },
