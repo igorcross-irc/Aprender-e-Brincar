@@ -89,3 +89,7 @@ for (const route of [
 ]) if (!app.includes(route)) fail(`rota sem dificuldade adaptativa: ${route}`);
 
 console.log('Game audit OK');
+
+const core = await read('src/core/app-core.js');
+if (!core.includes('rewardActivity(activityId)')) fail('recompensa central nao encontrada');
+if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempotencia');
