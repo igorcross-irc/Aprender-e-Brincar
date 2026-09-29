@@ -67,3 +67,5 @@ class App {
     document.getElementById('btn-settings')?.addEventListener('click', () => this.openParentalGate());
   }
 }
+
+new App();
