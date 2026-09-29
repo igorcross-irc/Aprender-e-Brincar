@@ -15,11 +15,11 @@ const required = [
   'src/content/activity-catalog.js',
   'src/content/world-catalog.js',
   'src/js/games/learning-world.js',
-  'src/js/games/cards-game.js',
-  'src/js/games/memory-game.js',
-  'src/js/games/puzzle-game.js',
-  'src/js/games/balloon-pop-game.js',
-  'src/js/games/canvas-game.js'
+  'src/js/games/cards.js',
+  'src/js/games/memory.js',
+  'src/js/games/puzzle.js',
+  'src/js/games/balloon-pop.js',
+  'src/js/games/canvas.js'
 ];
 
 const missing = required.filter((file) => !existsSync(file));
