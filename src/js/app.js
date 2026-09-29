@@ -431,7 +431,7 @@ class App {
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{
       if(button.dataset.done==='1') return;
       button.dataset.done='1'; touched++; button.classList.add('border-emerald-400','bg-emerald-50'); this.audio.play(null,button.textContent.trim());
-      if(touched>=cards.length){onWin();}
+      if(touched>=cards.length){onWin({score:touched,rounds:cards.length});}
     }));
   }
 }
