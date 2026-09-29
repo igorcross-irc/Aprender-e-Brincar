@@ -271,6 +271,7 @@ class App {
       if (sessionResult.completed) {
         this.evaluateRewards(gameId);
         this.updateScoreUI();
+        this.renderSessionResult(sessionResult);
       }
     };
     const onBack = () => this.renderWorld(this.currentWorld);
@@ -326,6 +327,44 @@ class App {
     return this.renderGuidedExperience(gameId,onWin,onBack);
   }
 
+  renderSessionResult(result) {
+    const next = result.next || [];
+    const current = activityCatalog.find((a) => a.id === result.activityId);
+    const progress = result.progress || {};
+    this.container.innerHTML = `
+      <div class="w-full max-w-2xl my-auto flex flex-col gap-5">
+        <div class="bg-white/95 rounded-[2rem] p-7 shadow-xl text-center">
+          <div class="text-6xl mb-2">🌟</div>
+          <h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2>
+          <p class="text-slate-600 mt-2">${this.escape(current?.title || 'Brincadeira')} concluída.</p>
+          <div class="grid grid-cols-3 gap-2 mt-5">
+            <div class="bg-amber-50 rounded-2xl p-3"><div class="text-2xl">⭐</div><strong>+1</strong><small class="block text-slate-500">estrela</small></div>
+            <div class="bg-emerald-50 rounded-2xl p-3"><div class="text-2xl">🎯</div><strong>${progress.accuracy || 0}%</strong><small class="block text-slate-500">aproveitamento</small></div>
+            <div class="bg-violet-50 rounded-2xl p-3"><div class="text-2xl">🔥</div><strong>${this.core.progress.snapshot().sessions?.streak || 0}</strong><small class="block text-slate-500">dias</small></div>
+          </div>
+        </div>
+        <div class="bg-violet-50 rounded-[2rem] p-5 shadow-lg">
+          <h3 class="text-xl font-black text-violet-800">🎮 O que combina com você agora?</h3>
+          <p class="text-sm text-violet-600 mt-1">Sugestões ajustadas ao que você acabou de brincar.</p>
+          <div class="grid gap-3 mt-4">
+            ${next.map(({activity,reason}) => `
+              <button data-next="${activity.id}" class="bg-white rounded-2xl p-4 text-left shadow touch-target border-2 border-violet-100">
+                <span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span>
+                <strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong>
+                <small class="text-slate-500">${this.escape(reason)}</small>
+              </button>`).join('') || '<div class="text-sm text-slate-500">Você já explorou bastante este mundo. Que tal escolher outra brincadeira?</div>'}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <button id="session-world" class="nav-pill touch-target">🗺️ Voltar ao mundo</button>
+          <button id="session-continue" class="bg-indigo-600 text-white font-black rounded-xl py-3 touch-target">✨ Escolher outra</button>
+        </div>
+      </div>`;
+    this.container.querySelectorAll('[data-next]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.next, this.currentAge)));
+    this.container.querySelector('#session-world').addEventListener('click', () => this.renderWorld(this.currentWorld));
+    this.container.querySelector('#session-continue').addEventListener('click', () => this.renderWorld(this.currentWorld));
+  }
+
   renderGuidedExperience(gameId,onWin,onBack) {
     const guided={
       rhymes:['🎵','Rimas Divertidas','Encontre palavras que terminam de um jeito parecido.',['Gato','Rato','Bola','Mola']],
@@ -355,7 +394,7 @@ class App {
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{
       if(button.dataset.done==='1') return;
       button.dataset.done='1'; touched++; button.classList.add('border-emerald-400','bg-emerald-50'); this.audio.play(null,button.textContent.trim());
-      if(touched>=cards.length){onWin();setTimeout(onBack,700);}
+      if(touched>=cards.length){onWin();}
     }));
   }
 }
