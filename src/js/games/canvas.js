@@ -78,7 +78,7 @@ export class CanvasGame {
       if (this.interactions >= target && !this.completed) {
         this.completed = true;
         this.audio.play(null, 'Que desenho incrível!');
-        this.onComplete?.({ score: 5, rounds: 5 });
+        this.onComplete?.({ mode: 'explore', score: this.interactions, rounds: 1, correct: 0, attempts: 0, maxScore: target, completedRounds: 1, difficulty: this.level });
       }
     };
     const startDraw = (e) => {
