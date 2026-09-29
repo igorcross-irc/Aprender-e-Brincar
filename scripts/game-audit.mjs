@@ -46,6 +46,8 @@ if (!progress.includes('sessions') || !progress.includes('mastery') || !progress
 if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
 if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
+if (!app.includes('renderSessionResult') || !app.includes('data-next')) fail('tela de resultado da sessão ausente');
+if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
 if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
