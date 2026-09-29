@@ -18,6 +18,8 @@ jobs:
           node-version: 20
       - name: Install
         run: npm install
+      - name: Game audit
+        run: npm run audit:games
       - name: Smoke test
         run: npm run smoke
       - name: Build
