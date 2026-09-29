@@ -159,3 +159,26 @@ button:focus-visible, input:focus-visible {
 @media (prefers-reduced-motion:reduce){
   .page-enter,.hero-orbit{animation:none}
 }
+
+
+/* Experiencia de entrada: primeiro impacto infantil */
+.landing-stage{position:relative;isolation:isolate;overflow:hidden}
+.landing-splash{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:1.5rem;background:linear-gradient(180deg,#e0f2fe 0%,#f5f3ff 58%,#fefce8 100%);animation:splash-exit .65s 1.65s ease-in forwards;pointer-events:none}
+.landing-splash-inner{position:relative;text-align:center;transform:scale(.72);opacity:0;animation:splash-pop .8s .08s cubic-bezier(.16,1.25,.3,1) forwards}
+.landing-splash-logo{font-size:clamp(4.5rem,18vw,8rem);line-height:1;filter:drop-shadow(0 12px 18px rgba(79,70,229,.18));animation:logo-bounce 1.2s .35s ease-in-out both}
+.landing-splash-title{margin-top:1rem;font-size:clamp(1.8rem,7vw,3.2rem);font-weight:1000;letter-spacing:-.04em;color:#4338ca}
+.landing-splash-subtitle{margin-top:.35rem;font-weight:800;color:#475569}
+.landing-spark{position:absolute;font-size:clamp(1.5rem,5vw,2.5rem);animation:spark-pop .9s cubic-bezier(.16,1.25,.3,1) both}
+.landing-spark.s1{left:-4rem;top:-1rem;animation-delay:.3s}.landing-spark.s2{right:-4rem;top:1rem;animation-delay:.48s}.landing-spark.s3{left:-2.5rem;bottom:-1rem;animation-delay:.62s}.landing-spark.s4{right:-2.5rem;bottom:-1.5rem;animation-delay:.76s}
+.landing-rainbow{position:absolute;left:50%;bottom:-3.2rem;width:19rem;height:9rem;transform:translateX(-50%);border:1.1rem solid rgba(129,140,248,.22);border-bottom:0;border-radius:20rem 20rem 0 0;animation:rainbow-rise 1s .35s ease-out both}
+@keyframes splash-pop{to{transform:scale(1);opacity:1}}
+@keyframes logo-bounce{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-12px) rotate(-4deg)}70%{transform:translateY(2px) rotate(4deg)}}
+@keyframes spark-pop{0%{opacity:0;transform:scale(.2) rotate(-30deg)}70%{opacity:1;transform:scale(1.2) rotate(12deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes rainbow-rise{from{opacity:0;transform:translate(-50%,2rem) scale(.7)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes splash-exit{to{opacity:0;visibility:hidden}}
+.modal-overlay{overflow-y:auto;align-items:flex-start;-webkit-overflow-scrolling:touch}
+.modal-card{max-height:calc(100dvh - 2rem);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media (prefers-reduced-motion:reduce){
+  .landing-splash,.landing-splash-inner,.landing-splash-logo,.landing-spark,.landing-rainbow{animation:none!important}
+  .landing-splash{opacity:0;visibility:hidden}
+}
