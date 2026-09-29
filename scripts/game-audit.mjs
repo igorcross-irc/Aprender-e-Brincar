@@ -66,6 +66,8 @@ if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade 
 if (!learning.includes("level === 2 ? 5 : 7")) fail('dificuldade adaptativa não altera conjunto de desafios');
 if (!registry.includes("'baby-discover'")) fail('baby-discover sem registro central');
 if (!read('src/js/games/canvas.js').includes('this.level === 1 ? 3 : this.level === 2 ? 4 : 5')) fail('lousa sem adaptação real por nível');
+const rendererIds = [...learning.matchAll(/(?:['\"]([^'\"]+)['\"]|([A-Za-z0-9-]+))\s*:\s*\(\)\s*=>\s*this\./g)].map((m) => m[1] || m[2]);
+const supportedModes = new Set(rendererIds);
 console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
 
 const memory = read('src/js/games/memory.js');
