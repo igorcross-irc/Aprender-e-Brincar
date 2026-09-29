@@ -1,9 +1,12 @@
 const KEY = 'aprender_brincar_progress_v1';
+const BACKUP_KEY = KEY + '_backup';
 const DAY_MS = 86400000;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
 import { normalizeExperienceResult, getAccuracy } from './experience-result.js';
 import { sanitizeProgressState } from './experience-health.js';
 const DEFAULT = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, lastSessionAt: null }, updatedAt: null };
+
+function parseStored(raw) { try { return raw ? JSON.parse(raw) : null; } catch { return null; } }
 
 function read() {
   try {
@@ -12,19 +15,34 @@ function read() {
       const legacyStars = Number.parseInt(localStorage.getItem(LEGACY_SCORE_KEY) || '0', 10);
       return sanitizeProgressState({ ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 }, DEFAULT);
     }
-    return sanitizeProgressState(JSON.parse(raw), DEFAULT);
+    const parsed = parseStored(raw);
+    if (parsed) return sanitizeProgressState(parsed, DEFAULT);
+    const backup = parseStored(localStorage.getItem(BACKUP_KEY));
+    if (backup) {
+      const recovered = sanitizeProgressState(backup, DEFAULT);
+      try { localStorage.setItem(KEY, JSON.stringify(recovered)); } catch {}
+      return recovered;
+    }
+    return structuredClone(DEFAULT);
   } catch { return structuredClone(DEFAULT); }
 }
 
 export class ProgressStore {
   constructor() { this.state = read(); }
-  persist() {
+  persist(previous = null) {
     this.state.updatedAt = new Date().toISOString();
-    try { localStorage.setItem(KEY, JSON.stringify(this.state)); } catch {}
-    return this.state;
+    try {
+      const existing = localStorage.getItem(KEY);
+      if (existing) { try { localStorage.setItem(BACKUP_KEY, existing); } catch {} }
+      localStorage.setItem(KEY, JSON.stringify(this.state));
+      return true;
+    } catch {
+      if (previous) this.state = previous;
+      return false;
+    }
   }
   getStars() { return Number.isFinite(this.state.stars) && this.state.stars >= 0 ? this.state.stars : 0; }
-  addStar() { this.state.stars = this.getStars() + 1; this.persist(); return this.state.stars; }
+  addStar() { const previous = structuredClone(this.state); this.state.stars = this.getStars() + 1; this.persist(previous); return this.state.stars; }
   reset() { this.state = structuredClone(DEFAULT); this.persist(); return this.state; }
   complete(activityId, extra = {}) {
     if (!activityId) return null;
@@ -35,11 +53,11 @@ export class ProgressStore {
     if (result.mode === 'evaluate') {
       current.attempts += result.attempts;
       current.correct += Math.min(result.correct, result.attempts);
-      current.mastery = Math.min(5, Math.round(((current.correct / Math.max(1,current.attempts)) * 5) * 10) / 10);
       const history = Array.isArray(current.accuracyHistory) ? current.accuracyHistory.slice(-7) : [];
       if (accuracy != null) history.push(accuracy);
       current.accuracyHistory = history;
       current.recentAccuracy = history.length ? Math.round(history.reduce((sum, value) => sum + Number(value || 0), 0) / history.length) : null;
+      current.mastery = current.recentAccuracy == null ? 0 : Math.round((current.recentAccuracy / 20) * 10) / 10;
       current.lastEvaluationAt = new Date().toISOString();
     }
 
@@ -83,7 +101,8 @@ export class ProgressStore {
     return current;
   }
   getActivity(activityId) { return this.state.activities[activityId] || null; }
-  award(rewardId) { if (!rewardId) return false; if (this.state.rewards[rewardId]) return false; this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; this.persist(); return true; }
+  award(rewardId) { if (!rewardId || this.state.rewards[rewardId]) return false; const previous = structuredClone(this.state); this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; return this.persist(previous); }
+  grantReward(rewardId) { if (!rewardId || this.state.rewards[rewardId]) return false; const previous = structuredClone(this.state); this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; this.state.stars = this.getStars() + 1; return this.persist(previous); }
   hasReward(rewardId) { return Boolean(this.state.rewards[rewardId]); }
   snapshot() { return structuredClone(this.state); }
 }
