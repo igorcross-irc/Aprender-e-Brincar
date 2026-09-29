@@ -58,6 +58,7 @@ export class LearningSession {
       completed: true,
       activityId,
       progress,
+      outcome: this.learning.getOutcome(activityId),
       next: this.chooseNext(3),
       session: this.snapshot()
     };
