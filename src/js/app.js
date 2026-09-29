@@ -333,12 +333,12 @@ class App {
     if (gameId === 'opposites') return world.start('opposites',{difficulty: adaptive.level});
     if (gameId === 'rhythm') return world.start('rhythm',{difficulty: adaptive.level});
     if (gameId === 'guided-movement') return world.start('guided-movement',{difficulty: adaptive.level});
-    if (gameId === 'baby-discover') return world.start('baby-discover');
-    if (gameId === 'baby-colors') return world.start('baby-colors');
-    if (gameId === 'vocabulary') return world.start('vocabulary');
-    if (gameId === 'story-interactive') return world.start('story-interactive');
-    if (gameId === 'music-rhythm') return world.start('music-rhythm');
-    if (gameId === 'sort-groups') return world.start('sort-groups');
+    if (gameId === 'baby-discover') return world.start('baby-discover',{difficulty:adaptive.level});
+    if (gameId === 'baby-colors') return world.start('baby-colors',{difficulty:adaptive.level});
+    if (gameId === 'vocabulary') return world.start('vocabulary',{difficulty:adaptive.level});
+    if (gameId === 'story-interactive') return world.start('story-interactive',{difficulty:adaptive.level});
+    if (gameId === 'music-rhythm') return world.start('music-rhythm',{difficulty:adaptive.level});
+    if (gameId === 'sort-groups') return world.start('sort-groups',{difficulty:adaptive.level});
     if (gameId === 'object-hunt') return world.start('discover-objects');
     if (gameId === 'animal-families') return world.start('classify-animals');
     if (gameId === 'action-words') return world.start('vocabulary');
