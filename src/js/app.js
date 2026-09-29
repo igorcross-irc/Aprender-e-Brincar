@@ -191,7 +191,18 @@ class App {
     this.currentAge = null; this.currentWorld = null;
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
-      <div class="w-full max-w-5xl my-auto page-enter">
+      <div class="landing-stage w-full max-w-5xl my-auto page-enter">
+        <div class="landing-splash" aria-hidden="true">
+          <div class="landing-rainbow"></div>
+          <div class="landing-splash-inner">
+            <span class="landing-spark s1">✨</span><span class="landing-spark s2">🌟</span>
+            <span class="landing-spark s3">🦋</span><span class="landing-spark s4">🫧</span>
+            <div class="landing-splash-logo">🌈🧸</div>
+            <div class="landing-splash-title">Aprender & Brincar</div>
+            <div class="landing-splash-subtitle">Um mundo inteiro para descobrir! 🚀</div>
+          </div>
+        </div>
+        <div class="w-full">
         <div class="hero-panel text-center mb-6">
           <div class="hero-orbit" aria-hidden="true">✨</div>
           <div class="text-6xl mb-2">🌈🧸✨</div>
