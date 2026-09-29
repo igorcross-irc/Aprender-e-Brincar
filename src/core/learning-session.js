@@ -1,7 +1,8 @@
 export class LearningSession {
-  constructor(learning, progress) {
+  constructor(learning, progress, reward = null) {
     this.learning = learning;
     this.progress = progress;
+    this.reward = reward;
     this.active = null;
   }
 
@@ -41,6 +42,7 @@ export class LearningSession {
     const score = Number(result.score ?? 0);
     const rounds = Math.max(1, Number(result.rounds) || 5);
     const progress = this.progress.complete(activityId, { score, rounds });
+    if (this.reward) this.reward();
     this.active.completed.push(activityId);
     this.active.stars += 1;
 
