@@ -12,9 +12,7 @@ assert.equal(legacy.correct, 3);
 assert.equal(legacy.attempts, 5);
 assert.equal(getAccuracy(legacy), 60);
 
-const memory = normalizeExperienceResult({
-  score: 2, rounds: 3, correct: 3, attempts: 5, maxScore: 3, completedRounds: 3, difficulty: 4
-});
+const memory = normalizeExperienceResult({ score: 2, rounds: 3, correct: 3, attempts: 5, maxScore: 3, completedRounds: 3, difficulty: 4 });
 assert.equal(memory.correct, 3);
 assert.equal(memory.attempts, 5);
 assert.equal(memory.maxScore, 3);
@@ -56,13 +54,7 @@ engine.progress.state = progressStates[2];
 assert.ok(engine.getDifficulty(activity).level <= 2);
 
 const skillProgress = new SkillProgress({
-  snapshot() {
-    return {
-      activities: {
-        memory: { mastery: 4, completions: 4, attempts: 20, evaluationCount: 2 }
-      }
-    };
-  }
+  snapshot() { return { activities: { memory: { mastery: 4, completions: 4, attempts: 20, evaluationCount: 2 } }; }
 });
 const skills = skillProgress.get();
 assert.equal(skills['memória'].mastery, 4);
@@ -70,12 +62,13 @@ assert.equal(skills['memória'].evaluations, 2);
 assert.equal(skills['memória'].attempts, 20);
 assert.equal(skillProgress.weakest(1)[0][0], 'memória');
 
-const defaults = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0 } };
-const repaired = sanitizeProgressState({ stars: -4, activities: { bad: null, ok: { attempts: 4, correct: 9, mastery: 9 } }, sessions: { total: -2 } }, defaults);
+const defaults = { version: 7, stars: 0, activities: {}, worlds: {}, rewards: {}, history: [], sessions: { total: 0, streak: 0 } };
+const repaired = sanitizeProgressState({ stars: -4, history: [{ activityId: 'ok', accuracy: 120 }, null, {}], activities: { bad: null, ok: { attempts: 4, correct: 9, mastery: 9 } }, sessions: { total: -2 } }, defaults);
 assert.equal(repaired.stars, 0);
 assert.equal(repaired.activities.bad, undefined);
 assert.equal(repaired.activities.ok.correct, 4);
 assert.equal(repaired.activities.ok.mastery, 5);
+assert.equal(repaired.history[0].accuracy, 100);
 assert.equal(isProgressStateUsable(repaired), true);
 
 const progress = new ProgressStore();
@@ -85,10 +78,12 @@ progress.complete('explore-then-evaluate', { mode: 'evaluate', attempts: 10, cor
 assert.equal(progress.getActivity('explore-then-evaluate').correct, 7);
 assert.equal(progress.getActivity('explore-then-evaluate').recentAccuracy, 70);
 assert.equal(progress.getActivity('explore-then-evaluate').mastery, 3.5);
+assert.equal(progress.getHistory(2).length, 2);
+assert.equal(progress.getHistory(2)[0].activityId, 'explore-then-evaluate');
 assert.equal(progress.grantReward('activity:test'), true);
 assert.equal(progress.grantReward('activity:test'), false);
 assert.equal(progress.getStars(), 1);
 assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
 assert.equal(getContentReadiness('canvas').ready, true);
 assert.ok(getContentSummary().total >= 1);
-console.log('CORE PASS — contrato, adaptação, idade, conteúdo e resiliência');
+console.log('CORE PASS — contrato, adaptação, idade, conteúdo, histórico e resiliência');

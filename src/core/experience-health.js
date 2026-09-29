@@ -6,6 +6,13 @@ export function sanitizeProgressState(input, defaults) {
   state.activities = state.activities && typeof state.activities === 'object' ? state.activities : {};
   state.worlds = state.worlds && typeof state.worlds === 'object' ? state.worlds : {};
   state.rewards = state.rewards && typeof state.rewards === 'object' ? state.rewards : {};
+  state.history = Array.isArray(state.history) ? state.history.filter((entry) => entry && typeof entry === 'object' && entry.activityId).slice(0, 30).map((entry) => ({
+    activityId: String(entry.activityId),
+    mode: entry.mode === 'evaluate' ? 'evaluate' : 'explore',
+    accuracy: Number.isFinite(Number(entry.accuracy)) ? clamp(Number(entry.accuracy), 0, 100) : null,
+    difficulty: Number.isFinite(Number(entry.difficulty)) ? clamp(Number(entry.difficulty), 1, 5) : undefined,
+    completedAt: entry.completedAt || null
+  })) : [];
   state.sessions = { ...structuredClone(defaults.sessions), ...(state.sessions || {}) };
   state.sessions.total = Math.max(0, Number(state.sessions.total) || 0);
   state.sessions.activities = Math.max(0, Number(state.sessions.activities) || 0);
@@ -27,5 +34,5 @@ export function sanitizeProgressState(input, defaults) {
 }
 
 export function isProgressStateUsable(state) {
-  return Boolean(state && typeof state === 'object' && state.activities && state.sessions);
+  return Boolean(state && typeof state === 'object' && state.activities && state.sessions && Array.isArray(state.history));
 }

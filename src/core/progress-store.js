@@ -1,10 +1,11 @@
 const KEY = 'aprender_brincar_progress_v1';
 const BACKUP_KEY = KEY + '_backup';
 const DAY_MS = 86400000;
+const HISTORY_LIMIT = 30;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
 import { normalizeExperienceResult, getAccuracy } from './experience-result.js';
 import { sanitizeProgressState } from './experience-health.js';
-const DEFAULT = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, lastSessionAt: null }, updatedAt: null };
+const DEFAULT = { version: 7, stars: 0, activities: {}, worlds: {}, rewards: {}, history: [], sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, lastSessionAt: null }, updatedAt: null };
 
 function parseStored(raw) { try { return raw ? JSON.parse(raw) : null; } catch { return null; } }
 
@@ -44,6 +45,7 @@ export class ProgressStore {
   getStars() { return Number.isFinite(this.state.stars) && this.state.stars >= 0 ? this.state.stars : 0; }
   addStar() { const previous = structuredClone(this.state); this.state.stars = this.getStars() + 1; this.persist(previous); return this.state.stars; }
   reset() { this.state = structuredClone(DEFAULT); this.persist(); return this.state; }
+  getHistory(limit = 10) { return Array.isArray(this.state.history) ? this.state.history.slice(0, Math.max(0, Number(limit) || 0)) : []; }
   complete(activityId, extra = {}) {
     if (!activityId) return null;
     const current = this.state.activities[activityId] || { completions: 0, bestScore: 0, attempts: 0, correct: 0, mastery: 0 };
@@ -97,8 +99,16 @@ export class ProgressStore {
     this.state.sessions.evaluations += result.mode === 'evaluate' ? 1 : 0;
     this.state.sessions.lastSessionAt = current.lastPlayedAt;
     this.state.activities[activityId] = current;
+    this.state.history = [{ activityId, mode: result.mode, accuracy, difficulty: result.difficulty, completedAt: current.lastPlayedAt }].concat(this.getHistory(HISTORY_LIMIT - 1));
     this.persist();
     return current;
+  }
+  addHistoryEntry(entry = {}) {
+    if (!entry.activityId) return false;
+    const item = { activityId: String(entry.activityId), mode: entry.mode === 'evaluate' ? 'evaluate' : 'explore', accuracy: Number.isFinite(Number(entry.accuracy)) ? Math.max(0, Math.min(100, Number(entry.accuracy))) : null, completedAt: entry.completedAt || new Date().toISOString() };
+    const previous = structuredClone(this.state);
+    this.state.history = [item, ...this.getHistory(HISTORY_LIMIT - 1)];
+    return this.persist(previous);
   }
   getActivity(activityId) { return this.state.activities[activityId] || null; }
   award(rewardId) { if (!rewardId || this.state.rewards[rewardId]) return false; const previous = structuredClone(this.state); this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; return this.persist(previous); }
