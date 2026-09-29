@@ -31,7 +31,10 @@ for (const animal of animals) {
 
 const activityIds = [...world.matchAll(/activityIds:\s*\[([\s\S]*?)\]/g)]
   .flatMap((m) => [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
-const catalogIds = new Set([...catalog.matchAll(/\{ id: '([^']+)'/g)].map((m) => m[1]));
+const catalogMatches = [...catalog.matchAll(/\{ id: '([^']+)'/g)].map((m) => m[1]);
+const duplicateCatalogIds = catalogMatches.filter((id, index) => catalogMatches.indexOf(id) !== index);
+if (duplicateCatalogIds.length) fail(`IDs duplicados no catálogo: ${[...new Set(duplicateCatalogIds)].join(', ')}`);
+const catalogIds = new Set(catalogMatches);
 const registry = read('src/js/game-registry.js');
 for (const id of activityIds) {
   if (!catalogIds.has(id)) fail(`atividade do mundo sem catálogo: ${id}`);
@@ -42,6 +45,8 @@ for (const id of catalogIds) {
 }
 if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
 if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
+const guidedIds = [...registry.matchAll(/addGuided\(\[([^\]]+)\]\)/g)].flatMap((m) => [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
+if (!guidedIds.length || !app.includes('renderGuidedExperience')) fail('atividades guiadas sem renderer de experiência');
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
   if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score')) fail(`jogo independente sem contrato de resultado: ${file}`);
 }
@@ -92,9 +97,10 @@ console.log('Game audit OK');
 
 const core = await read('src/core/app-core.js');
 if (!core.includes('rewardActivity(activityId)')) fail('recompensa central nao encontrada');
-if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempotencia');
+if (!core.includes('this.progress.grantReward(rewardId)')) fail('recompensa sem transação local');
 
 const engine = await read('src/core/learning-engine.js');
 if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
 if (!engine.includes("recentAccuracy != null && recentAccuracy >= 85")) fail('regra de avanço ausente');
+if (!engine.includes('level = clamp(level, base - 1, base + 1)')) fail('dificuldade pode variar mais de uma faixa por chamada');
 if (!engine.includes("accuracy >= 60")) fail('regra de prática ausente');
