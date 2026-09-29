@@ -5,6 +5,7 @@ import { SkillProgress } from '../src/core/skill-progress.js';
 import { getAgeExperienceConfig } from '../src/core/age-experience-policy.js';
 import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experience-health.js';
 import { getContentReadiness, getContentSummary } from '../src/core/content-readiness.js';
+import { ProgressStore } from '../src/core/progress-store.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -23,6 +24,7 @@ assert.equal(getAccuracy(memory), 60);
 const overcounted = normalizeExperienceResult({ correct: 9, attempts: 4, maxScore: 9 });
 assert.equal(overcounted.correct, 4);
 assert.equal(getAccuracy(overcounted), 100);
+assert.equal(getAccuracy({ mode: 'evaluate', attempts: 3, correct: 5 }), 100);
 
 const exploration = normalizeExperienceResult({ mode: 'explore', score: 5, rounds: 5 });
 assert.equal(exploration.mode, 'explore');
@@ -75,6 +77,17 @@ assert.equal(repaired.activities.bad, undefined);
 assert.equal(repaired.activities.ok.correct, 4);
 assert.equal(repaired.activities.ok.mastery, 5);
 assert.equal(isProgressStateUsable(repaired), true);
+
+const progress = new ProgressStore();
+progress.complete('explore-then-evaluate', { mode: 'explore', attempts: 0, correct: 5, rounds: 5 });
+assert.equal(progress.getActivity('explore-then-evaluate').attempts, 0);
+progress.complete('explore-then-evaluate', { mode: 'evaluate', attempts: 10, correct: 7, rounds: 10 });
+assert.equal(progress.getActivity('explore-then-evaluate').correct, 7);
+assert.equal(progress.getActivity('explore-then-evaluate').recentAccuracy, 70);
+assert.equal(progress.getActivity('explore-then-evaluate').mastery, 3.5);
+assert.equal(progress.grantReward('activity:test'), true);
+assert.equal(progress.grantReward('activity:test'), false);
+assert.equal(progress.getStars(), 1);
 assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
 assert.equal(getContentReadiness('canvas').ready, true);
 assert.ok(getContentSummary().total >= 1);
