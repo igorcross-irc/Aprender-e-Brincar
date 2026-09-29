@@ -179,7 +179,10 @@ export class ResilientAudioEngine {
       utterance.rate = 0.85;
       utterance.pitch = 1.1;
       const voices = this.speech.getVoices();
-      const voice = voices.find((v) => v.lang?.toLowerCase().startsWith('pt-br')) || voices.find((v) => v.lang?.toLowerCase().startsWith('pt'));
+      const ptVoices = voices.filter((v) => v.lang?.toLowerCase().startsWith('pt'));
+      const voice = ptVoices.find((v) => /female|feminina|mulher|woman|maria|luciana|fernanda|helena|joana/i.test(v.name || ''))
+        || ptVoices.find((v) => v.lang?.toLowerCase().startsWith('pt-br'))
+        || ptVoices[0];
       if (voice) utterance.voice = voice;
       this.speech.speak(utterance);
     } catch (e) { console.warn('Erro na síntese de voz:', e); }
