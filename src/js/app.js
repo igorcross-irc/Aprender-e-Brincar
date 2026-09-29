@@ -314,7 +314,7 @@ class App {
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      const sessionResult = this.core.session.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
+      const sessionResult = this.core.session.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5, mode: result.mode || 'evaluate' });
       if (sessionResult.completed) {
         this.evaluateRewards(gameId);
         this.updateScoreUI();
