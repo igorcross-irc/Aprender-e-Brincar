@@ -52,3 +52,20 @@ if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlado
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
 if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
 console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
+
+const memory = read('src/js/games/memory.js');
+const puzzle = read('src/js/games/puzzle.js');
+const balloons = read('src/js/games/balloon-pop.js');
+const canvas = read('src/js/games/canvas.js');
+const cards = read('src/js/games/cards.js');
+if (!memory.includes('onComplete?.({ score, rounds })')) fail('memória sem contrato de resultado');
+if (!puzzle.includes('onComplete?.({ score, rounds: count })')) fail('quebra-cabeça sem contrato de resultado');
+if (!balloons.includes('onComplete?.({ score, rounds: 5 })')) fail('balões sem contrato de resultado');
+if (!canvas.includes('onComplete?.({ score: 5, rounds: 5 })')) fail('lousa sem conclusão integrada');
+if (!cards.includes('onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: 5 })')) fail('frases sem pontuação de sessão');
+if (!app.includes("new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('lousa sem dificuldade adaptativa');
+if (!app.includes("new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('memória sem dificuldade adaptativa');
+if (!app.includes("new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('quebra-cabeça sem dificuldade adaptativa');
+if (!app.includes("new BalloonPopGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('balões sem dificuldade adaptativa');
+
+console.log('Game audit OK');
