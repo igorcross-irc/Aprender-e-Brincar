@@ -189,12 +189,15 @@ class App {
 
   renderAgeSelection() {
     this.currentAge = null; this.currentWorld = null;
+    const childName = this.storage.getChildName();
     this.container.innerHTML = `
-      <div class="w-full max-w-5xl my-auto">
-        <div class="text-center mb-6">
+      <div class="w-full max-w-5xl my-auto page-enter">
+        <div class="hero-panel text-center mb-6">
+          <div class="hero-orbit" aria-hidden="true">✨</div>
           <div class="text-6xl mb-2">🌈🧸✨</div>
-          <h2 class="text-3xl md:text-4xl font-black text-indigo-700">Mapa do Aprender & Brincar</h2>
-          <p class="text-slate-600 mt-2 max-w-xl mx-auto">Escolha a idade e entre em um mundo de descobertas. Cada brincadeira pode ser repetida e explorada no seu ritmo.</p>
+          <p class="eyebrow">MAPA DE DESCOBERTAS</p>
+          <h2 class="text-3xl md:text-4xl font-black text-indigo-700">${childName ? this.escape(childName)+', vamos brincar?' : 'Vamos descobrir juntos?'}</h2>
+          <p class="text-slate-600 mt-2 max-w-xl mx-auto">Escolha uma idade para abrir os mundos. Você pode explorar livremente e voltar quando quiser.</p>
         </div>
         <div class="age-grid">
           ${AGE_BANDS.map((age) => `
@@ -220,8 +223,8 @@ class App {
     })).filter((world) => world.activities.length);
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
-      <div class="w-full max-w-5xl flex flex-col gap-5 my-auto">
-        <div class="flex items-center justify-between gap-3">
+      <div class="w-full max-w-5xl flex flex-col gap-5 my-auto page-enter">
+        <div class="page-toolbar">
           <button id="btn-back-age" class="nav-pill touch-target">⬅️ Idades</button>
           <div class="text-right"><div class="text-sm text-slate-500">${childName ? this.escape(childName)+', ' : ''}${AGE_LABELS[ageId]}</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Escolha um mundo</h2></div>
         </div>
@@ -232,6 +235,7 @@ class App {
               <h3 class="text-xl font-black text-slate-800 mt-3">${world.title}</h3>
               <p class="text-sm text-slate-500 mt-1">${world.description}</p>
               <span class="inline-flex mt-3 bg-slate-100 rounded-full px-3 py-1 text-xs font-bold text-slate-600">${world.activities.length} brincadeiras</span>
+              ${(() => { const snap=this.core.progress.snapshot(); const seen=world.activities.filter(a=>snap.activities?.[a.id]?.explored).length; const pct=world.activities.length?Math.round(seen/world.activities.length*100):0; return \`<div class="world-progress mt-3"><div class="world-progress-head"><span>${seen} de ${world.activities.length} descobertas</span><strong>${pct}%</strong></div><div class="progress-track"><span style="width:${pct}%"></span></div></div>\`; })()}
             </button>`).join('')}
         </div>
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
@@ -256,8 +260,8 @@ class App {
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
     this.container.innerHTML = `
-      <div class="w-full max-w-4xl my-auto flex flex-col gap-5">
-        <div class="flex items-center justify-between gap-3"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
+      <div class="w-full max-w-4xl my-auto flex flex-col gap-5 page-enter">
+        <div class="page-toolbar"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
         <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
           <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
@@ -275,7 +279,7 @@ class App {
           ${weakest.map(([skill,data]) => { const pct=Math.min(100,Math.round((Number(data.mastery||0)/5)*100)); return `<div class="bg-white rounded-2xl p-3"><div class="flex justify-between gap-3 text-xs font-bold text-violet-700"><span>${this.escape(this.core.learning.labelDomain(skill))}</span><span>${data.mastery.toFixed(1)}/5</span></div><div class="progress-track mt-2"><span style="width:${pct}%"></span></div></div>`; }).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
         </div></div>
         <div class="bg-white rounded-[2rem] p-5 shadow-lg border border-indigo-100"><div class="flex items-center justify-between gap-3"><div><h3 class="text-xl font-black text-indigo-800">🧭 Perfil de aprendizagem</h3><p class="text-sm text-slate-500 mt-1">Uma leitura simples do caminho percorrido, sem notas clínicas.</p></div><span class="bg-indigo-50 text-indigo-700 font-black px-3 py-2 rounded-full text-xs">${profile.exploration} explorações</span></div><div class="mt-3 bg-indigo-50 rounded-2xl p-3 text-xs text-indigo-700">${improving ? `📈 ${improving} área(s) mostram melhora recente.` : "🌱 O perfil ainda está construindo uma linha de evolução."}</div><div class="grid md:grid-cols-2 gap-3 mt-4"><div class="bg-emerald-50 rounded-2xl p-4"><strong class="text-emerald-800">✨ Habilidades mais presentes</strong><div class="domain-list mt-2">${profile.strengths.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div><div class="bg-violet-50 rounded-2xl p-4"><strong class="text-violet-800">🌱 Áreas para variar</strong><div class="domain-list mt-2">${profile.areas.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div></div></div>
-        <div class="bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="grid gap-3 mt-3">
+        <div class="journey-highlight bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="grid gap-3 mt-3">
           ${next.map(({activity,reason}) => `<button data-journey-next="${activity.id}" class="bg-white rounded-2xl p-4 text-left border border-sky-100 shadow-sm touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${this.escape(reason)}</small></button>`).join('') || '<span class="text-sm text-slate-500">Escolha livremente qualquer mundo para continuar.</span>'}
         </div></div>
       </div>`;
@@ -290,8 +294,8 @@ class App {
     this.currentWorld = worldId;
     const activities = world.activityIds.map((id) => activityCatalog.find((a) => a.id === id)).filter(Boolean).filter((a) => a.ages.includes(this.currentAge));
     this.container.innerHTML = `
-      <div class="w-full max-w-5xl flex flex-col gap-5 my-auto">
-        <div class="flex items-center justify-between gap-3">
+      <div class="w-full max-w-5xl flex flex-col gap-5 my-auto page-enter">
+        <div class="page-toolbar">
           <button id="btn-back-worlds" class="nav-pill touch-target">⬅️ Mundos</button>
           <div class="text-right"><div class="text-4xl">${world.icon}</div><h2 class="text-2xl font-black text-indigo-700">${world.title}</h2></div>
         </div>
