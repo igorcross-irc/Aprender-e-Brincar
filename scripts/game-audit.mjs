@@ -35,6 +35,9 @@ for (const id of activityIds) {
   if (!catalogIds.has(id)) fail(`atividade do mundo sem catálogo: ${id}`);
   if (!registry.includes(`'${id}'`)) fail(`atividade sem registro central: ${id}`);
 }
+for (const id of catalogIds) {
+  if (!registry.includes(`'${id}'`)) fail(`atividade do catálogo sem registro central: ${id}`);
+}
 if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
 if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
