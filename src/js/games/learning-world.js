@@ -33,7 +33,7 @@ export class LearningWorldGame {
     this.score = 0;
     this.completed = false;
     this.roundLocked = false;
-    this.options = options;
+    this.options = { difficulty: 1, ...options };
 
     const sources = {
       'discover-animals': options.items || [],
@@ -80,12 +80,14 @@ export class LearningWorldGame {
   }
 
   shell(title, body, instruction = '') {
+    const difficulty = Number(this.options.difficulty || 1);
+    const difficultyLabel = difficulty <= 1 ? '🌱 Descoberta' : difficulty === 2 ? '⭐ Explorar' : difficulty === 3 ? '🚀 Desafio' : '🏆 Avançado';
     this.container.innerHTML = `
       <div class="w-full max-w-3xl flex flex-col gap-4 my-auto">
         <div class="flex items-center justify-between gap-3">
           <button id="learning-back" class="bg-white/95 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
           <div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-indigo-700">${title}</div>
-          <div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-amber-600">⭐ ${this.round + 1}/5</div>
+          <div class="flex gap-2"><div class="hidden sm:block bg-violet-50 rounded-full px-3 py-2 shadow font-black text-violet-600">${difficultyLabel}</div><div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-amber-600">⭐ ${this.round + 1}/5</div></div>
         </div>
         ${instruction ? `<p class="text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
@@ -152,7 +154,7 @@ export class LearningWorldGame {
   }
 
   renderDiscover(title, instruction, withAudio) {
-    const pool = this.shuffle(this.items).slice(0, Math.min(4, this.items.length));
+    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);\n    const pool = this.shuffle(this.items).slice(0, poolSize);
     this.discoveryTouched.clear();
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
@@ -232,7 +234,7 @@ export class LearningWorldGame {
   }
 
   renderFindColor() {
-    const pool = this.shuffle(this.items).slice(0, 4);
+    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);\n    const pool = this.shuffle(this.items).slice(0, poolSize);
     const target = pool[Math.floor(Math.random() * pool.length)];
     this.renderChoice('🎨 Encontre a Cor', `Onde está a cor ${target.label}?`, pool, target.id, target.audio);
     pool.forEach((item) => {
