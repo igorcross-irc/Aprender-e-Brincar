@@ -63,6 +63,8 @@ if (!audio.includes('diagnostics()')) fail('diagnóstico do motor de áudio ause
 if (!health.includes('sanitizeProgressState')) fail('reparo de persistência ausente');
 if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
 if (!experienceController.includes('getContentReadiness') || !experienceController.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
+if (!experienceController.includes('gameRegistry.has(gameId)')) fail('pré-validação do registro de atividade ausente');
+if (!experienceController.includes('activity.ages.includes(ageId)')) fail('proteção de faixa etária ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');

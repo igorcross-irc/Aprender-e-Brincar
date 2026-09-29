@@ -6,6 +6,17 @@ export class ExperienceController {
   constructor(app) { this.app = app; }
 
   launchGame(gameId, ageId) {
+    const activity = activityCatalog.find((item) => item.id === gameId);
+    if (!activity || !this.app.gameRegistry.has(gameId)) {
+      console.warn('[experience] atividade indisponível', gameId);
+      this.app.renderAgeSelection();
+      return null;
+    }
+    if (ageId && Array.isArray(activity.ages) && !activity.ages.includes(ageId)) {
+      console.warn('[experience] faixa etária incompatível', { gameId, ageId, allowed: activity.ages });
+      this.app.renderWorldMap(ageId);
+      return null;
+    }
     this.app.core.session.ensure(ageId, this.app.currentWorld);
     this.app.core.learning.remember(gameId);
     const playMode = this.app.gameRegistry.mode(gameId);
@@ -21,7 +32,6 @@ export class ExperienceController {
       }
     };
     const onBack = () => this.app.renderWorld(this.app.currentWorld);
-    const activity = activityCatalog.find((item) => item.id === gameId);
     const content = getContentReadiness(gameId);
     const adaptive = activity ? this.app.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
     if (activity?.audio) this.app.audio.preload([activity.audio]);
