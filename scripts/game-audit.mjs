@@ -7,6 +7,7 @@ const fail = (message) => { console.error(`GAME AUDIT FAIL — ${message}`); pro
 
 const app = read('src/js/app.js');
 const experienceController = read('src/js/controllers/experience-controller.js');
+const appScreens = read('src/js/ui/app-screens.js');
 const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
@@ -67,10 +68,10 @@ if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adapt
 const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
 if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
-if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
-if (!app.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
-if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
-if (!app.includes('renderSessionResult') || !app.includes('data-next')) fail('tela de resultado da sessão ausente');
+if (!appScreens.includes('learning.recommend') || !experienceController.includes('getDifficulty')) fail('integração adaptativa incompleta');
+if (!appScreens.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
+if (!experienceController.includes('core.session.ensure') || !experienceController.includes('core.session.complete')) fail('controlador central de sessão não integrado');
+if (!appScreens.includes('renderSessionResult') || !appScreens.includes('data-next')) fail('tela de resultado da sessão ausente');
 if (!app.includes('journeyStage') || !app.includes('journey-node')) fail('jornada dinâmica ausente');
 if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
