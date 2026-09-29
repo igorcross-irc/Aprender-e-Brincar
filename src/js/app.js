@@ -9,6 +9,7 @@ import { rewardCatalog } from '../content/reward-catalog.js';
 import { getContentReadiness } from '../core/content-readiness.js';
 import { AppScreens } from './ui/app-screens.js';
 import { FamilySettings } from './ui/family-settings.js';
+import { ExperienceController } from './controllers/experience-controller.js';
 
 class App {
   constructor() {
@@ -23,6 +24,7 @@ class App {
     this.currentWorld = null;
     this.screens = new AppScreens();
     this.family = new FamilySettings(this);
+    this.experience = new ExperienceController(this);
     ['renderAgeSelection','ageIcon','renderWorldMap','renderJourney','renderWorld','renderSessionResult','renderGuidedExperience'].forEach((method) => { this[method] = this.screens[method].bind(this); });
     this.init();
   }
@@ -49,6 +51,8 @@ class App {
   }
 
   evaluateRewards(activityId) { return this.family.evaluateRewards(activityId); }
+
+  launchGame(gameId, ageId) { return this.experience.launchGame(gameId, ageId); }
 
   openParentalGate() { return this.family.openParentalGate(); }
 
