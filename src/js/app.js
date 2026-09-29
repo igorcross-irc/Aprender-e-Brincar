@@ -221,10 +221,47 @@ class App {
               <span class="inline-flex mt-3 bg-slate-100 rounded-full px-3 py-1 text-xs font-bold text-slate-600">${world.activities.length} brincadeiras</span>
             </button>`).join('')}
         </div>
+        <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
         <div class="text-center text-xs text-slate-500">💡 Não existe competição: cada descoberta vale por si.</div>
       </div>`;
     this.container.querySelector('#btn-back-age').addEventListener('click', () => this.renderAgeSelection());
+    this.container.querySelector('#btn-journey')?.addEventListener('click', () => this.renderJourney());
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
+  }
+
+
+  renderJourney() {
+    const snapshot = this.core.progress.snapshot();
+    const entries = Object.entries(snapshot.activities || {}).map(([id, progress]) => ({ activity: activityCatalog.find((a) => a.id === id), progress })).filter((item) => item.activity);
+    const explored = entries.length;
+    const weakest = this.core.skills.weakest(4);
+    const next = this.core.learning.recommend(this.currentAge, this.currentWorld, 3);
+    const worldCount = new Set(entries.map(({activity}) => activity.world).filter(Boolean)).size;
+    const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
+    this.container.innerHTML = `
+      <div class="w-full max-w-4xl my-auto flex flex-col gap-5">
+        <div class="flex items-center justify-between gap-3"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
+          <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
+          <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
+          <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
+        </div>
+        <div class="bg-white/95 rounded-[2rem] p-5 shadow-xl"><h3 class="text-xl font-black text-indigo-700">🌟 O caminho já percorrido</h3><p class="text-sm text-slate-500 mt-1">${totalCompletions} exploração(ões) registradas. Nada é bloqueado: a criança pode voltar, repetir e descobrir livremente.</p><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+          ${entries.slice().sort((a,b)=>(b.progress.lastPlayedAt||'').localeCompare(a.progress.lastPlayedAt||'')).slice(0,8).map(({activity,progress}) => `
+            <button data-journey-game="${activity.id}" class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${progress.accuracy || 0}% de aproveitamento · ${progress.completions || 0} vez(es)</small></button>
+          `).join('') || '<div class="text-sm text-slate-500">A jornada começa na primeira brincadeira. ✨</div>'}
+        </div></div>
+        <div class="bg-violet-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-violet-800">🧠 Habilidades para explorar agora</h3><p class="text-sm text-violet-600 mt-1">São sugestões de exploração, não avaliações clínicas nem notas.</p><div class="flex flex-wrap gap-2 mt-3">
+          ${weakest.map(([skill,data]) => `<span class="bg-white rounded-full px-3 py-2 text-xs font-bold text-violet-700">${this.escape(this.core.learning.labelDomain(skill))} · ${data.mastery.toFixed(1)}/5</span>`).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
+        </div></div>
+        <div class="bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="grid gap-3 mt-3">
+          ${next.map(({activity,reason}) => `<button data-journey-next="${activity.id}" class="bg-white rounded-2xl p-4 text-left border border-sky-100 shadow-sm touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${this.escape(reason)}</small></button>`).join('') || '<span class="text-sm text-slate-500">Escolha livremente qualquer mundo para continuar.</span>'}
+        </div></div>
+      </div>`;
+    this.container.querySelector('#journey-back').addEventListener('click', () => this.currentWorld ? this.renderWorld(this.currentWorld) : this.renderWorldMap(this.currentAge));
+    this.container.querySelectorAll('[data-journey-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyGame, this.currentAge)));
+    this.container.querySelectorAll('[data-journey-next]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyNext, this.currentAge)));
   }
 
   renderWorld(worldId) {
