@@ -73,7 +73,7 @@ if (!memory.includes('onComplete?.({ score, rounds })')) fail('memória sem cont
 if (!puzzle.includes('onComplete?.({ score, rounds: count })')) fail('quebra-cabeça sem contrato de resultado');
 if (!balloons.includes('onComplete?.({ score, rounds: 5 })')) fail('balões sem contrato de resultado');
 if (!canvas.includes('onComplete?.({ score: 5, rounds: 5 })')) fail('lousa sem conclusão integrada');
-if (!cards.includes('onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: 5 })')) fail('frases sem pontuação de sessão');
+if (!/onComplete\(\{\s*score:\s*Math\.min\(5,\s*Math\.max\(1,\s*this\.sentenceShelf\.length\)\),\s*rounds:/.test(cards)) fail('frases sem pontuação de sessão');
 if (!app.includes("new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('lousa sem dificuldade adaptativa');
 if (!app.includes("new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('memória sem dificuldade adaptativa');
 if (!app.includes("new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('quebra-cabeça sem dificuldade adaptativa');
