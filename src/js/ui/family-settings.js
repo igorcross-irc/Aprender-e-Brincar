@@ -3,6 +3,20 @@ import { rewardCatalog } from '../../content/reward-catalog.js';
 
 export class FamilySettings {
   constructor(app) { this.app = app; }
+  evaluateRewards(activityId) {
+    const snapshot = this.app.core.progress.snapshot();
+    const explored = Object.values(snapshot.activities || {}).filter((item) => item.explored).length;
+    const worlds = new Set();
+    Object.entries(snapshot.activities || {}).forEach(([id, item]) => { if (!item.explored) return; const activity = activityCatalog.find((a) => a.id === id); if (activity?.world) worlds.add(activity.world); });
+    const candidates = [];
+    if (explored >= 1) candidates.push('first-discovery');
+    if (explored >= 5) candidates.push('five-discoveries');
+    if (explored >= 10) candidates.push('ten-discoveries');
+    if (worlds.size >= 3) candidates.push('world-explorer');
+    const current = snapshot.activities?.[activityId];
+    if ((current?.completions || 0) >= 2) candidates.push('repeat-player');
+    candidates.forEach((id) => this.app.core.progress.award(id));
+  }
   getRewards() {
     const snapshot = this.app.core.progress.snapshot();
     return rewardCatalog.map((reward) => ({ ...reward, earned: Boolean(snapshot.rewards?.[reward.id]) }));
