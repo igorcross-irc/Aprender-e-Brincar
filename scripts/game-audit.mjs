@@ -52,6 +52,9 @@ if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da crian
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
 if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
+if (!learning.includes("level === 2 ? 5 : 7")) fail('dificuldade adaptativa não altera conjunto de desafios');
+if (!app.includes("world.start('baby-discover',{difficulty:adaptive.level})")) fail('baby-discover sem dificuldade adaptativa');
+if (!read('src/js/games/canvas.js').includes('this.level === 1 ? 3 : this.level === 2 ? 4 : 5')) fail('lousa sem adaptação real por nível');
 console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
 
 const memory = read('src/js/games/memory.js');
