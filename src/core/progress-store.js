@@ -1,6 +1,6 @@
 const KEY = 'aprender_brincar_progress_v1';
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
-const DEFAULT = { version: 2, stars: 0, activities: {}, worlds: {}, updatedAt: null };
+const DEFAULT = { version: 3, stars: 0, activities: {}, worlds: {}, rewards: {}, updatedAt: null };
 
 function read() {
   try {
@@ -10,7 +10,7 @@ function read() {
       return { ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 };
     }
     const parsed = JSON.parse(raw);
-    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {} };
+    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {}, rewards: parsed.rewards || {} };
   } catch { return structuredClone(DEFAULT); }
 }
 
@@ -38,5 +38,7 @@ export class ProgressStore {
     return current;
   }
   getActivity(activityId) { return this.state.activities[activityId] || null; }
+  award(rewardId) { if (!rewardId) return false; if (this.state.rewards[rewardId]) return false; this.state.rewards[rewardId] = { earnedAt: new Date().toISOString() }; this.persist(); return true; }
+  hasReward(rewardId) { return Boolean(this.state.rewards[rewardId]); }
   snapshot() { return structuredClone(this.state); }
 }
