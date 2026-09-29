@@ -1,7 +1,7 @@
 import { activityCatalog } from '../content/activity-catalog.js';
 
 export class LearningEngine {
-  constructor(progressStore){this.progress=progressStore;}
+  constructor(progressStore){this.progress=progressStore; this.historyKey='learning_recent_v1';}
   getProfile(){
     const s=this.progress.snapshot(), entries=Object.entries(s.activities||{});
     const weak=entries.map(([id,p])=>({id,p,a:activityCatalog.find(x=>x.id===id)})).filter(x=>x.a)
@@ -15,12 +15,14 @@ export class LearningEngine {
     if(Number(p.lastScore||0)>=4) level=Math.min(5,level+1);
     return {level,label:['','Descoberta','Explorar','Desafio','Avançado','Especialista'][level]};
   }
+  recentIds(limit=6){ try{return JSON.parse(localStorage.getItem(this.historyKey)||'[]').slice(0,limit);}catch{return [];} }
+  remember(activityId){ try{const ids=this.recentIds(12).filter(id=>id!==activityId); localStorage.setItem(this.historyKey,JSON.stringify([activityId,...ids].slice(0,12)));}catch{} }
   recommend(ageId,worldId,limit=3){
-    const s=this.progress.snapshot();
+    const s=this.progress.snapshot(), recentIds=this.recentIds(5);
     return activityCatalog.filter(a=>a.ages?.includes(ageId)&&(!worldId||a.world===worldId)).map(activity=>{
       const p=s.activities?.[activity.id], mastery=Number(p?.mastery||0);
       const days=p?.lastPlayedAt?(Date.now()-new Date(p.lastPlayedAt).getTime())/86400000:999;
-      const score=(p?20:45)+Math.min(days,30)+(5-mastery)*8-Number(p?.completions||0)*2;
+      const score=(p?20:45)+Math.min(days,30)+(5-mastery)*8-Number(p?.completions||0)*2-(recentIds.includes(activity.id)?35:0);
       return {activity,score,reason:!p?'Nova descoberta':mastery<3?'Vale praticar novamente':'Boa hora para variar'};
     }).sort((a,b)=>b.score-a.score).slice(0,limit);
   }
