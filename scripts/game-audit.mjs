@@ -10,6 +10,8 @@ const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
 const audio = read('src/js/engine/audio-engine.js');
+const health = read('src/core/experience-health.js');
+const readiness = read('src/core/content-readiness.js');
 
 // Detecta corrupção comum de geração de código: \\n literal fora de strings/template literals.
 const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js', 'src/js/game-registry.js', 'src/js/games/independent/odd-one-out.js', 'src/js/games/independent/number-order.js', 'src/js/games/independent/color-hunt.js', 'src/js/games/independent/rhythm-copy.js', 'src/js/games/independent/sound-sequence.js'];
@@ -50,6 +52,10 @@ if (!discoverBlock) fail('renderDiscover não encontrado');
 if (/this\.nextRound\(\)/.test(discoverBlock[0])) fail('descoberta ainda avança automaticamente');
 if (!audio.includes('inferAudioName')) fail('motor de áudio sem descoberta automática de MP3');
 if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelamento seguro da fala');
+if (!audio.includes('diagnostics()')) fail('diagnóstico do motor de áudio ausente');
+if (!health.includes('sanitizeProgressState')) fail('reparo de persistência ausente');
+if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
+if (!app.includes('getContentReadiness') || !app.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
@@ -59,6 +65,7 @@ if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail(
 if (!app.includes('onWin({score:touched,rounds:cards.length})')) fail('experiências guiadas sem pontuação real');
 if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
 if (!app.includes('renderSessionResult') || !app.includes('data-next')) fail('tela de resultado da sessão ausente');
+if (!app.includes('journeyStage') || !app.includes('journey-node')) fail('jornada dinâmica ausente');
 if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
