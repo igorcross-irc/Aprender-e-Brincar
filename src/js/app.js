@@ -279,7 +279,16 @@ class App {
           <p class="text-slate-600">${world.description}</p>
           <div class="mt-2 text-xs font-bold text-indigo-500">${activities.length} experiências para ${AGE_LABELS[this.currentAge]}</div>
         </div>
-        <div class="bg-violet-50 rounded-[1.75rem] p-4 shadow-sm border border-violet-100">\n          <div class="flex items-center justify-between gap-3">\n            <div><strong class="text-violet-800">🧠 Sugestões para agora</strong><p class="text-xs text-violet-600 mt-1">O app adapta as próximas brincadeiras ao histórico local.</p></div>\n            <span class="text-xs font-black text-violet-500">${this.core.progress.snapshot().sessions?.streak || 0} dia(s) de sequência</span>\n          </div>\n          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">\n            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span></button>`).join('')}\n          </div>\n        </div>\n        <div class="activity-grid">
+        <div class="bg-violet-50 rounded-[1.75rem] p-4 shadow-sm border border-violet-100">
+          <div class="flex items-center justify-between gap-3">
+            <div><strong class="text-violet-800">🧠 Sugestões para agora</strong><p class="text-xs text-violet-600 mt-1">O app adapta as próximas brincadeiras ao histórico local.</p></div>
+            <span class="text-xs font-black text-violet-500">${this.core.progress.snapshot().sessions?.streak || 0} dia(s) de sequência</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
+            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span></button>`).join('')}
+          </div>
+        </div>
+        <div class="activity-grid">
           ${activities.map((activity) => {
             const progress = this.core.progress.getActivity(activity.id);
             return `
@@ -294,7 +303,8 @@ class App {
         </div>
       </div>`;
     this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderWorldMap(this.currentAge));
-    this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));\n    this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
+    this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));
+    this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
 
   launchGame(gameId, ageId) {
@@ -312,7 +322,9 @@ class App {
       }
     };
     const onBack = () => this.renderWorld(this.currentWorld);
-    const activity = activityCatalog.find((item) => item.id === gameId);\n    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };\n    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
+    const activity = activityCatalog.find((item) => item.id === gameId);
+    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };
+    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
     if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'discovery-colors' || gameId === 'colors') return world.start('discover-colors',{items:vocabularyData.colors, difficulty: adaptive.level});
