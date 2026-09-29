@@ -58,9 +58,9 @@ const skillProgress = new SkillProgress({
   }
 });
 const skills = skillProgress.get();
-assert.equal(skills.memoria.mastery, 4);
-assert.equal(skills.memoria.evaluations, 2);
-assert.equal(skills.memoria.attempts, 20);
-assert.equal(skillProgress.weakest(1)[0][0], 'memoria');
+assert.equal(skills['memória'].mastery, 4);
+assert.equal(skills['memória'].evaluations, 2);
+assert.equal(skills['memória'].attempts, 20);
+assert.equal(skillProgress.weakest(1)[0][0], 'memória');
 
 console.log('CORE PASS — contrato, adaptação e agregação por habilidade');
