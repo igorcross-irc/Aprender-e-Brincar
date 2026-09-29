@@ -324,10 +324,12 @@ class App {
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);
     const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };
+    const explorationIds = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+    const playMode = explorationIds.has(gameId) ? 'explore' : 'evaluate';
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
-    if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
-    if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals, difficulty: adaptive.level}); }
-    if (gameId === 'discovery-colors' || gameId === 'colors') return world.start('discover-colors',{items:vocabularyData.colors, difficulty: adaptive.level});
+    if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level, mode: playMode}); }
+    if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals, difficulty: adaptive.level, mode: playMode}); }
+    if (gameId === 'discovery-colors' || gameId === 'colors') return world.start('discover-colors',{items:vocabularyData.colors, difficulty: adaptive.level, mode: playMode});
     if (gameId === 'find-color') return world.start('find-color',{items:vocabularyData.colors, difficulty: adaptive.level});
     if (gameId === 'find-animal') return world.start('find-animal',{items:vocabularyData.animals, difficulty: adaptive.level});
     if (gameId === 'sound-guess') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals, difficulty: adaptive.level}); }
@@ -338,15 +340,15 @@ class App {
     if (gameId === 'number-match') return world.start('number-match',{difficulty: adaptive.level});
     if (gameId === 'sequence') return world.start('sequence',{difficulty: adaptive.level});
     if (gameId === 'syllables') return world.start('syllables',{difficulty: adaptive.level});
-    if (gameId === 'discover-objects') return world.start('discover-objects',{difficulty: adaptive.level});
+    if (gameId === 'discover-objects') return world.start('discover-objects',{difficulty: adaptive.level, mode: playMode});
     if (gameId === 'body-parts') return world.start('body-parts',{difficulty: adaptive.level});
     if (gameId === 'match-pairs') return world.start('match-pairs',{difficulty: adaptive.level});
     if (gameId === 'classify-animals') return world.start('classify-animals',{difficulty: adaptive.level});
     if (gameId === 'opposites') return world.start('opposites',{difficulty: adaptive.level});
     if (gameId === 'rhythm') return world.start('rhythm',{difficulty: adaptive.level});
     if (gameId === 'guided-movement') return world.start('guided-movement',{difficulty: adaptive.level});
-    if (gameId === 'baby-discover') return world.start('baby-discover',{difficulty:adaptive.level});
-    if (gameId === 'baby-colors') return world.start('baby-colors',{difficulty:adaptive.level});
+    if (gameId === 'baby-discover') return world.start('baby-discover',{difficulty:adaptive.level, mode: playMode});
+    if (gameId === 'baby-colors') return world.start('baby-colors',{difficulty:adaptive.level, mode: playMode});
     if (gameId === 'vocabulary') return world.start('vocabulary',{difficulty:adaptive.level});
     if (gameId === 'story-interactive') return world.start('story-interactive',{difficulty:adaptive.level});
     if (gameId === 'music-rhythm') return world.start('music-rhythm',{difficulty:adaptive.level});
