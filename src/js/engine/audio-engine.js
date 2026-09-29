@@ -1,10 +1,11 @@
-/** 
+/**
  * Motor de áudio do Aprender e Brincar.
  * Prioridade: MP3 próprio -> voz do navegador.
- * O motor também tenta localizar automaticamente um MP3 pelo texto curto,
- * o que evita depender de SpeechSynthesis para palavras e comandos já gravados.
+ * O índice local reduz probes repetidos e mantém o fallback resiliente.
  */
 const AUDIO_BASE = '/assets/audio/';
+const AUDIO_INDEX_KEY = 'ab_audio_index_v2';
+const MISSING_KEY = 'ab_missing_audio';
 
 export class ResilientAudioEngine {
   constructor() {
@@ -14,14 +15,38 @@ export class ResilientAudioEngine {
     this.buffers = new Map();
     this.loading = new Map();
     this.missing = new Set(this.readMissingAudio());
+    this.available = new Set(this.readAudioIndex().filter((name) => !this.missing.has(name)));
     this.current = null;
     this.playToken = 0;
     this.installUnlock();
   }
 
-  readMissingAudio() { try { return JSON.parse(sessionStorage.getItem('ab_missing_audio') || '[]'); } catch (e) { return []; } }
+  readJson(key, fallback = []) {
+    try { const value = JSON.parse(localStorage.getItem(key) || 'null'); return Array.isArray(value) ? value : fallback; } catch (e) { return fallback; }
+  }
 
-  rememberMissing(name) { try { sessionStorage.setItem('ab_missing_audio', JSON.stringify([...this.missing].slice(-300))); } catch (e) {} }
+  readMissingAudio() {
+    try { const value = JSON.parse(sessionStorage.getItem(MISSING_KEY) || '[]'); return Array.isArray(value) ? value : []; } catch (e) { return []; }
+  }
+
+  readAudioIndex() { return this.readJson(AUDIO_INDEX_KEY); }
+
+  rememberMissing(name) {
+    this.missing.add(name);
+    this.available.delete(name);
+    try { sessionStorage.setItem(MISSING_KEY, JSON.stringify([...this.missing].slice(-300))); } catch (e) {}
+    this.persistAudioIndex();
+  }
+
+  rememberAvailable(name) {
+    this.missing.delete(name);
+    this.available.add(name);
+    this.persistAudioIndex();
+  }
+
+  persistAudioIndex() {
+    try { localStorage.setItem(AUDIO_INDEX_KEY, JSON.stringify([...this.available].slice(-1000))); } catch (e) {}
+  }
 
   getSafeMuteState() {
     try { return localStorage.getItem('ab_muted') === 'true'; } catch (e) { return false; }
@@ -65,12 +90,7 @@ export class ResilientAudioEngine {
   }
 
   slugify(text) {
-    return String(text || '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    return String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
   inferAudioName(text) {
@@ -84,10 +104,8 @@ export class ResilientAudioEngine {
     if (this.buffers.has(name)) return this.buffers.get(name);
     if (this.missing.has(name)) return null;
     if (this.loading.has(name)) return this.loading.get(name);
-
     const ctx = this.getContext();
     if (!ctx) return null;
-
     const job = fetch(AUDIO_BASE + encodeURIComponent(name), { cache: 'force-cache' })
       .then((res) => {
         const type = res.headers.get('content-type') || '';
@@ -95,49 +113,35 @@ export class ResilientAudioEngine {
         return res.arrayBuffer();
       })
       .then((data) => new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject)))
-      .then((buffer) => {
-        this.buffers.set(name, buffer);
-        return buffer;
-      })
-      .catch((err) => {
-        this.missing.add(name);
-        this.rememberMissing(name);
-        console.warn(`[áudio] MP3 indisponível: ${name}`, err.message || err);
-        return null;
-      })
+      .then((buffer) => { this.buffers.set(name, buffer); this.rememberAvailable(name); return buffer; })
+      .catch((err) => { this.rememberMissing(name); console.warn(`[áudio] MP3 indisponível: ${name}`, err.message || err); return null; })
       .finally(() => this.loading.delete(name));
-
     this.loading.set(name, job);
     return job;
   }
 
   preload(names = []) {
-    [...new Set(names.map((n) => this.normalize(n)).filter(Boolean))].forEach((name) => this.load(name));
+    [...new Set(names.map((n) => this.normalize(n)).filter(Boolean))]
+      .filter((name) => !this.missing.has(name))
+      .forEach((name) => this.load(name));
   }
 
   stop() {
     this.playToken += 1;
-    if (this.current) {
-      try { this.current.stop(); } catch (e) {}
-      this.current = null;
-    }
+    if (this.current) { try { this.current.stop(); } catch (e) {} this.current = null; }
     try { this.speech?.cancel(); } catch (e) {}
   }
 
   async play(audioPath, fallbackText) {
     if (this.isMuted) return false;
-
     this.stop();
     const token = this.playToken;
     const explicitName = this.normalize(audioPath);
     const inferredName = explicitName ? null : this.inferAudioName(fallbackText);
     const name = explicitName || inferredName;
-
     if (name) {
       const ctx = this.getContext();
-      if (ctx?.state === 'suspended') {
-        try { await ctx.resume(); } catch (e) {}
-      }
+      if (ctx?.state === 'suspended') { try { await ctx.resume(); } catch (e) {} }
       const buffer = await this.load(name);
       if (token !== this.playToken) return false;
       if (buffer && ctx) {
@@ -150,7 +154,6 @@ export class ResilientAudioEngine {
         return true;
       }
     }
-
     if (token !== this.playToken) return false;
     this.speak(fallbackText);
     return false;
@@ -168,8 +171,6 @@ export class ResilientAudioEngine {
       const voice = voices.find((v) => v.lang?.toLowerCase().startsWith('pt-br')) || voices.find((v) => v.lang?.toLowerCase().startsWith('pt'));
       if (voice) utterance.voice = voice;
       this.speech.speak(utterance);
-    } catch (e) {
-      console.warn('Erro na síntese de voz:', e);
-    }
+    } catch (e) { console.warn('Erro na síntese de voz:', e); }
   }
 }
