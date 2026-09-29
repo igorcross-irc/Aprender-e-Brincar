@@ -159,7 +159,8 @@ export class LearningWorldGame {
   }
 
   renderDiscover(title, instruction, withAudio) {
-    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);\n    const pool = this.shuffle(this.items).slice(0, poolSize);
+    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
+    const pool = this.shuffle(this.items).slice(0, poolSize);
     this.discoveryTouched.clear();
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
