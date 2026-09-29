@@ -13,19 +13,27 @@ export class AppCore {
     this.learning = new LearningEngine(this.progress);
     this.skills = new SkillProgress(this.progress);
     this.learning.setSkillProgress(this.skills);
-    this.session = new LearningSession(this.learning, this.progress, () => {
-      this.progress.addStar();
-      this.storage?.syncStars?.(this.progress.getStars());
-    });
+    this.session = new LearningSession(this.learning, this.progress, (activityId) => this.rewardActivity(activityId));
   }
+
+  rewardActivity(activityId) {
+    const rewardId = `activity:${activityId}`;
+    if (!this.progress.award(rewardId)) return false;
+    this.progress.addStar();
+    this.storage?.syncStars?.(this.progress.getStars());
+    return true;
+  }
+
   complete(activityId, options = {}) {
     const progress = this.progress.complete(activityId, options);
-    if (progress && options.reward !== false) {
-      this.progress.addStar();
-      this.storage?.syncStars?.(this.progress.getStars());
-    }
+    if (progress && options.reward !== false) this.rewardActivity(activityId);
     return progress;
   }
+
   stars() { return this.progress.getStars(); }
-  resetProgress() { this.progress.reset(); this.storage?.resetStars?.(); }
+
+  resetProgress() {
+    this.progress.reset();
+    this.storage?.resetStars?.();
+  }
 }
