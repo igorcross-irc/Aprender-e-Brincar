@@ -8,6 +8,7 @@ import { registerPWA } from '../pwa.js';
 import { createGameRegistry } from './game-registry.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { rewardCatalog } from '../content/reward-catalog.js';
+import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -356,10 +357,10 @@ class App {
     };
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);
-    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };
+    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
     try {
-      const result = this.gameRegistry.launch(gameId, { adaptive, onWin, onBack });
-      if (result?.guided) return this.renderGuidedExperience(gameId, onWin, onBack);
+      const result = this.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack });
+      if (result?.guided) return this.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
       return result;
     } catch (error) {
       console.error('[game-registry] Falha ao iniciar atividade', gameId, error);
@@ -415,7 +416,8 @@ class App {
     this.container.querySelector('#session-continue').addEventListener('click', () => this.renderWorld(this.currentWorld));
   }
 
-  renderGuidedExperience(gameId,onWin,onBack) {
+  renderGuidedExperience(gameId,onWin,onBack,age={}) {
+    const optionLimit = Math.max(2, Math.min(Number(age.optionCount || 4), 5));
     const guided={
       rhymes:['🎵','Rimas Divertidas','Encontre palavras que terminam de um jeito parecido.',['Gato','Rato','Bola','Mola']],
       'sound-initial':['🔤','Com Que Som Começa?','Ouça a palavra e observe seu começo.',['Macaco','Mala','Bola','Gato']],
