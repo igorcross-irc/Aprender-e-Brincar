@@ -13,7 +13,10 @@ export class AppCore {
     this.learning = new LearningEngine(this.progress);
     this.skills = new SkillProgress(this.progress);
     this.learning.setSkillProgress(this.skills);
-    this.session = new LearningSession(this.learning, this.progress);
+    this.session = new LearningSession(this.learning, this.progress, () => {
+      this.progress.addStar();
+      this.storage?.syncStars?.(this.progress.getStars());
+    });
   }
   complete(activityId, options = {}) {
     const progress = this.progress.complete(activityId, options);
