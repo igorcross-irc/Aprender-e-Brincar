@@ -4,7 +4,7 @@ import { LearningEngine } from '../src/core/learning-engine.js';
 import { SkillProgress } from '../src/core/skill-progress.js';
 import { getAgeExperienceConfig } from '../src/core/age-experience-policy.js';
 import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experience-health.js';
-import { getContentReadiness, getContentSummary } from '../src/core/content-readiness.js';
+import { getContentReadiness, getContentSummary, getCatalogIntegrity } from '../src/core/content-readiness.js';
 import { ProgressStore } from '../src/core/progress-store.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
@@ -91,4 +91,6 @@ assert.equal(progress.getStars(), 1);
 assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
 assert.equal(getContentReadiness('canvas').ready, true);
 assert.ok(getContentSummary().total >= 1);
+const integrity = getCatalogIntegrity();
+assert.equal(integrity.valid, true, integrity.errors.join('; '));
 console.log('CORE PASS — contrato, adaptação, idade, conteúdo e resiliência');
