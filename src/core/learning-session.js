@@ -1,3 +1,5 @@
+import { normalizeExperienceResult } from './experience-result.js';
+
 const SESSION_KEY = 'aprender_brincar_learning_session_v1';
 
 function safeParse(value) {
@@ -46,9 +48,8 @@ export class LearningSession {
       return { completed: false, duplicate: true, session: this.snapshot() };
     }
 
-    const score = Number(result.score ?? 0);
-    const rounds = Math.max(1, Number(result.rounds) || 5);
-    const progress = this.progress.complete(activityId, { score, rounds, mode: result.mode });
+    const normalized = normalizeExperienceResult(result);
+    const progress = this.progress.complete(activityId, normalized);
     if (this.reward) this.reward(activityId);
     this.active.completed.push(activityId);
     this.active.stars += 1;
