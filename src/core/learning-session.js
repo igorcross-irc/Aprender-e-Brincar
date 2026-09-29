@@ -1,9 +1,15 @@
+const SESSION_KEY = 'aprender_brincar_learning_session_v1';
+
+function safeParse(value) {
+  try { return value ? JSON.parse(value) : null; } catch { return null; }
+}
+
 export class LearningSession {
   constructor(learning, progress, reward = null) {
     this.learning = learning;
     this.progress = progress;
     this.reward = reward;
-    this.active = null;
+    this.active = this.restore();
   }
 
   start({ ageId, worldId = null, goal = 'explore' } = {}) {
@@ -16,6 +22,7 @@ export class LearningSession {
       completed: [],
       stars: 0
     };
+    this.persist();
     return this.snapshot();
   }
 
@@ -45,6 +52,7 @@ export class LearningSession {
     if (this.reward) this.reward();
     this.active.completed.push(activityId);
     this.active.stars += 1;
+    this.persist();
 
     return {
       completed: true,
@@ -69,7 +77,29 @@ export class LearningSession {
   end() {
     const result = this.summary();
     this.active = null;
+    this.clearPersisted();
     return result;
+  }
+
+  restore() {
+    try {
+      const saved = safeParse(localStorage.getItem(SESSION_KEY));
+      if (!saved || !saved.ageId || !saved.startedAt || !Array.isArray(saved.completed)) return null;
+      const age = Date.now() - new Date(saved.startedAt).getTime();
+      if (!Number.isFinite(age) || age > 12 * 60 * 60 * 1000) {
+        localStorage.removeItem(SESSION_KEY);
+        return null;
+      }
+      return saved;
+    } catch { return null; }
+  }
+
+  persist() {
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(this.active)); } catch {}
+  }
+
+  clearPersisted() {
+    try { localStorage.removeItem(SESSION_KEY); } catch {}
   }
 
   snapshot() {
