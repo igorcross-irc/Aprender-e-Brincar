@@ -1,16 +1,21 @@
 export class CanvasGame {
-  constructor(containerId, audioEngine, onBack) {
+  constructor(containerId, audioEngine, onComplete, onBack) {
     this.container = document.getElementById(containerId);
     this.audio = audioEngine;
+    this.onComplete = onComplete;
     this.onBack = onBack;
     this.isDrawing = false;
     this.currentColor = '#EF4444';
     this.currentTool = 'pen'; // 'pen', 'eraser', 'stamp'
     this.currentStamp = '⭐';
     this.history = [];
+    this.interactions = 0;
+    this.completed = false;
   }
 
   start() {
+    this.interactions = 0;
+    this.completed = false;
     this.container.innerHTML = `
       <div class="w-full max-w-xl flex flex-col items-center gap-3 my-auto">
         <div class="flex justify-between items-center w-full">
@@ -75,6 +80,7 @@ export class CanvasGame {
         ctx.textBaseline = 'middle';
         ctx.fillText(this.currentStamp, x, y);
         saveState();
+        this.interactions++;
         this.isDrawing = false;
         return;
       }
@@ -103,6 +109,12 @@ export class CanvasGame {
       if (this.isDrawing) {
         this.isDrawing = false;
         saveState();
+        this.interactions++;
+        if (this.interactions >= 5 && !this.completed) {
+          this.completed = true;
+          this.audio.play(null, 'Que desenho incrível!');
+          this.onComplete?.({ score: 5, rounds: 5 });
+        }
       }
     };
 
