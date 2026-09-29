@@ -351,10 +351,10 @@ class App {
     if (gameId === 'story-interactive') return world.start('story-interactive',{difficulty:adaptive.level});
     if (gameId === 'music-rhythm') return world.start('music-rhythm',{difficulty:adaptive.level});
     if (gameId === 'sort-groups') return world.start('sort-groups',{difficulty:adaptive.level});
-    if (gameId === 'object-hunt') return world.start('discover-objects');
-    if (gameId === 'animal-families') return world.start('classify-animals');
-    if (gameId === 'action-words') return world.start('vocabulary');
-    if (gameId === 'story-choices') return world.start('story-interactive');
+    if (gameId === 'object-hunt') return world.start('discover-objects',{difficulty: adaptive.level});
+    if (gameId === 'animal-families') return world.start('classify-animals',{difficulty: adaptive.level});
+    if (gameId === 'action-words') return world.start('vocabulary',{difficulty: adaptive.level});
+    if (gameId === 'story-choices') return world.start('story-interactive',{difficulty: adaptive.level});
     if (gameId === 'phrase-builder-2') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'color-hunt-2') return world.start('find-color',{items:vocabularyData.colors, difficulty: adaptive.level});
     if (gameId === 'shape-sequence') return world.start('sequence',{difficulty: adaptive.level});
@@ -363,10 +363,10 @@ class App {
     if (gameId === 'animal-homes') return world.start('find-animal',{items:vocabularyData.animals, difficulty: adaptive.level});
     if (gameId === 'count-more') return world.start('count',{difficulty: adaptive.level});
     if (gameId === 'number-order') return world.start('sequence',{difficulty: adaptive.level});
-    if (gameId === 'memory-objects') return world.start('match-pairs');
+    if (gameId === 'memory-objects') return world.start('match-pairs',{difficulty: adaptive.level});
     if (gameId === 'attention-path') return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level});
-    if (gameId === 'rhythm-copy') return world.start('music-rhythm');
-    if (gameId === 'movement-copy') return world.start('guided-movement');
+    if (gameId === 'rhythm-copy') return world.start('music-rhythm',{difficulty: adaptive.level});
+    if (gameId === 'movement-copy') return world.start('guided-movement',{difficulty: adaptive.level});
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level);
