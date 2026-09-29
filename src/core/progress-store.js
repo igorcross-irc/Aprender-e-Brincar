@@ -1,7 +1,7 @@
 const KEY = 'aprender_brincar_progress_v1';
 const DAY_MS = 86400000;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
-const DEFAULT = { version: 4, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null }, updatedAt: null };
+const DEFAULT = { version: 4, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, lastSessionAt: null }, updatedAt: null };
 
 function read() {
   try {
@@ -52,6 +52,8 @@ export class ProgressStore {
       this.state.sessions.lastDay = day;
     }
     this.state.sessions.total += 1;
+    this.state.sessions.activities = Number(this.state.sessions.activities || 0) + 1;
+    this.state.sessions.lastSessionAt = current.lastPlayedAt;
     this.state.activities[activityId] = current;
     this.persist();
     return current;
