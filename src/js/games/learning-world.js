@@ -12,6 +12,9 @@ export class LearningWorldGame {
     this.items = [];
     this.options = {};
     this.completed = false;
+    this.roundLocked = false;
+    this.advanceTimer = null;
+    this.discoveryTouched = new Set();
   }
 
   shuffle(items) {
@@ -24,10 +27,12 @@ export class LearningWorldGame {
   }
 
   start(mode, options = {}) {
+    this.clearPending();
     this.mode = mode;
     this.round = 0;
     this.score = 0;
     this.completed = false;
+    this.roundLocked = false;
     this.options = options;
 
     const sources = {
@@ -58,12 +63,20 @@ export class LearningWorldGame {
       'music-rhythm': developmentContent.musicPatterns,
       'sort-groups': developmentContent.categories
     };
+
     this.items = sources[mode] || [];
     this.renderRound();
   }
 
+  clearPending() {
+    if (this.advanceTimer) window.clearTimeout(this.advanceTimer);
+    this.advanceTimer = null;
+    this.roundLocked = false;
+    if (this.audio?.stop) this.audio.stop();
+  }
+
   speak(text, audio = null) {
-    this.audio.play(audio, text);
+    this.audio?.play(audio, text);
   }
 
   shell(title, body, instruction = '') {
@@ -77,23 +90,39 @@ export class LearningWorldGame {
         ${instruction ? `<p class="text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
       </div>`;
-    this.container.querySelector('#learning-back')?.addEventListener('click', () => this.onBack());
+    this.container.querySelector('#learning-back')?.addEventListener('click', () => {
+      this.clearPending();
+      this.onBack();
+    });
   }
 
   nextRound() {
+    if (this.completed) return;
     this.round += 1;
-    if (this.round >= 5) {
-      this.finish();
-    } else {
+    if (this.round >= 5) this.finish();
+    else {
+      this.roundLocked = false;
+      this.discoveryTouched.clear();
       this.renderRound();
     }
   }
 
+  scheduleNext(delay = 650) {
+    if (this.completed || this.roundLocked) return;
+    this.roundLocked = true;
+    this.advanceTimer = window.setTimeout(() => {
+      this.advanceTimer = null;
+      this.roundLocked = false;
+      this.nextRound();
+    }, delay);
+  }
+
   renderRound() {
     if (this.round >= 5) return this.finish();
+    this.roundLocked = false;
     const renderers = {
-      'discover-animals': () => this.renderDiscover('🐾 Descobrir Animais', 'Toque em um animal para descobrir e ouvir.', true),
-      'discover-colors': () => this.renderDiscover('🎨 Descobrir Cores', 'Toque em uma cor para descobrir.', false),
+      'discover-animals': () => this.renderDiscover('🐾 Descobrir Animais', 'Toque nos animais para ouvir. Quando quiser, toque em Continuar.', true),
+      'discover-colors': () => this.renderDiscover('🎨 Descobrir Cores', 'Toque nas cores para ouvir o nome. Depois, toque em Continuar.', true),
       'find-color': () => this.renderFindColor(),
       'find-animal': () => this.renderFindAnimal(false),
       'sound-guess': () => this.renderFindAnimal(true),
@@ -112,8 +141,8 @@ export class LearningWorldGame {
       opposites: () => this.renderOpposites(),
       rhythm: () => this.renderRhythm(),
       'guided-movement': () => this.renderMovement(),
-      'baby-discover': () => this.renderDiscover('🌱 Descobertas do Bebê', 'Toque para descobrir. Não há respostas certas ou erradas.', true),
-      'baby-colors': () => this.renderDiscover('🌈 Cores para Descobrir', 'Toque em uma cor e observe.', false),
+      'baby-discover': () => this.renderDiscover('🌱 Descobertas do Bebê', 'Toque para descobrir. Não há respostas certas ou erradas. Toque em Continuar quando quiser.', true),
+      'baby-colors': () => this.renderDiscover('🌈 Cores para Descobrir', 'Toque em uma cor para ouvir. Depois, toque em Continuar.', true),
       vocabulary: () => this.renderVocabulary(),
       'story-interactive': () => this.renderStory(),
       'music-rhythm': () => this.renderMusic(),
@@ -124,22 +153,38 @@ export class LearningWorldGame {
 
   renderDiscover(title, instruction, withAudio) {
     const pool = this.shuffle(this.items).slice(0, Math.min(4, this.items.length));
+    this.discoveryTouched.clear();
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <div class="grid grid-cols-2 gap-4">
           ${pool.map((item) => `
-            <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target">
+            <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target transition">
               <span class="text-6xl block">${item.icon || '🎨'}</span>
               <span class="font-black text-sky-800">${this.escape(item.label)}</span>
             </button>`).join('')}
         </div>
+        <button id="discover-next" class="mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
       </div>`, instruction);
+
+    const next = this.container.querySelector('#discover-next');
     this.container.querySelectorAll('[data-discover]').forEach((button) => button.addEventListener('click', () => {
       const item = pool.find((entry) => entry.id === button.dataset.discover);
-      if (!item) return;
-      this.speak(item.sound ? `${item.label}. ${item.sound}` : item.label, withAudio ? item.audio : null);
-      this.nextRound();
+      if (!item || this.completed) return;
+      this.discoveryTouched.add(item.id);
+      button.classList.add('border-emerald-400', 'bg-emerald-50');
+      const spoken = item.sound ? `${item.label}. ${item.sound}` : item.label;
+      this.speak(spoken, withAudio ? item.audio : null);
+      if (next) {
+        next.disabled = false;
+        next.classList.remove('opacity-50');
+      }
     }));
+    next?.addEventListener('click', () => {
+      if (!this.discoveryTouched.size || this.roundLocked) return;
+      this.score += 1;
+      this.speak('Muito bem!');
+      this.scheduleNext(700);
+    });
   }
 
   renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Vamos tentar novamente!') {
@@ -148,24 +193,36 @@ export class LearningWorldGame {
         <p class="text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           ${options.map((option) => `
-            <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target">
+            <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${option.icon || '✨'}</span>
               <span class="font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
             </button>`).join('')}
         </div>
-      </div>`);
-    if (audio) this.speak(prompt, audio);
-    else this.speak(prompt);
+      </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.');
+    this.speak(prompt, audio);
+    this.bindChoice(correctId, success, retry, options);
+  }
+
+  bindChoice(correctId, success, retry, options = []) {
     this.container.querySelectorAll('.learning-option').forEach((button) => button.addEventListener('click', () => {
-      if (button.dataset.answer === String(correctId)) {
+      if (this.roundLocked || this.completed) return;
+      const correct = button.dataset.answer === String(correctId);
+      if (correct) {
+        this.roundLocked = true;
         this.score += 1;
         button.classList.add('border-emerald-400', 'bg-emerald-50');
-        this.speak(success);
-        setTimeout(() => this.nextRound(), 450);
+        const option = options.find((item) => String(item.id) === String(correctId));
+        if (option?.audio) this.speak(option.label, option.audio);
+        else this.speak(success);
+        this.advanceTimer = window.setTimeout(() => {
+          this.advanceTimer = null;
+          this.roundLocked = false;
+          this.nextRound();
+        }, option?.audio ? 900 : 600);
       } else {
         button.classList.add('border-rose-300', 'animate-shake');
         this.speak(retry);
-        setTimeout(() => button.classList.remove('border-rose-300', 'animate-shake'), 450);
+        window.setTimeout(() => button.classList.remove('border-rose-300', 'animate-shake'), 450);
       }
     }));
   }
@@ -173,7 +230,7 @@ export class LearningWorldGame {
   renderFindColor() {
     const pool = this.shuffle(this.items).slice(0, 4);
     const target = pool[Math.floor(Math.random() * pool.length)];
-    this.renderChoice('🎨 Encontre a Cor', `Onde está a cor ${target.label}?`, pool, target.id);
+    this.renderChoice('🎨 Encontre a Cor', `Onde está a cor ${target.label}?`, pool, target.id, target.audio);
     pool.forEach((item) => {
       const button = this.container.querySelector(`[data-answer="${CSS.escape(item.id)}"]`);
       if (button) {
@@ -188,7 +245,7 @@ export class LearningWorldGame {
     const pool = this.shuffle(this.items).slice(0, 4);
     const target = pool[Math.floor(Math.random() * pool.length)];
     const prompt = soundMode ? 'Ouça com atenção. Quem fez esse som?' : `Onde está o ${target.label}?`;
-    this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, soundMode ? target.audio : null);
+    this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, soundMode ? target.audio : null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
   }
 
   renderShape() {
@@ -201,14 +258,12 @@ export class LearningWorldGame {
     const base = this.shuffle(this.items).slice(0, 3);
     const odd = this.shuffle(this.items.filter((item) => !base.some((b) => b.id === item.id)))[0];
     if (!odd) return this.renderChoice('🔎 Qual é Diferente?', 'Qual é diferente?', this.shuffle(this.items).slice(0, 4), this.items[0]?.id);
-    const options = this.shuffle([...base, odd]);
-    this.renderChoice('🔎 Qual é Diferente?', 'Qual é diferente dos outros?', options, odd.id);
+    this.renderChoice('🔎 Qual é Diferente?', 'Qual é diferente dos outros?', this.shuffle([...base, odd]), odd.id);
   }
 
   renderSize() {
     const pool = this.shuffle(this.items).slice(0, 4);
-    const big = pool.find((item) => item.size === 'grande');
-    const target = big || pool[0];
+    const target = pool.find((item) => item.size === 'grande') || pool[0];
     this.renderChoice('📏 Grande e Pequeno', 'Toque no que é grande.', pool, target.id);
   }
 
@@ -223,117 +278,84 @@ export class LearningWorldGame {
         <div class="flex flex-wrap justify-center gap-2 text-5xl bg-amber-50 rounded-3xl p-6 mb-5">${Array.from({ length: target }, () => `<span>${icon}</span>`).join('')}</div>
         <div class="grid grid-cols-4 gap-3">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Conte os objetos e escolha a quantidade.');
-    this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!');
+    this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
 
   renderNumberMatch() {
     const target = Math.floor(Math.random() * 5) + 1;
-    const icon = '🍓';
     const options = this.shuffle([1, 2, 3, 4, 5]).map((number) => ({ id: String(number), label: String(number) }));
     this.shell('🔢 Número e Quantidade', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="text-6xl mb-4">${Array.from({ length: target }, () => icon).join(' ')}</div>
+        <div class="text-6xl mb-4">${Array.from({ length: target }, () => '🍓').join(' ')}</div>
         <p class="text-xl font-black text-indigo-700 mb-4">Qual número combina com essa quantidade?</p>
         <div class="grid grid-cols-5 gap-2">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Observe a quantidade e escolha o número.');
-    this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!');
-  }
-
-  bindChoice(correctId, success, retry) {
-    this.container.querySelectorAll('.learning-option').forEach((button) => button.addEventListener('click', () => {
-      if (button.dataset.answer === String(correctId)) {
-        this.score += 1;
-        button.classList.add('border-emerald-400', 'bg-emerald-50');
-        this.speak(success);
-        setTimeout(() => this.nextRound(), 450);
-      } else {
-        button.classList.add('border-rose-300', 'animate-shake');
-        this.speak(retry);
-        setTimeout(() => button.classList.remove('border-rose-300', 'animate-shake'), 450);
-      }
-    }));
+    this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
 
   renderSyllables() {
     const item = this.shuffle(this.items)[0];
     const correct = item.parts.length;
-    const choices = this.shuffle([...new Set([correct, 1, 2, 3])]).slice(0, 3);
+    const choices = this.shuffle([...new Set([correct, 1, 2, 3])]).slice(0, 3).map((count) => ({ id: String(count), label: `${count} ${count === 1 ? 'parte' : 'partes'}` }));
     this.shell('🗣️ Brincar com Sílabas', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="text-7xl mb-3">${item.icon}</div>
-        <p class="text-3xl font-black text-indigo-700 mb-2">${this.escape(item.label)}</p>
+        <div class="text-7xl mb-3">${item.icon}</div><p class="text-3xl font-black text-indigo-700 mb-2">${this.escape(item.label)}</p>
         <p class="text-slate-600 mb-4">Vamos ouvir e separar em partes.</p>
         <div class="flex justify-center flex-wrap gap-2 mb-5">${item.parts.map((part) => `<span class="bg-violet-100 text-violet-800 font-black px-4 py-2 rounded-xl">${part}</span>`).join('')}</div>
-        <div class="grid grid-cols-3 gap-3">${choices.map((count) => `<button data-answer="${count}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${count} ${count === 1 ? 'parte' : 'partes'}</button>`).join('')}</div>
+        <div class="grid grid-cols-3 gap-3">${choices.map((c) => `<button data-answer="${c.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${c.label}</button>`).join('')}</div>
         <button id="speak-word" class="mt-4 bg-emerald-500 text-white font-black px-6 py-3 rounded-2xl touch-target">🔊 Ouvir palavra</button>
       </div>`, 'Bata palmas ou conte as partes da palavra.');
-    this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label));
-    this.bindChoice(String(correct), `${item.parts.join(' - ')}. Muito bem!`, 'Vamos ouvir mais uma vez.');
+    this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label, item.audio));
+    this.bindChoice(String(correct), `${item.parts.join(' - ')}. Muito bem!`, 'Vamos ouvir mais uma vez.', choices);
+    this.speak(item.label, item.audio);
   }
 
   renderSequence() {
     const sequence = this.shuffle(this.items)[0];
     const answer = sequence.answer;
-    const distractors = ['🟢', '🟣', '🟠', '⬜', '⭐'].filter((item) => item !== answer);
-    const choices = this.shuffle([answer, ...distractors]).slice(0, 4);
+    const choices = this.shuffle([answer, ...['🟢', '🟣', '🟠', '⬜', '⭐'].filter((x) => x !== answer)]).slice(0, 4).map((x) => ({ id: x, label: x, icon: x }));
     this.shell('🔁 Complete a Sequência', `
-      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <p class="text-xl font-black text-indigo-700 mb-4">O que vem depois?</p>
-        <div class="flex justify-center gap-3 text-5xl bg-sky-50 rounded-3xl p-6 mb-5">${sequence.items.map((item) => `<span>${item}</span>`).join('')}</div>
-        <div class="grid grid-cols-4 gap-3">${choices.map((item) => `<button data-answer="${this.escape(item)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-4xl shadow touch-target">${item}</button>`).join('')}</div>
-      </div>`, 'Observe o padrão e escolha o que vem depois.');
-    this.bindChoice(answer, 'Muito bem! Você descobriu o padrão.', 'Observe a sequência mais uma vez.');
+      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><p class="text-xl font-black text-indigo-700 mb-4">O que vem depois?</p>
+      <div class="flex justify-center gap-3 text-5xl bg-sky-50 rounded-3xl p-6 mb-5">${sequence.items.map((x) => `<span>${x}</span>`).join('')}</div>
+      <div class="grid grid-cols-4 gap-3">${choices.map((c) => `<button data-answer="${this.escape(c.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-4xl shadow touch-target">${c.icon}</button>`).join('')}</div></div>`, 'Observe o padrão e escolha o que vem depois.');
+    this.bindChoice(answer, 'Muito bem! Você descobriu o padrão.', 'Observe a sequência mais uma vez.', choices);
   }
 
   renderAttention() {
-    if (!this.items.length) return this.renderDiscover('👂 Atenção Auditiva', 'Vamos ouvir!', false);
+    if (!this.items.length) return this.renderDiscover('👂 Atenção Auditiva', 'Vamos ouvir e descobrir!', true);
     const target = this.items[Math.floor(Math.random() * this.items.length)];
     const pool = this.shuffle(this.items).slice(0, 4);
     if (!pool.some((item) => item.id === target.id)) pool[0] = target;
     this.shell('👂 Ouça e Encontre', `
-      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="text-7xl mb-5">👂</div>
-        <p class="text-lg font-bold text-slate-700 mb-5">Ouça com atenção e encontre o que você ouviu.</p>
-        <button id="listen-again" class="bg-indigo-600 text-white font-black px-7 py-4 rounded-2xl shadow touch-target mb-5">🔊 Ouvir novamente</button>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">${pool.map((item) => `<button data-answer="${this.escape(item.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[140px] shadow touch-target"><span class="text-6xl">${item.icon}</span><span class="font-black">${this.escape(item.label)}</span></button>`).join('')}</div>
-      </div>`);
+      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-5">👂</div>
+      <p class="text-lg font-bold text-slate-700 mb-5">Ouça com atenção e encontre o que você ouviu.</p>
+      <button id="listen-again" class="bg-indigo-600 text-white font-black px-7 py-4 rounded-2xl shadow touch-target mb-5">🔊 Ouvir novamente</button>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">${pool.map((item) => `<button data-answer="${this.escape(item.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[140px] shadow touch-target"><span class="text-6xl">${item.icon}</span><span class="font-black">${this.escape(item.label)}</span></button>`).join('')}</div></div>`);
     this.container.querySelector('#listen-again').addEventListener('click', () => this.speak(target.label, target.audio));
-    this.bindChoice(target.id, 'Muito bem! Você encontrou.', 'Vamos ouvir mais uma vez.');
+    this.bindChoice(target.id, 'Muito bem! Você encontrou.', 'Vamos ouvir mais uma vez.', pool);
     this.speak(target.label, target.audio);
   }
-
-
 
   renderVocabulary() {
     const target = this.items[Math.floor(Math.random() * this.items.length)];
     const pool = this.shuffle(this.items).slice(0, 4);
     if (!pool.some((x) => x.id === target.id)) pool[0] = target;
-    this.renderChoice('🗣️ Palavras do Dia a Dia', `Onde está ${target.label.toLowerCase()}?`, pool, target.id);
+    this.renderChoice('🗣️ Palavras do Dia a Dia', `Onde está ${target.label.toLowerCase()}?`, pool, target.id, null, 'Muito bem!', 'Vamos tentar novamente.');
   }
 
   renderStory() {
     const story = this.items[this.round % this.items.length];
     const scene = story.scenes[this.round % story.scenes.length];
-    this.shell('📖 História Interativa', `
-      <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center">
-        <div class="text-8xl mb-4">${scene}</div>
-        <h3 class="text-2xl font-black text-indigo-700 mb-2">${this.escape(story.title)}</h3>
-        <p class="text-slate-600 mb-5">O que aconteceu nesta parte?</p>
-        <button id="story-next" class="bg-violet-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">Continuar ▶️</button>
-      </div>`, 'Vamos descobrir a história juntos.');
-    this.container.querySelector('#story-next').addEventListener('click', () => { this.score += 1; this.nextRound(); });
+    this.shell('📖 História Interativa', `<div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><div class="text-8xl mb-4">${scene}</div><h3 class="text-2xl font-black text-indigo-700 mb-2">${this.escape(story.title)}</h3><p class="text-slate-600 mb-5">O que aconteceu nesta parte?</p><button id="story-next" class="bg-violet-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">Continuar ▶️</button></div>`, 'Vamos descobrir a história juntos.');
+    this.container.querySelector('#story-next').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.scheduleNext(500); });
+    this.speak(story.words?.[this.round % story.words.length] || story.title);
   }
 
   renderMusic() {
     const pattern = this.items[this.round % this.items.length];
-    this.shell('🎵 Música e Ritmo', `
-      <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center">
-        <div class="text-7xl mb-4">${pattern.pattern.join(' ')}</div>
-        <h3 class="text-2xl font-black text-indigo-700">${this.escape(pattern.label)}</h3>
-        <p class="text-slate-600 my-4">Faça o ritmo junto comigo.</p>
-        <button id="music-done" class="bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">👏 Fiz o ritmo!</button>
-      </div>`, 'Observe, imite e brinque com o ritmo.');
-    this.container.querySelector('#music-done').addEventListener('click', () => { this.score += 1; this.speak('Muito bem!'); setTimeout(() => this.nextRound(), 400); });
+    this.shell('🎵 Música e Ritmo', `<div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><div class="text-7xl mb-4">${pattern.pattern.join(' ')}</div><h3 class="text-2xl font-black text-indigo-700">${this.escape(pattern.label)}</h3><p class="text-slate-600 my-4">Faça o ritmo junto comigo.</p><button id="music-done" class="bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">👏 Fiz o ritmo!</button></div>`, 'Observe, imite e brinque com o ritmo.');
+    this.container.querySelector('#music-done').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.speak('Muito bem!'); this.scheduleNext(650); });
+    this.speak(pattern.label);
   }
 
   renderSortGroups() {
@@ -379,46 +401,25 @@ export class LearningWorldGame {
 
   renderRhythm() {
     const item = this.items[this.round % this.items.length];
-    this.shell('🎵 Brinque com o Ritmo', `
-      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="text-7xl mb-4">${item.pattern.join(' ')}</div>
-        <p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p>
-        <div class="grid grid-cols-2 gap-3">${this.shuffle(this.items).map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.pattern.join(' ')}</button>`).join('')}</div>
-      </div>`, 'Você pode bater palmas junto.');
-    this.bindChoice(item.id, 'Muito bem! Ritmo combinado.', 'Vamos observar de novo.');
+    const options = this.shuffle(this.items).map((entry) => ({ id: entry.id, label: entry.label, icon: entry.pattern.join(' ') }));
+    this.shell('🎵 Brinque com o Ritmo', `<div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern.join(' ')}</div><p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p><div class="grid grid-cols-2 gap-3">${options.map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.icon}</button>`).join('')}</div></div>`, 'Você pode bater palmas junto.');
+    this.bindChoice(item.id, 'Muito bem! Ritmo combinado.', 'Vamos observar de novo.', options);
   }
 
   renderMovement() {
     const item = this.items[Math.floor(Math.random() * this.items.length)];
-    this.shell('🏃 Desafio do Movimento', `
-      <div class="bg-white/95 rounded-3xl p-8 shadow-xl text-center">
-        <div class="text-8xl mb-5">${item.icon}</div>
-        <h3 class="text-3xl font-black text-indigo-700 mb-3">${this.escape(item.label)}</h3>
-        <p class="text-slate-600 mb-6">Faça o movimento e toque quando terminar.</p>
-        <button id="movement-done" class="bg-emerald-500 text-white font-black text-xl px-8 py-5 rounded-3xl shadow-lg touch-target">✅ Fiz!</button>
-      </div>`, 'Vamos brincar juntos!');
-    this.container.querySelector('#movement-done').addEventListener('click', () => {
-      this.score += 1; this.speak('Muito bem!'); setTimeout(() => this.nextRound(), 500);
-    });
+    this.shell('🏃 Desafio do Movimento', `<div class="bg-white/95 rounded-3xl p-8 shadow-xl text-center"><div class="text-8xl mb-5">${item.icon}</div><h3 class="text-3xl font-black text-indigo-700 mb-3">${this.escape(item.label)}</h3><p class="text-slate-600 mb-6">Faça o movimento e toque quando terminar.</p><button id="movement-done" class="bg-emerald-500 text-white font-black text-xl px-8 py-5 rounded-3xl shadow-lg touch-target">✅ Fiz!</button></div>`, 'Vamos brincar juntos!');
+    this.container.querySelector('#movement-done').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.speak('Muito bem!'); this.scheduleNext(650); });
     this.speak(item.label);
   }
 
   finish() {
     if (this.completed) return;
     this.completed = true;
+    this.clearPending();
     this.speak('Muito bem! Você terminou a brincadeira!');
     this.onComplete?.({ score: this.score, rounds: 5 });
-    this.container.innerHTML = `
-      <div class="w-full max-w-md bg-white rounded-[2rem] p-8 shadow-2xl text-center my-auto">
-        <div class="text-7xl mb-4">🌟</div>
-        <h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2>
-        <p class="text-slate-600 mt-2 mb-2">Você completou esta brincadeira.</p>
-        <p class="text-indigo-600 font-black mb-6">${this.score} de 5 respostas corretas</p>
-        <div class="flex gap-3">
-          <button id="learning-menu" class="flex-1 bg-slate-100 text-slate-700 font-black py-4 rounded-2xl touch-target">Menu</button>
-          <button id="learning-again" class="flex-1 bg-emerald-500 text-white font-black py-4 rounded-2xl touch-target">Jogar</button>
-        </div>
-      </div>`;
+    this.container.innerHTML = `<div class="w-full max-w-md bg-white rounded-[2rem] p-8 shadow-2xl text-center my-auto"><div class="text-7xl mb-4">🌟</div><h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2><p class="text-slate-600 mt-2 mb-2">Você completou esta brincadeira.</p><p class="text-indigo-600 font-black mb-6">${this.score} de 5 respostas corretas</p><div class="flex gap-3"><button id="learning-menu" class="flex-1 bg-slate-100 text-slate-700 font-black py-4 rounded-2xl touch-target">Menu</button><button id="learning-again" class="flex-1 bg-emerald-500 text-white font-black py-4 rounded-2xl touch-target">Jogar</button></div></div>`;
     this.container.querySelector('#learning-menu').addEventListener('click', () => this.onBack());
     this.container.querySelector('#learning-again').addEventListener('click', () => this.start(this.mode, this.options));
   }
