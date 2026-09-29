@@ -268,10 +268,18 @@ class App {
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
+    const ageExperience = getAgeExperienceConfig(this.currentAge || '2-3y', 1);
+    const journeyStages = [
+      ['🌱','Descobrir','Explorar livremente'],
+      ['✨','Experimentar','Tocar, ouvir e brincar'],
+      ['🧭','Praticar','Variar propostas quando fizer sentido'],
+      ['🌟','Avançar','Encontrar novos desafios'],
+      ['🌈','Celebrar','Perceber o caminho percorrido']
+    ];
     this.container.innerHTML = `
       <div class="w-full max-w-4xl my-auto flex flex-col gap-5 page-enter">
         <div class="page-toolbar"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="journey-map bg-white/95 rounded-[2rem] p-5 shadow-xl border border-sky-100"><div class="flex items-center justify-between gap-3 mb-4"><div><strong class="text-indigo-800">🗺️ Caminho de descobertas</strong><p class="text-xs text-slate-500 mt-1">${this.escape(ageExperience.label)} · ${this.escape(ageExperience.ageLabel)}</p></div><span class="text-2xl">🚀</span></div><div class="grid grid-cols-2 md:grid-cols-5 gap-2">${journeyStages.map(([icon,title,desc],index)=>`<div class="journey-step ${index===1 ? 'active' : ''}"><span class="journey-step-icon">${icon}</span><strong>${title}</strong><small>${desc}</small></div>`).join('')}</div></div><div class="grid grid-cols-2 md:grid-cols-5 gap-3">
           <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
@@ -438,7 +446,7 @@ class App {
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
           <p class="text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
-          <div class="grid grid-cols-2 gap-4">${cards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
+          <div class="grid grid-cols-2 gap-4">${cards.slice(0, optionLimit).map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
