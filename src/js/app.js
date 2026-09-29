@@ -48,7 +48,7 @@ class App {
     this.updateScoreUI();
   }
 
-  evaluateRewards(activityId) { return this.core.evaluateRewards ? this.core.evaluateRewards(activityId) : this.family.evaluateRewards?.(activityId); }
+  evaluateRewards(activityId) { return this.family.evaluateRewards(activityId); }
 
   openParentalGate() { return this.family.openParentalGate(); }
 
