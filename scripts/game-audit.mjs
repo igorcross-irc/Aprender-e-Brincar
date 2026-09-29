@@ -12,7 +12,7 @@ const learning = read('src/js/games/learning-world.js');
 const audio = read('src/js/engine/audio-engine.js');
 
 // Detecta corrupção comum de geração de código: \\n literal fora de strings/template literals.
-const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js'];
+const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js', 'src/js/game-registry.js', 'src/js/games/independent/odd-one-out.js', 'src/js/games/independent/number-order.js', 'src/js/games/independent/color-hunt.js', 'src/js/games/independent/rhythm-copy.js', 'src/js/games/independent/sound-sequence.js'];
 for (const file of sourceFiles) {
   const content = read(file);
   if (content.includes(');\\n')) fail(`escape literal suspeito em ${file}`);
@@ -40,6 +40,9 @@ for (const id of catalogIds) {
 }
 if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
 if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
+for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
+  if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score:')) fail(`jogo independente sem contrato de resultado: ${file}`);
+}
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
 if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
 const discoverBlock = learning.match(/renderDiscover\([\s\S]*?\n  \}\n\n  renderChoice/);
