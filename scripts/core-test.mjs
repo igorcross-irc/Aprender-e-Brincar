@@ -3,6 +3,8 @@ import { normalizeExperienceResult, getAccuracy } from '../src/core/experience-r
 import { LearningEngine } from '../src/core/learning-engine.js';
 import { SkillProgress } from '../src/core/skill-progress.js';
 import { getAgeExperienceConfig } from '../src/core/age-experience-policy.js';
+import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experience-health.js';
+import { getContentReadiness, getContentSummary } from '../src/core/content-readiness.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -66,4 +68,14 @@ assert.equal(skills['memória'].evaluations, 2);
 assert.equal(skills['memória'].attempts, 20);
 assert.equal(skillProgress.weakest(1)[0][0], 'memória');
 
-console.log('CORE PASS — contrato, adaptação, idade e agregação por habilidade');
+const defaults = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0 } };
+const repaired = sanitizeProgressState({ stars: -4, activities: { bad: null, ok: { attempts: 4, correct: 9, mastery: 9 } }, sessions: { total: -2 } }, defaults);
+assert.equal(repaired.stars, 0);
+assert.equal(repaired.activities.bad, undefined);
+assert.equal(repaired.activities.ok.correct, 4);
+assert.equal(repaired.activities.ok.mastery, 5);
+assert.equal(isProgressStateUsable(repaired), true);
+assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
+assert.equal(getContentReadiness('canvas').ready, true);
+assert.ok(getContentSummary().total >= 1);
+console.log('CORE PASS — contrato, adaptação, idade, conteúdo e resiliência');
