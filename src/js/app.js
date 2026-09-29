@@ -445,12 +445,13 @@ class App {
       'guided-movement':['🏃','Desafio do Movimento','Siga o comando e faça junto.',['Bata palmas','Pule','Gire','Dê tchau']]
     };
     const [icon,title,text,cards]=guided[gameId] || ['✨','Nova Brincadeira','Explore e descubra!',['Vamos brincar']];
+    const visibleCards = cards.slice(0, optionLimit);
     this.container.innerHTML=`
       <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
           <p class="text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
-          <div class="grid grid-cols-2 gap-4">${cards.slice(0, optionLimit).map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
+          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
@@ -458,7 +459,7 @@ class App {
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{
       if(button.dataset.done==='1') return;
       button.dataset.done='1'; touched++; button.classList.add('border-emerald-400','bg-emerald-50'); this.audio.play(null,button.textContent.trim());
-      if(touched>=cards.length){onWin({score:touched,rounds:cards.length});}
+      if(touched>=visibleCards.length){onWin({score:touched,rounds:visibleCards.length});}
     }));
   }
 }
