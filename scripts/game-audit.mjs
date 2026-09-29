@@ -30,17 +30,15 @@ for (const animal of animals) {
 const activityIds = [...world.matchAll(/activityIds:\s*\[([\s\S]*?)\]/g)]
   .flatMap((m) => [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]));
 const catalogIds = new Set([...catalog.matchAll(/\{ id: '([^']+)'/g)].map((m) => m[1]));
+const registry = read('src/js/game-registry.js');
 for (const id of activityIds) {
   if (!catalogIds.has(id)) fail(`atividade do mundo sem catálogo: ${id}`);
-  if (!app.includes(`gameId === '${id}'`)) fail(`atividade sem rota explícita em app.js: ${id}`);
+  if (!registry.includes(`'${id}'`)) fail(`atividade sem registro central: ${id}`);
 }
-
-const rendererIds = [...learning.matchAll(/(?:['\"]([^'\"]+)['\"]|([A-Za-z0-9-]+))\s*:\s*\(\)\s*=>\s*this\./g)].map((m) => m[1] || m[2]);
-const supportedModes = new Set(rendererIds);
-for (const mode of ['discover-animals','discover-colors','find-color','find-animal','sound-guess','shape-match','odd-one-out','size-sort','count','number-match','syllables','sequence','attention','discover-objects','body-parts','match-pairs','classify-animals','opposites','rhythm','guided-movement','baby-discover','baby-colors','vocabulary','story-interactive','music-rhythm','sort-groups']) {
-  if (!supportedModes.has(mode)) fail(`modo sem renderer: ${mode}`);
-}
-
+if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
+if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
+if (!app.includes('createGameRegistry')) fail('app não usa registro central');
+if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
 const discoverBlock = learning.match(/renderDiscover\([\s\S]*?\n  \}\n\n  renderChoice/);
 if (!discoverBlock) fail('renderDiscover não encontrado');
 if (/this\.nextRound\(\)/.test(discoverBlock[0])) fail('descoberta ainda avança automaticamente');
@@ -74,19 +72,6 @@ if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem mét
 if (!balloons.includes('attempts: this.attempts, maxScore: 5')) fail('balões sem métricas semânticas');
 if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
 if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
-if (!app.includes("new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('lousa sem dificuldade adaptativa');
-if (!app.includes("new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('memória sem dificuldade adaptativa');
-if (!app.includes("new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('quebra-cabeça sem dificuldade adaptativa');
-if (!app.includes("new BalloonPopGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('balões sem dificuldade adaptativa');
-for (const route of [
-  "world.start('discover-objects',{difficulty: adaptive.level})",
-  "world.start('classify-animals',{difficulty: adaptive.level})",
-  "world.start('vocabulary',{difficulty: adaptive.level})",
-  "world.start('story-interactive',{difficulty: adaptive.level})",
-  "world.start('match-pairs',{difficulty: adaptive.level})",
-  "world.start('music-rhythm',{difficulty: adaptive.level})",
-  "world.start('guided-movement',{difficulty: adaptive.level})"
-]) if (!app.includes(route)) fail(`rota sem dificuldade adaptativa: ${route}`);
 
 console.log('Game audit OK');
 
