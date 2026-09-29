@@ -49,7 +49,7 @@ export class LearningSession {
     const score = Number(result.score ?? 0);
     const rounds = Math.max(1, Number(result.rounds) || 5);
     const progress = this.progress.complete(activityId, { score, rounds, mode: result.mode });
-    if (this.reward) this.reward();
+    if (this.reward) this.reward(activityId);
     this.active.completed.push(activityId);
     this.active.stars += 1;
     this.persist();
