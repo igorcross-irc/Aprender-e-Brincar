@@ -188,3 +188,9 @@ button:focus-visible, input:focus-visible {
 #game-container > *{flex-shrink:0}
 @media (min-width:768px){#game-container{scrollbar-width:auto;scroll-behavior:smooth}}
 @media (prefers-reduced-motion:reduce){#game-container{scroll-behavior:auto}}
+
+.journey-rail{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem}
+.journey-node{position:relative;min-height:7.5rem;padding:.7rem .5rem;border-radius:1.25rem;background:rgba(255,255,255,.72);border:2px solid rgba(226,232,240,.9);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;opacity:.62;transition:transform .2s ease,opacity .2s ease,border-color .2s ease,box-shadow .2s ease}
+.journey-node span{font-size:1.65rem;line-height:1}.journey-node strong{font-size:.72rem;color:#475569}.journey-node small{font-size:.58rem;line-height:1.25;color:#64748b}
+.journey-node.visited{opacity:.86;border-color:#c7d2fe}.journey-node.active{opacity:1;border-color:#818cf8;background:#eef2ff;box-shadow:0 10px 24px -16px rgba(79,70,229,.7);transform:translateY(-2px)}
+@media(max-width:700px){.journey-rail{grid-template-columns:1fr 1fr}.journey-node{min-height:6.5rem}.journey-node:last-child{grid-column:1/-1}}
