@@ -9,6 +9,7 @@ import { createGameRegistry } from './game-registry.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { rewardCatalog } from '../content/reward-catalog.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
+import { getContentReadiness } from '../core/content-readiness.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -266,6 +267,7 @@ class App {
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
+    const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
     const ageExperience = getAgeExperienceConfig(this.currentAge || '2-3y', 1);
@@ -296,7 +298,13 @@ class App {
           ${weakest.map(([skill,data]) => { const pct=Math.min(100,Math.round((Number(data.mastery||0)/5)*100)); return `<div class="bg-white rounded-2xl p-3"><div class="flex justify-between gap-3 text-xs font-bold text-violet-700"><span>${this.escape(this.core.learning.labelDomain(skill))}</span><span>${data.mastery.toFixed(1)}/5</span></div><div class="progress-track mt-2"><span style="width:${pct}%"></span></div></div>`; }).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
         </div></div>
         <div class="bg-white rounded-[2rem] p-5 shadow-lg border border-indigo-100"><div class="flex items-center justify-between gap-3"><div><h3 class="text-xl font-black text-indigo-800">🧭 Perfil de aprendizagem</h3><p class="text-sm text-slate-500 mt-1">Uma leitura simples do caminho percorrido, sem notas clínicas.</p></div><span class="bg-indigo-50 text-indigo-700 font-black px-3 py-2 rounded-full text-xs">${profile.exploration} explorações</span></div><div class="mt-3 bg-indigo-50 rounded-2xl p-3 text-xs text-indigo-700">${improving ? `📈 ${improving} área(s) mostram melhora recente.` : "🌱 O perfil ainda está construindo uma linha de evolução."}</div><div class="grid md:grid-cols-2 gap-3 mt-4"><div class="bg-emerald-50 rounded-2xl p-4"><strong class="text-emerald-800">✨ Habilidades mais presentes</strong><div class="domain-list mt-2">${profile.strengths.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div><div class="bg-violet-50 rounded-2xl p-4"><strong class="text-violet-800">🌱 Áreas para variar</strong><div class="domain-list mt-2">${profile.areas.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div></div></div>
-        <div class="journey-highlight bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="grid gap-3 mt-3">
+        <div class="journey-highlight bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="journey-rail mt-4">\${[
+['🌱','Descobrir','Explorar livremente'],
+['✨','Experimentar','Tocar, ouvir e brincar'],
+['🧭','Praticar','Variar propostas quando fizer sentido'],
+['🌟','Avançar','Encontrar novos desafios'],
+['🌈','Celebrar','Perceber o caminho percorrido']
+].map(([icon,title,desc],i)=>\`<div class="journey-node \${i+1===journeyStage?'active':''} \${i+1<journeyStage?'visited':''}"><span>\${icon}</span><strong>\${title}</strong><small>\${desc}</small></div>\`).join('')}</div><div class="grid gap-3 mt-3">
           ${next.map(({activity,reason}) => `<button data-journey-next="${activity.id}" class="bg-white rounded-2xl p-4 text-left border border-sky-100 shadow-sm touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${this.escape(reason)}</small></button>`).join('') || '<span class="text-sm text-slate-500">Escolha livremente qualquer mundo para continuar.</span>'}
         </div></div>
       </div>`;
@@ -365,9 +373,11 @@ class App {
     };
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);
+    const content = getContentReadiness(gameId);
     const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
+    if (activity?.title) this.audio.preload([this.audio.inferAudioName?.(activity.title)].filter(Boolean));
     try {
-      const result = this.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack });
+      const result = this.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content });
       if (result?.guided) return this.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
       return result;
     } catch (error) {
