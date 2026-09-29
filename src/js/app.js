@@ -65,5 +65,4 @@ class App {
     }
     document.getElementById('btn-settings')?.addEventListener('click', () => this.openParentalGate());
   }
-  }
 }
