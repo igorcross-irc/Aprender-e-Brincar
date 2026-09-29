@@ -34,7 +34,7 @@ const app = readFileSync('src/js/app.js', 'utf8');
 const html = readFileSync('index.html', 'utf8');
 const sw = readFileSync('public/sw.js', 'utf8');
 
-for (const token of ['registerPWA', 'AppCore', 'activityCatalog', 'escapeHtml', 'renderAgeSelection', 'renderWorldMap', 'renderJourney', 'launchGame']) {
+for (const token of ['registerPWA', 'AppCore', 'activityCatalog', 'escape', 'renderAgeSelection', 'renderWorldMap', 'renderJourney', 'launchGame']) {
   if (!app.includes(token)) throw new Error(`SMOKE FAIL — app.js sem ${token}`);
 }
 if (html.includes('cdn.tailwindcss.com')) throw new Error('SMOKE FAIL — Tailwind CDN ainda presente');
