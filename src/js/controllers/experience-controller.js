@@ -27,7 +27,7 @@ export class ExperienceController {
     if (activity?.audio) this.app.audio.preload([activity.audio]);
     try {
       const result = this.app.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content });
-      if (result?.guided) return this.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
+      if (result?.guided) return this.app.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
       return result;
     } catch (error) {
       console.error('[game-registry] Falha ao iniciar atividade', gameId, error);
