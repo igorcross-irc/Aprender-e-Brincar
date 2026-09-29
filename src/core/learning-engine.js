@@ -13,13 +13,15 @@ export class LearningEngine {
     const p=this.progress.getActivity(activity.id)||{}, mastery=Number(p.mastery||0), base=Number(activity.difficulty||1);
     let level=Math.max(1,Math.min(5,base+Math.floor(mastery/2)));
     const accuracy=p.accuracy==null?null:Number(p.accuracy);
-    if(accuracy!=null && accuracy<50) level=Math.max(1,level-1);
-    if(accuracy!=null && accuracy>=85) level=Math.min(5,level+1);
+    const recentAccuracy=p.recentAccuracy==null?accuracy:Number(p.recentAccuracy);
+    if(recentAccuracy!=null && recentAccuracy<50) level=Math.max(1,level-1);
+    if(recentAccuracy!=null && recentAccuracy>=85) level=Math.min(5,level+1);
     const recent= p.lastPlayedAt ? (Date.now()-new Date(p.lastPlayedAt).getTime())/86400000 : 999;
-    if(recent>14 && p.completions) level=Math.max(1,level-0); // mantém desafio conhecido após pausa, sem penalizar
-    return {level,label:['','Descoberta','Explorar','Desafio','Avançado','Especialista'][level],accuracy,mastery};
+    const stale = recent > 21 && Number(p.evaluationCount||0) > 0;
+    if(stale && recentAccuracy!=null && recentAccuracy<75) level=Math.max(1,level-1);
+    return {level,label:['','Descoberta','Explorar','Desafio','Avançado','Especialista'][level],accuracy,recentAccuracy,mastery,stale};
   }
-  recentIds(limit=6){ try{return JSON.parse(localStorage.getItem(this.historyKey)||'[]').slice(0,limit);}catch{return [];} }
+  recentIds(limit=6){ try{return JSON.parse(localStorage.getItem(this.historyKey)||'[]').filter(Boolean).slice(0,limit);}catch{return [];} }
   remember(activityId){ try{const ids=this.recentIds(12).filter(id=>id!==activityId); localStorage.setItem(this.historyKey,JSON.stringify([activityId,...ids].slice(0,12)));}catch{} }
   recommend(ageId,worldId,limit=3){
     const s=this.progress.snapshot(), recentIds=this.recentIds(5);
@@ -29,10 +31,12 @@ export class LearningEngine {
       const days=p?.lastPlayedAt?(Date.now()-new Date(p.lastPlayedAt).getTime())/86400000:999;
       const skillBoost=(activity.skills||[]).some(skill=>weakSkills.has(skill))?22:0;
       const accuracy=p?.accuracy==null?null:Number(p.accuracy);
-      const performanceBoost=accuracy!=null&&accuracy<60?18:accuracy!=null&&accuracy>=85?-8:0;
+      const recentAccuracy=p?.recentAccuracy==null?accuracy:Number(p.recentAccuracy);
+      const performanceBoost=recentAccuracy!=null&&recentAccuracy<60?18:recentAccuracy!=null&&recentAccuracy>=85?-8:0;
+      const recoveryBoost=recentAccuracy!=null&&accuracy!=null&&recentAccuracy>accuracy+10?8:0;
       const novelty=p?18:55;
-      const score=novelty+Math.min(days,30)+(5-mastery)*9+skillBoost+performanceBoost-Number(p?.completions||0)*2-(recentIds.includes(activity.id)?35:0);
-      const reason=!p?'Nova descoberta':accuracy!=null&&accuracy<60?'Vamos reforçar esta habilidade':mastery<3?'Vale praticar novamente':'Boa hora para variar';
+      const score=novelty+Math.min(days,30)+(5-mastery)*9+skillBoost+performanceBoost+recoveryBoost-Number(p?.completions||0)*2-(recentIds.includes(activity.id)?35:0);
+      const reason=!p?'Nova descoberta':recentAccuracy!=null&&recentAccuracy<60?'Vamos reforçar esta habilidade':recoveryBoost?'Você está evoluindo':'Boa hora para variar';
       return {activity,score,reason};
     }).sort((a,b)=>b.score-a.score).slice(0,limit);
   }
