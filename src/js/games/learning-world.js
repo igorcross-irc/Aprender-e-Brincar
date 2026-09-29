@@ -155,7 +155,9 @@ export class LearningWorldGame {
       'music-rhythm': () => this.renderMusic(),
       'sort-groups': () => this.renderSortGroups()
     };
-    (renderers[this.mode] || renderers['discover-animals'])();
+    const renderer = renderers[this.mode];
+    if (!renderer) throw new Error(`Renderer ausente para modo de aprendizagem: ${this.mode}`);
+    renderer();
   }
 
   renderDiscover(title, instruction, withAudio) {
