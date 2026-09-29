@@ -1,6 +1,6 @@
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { getContentReadiness } from '../../core/content-readiness.js';
-import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
+import { getAgeExperienceConfig, isAgeCompatible } from '../../core/age-experience-policy.js';
 
 export class ExperienceController {
   constructor(app) { this.app = app; }
@@ -12,7 +12,7 @@ export class ExperienceController {
       this.app.renderAgeSelection();
       return null;
     }
-    if (ageId && Array.isArray(activity.ages) && !activity.ages.includes(ageId)) {
+    if (ageId && !isAgeCompatible(activity, ageId)) {
       console.warn('[experience] faixa etária incompatível', { gameId, ageId, allowed: activity.ages });
       this.app.renderWorldMap(ageId);
       return null;
