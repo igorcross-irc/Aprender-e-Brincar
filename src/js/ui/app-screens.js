@@ -65,6 +65,8 @@ export class AppScreens {
       ...world,
       activities: world.activityIds.map((id) => activityCatalog.find((a) => a.id === id)).filter(Boolean).filter((a) => a.ages.includes(ageId))
     })).filter((world) => world.activities.length);
+    const progressSnapshot = this.core.progress.snapshot();
+    const worldProgress = (world) => this.core.progress.getWorldProgress(world.id, world.activities.map((a) => a.id));
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
       <div class="w-full max-w-5xl flex flex-col gap-5 my-auto page-enter">
@@ -79,7 +81,7 @@ export class AppScreens {
               <h3 class="text-xl font-black text-slate-800 mt-3">${world.title}</h3>
               <p class="text-sm text-slate-500 mt-1">${world.description}</p>
               <span class="inline-flex mt-3 bg-slate-100 rounded-full px-3 py-1 text-xs font-bold text-slate-600">${world.activities.length} brincadeiras</span>
-              <div class="world-progress mt-3"><div class="world-progress-head"><span>${world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length} de ${world.activities.length} descobertas</span><strong>${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%</strong></div><div class="progress-track"><span style="width:${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%"></span></div></div>
+              <div class="world-progress mt-3"><div class="world-progress-head"><span>${worldProgress(world).explored} de ${world.activities.length} descobertas</span><strong>${worldProgress(world).percentage}%</strong></div><div class="progress-track"><span style="width:${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%"></span></div></div>
             </button>`).join('')}
         </div>
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
@@ -103,6 +105,8 @@ export class AppScreens {
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
+    const sessionSummary = this.core.progress.getSessionSummary();
+    const totalMinutes = Math.round(sessionSummary.totalDurationMs / 60000);
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
     const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
@@ -121,7 +125,7 @@ export class AppScreens {
           <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
-          <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
+          <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>\n          <div class="bg-orange-50 rounded-2xl p-4 text-center"><div class="text-2xl">⏱️</div><strong>${totalMinutes}</strong><small class="block text-slate-500">minutos de brincadeira</small></div>
           <div class="bg-indigo-50 rounded-2xl p-4 text-center"><div class="text-2xl">🧭</div><strong>${profile.accuracy==null?'—':profile.accuracy+'%'}</strong><small class="block text-slate-500">média recente</small></div>
           <div class="bg-rose-50 rounded-2xl p-4 text-center"><div class="text-2xl">📈</div><strong>${improving}</strong><small class="block text-slate-500">em evolução</small></div>
         </div>
