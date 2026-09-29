@@ -22,7 +22,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   const addGuided = (ids) => ids.forEach((id) => definitions.set(id, { id, kind: 'guided', exploration: EXPLORATION.has(id) }));
   const addIndependent = (ids, Game, items = null) => ids.forEach((id) => definitions.set(id, { id, kind: 'independent', Game, items, exploration: EXPLORATION.has(id) }));
 
-  addWorld(['discovery-sounds','attention-auditory'], 'attention', vocabularyData.animals);
+  addWorld(['discovery-sounds','attention-auditory','attention-path'], 'attention', vocabularyData.animals);
   addWorld(['discovery-animals','animals'], 'discover-animals', vocabularyData.animals);
   addWorld(['discovery-colors','colors'], 'discover-colors', vocabularyData.colors);
   addWorld(['find-color','color-hunt-2'], 'find-color', vocabularyData.colors);
