@@ -42,7 +42,8 @@ if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelam
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
-if (!progress.includes('sessions') || !progress.includes('mastery')) fail('persistência adaptativa incompleta');
+if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy')) fail('persistência adaptativa incompleta');
+if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
 if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
 console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
