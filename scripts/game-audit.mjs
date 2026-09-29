@@ -6,6 +6,7 @@ const read = (file) => readFileSync(resolve(root, file), 'utf8');
 const fail = (message) => { console.error(`GAME AUDIT FAIL — ${message}`); process.exit(1); };
 
 const app = read('src/js/app.js');
+const experienceController = read('src/js/controllers/experience-controller.js');
 const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
@@ -60,7 +61,7 @@ if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelam
 if (!audio.includes('diagnostics()')) fail('diagnóstico do motor de áudio ausente');
 if (!health.includes('sanitizeProgressState')) fail('reparo de persistência ausente');
 if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
-if (!app.includes('getContentReadiness') || !app.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
+if (!experienceController.includes('getContentReadiness') || !experienceController.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
