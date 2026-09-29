@@ -375,7 +375,7 @@ class App {
     const activity = activityCatalog.find((item) => item.id === gameId);
     const content = getContentReadiness(gameId);
     const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
-    if (activity?.title) this.audio.preload([this.audio.inferAudioName?.(activity.title)].filter(Boolean));
+    if (activity?.audio) this.audio.preload([activity.audio]);
     try {
       const result = this.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content });
       if (result?.guided) return this.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
