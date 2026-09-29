@@ -83,7 +83,7 @@ export class BalloonPopGame {
     this.finished = true;
     const score = Math.max(0, Math.min(5, Math.round((5 / Math.max(5, this.attempts)) * 5)));
     this.audio.play(null, 'Parabéns! Você completou os balões!');
-    this.onComplete?.({ score, rounds: 5 });
+    this.onComplete?.({ score, rounds: 5, correct: this.score, attempts: this.attempts, maxScore: 5, completedRounds: 5, difficulty: this.level });
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
