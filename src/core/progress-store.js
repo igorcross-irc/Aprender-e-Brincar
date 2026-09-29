@@ -45,6 +45,7 @@ export class ProgressStore {
     current.lastScore = normalizedScore;
     current.lastRounds = rounds;
     current.accuracy = mode === 'evaluate' ? Math.round((normalizedScore / rounds) * 100) : null;
+    current.performance = mode === 'evaluate' ? (current.accuracy >= 85 ? 'advance' : current.accuracy >= 60 ? 'practice' : 'support') : 'explore';
     current.lastMode = mode;
     const now = new Date();
     const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
