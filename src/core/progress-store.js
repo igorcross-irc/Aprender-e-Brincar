@@ -37,16 +37,17 @@ export class ProgressStore {
     current.completions += 1;
     if (Number.isFinite(extra.score)) current.bestScore = Math.max(current.bestScore, extra.score);
     current.lastPlayedAt = new Date().toISOString();
-    current.level = Math.min(5, Math.max(1, current.completions + 1));
+    current.level = Math.min(5, Math.max(1, Math.round(current.mastery) + 1));
     current.explored = true;
     current.lastScore = normalizedScore;
     current.lastRounds = rounds;
     current.accuracy = Math.round((normalizedScore / rounds) * 100);
-    const day = new Date().toISOString().slice(0,10);
+    const now = new Date();
+    const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     const previous = this.state.sessions.lastDay;
     if (previous !== day) {
-      const prevDate = previous ? new Date(`${previous}T00:00:00Z`) : null;
-      const todayDate = new Date(`${day}T00:00:00Z`);
+      const prevDate = previous ? new Date(`${previous}T00:00:00`) : null;
+      const todayDate = new Date(`${day}T00:00:00`);
       const diff = prevDate ? Math.round((todayDate-prevDate)/DAY_MS) : 0;
       this.state.sessions.streak = diff === 1 ? this.state.sessions.streak + 1 : 1;
       this.state.sessions.lastDay = day;
