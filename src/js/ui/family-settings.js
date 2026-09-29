@@ -22,13 +22,16 @@ export class FamilySettings {
     return rewardCatalog.map((reward) => ({ ...reward, earned: Boolean(snapshot.rewards?.[reward.id]) }));
   }
   openParentalGate() {
+    const previousFocus = document.activeElement;
     const n1 = Math.floor(Math.random() * 8) + 3;
     const n2 = Math.floor(Math.random() * 4) + 2;
     const answer = n1 * n2;
     const modal = document.createElement('div'); modal.className = 'modal-overlay';
     modal.innerHTML = `<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gate-title"><div class="text-5xl">👨‍👩‍👧</div><h3 id="gate-title" class="text-xl font-black text-slate-800">Área da Família</h3><p class="text-sm text-slate-500 text-center">Esta área é protegida para responsáveis.</p><div class="text-2xl font-black text-indigo-600 bg-indigo-50 px-6 py-2 rounded-xl">${n1} × ${n2} = ?</div><input type="number" id="gate-input" inputmode="numeric" aria-label="Resposta da conta" class="w-24 text-center text-2xl font-bold border-2 border-indigo-200 rounded-xl p-2" /><div class="flex gap-2 w-full"><button id="btn-gate-cancel" class="flex-1 bg-slate-100 font-bold py-3 rounded-xl touch-target">Cancelar</button><button id="btn-gate-confirm" class="flex-1 bg-indigo-600 text-white font-bold py-3 rounded-xl touch-target">Entrar</button></div></div>`;
     document.body.appendChild(modal);
-    modal.querySelector('#btn-gate-cancel').addEventListener('click', () => modal.remove());
+    const closeGate = () => { modal.remove(); previousFocus?.focus?.(); };
+    modal.querySelector('#btn-gate-cancel').addEventListener('click', closeGate);
+    modal.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeGate(); });
     modal.querySelector('#btn-gate-confirm').addEventListener('click', () => { const input = modal.querySelector('#gate-input'); if (Number.parseInt(input.value,10) === answer) { modal.remove(); this.openSettingsModal(); } else { input.value=''; input.focus(); } });
     modal.querySelector('#gate-input').focus();
   }
