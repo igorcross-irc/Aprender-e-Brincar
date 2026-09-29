@@ -12,6 +12,7 @@ import { PuzzleGame } from './games/puzzle.js';
 import { BalloonPopGame } from './games/balloon-pop.js';
 import { LearningWorldGame } from './games/learning-world.js';
 import { vocabularyData } from '../data/vocabulary.js';
+import { rewardCatalog } from '../content/reward-catalog.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -55,8 +56,26 @@ class App {
 
   complete(activityId, options = {}) {
     this.core.complete(activityId, options);
+    this.evaluateRewards(activityId);
     this.updateScoreUI();
   }
+
+  evaluateRewards(activityId) {
+    const snapshot = this.core.progress.snapshot();
+    const explored = Object.values(snapshot.activities || {}).filter((item) => item.explored).length;
+    const worlds = new Set();
+    Object.entries(snapshot.activities || {}).forEach(([id, item]) => { if (!item.explored) return; const activity = activityCatalog.find((a) => a.id === id); if (activity?.world) worlds.add(activity.world); });
+    const candidates = [];
+    if (explored >= 1) candidates.push('first-discovery');
+    if (explored >= 5) candidates.push('five-discoveries');
+    if (explored >= 10) candidates.push('ten-discoveries');
+    if (worlds.size >= 3) candidates.push('world-explorer');
+    const current = snapshot.activities?.[activityId];
+    if ((current?.completions || 0) >= 2) candidates.push('repeat-player');
+    candidates.forEach((id) => this.core.progress.award(id));
+  }
+
+  getRewards() { const snapshot = this.core.progress.snapshot(); return rewardCatalog.map((reward) => ({ ...reward, earned: Boolean(snapshot.rewards?.[reward.id]) })); }
 
   setupHeaderEvents() {
     document.getElementById('btn-home-logo')?.addEventListener('click', () => this.renderAgeSelection());
@@ -103,6 +122,10 @@ class App {
     const snapshot = this.core.progress.snapshot();
     const played = Object.keys(snapshot.activities || {}).length;
     const total = activityCatalog.length;
+    const completedCount = Object.values(snapshot.activities || {}).reduce((sum, item) => sum + (item.completions || 0), 0);
+    const domains = {};
+    Object.entries(snapshot.activities || {}).forEach(([id, item]) => { if (!item.explored) return; const activity = activityCatalog.find((a) => a.id === id); (activity?.developmentDomains || []).forEach((domain) => { domains[domain] = (domains[domain] || 0) + 1; }); });
+    const topDomains = Object.entries(domains).sort((a,b)=>b[1]-a[1]).slice(0,4);
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
@@ -115,6 +138,15 @@ class App {
           <div class="bg-amber-50 rounded-2xl p-3 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-indigo-50 rounded-2xl p-3 text-center"><div class="text-2xl">🎮</div><strong>${played}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-emerald-50 rounded-2xl p-3 text-center"><div class="text-2xl">🌈</div><strong>${total}</strong><small class="block text-slate-500">disponíveis</small></div>
+        </div>
+        <div class="w-full bg-violet-50 rounded-2xl p-4">
+          <strong class="text-violet-800">🏅 Conquistas</strong>
+          <div class="reward-grid mt-3">${this.getRewards().map((reward) => `<div class="reward-chip ${reward.earned ? 'earned' : 'locked'}"><span>${reward.earned ? reward.icon : '🔒'}</span><div><strong>${this.escape(reward.title)}</strong><small>${this.escape(reward.description)}</small></div></div>`).join('')}</div>
+        </div>
+        <div class="w-full bg-emerald-50 rounded-2xl p-4 text-sm text-slate-600">
+          <strong class="text-emerald-800">🌱 Visão do desenvolvimento</strong>
+          <p class="mt-1">${completedCount} exploração(ões) realizadas. Esta visão descreve as experiências oferecidas e não é uma avaliação clínica.</p>
+          <div class="domain-list mt-2">${topDomains.map(([domain,count]) => `<span>${this.escape(domain)} · ${count}</span>`).join('') || '<span>Ainda sem dados</span>'}</div>
         </div>
         <div class="w-full flex flex-col gap-2">
           <label class="text-sm font-bold text-slate-600" for="child-name-input">Nome da criança</label>

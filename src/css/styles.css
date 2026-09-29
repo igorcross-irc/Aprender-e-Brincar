@@ -136,3 +136,5 @@ button:focus-visible, input:focus-visible {
 }
 
 .progress-track{height:.45rem;background:#e2e8f0;border-radius:999px;overflow:hidden}.progress-track span{display:block;height:100%;background:linear-gradient(90deg,#34d399,#60a5fa);border-radius:inherit;transition:width .35s ease}.world-card::after{content:'✦';position:absolute;right:-.25rem;bottom:-.6rem;font-size:4rem;opacity:.06;transform:rotate(-12deg)}.activity-card::after{content:'•';position:absolute;right:.65rem;bottom:.25rem;font-size:2rem;opacity:.08}
+
+.reward-grid{display:grid;grid-template-columns:1fr;gap:.6rem}.reward-chip{display:flex;gap:.7rem;align-items:center;padding:.7rem;border-radius:1rem;background:#fff;border:2px solid #ede9fe}.reward-chip span{font-size:1.8rem}.reward-chip strong,.reward-chip small{display:block}.reward-chip small{color:#64748b;font-size:.72rem;margin-top:.15rem}.reward-chip.locked{opacity:.55;filter:grayscale(.6)}.reward-chip.earned{border-color:#c4b5fd}.domain-list{display:flex;flex-wrap:wrap;gap:.35rem}.domain-list span{background:#fff;padding:.3rem .55rem;border-radius:999px;font-weight:700;font-size:.72rem;color:#475569}
