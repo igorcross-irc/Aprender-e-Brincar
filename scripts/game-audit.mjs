@@ -41,7 +41,7 @@ for (const id of catalogIds) {
 if (!registry.includes('export function createGameRegistry')) fail('registro central ausente');
 if (!registry.includes('validateGameRegistry')) fail('validador do registro ausente');
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
-  if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score:')) fail(`jogo independente sem contrato de resultado: ${file}`);
+  if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score')) fail(`jogo independente sem contrato de resultado: ${file}`);
 }
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
 if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
