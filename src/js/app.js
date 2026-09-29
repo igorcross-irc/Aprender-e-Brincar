@@ -370,6 +370,8 @@ class App {
     if (gameId === 'rhythm-copy') return world.start('music-rhythm',{difficulty: adaptive.level});
     if (gameId === 'movement-copy') return world.start('guided-movement',{difficulty: adaptive.level});
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
+    if (gameId === 'rhymes' || gameId === 'sound-initial' || gameId === 'story-sequence' || gameId === 'movement') return this.renderGuidedExperience(gameId,onWin,onBack);
+    if (gameId === 'sound-sequence') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-sequence',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level);
     if (gameId === 'memory') return new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level);
