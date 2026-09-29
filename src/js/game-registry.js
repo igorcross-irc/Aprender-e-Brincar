@@ -10,6 +10,7 @@ import { ColorHuntGame } from './games/independent/color-hunt.js';
 import { RhythmCopyGame } from './games/independent/rhythm-copy.js';
 import { SoundSequenceGame } from './games/independent/sound-sequence.js';
 import { vocabularyData } from '../data/vocabulary.js';
+import { developmentContent } from '../content/development-content.js';
 
 const WORLD = 'world';
 const EXPLORATION = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
@@ -49,7 +50,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['odd-one-out'], OddOneOutGame);
   addIndependent(['number-order'], NumberOrderGame);
   addIndependent(['color-hunt-2'], ColorHuntGame, vocabularyData.colors);
-  addIndependent(['rhythm-copy'], RhythmCopyGame, vocabularyData.rhythms || []);
+  addIndependent(['rhythm-copy'], RhythmCopyGame, developmentContent.musicPatterns);
   addIndependent(['sound-sequence'], SoundSequenceGame, vocabularyData.animals);
 
   addGuided(['phrases','communication','phrase-builder-2','rhymes','sound-initial','story-sequence','movement']);
