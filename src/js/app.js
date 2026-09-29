@@ -315,7 +315,7 @@ class App {
                 <h3 class="text-lg font-black text-indigo-800 mt-3">${this.escape(activity.title)}</h3>
                 <p class="text-xs text-slate-500 mt-1">${activity.skills?.slice(0,2).map((x)=>this.escape(x)).join(' • ') || ''}</p>
                 <div class="mt-3 flex gap-2"><span class="difficulty">${'⭐'.repeat(Math.min(activity.difficulty || 1,3))}</span><span class="text-[10px] text-slate-400">${activity.type === 'activity' ? 'livre' : activity.type === 'creative' ? 'criativa' : 'jogo'}</span></div>
-                ${progress ? `<div class="progress-track mt-3"><span style="width:${Math.min((progress.completions || 0) * 20, 100)}%"></span></div><div class="text-[10px] text-slate-400 mt-1">${progress.completions || 0} exploração(ões)</div>` : ''}
+                ${progress ? (() => { const pct=progress.accuracy==null ? Math.min(100,Number(progress.explorationCount||0)*20) : Math.min(100,Number(progress.accuracy||0)); return `<div class="progress-track mt-3"><span style="width:${pct}%"></span></div><div class="text-[10px] text-slate-400 mt-1">${progress.accuracy==null ? (progress.explorationCount||0)+' exploração(ões)' : (progress.accuracy||0)+'% observado · nível '+(progress.level||1)}</div>`; })() : ''}
               </button>`;
           }).join('')}
         </div>
