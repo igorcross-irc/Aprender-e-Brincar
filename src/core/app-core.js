@@ -20,7 +20,7 @@ export class AppCore {
   }
   complete(activityId, options = {}) {
     const progress = this.progress.complete(activityId, options);
-    if (options.reward !== false) {
+    if (progress && options.reward !== false) {
       this.progress.addStar();
       this.storage?.syncStars?.(this.progress.getStars());
     }
