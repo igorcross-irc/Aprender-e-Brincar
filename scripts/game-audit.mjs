@@ -78,5 +78,14 @@ if (!app.includes("new CanvasGame('game-container',this.audio,onWin,onBack).star
 if (!app.includes("new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('memória sem dificuldade adaptativa');
 if (!app.includes("new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('quebra-cabeça sem dificuldade adaptativa');
 if (!app.includes("new BalloonPopGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('balões sem dificuldade adaptativa');
+for (const route of [
+  "world.start('discover-objects',{difficulty: adaptive.level})",
+  "world.start('classify-animals',{difficulty: adaptive.level})",
+  "world.start('vocabulary',{difficulty: adaptive.level})",
+  "world.start('story-interactive',{difficulty: adaptive.level})",
+  "world.start('match-pairs',{difficulty: adaptive.level})",
+  "world.start('music-rhythm',{difficulty: adaptive.level})",
+  "world.start('guided-movement',{difficulty: adaptive.level})"
+]) if (!app.includes(route)) fail(`rota sem dificuldade adaptativa: ${route}`);
 
 console.log('Game audit OK');
