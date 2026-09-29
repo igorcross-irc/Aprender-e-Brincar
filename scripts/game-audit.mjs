@@ -49,7 +49,7 @@ if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelam
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
-if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy')) fail('persistência adaptativa incompleta');
+if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
 if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
 if (!app.includes('onWin({score:touched,rounds:cards.length})')) fail('experiências guiadas sem pontuação real');
@@ -69,11 +69,11 @@ const puzzle = read('src/js/games/puzzle.js');
 const balloons = read('src/js/games/balloon-pop.js');
 const canvas = read('src/js/games/canvas.js');
 const cards = read('src/js/games/cards.js');
-if (!memory.includes('onComplete?.({ score, rounds })')) fail('memória sem contrato de resultado');
-if (!puzzle.includes('onComplete?.({ score, rounds: count })')) fail('quebra-cabeça sem contrato de resultado');
-if (!balloons.includes('onComplete?.({ score, rounds: 5 })')) fail('balões sem contrato de resultado');
-if (!canvas.includes('onComplete?.({ score: 5, rounds: 5 })')) fail('lousa sem conclusão integrada');
-if (!/onComplete\(\{\s*score:\s*Math\.min\(5,\s*Math\.max\(1,\s*this\.sentenceShelf\.length\)\),\s*rounds:/.test(cards)) fail('frases sem pontuação de sessão');
+if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
+if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
+if (!balloons.includes('attempts: this.attempts, maxScore: 5')) fail('balões sem métricas semânticas');
+if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
+if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
 if (!app.includes("new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level)")) fail('lousa sem dificuldade adaptativa');
 if (!app.includes("new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('memória sem dificuldade adaptativa');
 if (!app.includes("new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level)")) fail('quebra-cabeça sem dificuldade adaptativa');
@@ -96,5 +96,5 @@ if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempo
 
 const engine = await read('src/core/learning-engine.js');
 if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
-if (!engine.includes('accuracy>=85')) fail('regra de avanço ausente');
-if (!engine.includes('accuracy>=60')) fail('regra de prática ausente');
+if (!engine.includes("recentAccuracy != null && recentAccuracy >= 85")) fail('regra de avanço ausente');
+if (!engine.includes("accuracy >= 60")) fail('regra de prática ausente');

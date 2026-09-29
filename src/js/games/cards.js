@@ -8,6 +8,7 @@ export class CardsGame {
     this.sentenceShelf = [];
     this.targetColor = null;
     this.colorScore = 0;
+    this.colorAttempts = 0;
   }
 
   renderGrid(items, title) {
@@ -58,12 +59,13 @@ export class CardsGame {
 
   renderColorGame(colors) {
     this.colorScore = 0;
+    this.colorAttempts = 0;
     const selectedColors = [...colors].sort(() => Math.random() - 0.5).slice(0, 4);
 
     const askColor = () => {
       if (this.colorScore >= 3) {
         this.audio.play(null, 'Parabéns! Você acertou todas as cores!');
-        if (this.onComplete) this.onComplete({ score: 5, rounds: 5 });
+        if (this.onComplete) this.onComplete({ score: this.colorScore, rounds: this.colorScore, correct: this.colorScore, attempts: this.colorAttempts, maxScore: 3, completedRounds: this.colorScore, difficulty: 1 });
         this.showVictoryModal(colors);
         return;
       }
@@ -98,6 +100,7 @@ export class CardsGame {
 
       this.container.querySelectorAll('.color-game-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+          this.colorAttempts++;
           if (btn.dataset.id === this.targetColor.id) {
             this.colorScore++;
             this.audio.play(null, 'Muito bem! Você acertou!');
@@ -247,7 +250,7 @@ export class CardsGame {
 
       if (!phraseSpoken) {
         phraseSpoken = true;
-        if (this.onComplete) this.onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: Math.max(1, Math.min(5, maxWords)), difficulty });
+        if (this.onComplete) this.onComplete({ mode: 'explore', score: Math.min(maxWords, this.sentenceShelf.length), rounds: 1, correct: 0, attempts: 0, maxScore: maxWords, completedRounds: 1, difficulty });
       }
     });
   }
