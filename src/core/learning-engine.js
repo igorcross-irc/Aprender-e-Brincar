@@ -1,4 +1,5 @@
 import { activityCatalog } from '../content/activity-catalog.js';
+import { getAgeExperienceConfig, getAgeExperienceLevel } from './age-experience-policy.js';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -11,7 +12,7 @@ export class LearningEngine {
 
   setSkillProgress(skillProgress) { this.skills = skillProgress; return this; }
 
-  getDifficulty(activity) {
+  getDifficulty(activity, ageId = '2-3y') {
     const p = this.progress.getActivity(activity.id) || {};
     const base = clamp(Number(activity.difficulty || 1), 1, 5);
     const mastery = clamp(Number(p.mastery || 0), 0, 5);
@@ -33,8 +34,8 @@ export class LearningEngine {
     const daysSince = p.lastPlayedAt ? (Date.now() - new Date(p.lastPlayedAt).getTime()) / 86400000 : Infinity;
     const stale = daysSince > 21 && evaluations > 0;
     if (stale && recentAccuracy != null && recentAccuracy < 75) level -= 1;
-    const bounded = clamp(level, 1, 5);
-    return { level: bounded, label: ['', 'Descoberta', 'Explorar', 'Desafio', 'Avançado', 'Especialista'][bounded], accuracy, recentAccuracy, mastery, evaluations, trend, stale };
+    const bounded = getAgeExperienceLevel(ageId, clamp(level, 1, 5));
+    return { level: bounded, label: ['', 'Descoberta', 'Explorar', 'Desafio', 'Avançado', 'Especialista'][bounded], accuracy, recentAccuracy, mastery, evaluations, trend, stale, age: getAgeExperienceConfig(ageId, bounded) };
   }
 
   recentIds(limit = 6) {
@@ -67,7 +68,7 @@ export class LearningEngine {
       const repetitionPenalty = recentIds.includes(activity.id) ? 35 : 0;
       const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty;
       const reason = evaluations === 0 ? 'Nova descoberta' : recentAccuracy != null && recentAccuracy < 60 ? 'Vamos reforçar esta habilidade' : recoveryBoost ? 'Você está evoluindo' : 'Boa hora para variar';
-      return { activity, score, reason, difficulty: this.getDifficulty(activity) };
+      return { activity, score, reason, difficulty: this.getDifficulty(activity, ageId) };
     }).sort((a, b) => b.score - a.score).slice(0, limit);
   }
 
