@@ -65,20 +65,5 @@ class App {
     }
     document.getElementById('btn-settings')?.addEventListener('click', () => this.openParentalGate());
   }
-
-  openParentalGate() {
-    const n1 = Math.floor(Math.random() * 8) + 3;
-    const n2 = Math.floor(Math.random() * 4) + 2;
-    const answer = n1 * n2;
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
-        <div class="text-5xl">👨‍👩‍👧</div>
-        <h3 id="gate-title" class="text-xl font-black text-slate-800">Área da Família</h3>
-        <p class="text-sm text-slate-500 text-center">Esta área é protegida para responsáveis.</p>
-        <div class="text-2xl font-black text-indigo-600 bg-indigo-50 px-6 py-2 rounded-xl">${n1} × ${n2} = ?</div>
-        <input type="number" id="gate-input" inputmode="numeric" aria-label="Resposta da conta" class="w-24 text-center text-2xl font-bold border-2 border-indigo-200 rounded-xl p-2" />
-        <div class="flex gap-2 w-full">
-          <button id="btn-gate-cancel" class="flex-1 bg-slate-100 font-bold py-3 rounded-xl touch-target">Cancelar</button>
-          
+  }
+}
