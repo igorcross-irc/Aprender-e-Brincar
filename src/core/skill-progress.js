@@ -8,12 +8,18 @@ export class SkillProgress {
       const activity=activityCatalog.find(a=>a.id===id);
       if(!activity) continue;
       const mastery=Number(p.mastery||0);
+      const weight=Math.max(1,Number(p.attempts||0));
       for(const skill of [...(activity.skills||[]),...(activity.developmentDomains||[])]) {
-        if(!map[skill]) map[skill]={mastery:0,activities:0,completions:0};
-        map[skill].mastery=Math.max(map[skill].mastery,mastery);
+        if(!map[skill]) map[skill]={mastery:0,activities:0,completions:0,attempts:0,weightedMastery:0};
         map[skill].activities+=1;
         map[skill].completions+=Number(p.completions||0);
+        map[skill].attempts+=weight;
+        map[skill].weightedMastery+=mastery*weight;
       }
+    }
+    for(const value of Object.values(map)) {
+      value.mastery=Math.round((value.weightedMastery/Math.max(1,value.attempts))*10)/10;
+      delete value.weightedMastery;
     }
     return map;
   }
