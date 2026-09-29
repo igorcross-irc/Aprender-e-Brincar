@@ -141,8 +141,10 @@ export class CardsGame {
     });
   }
 
-  renderPhraseBuilder(wordsData) {
+  renderPhraseBuilder(wordsData, options = {}) {
     this.sentenceShelf = [];
+    const difficulty = Math.max(1, Math.min(5, Number(options.difficulty) || 1));
+    const maxWords = difficulty >= 4 ? 7 : difficulty >= 3 ? 6 : difficulty === 2 ? 5 : 4;
     const childName = this.storage.getChildName();
     const displayName = childName ? `Eu (${childName})` : 'Eu';
 
@@ -197,6 +199,7 @@ export class CardsGame {
           </button>
         </div>
 
+        <div class="text-center text-xs font-bold text-indigo-500">🌱 Nível ${difficulty} · monte uma frase com até ${maxWords} palavras</div>
         <div class="grid grid-cols-3 md:grid-cols-4 gap-3 w-full max-h-[280px] overflow-y-auto p-2">
           ${words.map(w => `
             <button data-id="${w.id}" class="word-card game-card bg-white p-3 rounded-xl shadow border border-slate-200 flex flex-col items-center gap-1">
@@ -216,13 +219,13 @@ export class CardsGame {
         const id = btn.dataset.id;
         const word = words.find(w => w.id === id);
         if (word) {
-          if (this.sentenceShelf.length < 5) {
+          if (this.sentenceShelf.length < maxWords) {
             this.sentenceShelf.push(word);
             const speakText = word.id === 'eu' ? 'Eu' : word.label;
             this.audio.play(word.audio, speakText);
             renderShelf();
           } else {
-            this.audio.play(null, 'A frase já está cheia!');
+            this.audio.play(null, `A frase pode ter até ${maxWords} palavras nesta rodada!`);
           }
         }
       });
@@ -244,7 +247,7 @@ export class CardsGame {
 
       if (!phraseSpoken) {
         phraseSpoken = true;
-        if (this.onComplete) this.onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: 5 });
+        if (this.onComplete) this.onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: Math.max(1, Math.min(5, maxWords)), difficulty });
       }
     });
   }
