@@ -146,10 +146,23 @@ class App {
         </div>
         <div class="w-full bg-emerald-50 rounded-2xl p-4 text-sm text-slate-600">
           <strong class="text-emerald-800">🌱 Visão do desenvolvimento</strong>
-          <p class="mt-1">${completedCount} exploração(ões) realizadas. Esta visão descreve as experiências oferecidas e não é uma avaliação clínica.</p>
+          <p class="mt-1">${completedCount} registro(s) de atividade. Esta visão descreve experiências oferecidas e não é uma avaliação clínica.</p>
           <div class="domain-list mt-2">${topDomains.map(([domain,count]) => `<span>${this.escape(this.core.learning.labelDomain(domain))} · ${count}</span>`).join('') || '<span>Ainda sem dados</span>'}</div>
           <div class="mt-3 text-xs text-slate-500">🧠 O nível se ajusta pela experiência registrada, sem classificação clínica.</div>
         </div>
+        ${(() => { const profile=this.core.learning.getProfile(); const pct=profile.accuracy==null?null:profile.accuracy; return `
+        <div class="w-full bg-indigo-50 rounded-2xl p-4 text-sm text-slate-600">
+          <div class="flex items-center justify-between gap-2"><strong class="text-indigo-800">🧭 Perfil de aprendizagem</strong><span class="text-xs font-black text-indigo-500">${profile.exploration} explorações</span></div>
+          <p class="mt-1">O sistema usa apenas o histórico local para variar propostas, sem diagnóstico.</p>
+          <div class="grid grid-cols-2 gap-2 mt-3">
+            <div class="bg-white rounded-xl p-3"><strong class="block text-indigo-700">${profile.evaluated}</strong><small>habilidades observadas</small></div>
+            <div class="bg-white rounded-xl p-3"><strong class="block text-indigo-700">${pct==null?'—':pct+'%'}</strong><small>média das atividades avaliadas</small></div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-3 mt-3">
+            <div class="bg-white rounded-xl p-3"><strong class="text-emerald-700">✨ Mais exploradas</strong><div class="domain-list mt-2">${profile.strengths.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda sem dados</span>'}</div></div>
+            <div class="bg-white rounded-xl p-3"><strong class="text-violet-700">🌱 Próximas áreas</strong><div class="domain-list mt-2">${profile.areas.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda sem dados</span>'}</div></div>
+          </div>
+        </div>`; })()}
         <div class="w-full flex flex-col gap-2">
           <label class="text-sm font-bold text-slate-600" for="child-name-input">Nome da criança</label>
           <input type="text" id="child-name-input" value="${safeName}" maxlength="15" autocomplete="off" class="border-2 border-slate-200 rounded-xl p-3 font-bold text-indigo-600" />
@@ -238,6 +251,9 @@ class App {
     const next = this.core.learning.recommend(this.currentAge, this.currentWorld, 3);
     const worldCount = new Set(entries.map(({activity}) => activity.world).filter(Boolean)).size;
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
+    const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
+    const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
+    const profile = this.core.learning.getProfile();
     this.container.innerHTML = `
       <div class="w-full max-w-4xl my-auto flex flex-col gap-5">
         <div class="flex items-center justify-between gap-3"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
@@ -246,15 +262,17 @@ class App {
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
           <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
+          <div class="bg-indigo-50 rounded-2xl p-4 text-center"><div class="text-2xl">🧭</div><strong>${profile.accuracy==null?'—':profile.accuracy+'%'}</strong><small class="block text-slate-500">média observada</small></div>
         </div>
-        <div class="bg-white/95 rounded-[2rem] p-5 shadow-xl"><h3 class="text-xl font-black text-indigo-700">🌟 O caminho já percorrido</h3><p class="text-sm text-slate-500 mt-1">${totalCompletions} exploração(ões) registradas. Nada é bloqueado: a criança pode voltar, repetir e descobrir livremente.</p><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+        <div class="bg-white/95 rounded-[2rem] p-5 shadow-xl"><h3 class="text-xl font-black text-indigo-700">🌟 O caminho já percorrido</h3><p class="text-sm text-slate-500 mt-1">${totalExplorations} exploração(ões) e ${totalEvaluations} atividade(s) com desempenho observado. Nada é bloqueado: a criança pode voltar, repetir e descobrir livremente.</p><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
           ${entries.slice().sort((a,b)=>(b.progress.lastPlayedAt||'').localeCompare(a.progress.lastPlayedAt||'')).slice(0,8).map(({activity,progress}) => `
-            <button data-journey-game="${activity.id}" class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${progress.accuracy || 0}% de aproveitamento · ${progress.completions || 0} vez(es)</small></button>
+            <button data-journey-game="${activity.id}" class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${progress.accuracy == null ? 'Exploração livre' : progress.accuracy + '% observado'} · ${progress.completions || 0} vez(es)</small></button>
           `).join('') || '<div class="text-sm text-slate-500">A jornada começa na primeira brincadeira. ✨</div>'}
         </div></div>
         <div class="bg-violet-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-violet-800">🧠 Habilidades para explorar agora</h3><p class="text-sm text-violet-600 mt-1">São sugestões de exploração, não avaliações clínicas nem notas.</p><div class="grid gap-3 mt-3">
           ${weakest.map(([skill,data]) => { const pct=Math.min(100,Math.round((Number(data.mastery||0)/5)*100)); return `<div class="bg-white rounded-2xl p-3"><div class="flex justify-between gap-3 text-xs font-bold text-violet-700"><span>${this.escape(this.core.learning.labelDomain(skill))}</span><span>${data.mastery.toFixed(1)}/5</span></div><div class="progress-track mt-2"><span style="width:${pct}%"></span></div></div>`; }).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
         </div></div>
+        <div class="bg-white rounded-[2rem] p-5 shadow-lg border border-indigo-100"><div class="flex items-center justify-between gap-3"><div><h3 class="text-xl font-black text-indigo-800">🧭 Perfil de aprendizagem</h3><p class="text-sm text-slate-500 mt-1">Uma leitura simples do caminho percorrido, sem notas clínicas.</p></div><span class="bg-indigo-50 text-indigo-700 font-black px-3 py-2 rounded-full text-xs">${profile.exploration} explorações</span></div><div class="grid md:grid-cols-2 gap-3 mt-4"><div class="bg-emerald-50 rounded-2xl p-4"><strong class="text-emerald-800">✨ Habilidades mais presentes</strong><div class="domain-list mt-2">${profile.strengths.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div><div class="bg-violet-50 rounded-2xl p-4"><strong class="text-violet-800">🌱 Áreas para variar</strong><div class="domain-list mt-2">${profile.areas.map(([s,d])=>`<span>${this.escape(this.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('') || '<span>Ainda conhecendo</span>'}</div></div></div></div>
         <div class="bg-sky-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-sky-800">✨ Próximas descobertas</h3><div class="grid gap-3 mt-3">
           ${next.map(({activity,reason}) => `<button data-journey-next="${activity.id}" class="bg-white rounded-2xl p-4 text-left border border-sky-100 shadow-sm touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${this.escape(reason)}</small></button>`).join('') || '<span class="text-sm text-slate-500">Escolha livremente qualquer mundo para continuar.</span>'}
         </div></div>
@@ -357,7 +375,7 @@ class App {
     if (gameId === 'animal-families') return world.start('classify-animals',{difficulty: adaptive.level});
     if (gameId === 'action-words') return world.start('vocabulary',{difficulty: adaptive.level});
     if (gameId === 'story-choices') return world.start('story-interactive',{difficulty: adaptive.level});
-    if (gameId === 'phrase-builder-2') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
+    if (gameId === 'phrase-builder-2') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases,{difficulty:adaptive.level});
     if (gameId === 'color-hunt-2') return world.start('find-color',{items:vocabularyData.colors, difficulty: adaptive.level});
     if (gameId === 'shape-sequence') return world.start('sequence',{difficulty: adaptive.level});
     if (gameId === 'compare-sizes') return world.start('size-sort',{difficulty: adaptive.level});
@@ -372,7 +390,7 @@ class App {
     if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'rhymes' || gameId === 'sound-initial' || gameId === 'story-sequence' || gameId === 'movement') return this.renderGuidedExperience(gameId,onWin,onBack);
     if (gameId === 'sound-sequence') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-sequence',{items:vocabularyData.animals, difficulty: adaptive.level}); }
-    if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
+    if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases,{difficulty:adaptive.level});
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onWin,onBack).start(adaptive.level);
     if (gameId === 'memory') return new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level);
     if (gameId === 'puzzle') return new PuzzleGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,adaptive.level);
