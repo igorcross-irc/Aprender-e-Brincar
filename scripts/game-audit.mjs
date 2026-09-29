@@ -40,4 +40,9 @@ if (/this\.nextRound\(\)/.test(discoverBlock[0])) fail('descoberta ainda avança
 if (!audio.includes('inferAudioName')) fail('motor de áudio sem descoberta automática de MP3');
 if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelamento seguro da fala');
 
-console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas e ${supportedModes.size} modos verificados.`);
+if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
+const progress = read('src/core/progress-store.js');
+if (!progress.includes('sessions') || !progress.includes('mastery')) fail('persistência adaptativa incompleta');
+if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
+if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
+console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
