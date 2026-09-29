@@ -15,7 +15,6 @@ export class LearningEngine {
   getDifficulty(activity, ageId = '2-3y') {
     const p = this.progress.getActivity(activity.id) || {};
     const base = clamp(Number(activity.difficulty || 1), 1, 5);
-    const mastery = clamp(Number(p.mastery || 0), 0, 5);
     const accuracy = p.accuracy == null ? null : Number(p.accuracy);
     const recentAccuracy = p.recentAccuracy == null ? accuracy : Number(p.recentAccuracy);
     const evaluations = Number(p.evaluationCount || 0);
@@ -25,17 +24,17 @@ export class LearningEngine {
     const trend = current != null && previous != null ? current - previous : 0;
     let level = base;
     if (evaluations >= 2) {
-      if (mastery >= 3.5) level += 1;
-      if (recentAccuracy != null && recentAccuracy < 50) level -= 1;
       if (recentAccuracy != null && recentAccuracy >= 85) level += 1;
-      if (trend >= 10) level += 1;
-      if (trend <= -10) level -= 1;
+      else if (recentAccuracy != null && recentAccuracy < 50) level -= 1;
+      if (trend >= 15) level += 1;
+      else if (trend <= -15) level -= 1;
+      level = clamp(level, base - 1, base + 1);
     }
     const daysSince = p.lastPlayedAt ? (Date.now() - new Date(p.lastPlayedAt).getTime()) / 86400000 : Infinity;
     const stale = daysSince > 21 && evaluations > 0;
     if (stale && recentAccuracy != null && recentAccuracy < 75) level -= 1;
     const bounded = getAgeExperienceLevel(ageId, clamp(level, 1, 5));
-    return { level: bounded, label: ['', 'Descoberta', 'Explorar', 'Desafio', 'Avançado', 'Especialista'][bounded], accuracy, recentAccuracy, mastery, evaluations, trend, stale, age: getAgeExperienceConfig(ageId, bounded) };
+    return { level: bounded, label: ['', 'Descoberta', 'Explorar', 'Desafio', 'Avançado', 'Especialista'][bounded], accuracy, recentAccuracy, mastery: p.mastery == null ? 0 : Number(p.mastery), evaluations, trend, stale, age: getAgeExperienceConfig(ageId, bounded) };
   }
 
   recentIds(limit = 6) {
