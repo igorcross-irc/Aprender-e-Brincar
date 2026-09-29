@@ -26,11 +26,12 @@ Em execução — expansão profunda implementada: catálogo ampliado, experiên
 - Biblioteca de experiências específicas para 6–24 meses.
 
 ## Fase 9 — Identidade Infantil
+Primeira camada implementada: recompensas não competitivas e leitura familiar do progresso.
 - Personagem/companheiro seguro.
 - Ilustrações próprias.
 - Animações leves.
 - Feedback visual e sonoro consistente.
-- Recompensas não competitivas.
+- Recompensas não competitivas.\n- Conquistas persistentes por exploração, repetição e diversidade de mundos.\n- Visão familiar por domínios de desenvolvimento, sem avaliação clínica.
 - Ambientes próprios para cada mundo.
 - Sistema visual preparado para futuros ícones e artes dedicadas.
 
