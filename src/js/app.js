@@ -134,10 +134,11 @@ class App {
           <h3 id="settings-title" class="text-xl font-black text-slate-800">👨‍👩‍👧 Área da Família</h3>
           <button id="btn-close-settings" class="touch-target text-slate-400 font-bold text-xl" aria-label="Fechar">✕</button>
         </div>
-        <div class="w-full grid grid-cols-3 gap-2">
+        <div class="w-full grid grid-cols-4 gap-2">
           <div class="bg-amber-50 rounded-2xl p-3 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-indigo-50 rounded-2xl p-3 text-center"><div class="text-2xl">🎮</div><strong>${played}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-emerald-50 rounded-2xl p-3 text-center"><div class="text-2xl">🌈</div><strong>${total}</strong><small class="block text-slate-500">disponíveis</small></div>
+          <div class="bg-violet-50 rounded-2xl p-3 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
         </div>
         <div class="w-full bg-violet-50 rounded-2xl p-4">
           <strong class="text-violet-800">🏅 Conquistas</strong>
@@ -146,7 +147,8 @@ class App {
         <div class="w-full bg-emerald-50 rounded-2xl p-4 text-sm text-slate-600">
           <strong class="text-emerald-800">🌱 Visão do desenvolvimento</strong>
           <p class="mt-1">${completedCount} exploração(ões) realizadas. Esta visão descreve as experiências oferecidas e não é uma avaliação clínica.</p>
-          <div class="domain-list mt-2">${topDomains.map(([domain,count]) => `<span>${this.escape(domain)} · ${count}</span>`).join('') || '<span>Ainda sem dados</span>'}</div>
+          <div class="domain-list mt-2">${topDomains.map(([domain,count]) => `<span>${this.escape(this.core.learning.labelDomain(domain))} · ${count}</span>`).join('') || '<span>Ainda sem dados</span>'}</div>
+          <div class="mt-3 text-xs text-slate-500">🧠 O nível se ajusta pela experiência registrada, sem classificação clínica.</div>
         </div>
         <div class="w-full flex flex-col gap-2">
           <label class="text-sm font-bold text-slate-600" for="child-name-input">Nome da criança</label>
