@@ -7,11 +7,15 @@ export class BalloonPopGame {
     this.level = 1;
     this.score = 0;
     this.targetNumber = 1;
+    this.finished = false;
+    this.attempts = 0;
   }
 
   start(level = this.level) {
     this.level = Math.max(1, Math.min(5, level));
     this.score = 0;
+    this.attempts = 0;
+    this.finished = false;
     this.renderShell();
     this.spawnRound();
   }
@@ -55,6 +59,8 @@ export class BalloonPopGame {
       balloon.textContent = n;
       balloon.setAttribute('aria-label', `Balão número ${n}`);
       balloon.addEventListener('pointerdown', () => {
+        if (this.finished) return;
+        this.attempts++;
         if (n === this.targetNumber) {
           this.score++;
           this.audio.play(null, `Muito bem! Número ${n}`);
@@ -73,8 +79,11 @@ export class BalloonPopGame {
   }
 
   finish() {
+    if (this.finished) return;
+    this.finished = true;
+    const score = Math.max(0, Math.min(5, Math.round((5 / Math.max(5, this.attempts)) * 5)));
     this.audio.play(null, 'Parabéns! Você completou os balões!');
-    this.onComplete?.();
+    this.onComplete?.({ score, rounds: 5 });
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `
