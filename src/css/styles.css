@@ -182,3 +182,9 @@ button:focus-visible, input:focus-visible {
   .landing-splash,.landing-splash-inner,.landing-splash-logo,.landing-spark,.landing-rainbow{animation:none!important}
   .landing-splash{opacity:0;visibility:hidden}
 }
+
+/* Salto 13/14 — rolagem robusta e acessibilidade visual */
+#game-container{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-gutter:stable;padding-bottom:3rem;-webkit-overflow-scrolling:touch}
+#game-container > *{flex-shrink:0}
+@media (min-width:768px){#game-container{scrollbar-width:auto;scroll-behavior:smooth}}
+@media (prefers-reduced-motion:reduce){#game-container{scroll-behavior:auto}}
