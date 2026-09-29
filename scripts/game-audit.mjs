@@ -10,9 +10,10 @@ const world = read('src/content/world-catalog.js');
 const catalog = read('src/content/activity-catalog.js');
 const learning = read('src/js/games/learning-world.js');
 const audio = read('src/js/engine/audio-engine.js');
-const vocabulary = await import(`file://${resolve(root, 'src/data/vocabulary.js')}`);
+const vocabularySource = read('src/data/vocabulary.js');
+const animals = [...vocabularySource.matchAll(/\{ id: \"([^\"]+)\", label: \"[^\"]+\", icon: \"[^\"]+\", sound: \"[^\"]+\", audio: \"([^\"]+)\" \}/g)].map((m) => ({ id: m[1], audio: m[2] }));
 
-for (const animal of vocabulary.vocabularyData.animals) {
+for (const animal of animals) {
   if (!animal.audio) fail(`animal sem áudio: ${animal.id}`);
   const file = resolve(root, 'public/assets/audio', animal.audio);
   if (!existsSync(file)) fail(`MP3 do animal ausente: ${animal.audio}`);
@@ -39,4 +40,4 @@ if (/this\.nextRound\(\)/.test(discoverBlock[0])) fail('descoberta ainda avança
 if (!audio.includes('inferAudioName')) fail('motor de áudio sem descoberta automática de MP3');
 if (!audio.includes('this.speech?.cancel()')) fail('motor de áudio sem cancelamento seguro da fala');
 
-console.log(`GAME AUDIT OK — ${vocabulary.vocabularyData.animals.length} animais com MP3, ${activityIds.length} atividades roteadas e ${supportedModes.size} modos verificados.`);
+console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas e ${supportedModes.size} modos verificados.`);
