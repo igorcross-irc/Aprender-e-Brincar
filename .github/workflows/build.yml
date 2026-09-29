@@ -2,7 +2,7 @@ name: Build & Smoke Test
 
 on:
   push:
-    branches: [main, 'foundation/**']
+    branches: [main, 'foundation/**', 'staging/**']
   pull_request:
     branches: [main]
 
