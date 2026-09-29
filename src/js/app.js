@@ -262,7 +262,12 @@ class App {
 
   launchGame(gameId, ageId) {
     this.core.learning.remember(gameId);
-    const onWin = (result = {}) => this.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
+    let finished = false;
+    const onWin = (result = {}) => {
+      if (finished) return;
+      finished = true;
+      this.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
+    };
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);\n    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };\n    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
     if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
