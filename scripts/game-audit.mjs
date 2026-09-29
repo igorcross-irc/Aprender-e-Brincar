@@ -96,5 +96,5 @@ if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempo
 
 const engine = await read('src/core/learning-engine.js');
 if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
-if (!engine.includes('accuracy>=85')) fail('regra de avanço ausente');
-if (!engine.includes('accuracy>=60')) fail('regra de prática ausente');
+if (!engine.includes("recentAccuracy != null && recentAccuracy >= 85")) fail('regra de avanço ausente');
+if (!engine.includes("accuracy >= 60")) fail('regra de prática ausente');
