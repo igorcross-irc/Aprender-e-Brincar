@@ -267,9 +267,9 @@ class App {
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
-    const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
+    const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
     const ageExperience = getAgeExperienceConfig(this.currentAge || '2-3y', 1);
     const journeyStages = [
       ['🌱','Descobrir','Explorar livremente'],
@@ -281,7 +281,7 @@ class App {
     this.container.innerHTML = `
       <div class="w-full max-w-4xl my-auto flex flex-col gap-5 page-enter">
         <div class="page-toolbar"><button id="journey-back" class="nav-pill touch-target">⬅️ Voltar</button><div class="text-right"><div class="text-4xl">🗺️</div><h2 class="text-2xl md:text-3xl font-black text-indigo-700">Minha jornada</h2></div></div>
-        <div class="journey-map bg-white/95 rounded-[2rem] p-5 shadow-xl border border-sky-100"><div class="flex items-center justify-between gap-3 mb-4"><div><strong class="text-indigo-800">🗺️ Caminho de descobertas</strong><p class="text-xs text-slate-500 mt-1">${this.escape(ageExperience.label)} · ${this.escape(ageExperience.ageLabel)}</p></div><span class="text-2xl">🚀</span></div><div class="grid grid-cols-2 md:grid-cols-5 gap-2">${journeyStages.map(([icon,title,desc],index)=>`<div class="rounded-2xl p-3 text-center border-2 ${index===1 ? 'border-indigo-300 bg-indigo-50' : 'border-slate-100 bg-slate-50'}"><span class="text-3xl block">${icon}</span><strong class="block text-indigo-700 text-sm mt-1">${title}</strong><small class="text-[10px] text-slate-500">${desc}</small></div>`).join('')}</div></div><div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div class="journey-map bg-white/95 rounded-[2rem] p-5 shadow-xl border border-sky-100"><div class="flex items-center justify-between gap-3 mb-4"><div><strong class="text-indigo-800">🗺️ Caminho de descobertas</strong><p class="text-xs text-slate-500 mt-1">${this.escape(ageExperience.label)} · ${this.escape(ageExperience.ageLabel)}</p></div><span class="text-2xl">🚀</span></div><div class="grid grid-cols-2 md:grid-cols-5 gap-2">${journeyStages.map(([icon,title,desc],index)=>`<div class="journey-node ${index+1===journeyStage?'active':''} ${index+1<journeyStage?'visited':''}"><span>${icon}</span><strong>${title}</strong><small>${desc}</small></div>`).join('')}</div></div><div class="grid grid-cols-2 md:grid-cols-5 gap-3">
           <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
