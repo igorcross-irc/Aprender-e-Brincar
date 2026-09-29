@@ -63,7 +63,7 @@ export class CardsGame {
     const askColor = () => {
       if (this.colorScore >= 3) {
         this.audio.play(null, 'Parabéns! Você acertou todas as cores!');
-        if (this.onComplete) this.onComplete();
+        if (this.onComplete) this.onComplete({ score: 5, rounds: 5 });
         this.showVictoryModal(colors);
         return;
       }
@@ -244,7 +244,7 @@ export class CardsGame {
 
       if (!phraseSpoken) {
         phraseSpoken = true;
-        if (this.onComplete) this.onComplete();
+        if (this.onComplete) this.onComplete({ score: Math.min(5, Math.max(1, this.sentenceShelf.length)), rounds: 5 });
       }
     });
   }
