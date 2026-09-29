@@ -7,6 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "smoke": "node scripts/smoke-test.mjs",
+    "test:core": "node scripts/core-test.mjs",
     "audit:games": "node scripts/game-audit.mjs"
   },
   "devDependencies": {
