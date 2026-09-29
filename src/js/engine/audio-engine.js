@@ -159,6 +159,17 @@ export class ResilientAudioEngine {
     return false;
   }
 
+  diagnostics() {
+    return {
+      muted: this.isMuted,
+      cached: this.buffers.size,
+      knownAvailable: this.available.size,
+      knownMissing: this.missing.size,
+      speechAvailable: Boolean(this.speech),
+      audioContextAvailable: Boolean(window.AudioContext || window.webkitAudioContext)
+    };
+  }
+
   speak(text) {
     if (!text || !this.speech || this.isMuted) return;
     try {
