@@ -12,9 +12,12 @@ export class LearningEngine {
   getDifficulty(activity){
     const p=this.progress.getActivity(activity.id)||{}, mastery=Number(p.mastery||0), base=Number(activity.difficulty||1);
     let level=Math.max(1,Math.min(5,base+Math.floor(mastery/2)));
-    if(Number(p.lastScore||0)<=1 && p.attempts) level=Math.max(1,level-1);
-    if(Number(p.lastScore||0)>=4) level=Math.min(5,level+1);
-    return {level,label:['','Descoberta','Explorar','Desafio','Avançado','Especialista'][level]};
+    const accuracy=p.accuracy==null?null:Number(p.accuracy);
+    if(accuracy!=null && accuracy<50) level=Math.max(1,level-1);
+    if(accuracy!=null && accuracy>=85) level=Math.min(5,level+1);
+    const recent= p.lastPlayedAt ? (Date.now()-new Date(p.lastPlayedAt).getTime())/86400000 : 999;
+    if(recent>14 && p.completions) level=Math.max(1,level-0); // mantém desafio conhecido após pausa, sem penalizar
+    return {level,label:['','Descoberta','Explorar','Desafio','Avançado','Especialista'][level],accuracy,mastery};
   }
   recentIds(limit=6){ try{return JSON.parse(localStorage.getItem(this.historyKey)||'[]').slice(0,limit);}catch{return [];} }
   remember(activityId){ try{const ids=this.recentIds(12).filter(id=>id!==activityId); localStorage.setItem(this.historyKey,JSON.stringify([activityId,...ids].slice(0,12)));}catch{} }
@@ -24,10 +27,26 @@ export class LearningEngine {
     return activityCatalog.filter(a=>a.ages?.includes(ageId)&&(!worldId||a.world===worldId)).map(activity=>{
       const p=s.activities?.[activity.id], mastery=Number(p?.mastery||0);
       const days=p?.lastPlayedAt?(Date.now()-new Date(p.lastPlayedAt).getTime())/86400000:999;
-      const skillBoost=(activity.skills||[]).some(skill=>weakSkills.has(skill))?18:0;
-      const score=(p?20:45)+Math.min(days,30)+(5-mastery)*8+skillBoost-Number(p?.completions||0)*2-(recentIds.includes(activity.id)?35:0);
-      return {activity,score,reason:!p?'Nova descoberta':mastery<3?'Vale praticar novamente':'Boa hora para variar'};
+      const skillBoost=(activity.skills||[]).some(skill=>weakSkills.has(skill))?22:0;
+      const accuracy=p?.accuracy==null?null:Number(p.accuracy);
+      const performanceBoost=accuracy!=null&&accuracy<60?18:accuracy!=null&&accuracy>=85?-8:0;
+      const novelty=p?18:55;
+      const score=novelty+Math.min(days,30)+(5-mastery)*9+skillBoost+performanceBoost-Number(p?.completions||0)*2-(recentIds.includes(activity.id)?35:0);
+      const reason=!p?'Nova descoberta':accuracy!=null&&accuracy<60?'Vamos reforçar esta habilidade':mastery<3?'Vale praticar novamente':'Boa hora para variar';
+      return {activity,score,reason};
     }).sort((a,b)=>b.score-a.score).slice(0,limit);
+  }
+  getProfile(){
+    const snapshot=this.progress.snapshot();
+    const skills=this.skills?.get?.()||{};
+    const ranked=Object.entries(skills).sort((a,b)=>b[1].mastery-a[1].mastery);
+    const strengths=ranked.filter(([,v])=>v.activities>0).slice(0,3);
+    const areas=ranked.filter(([,v])=>v.activities>0).sort((a,b)=>a[1].mastery-b[1].mastery).slice(0,3);
+    const entries=Object.values(snapshot.activities||{});
+    const evaluated=entries.filter(p=>Number(p.evaluationCount||0)>0);
+    const exploration=entries.reduce((sum,p)=>sum+Number(p.explorationCount||0),0);
+    const accuracy=evaluated.length?Math.round(evaluated.reduce((sum,p)=>sum+Number(p.accuracy||0),0)/evaluated.length):null;
+    return {strengths,areas,exploration,evaluated: evaluated.length,accuracy,streak:Number(snapshot.sessions?.streak||0)};
   }
   getOutcome(activityId){
     const p=this.progress.getActivity(activityId)||{};
