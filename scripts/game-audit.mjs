@@ -45,6 +45,7 @@ const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy')) fail('persistência adaptativa incompleta');
 if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
+if (!app.includes('onWin({score:touched,rounds:cards.length})')) fail('experiências guiadas sem pontuação real');
 if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
 if (!app.includes('renderSessionResult') || !app.includes('data-next')) fail('tela de resultado da sessão ausente');
 if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
