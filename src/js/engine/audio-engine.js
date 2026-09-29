@@ -13,11 +13,15 @@ export class ResilientAudioEngine {
     this.ctx = null;
     this.buffers = new Map();
     this.loading = new Map();
-    this.missing = new Set();
+    this.missing = new Set(this.readMissingAudio());
     this.current = null;
     this.playToken = 0;
     this.installUnlock();
   }
+
+  readMissingAudio() { try { return JSON.parse(sessionStorage.getItem('ab_missing_audio') || '[]'); } catch (e) { return []; } }
+
+  rememberMissing(name) { try { sessionStorage.setItem('ab_missing_audio', JSON.stringify([...this.missing].slice(-300))); } catch (e) {} }
 
   getSafeMuteState() {
     try { return localStorage.getItem('ab_muted') === 'true'; } catch (e) { return false; }
@@ -97,6 +101,7 @@ export class ResilientAudioEngine {
       })
       .catch((err) => {
         this.missing.add(name);
+        this.rememberMissing(name);
         console.warn(`[áudio] MP3 indisponível: ${name}`, err.message || err);
         return null;
       })
