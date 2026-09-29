@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { normalizeExperienceResult, getAccuracy } from '../src/core/experience-result.js';
 import { LearningEngine } from '../src/core/learning-engine.js';
 import { SkillProgress } from '../src/core/skill-progress.js';
+import { getAgeExperienceConfig } from '../src/core/age-experience-policy.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -43,6 +44,8 @@ const engine = new LearningEngine({
   state: progressStates[0]
 });
 assert.equal(engine.getDifficulty(activity).level, 2);
+assert.equal(getAgeExperienceConfig('6-12m', 5).level, 1);
+assert.equal(getAgeExperienceConfig('4-5y', 5).level, 5);
 engine.progress.state = progressStates[1];
 assert.ok(engine.getDifficulty(activity).level >= 3);
 engine.progress.state = progressStates[2];
@@ -63,4 +66,4 @@ assert.equal(skills['memória'].evaluations, 2);
 assert.equal(skills['memória'].attempts, 20);
 assert.equal(skillProgress.weakest(1)[0][0], 'memória');
 
-console.log('CORE PASS — contrato, adaptação e agregação por habilidade');
+console.log('CORE PASS — contrato, adaptação, idade e agregação por habilidade');
