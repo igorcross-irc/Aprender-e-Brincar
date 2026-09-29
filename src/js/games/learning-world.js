@@ -65,6 +65,11 @@ export class LearningWorldGame {
     };
 
     this.items = sources[mode] || [];
+    const level = Number(this.options.difficulty || 1);
+    if (this.items.length > 0 && level > 1) {
+      const target = Math.max(2, Math.min(this.items.length, level === 2 ? 5 : 7));
+      this.items = this.shuffle(this.items).slice(0, target);
+    }
     this.renderRound();
   }
 
