@@ -6,7 +6,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "audit:games": "node scripts/game-audit.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
