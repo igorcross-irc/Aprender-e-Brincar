@@ -28,20 +28,24 @@ export class ProgressStore {
   complete(activityId, extra = {}) {
     if (!activityId) return null;
     const current = this.state.activities[activityId] || { completions: 0, bestScore: 0, attempts: 0, correct: 0, mastery: 0 };
+    const mode = extra.mode === 'explore' ? 'explore' : 'evaluate';
     const score = Number.isFinite(extra.score) ? extra.score : 0;
     const rounds = Math.max(1, Number(extra.rounds) || 5);
     const normalizedScore = Math.max(0, Math.min(rounds, score));
-    current.attempts += rounds;
-    current.correct += normalizedScore;
-    current.mastery = Math.min(5, Math.round(((current.correct / Math.max(1,current.attempts)) * 5) * 10) / 10);
+    if (mode === 'evaluate') {
+      current.attempts += rounds;
+      current.correct += normalizedScore;
+      current.mastery = Math.min(5, Math.round(((current.correct / Math.max(1,current.attempts)) * 5) * 10) / 10);
+    }
     current.completions += 1;
     if (Number.isFinite(extra.score)) current.bestScore = Math.max(current.bestScore, extra.score);
     current.lastPlayedAt = new Date().toISOString();
-    current.level = Math.min(5, Math.max(1, Math.round(current.mastery) + 1));
+    current.level = mode === 'evaluate' ? Math.min(5, Math.max(1, Math.round(current.mastery) + 1)) : Math.max(1, Number(current.level || 1));
     current.explored = true;
     current.lastScore = normalizedScore;
     current.lastRounds = rounds;
-    current.accuracy = Math.round((normalizedScore / rounds) * 100);
+    current.accuracy = mode === 'evaluate' ? Math.round((normalizedScore / rounds) * 100) : null;
+    current.lastMode = mode;
     const now = new Date();
     const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     const previous = this.state.sessions.lastDay;
