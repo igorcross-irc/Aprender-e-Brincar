@@ -250,7 +250,7 @@ export class LearningWorldGame {
     const target = pool[Math.floor(Math.random() * pool.length)];
     const prompt = soundMode ? 'Ouça com atenção. Quem fez esse som?' : `Onde está o ${target.label}?`;
     this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, soundMode ? null : null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
-    if (soundMode) this.speak(target.sound || target.label);
+    if (soundMode) window.setTimeout(() => this.speak(target.sound || target.label), 1100);
   }
 
   renderShape() {
