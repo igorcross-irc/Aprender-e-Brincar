@@ -310,11 +310,13 @@ class App {
   launchGame(gameId, ageId) {
     this.core.session.ensure(ageId, this.currentWorld);
     this.core.learning.remember(gameId);
+    const explorationIds = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+    const playMode = explorationIds.has(gameId) ? 'explore' : 'evaluate';
     let finished = false;
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      const sessionResult = this.core.session.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5, mode: result.mode || 'evaluate' });
+      const sessionResult = this.core.session.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5, mode: result.mode || playMode });
       if (sessionResult.completed) {
         this.evaluateRewards(gameId);
         this.updateScoreUI();
@@ -324,8 +326,6 @@ class App {
     const onBack = () => this.renderWorld(this.currentWorld);
     const activity = activityCatalog.find((item) => item.id === gameId);
     const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };
-    const explorationIds = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
-    const playMode = explorationIds.has(gameId) ? 'explore' : 'evaluate';
     const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
     if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level, mode: playMode}); }
     if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals, difficulty: adaptive.level, mode: playMode}); }
