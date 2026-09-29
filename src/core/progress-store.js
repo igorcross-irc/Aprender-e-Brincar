@@ -36,6 +36,12 @@ export class ProgressStore {
       current.attempts += rounds;
       current.correct += normalizedScore;
       current.mastery = Math.min(5, Math.round(((current.correct / Math.max(1,current.attempts)) * 5) * 10) / 10);
+      const accuracy = Math.round((normalizedScore / rounds) * 100);
+      const history = Array.isArray(current.accuracyHistory) ? current.accuracyHistory.slice(-7) : [];
+      history.push(accuracy);
+      current.accuracyHistory = history;
+      current.recentAccuracy = Math.round(history.reduce((sum, value) => sum + Number(value || 0), 0) / history.length);
+      current.lastEvaluationAt = new Date().toISOString();
     }
     current.completions += 1;
     if (Number.isFinite(extra.score)) current.bestScore = Math.max(current.bestScore, extra.score);
@@ -46,7 +52,7 @@ export class ProgressStore {
     current.evaluationCount = Number(current.evaluationCount || 0) + (mode === 'evaluate' ? 1 : 0);
     current.lastScore = normalizedScore;
     current.lastRounds = rounds;
-    current.accuracy = mode === 'evaluate' ? Math.round((normalizedScore / rounds) * 100) : null;
+    current.accuracy = mode === 'evaluate' ? Math.round((normalizedScore / rounds) * 100) : (current.recentAccuracy ?? null);
     current.performance = mode === 'evaluate' ? (current.accuracy >= 85 ? 'advance' : current.accuracy >= 60 ? 'practice' : 'support') : 'explore';
     current.lastMode = mode;
     const now = new Date();
