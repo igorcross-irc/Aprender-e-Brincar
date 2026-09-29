@@ -383,7 +383,42 @@ export class LearningWorldGame {
 
   renderDiscoverObjects() {
     const pool = this.shuffle(this.items).slice(0, 4);
-    this.renderChoice('🔎 Descobrir Objetos', 'Toque em um objeto para descobrir o nome.', pool, pool[0]?.id);
+    this.discoveryTouched.clear();
+    this.shell('🔎 Descobrir Objetos', `
+      <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
+        <p id="discover-object-feedback" class="text-xl font-black text-indigo-700 mb-5">Toque em qualquer objeto para descobrir o nome.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          ${pool.map((item) => `
+            <button data-object="${this.escape(item.id)}" class="learning-object bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
+              <span class="text-6xl">${item.icon || '✨'}</span>
+              <span class="font-black text-indigo-800 text-lg">${this.escape(item.label)}</span>
+            </button>`).join('')}
+        </div>
+        <button id="discover-object-next" class="mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
+      </div>`, 'Não existe resposta errada aqui. Explore os objetos que quiser.');
+
+    const next = this.container.querySelector('#discover-object-next');
+    const feedback = this.container.querySelector('#discover-object-feedback');
+    this.container.querySelectorAll('[data-object]').forEach((button) => button.addEventListener('click', () => {
+      if (this.completed || this.roundLocked) return;
+      const item = pool.find((entry) => entry.id === button.dataset.object);
+      if (!item) return;
+      this.discoveryTouched.add(item.id);
+      this.container.querySelectorAll('[data-object]').forEach((entry) => entry.classList.remove('border-emerald-400', 'bg-emerald-50'));
+      button.classList.add('border-emerald-400', 'bg-emerald-50');
+      if (feedback) feedback.textContent = `Isso é um ${item.label}! 👏`;
+      this.speak(item.label, item.audio);
+      if (next) {
+        next.disabled = false;
+        next.classList.remove('opacity-50');
+      }
+    }));
+    next?.addEventListener('click', () => {
+      if (!this.discoveryTouched.size || this.roundLocked) return;
+      this.score += 1;
+      this.speak('Muito bem!');
+      this.scheduleNext(700);
+    });
   }
 
   renderBodyParts() {
