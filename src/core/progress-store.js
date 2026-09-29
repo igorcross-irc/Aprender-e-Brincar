@@ -2,17 +2,17 @@ const KEY = 'aprender_brincar_progress_v1';
 const DAY_MS = 86400000;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
 import { normalizeExperienceResult, getAccuracy } from './experience-result.js';
-const DEFAULT = { version: 5, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, lastSessionAt: null }, updatedAt: null };
+import { sanitizeProgressState } from './experience-health.js';
+const DEFAULT = { version: 6, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, lastSessionAt: null }, updatedAt: null };
 
 function read() {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) {
       const legacyStars = Number.parseInt(localStorage.getItem(LEGACY_SCORE_KEY) || '0', 10);
-      return { ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 };
+      return sanitizeProgressState({ ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 }, DEFAULT);
     }
-    const parsed = JSON.parse(raw);
-    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {}, rewards: parsed.rewards || {}, sessions: parsed.sessions || structuredClone(DEFAULT.sessions) };
+    return sanitizeProgressState(JSON.parse(raw), DEFAULT);
   } catch { return structuredClone(DEFAULT); }
 }
 
@@ -64,7 +64,7 @@ export class ProgressStore {
     current.lastMode = result.mode;
 
     const now = new Date();
-    const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const day = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
     const previous = this.state.sessions.lastDay;
     if (previous !== day) {
       const prevDate = previous ? new Date(`${previous}T00:00:00`) : null;
@@ -74,9 +74,9 @@ export class ProgressStore {
       this.state.sessions.lastDay = day;
     }
     this.state.sessions.total += 1;
-    this.state.sessions.activities = Number(this.state.sessions.activities || 0) + 1;
-    this.state.sessions.explorations = Number(this.state.sessions.explorations || 0) + (result.mode === 'explore' ? 1 : 0);
-    this.state.sessions.evaluations = Number(this.state.sessions.evaluations || 0) + (result.mode === 'evaluate' ? 1 : 0);
+    this.state.sessions.activities += 1;
+    this.state.sessions.explorations += result.mode === 'explore' ? 1 : 0;
+    this.state.sessions.evaluations += result.mode === 'evaluate' ? 1 : 0;
     this.state.sessions.lastSessionAt = current.lastPlayedAt;
     this.state.activities[activityId] = current;
     this.persist();
