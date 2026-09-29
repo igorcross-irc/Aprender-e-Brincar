@@ -11,6 +11,7 @@ import { RhythmCopyGame } from './games/independent/rhythm-copy.js';
 import { SoundSequenceGame } from './games/independent/sound-sequence.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
+import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
 const EXPLORATION = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
@@ -65,14 +66,15 @@ export function createGameRegistry({ containerId, audio, storage }) {
     get(id) { return definitions.get(id) || null; },
     mode(id) { return definitions.get(id)?.exploration ? 'explore' : 'evaluate'; },
     all() { return [...definitions.values()]; },
-    launch(id, { adaptive = { level: 1 }, onWin, onBack }) {
+    launch(id, { adaptive = { level: 1 }, ageId = '2-3y', onWin, onBack }) {
       const def = definitions.get(id);
       if (!def) throw new Error(`Atividade sem registro de execução: ${id}`);
-      const level = adaptive?.level || 1;
+      const age = adaptive?.age || getAgeExperienceConfig(ageId, adaptive?.level || 1);
+      const level = age.level;
       if (def.kind === WORLD) {
         const game = new LearningWorldGame(containerId, audio, onWin, onBack);
         if (def.items) audio?.preload?.(def.items.map((x) => x.audio).filter(Boolean));
-        return game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate' });
+        return game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age });
       }
       if (def.kind === 'independent') {
         const game = new def.Game(containerId, audio, onWin, onBack);
