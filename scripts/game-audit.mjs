@@ -93,3 +93,8 @@ console.log('Game audit OK');
 const core = await read('src/core/app-core.js');
 if (!core.includes('rewardActivity(activityId)')) fail('recompensa central nao encontrada');
 if (!core.includes('this.progress.award(rewardId)')) fail('recompensa sem idempotencia');
+
+const engine = await read('src/core/learning-engine.js');
+if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
+if (!engine.includes('accuracy>=85')) fail('regra de avanço ausente');
+if (!engine.includes('accuracy>=60')) fail('regra de prática ausente');
