@@ -1,6 +1,6 @@
 const KEY = 'aprender_brincar_progress_v1';
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
-const DEFAULT = { version: 3, stars: 0, activities: {}, worlds: {}, rewards: {}, updatedAt: null };
+const DEFAULT = { version: 4, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null }, updatedAt: null };
 
 function read() {
   try {
@@ -10,7 +10,7 @@ function read() {
       return { ...structuredClone(DEFAULT), stars: Number.isFinite(legacyStars) && legacyStars > 0 ? legacyStars : 0 };
     }
     const parsed = JSON.parse(raw);
-    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {}, rewards: parsed.rewards || {} };
+    return { ...structuredClone(DEFAULT), ...parsed, activities: parsed.activities || {}, worlds: parsed.worlds || {}, rewards: parsed.rewards || {}, sessions: parsed.sessions || structuredClone(DEFAULT.sessions) };
   } catch { return structuredClone(DEFAULT); }
 }
 
@@ -26,13 +26,28 @@ export class ProgressStore {
   reset() { this.state = structuredClone(DEFAULT); this.persist(); return this.state; }
   complete(activityId, extra = {}) {
     if (!activityId) return null;
-    const current = this.state.activities[activityId] || { completions: 0, bestScore: 0 };
+    const current = this.state.activities[activityId] || { completions: 0, bestScore: 0, attempts: 0, correct: 0, mastery: 0 };
+    const score = Number.isFinite(extra.score) ? extra.score : 0;
+    const rounds = Math.max(1, Number(extra.rounds) || 5);
+    current.attempts += rounds;
+    current.correct += Math.max(0, score);
+    current.mastery = Math.min(5, Math.round(((current.correct / Math.max(1,current.attempts)) * 5) * 10) / 10);
     current.completions += 1;
     if (Number.isFinite(extra.score)) current.bestScore = Math.max(current.bestScore, extra.score);
     current.lastPlayedAt = new Date().toISOString();
     current.level = Math.min(5, Math.max(1, current.completions + 1));
     current.explored = true;
     current.lastScore = Number.isFinite(extra.score) ? extra.score : current.lastScore || 0;
+    const day = new Date().toISOString().slice(0,10);
+    const previous = this.state.sessions.lastDay;
+    if (previous !== day) {
+      const prevDate = previous ? new Date(`${previous}T00:00:00Z`) : null;
+      const todayDate = new Date(`${day}T00:00:00Z`);
+      const diff = prevDate ? Math.round((todayDate-prevDate)/86400000) : 0;
+      this.state.sessions.streak = diff === 1 ? this.state.sessions.streak + 1 : 1;
+      this.state.sessions.lastDay = day;
+    }
+    this.state.sessions.total += 1;
     this.state.activities[activityId] = current;
     this.persist();
     return current;
