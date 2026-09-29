@@ -240,7 +240,7 @@ class App {
           <p class="text-slate-600">${world.description}</p>
           <div class="mt-2 text-xs font-bold text-indigo-500">${activities.length} experiências para ${AGE_LABELS[this.currentAge]}</div>
         </div>
-        <div class="activity-grid">
+        <div class="bg-violet-50 rounded-[1.75rem] p-4 shadow-sm border border-violet-100">\n          <div class="flex items-center justify-between gap-3">\n            <div><strong class="text-violet-800">🧠 Sugestões para agora</strong><p class="text-xs text-violet-600 mt-1">O app adapta as próximas brincadeiras ao histórico local.</p></div>\n            <span class="text-xs font-black text-violet-500">${this.core.progress.snapshot().sessions?.streak || 0} dia(s) de sequência</span>\n          </div>\n          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">\n            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span></button>`).join('')}\n          </div>\n        </div>\n        <div class="activity-grid">
           ${activities.map((activity) => {
             const progress = this.core.progress.getActivity(activity.id);
             return `
@@ -255,25 +255,25 @@ class App {
         </div>
       </div>`;
     this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderWorldMap(this.currentAge));
-    this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));
+    this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));\n    this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
 
   launchGame(gameId, ageId) {
-    const onWin = (result = {}) => this.complete(gameId, { score: result.score ?? 0 });
+    const onWin = (result = {}) => this.complete(gameId, { score: result.score ?? 0, rounds: result.rounds ?? 5 });
     const onBack = () => this.renderWorld(this.currentWorld);
-    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
-    if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
-    if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals}); }
-    if (gameId === 'discovery-colors' || gameId === 'colors') return world.start('discover-colors',{items:vocabularyData.colors});
-    if (gameId === 'find-color') return world.start('find-color',{items:vocabularyData.colors});
-    if (gameId === 'find-animal') return world.start('find-animal',{items:vocabularyData.animals});
-    if (gameId === 'sound-guess') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals}); }
+    const activity = activityCatalog.find((item) => item.id === gameId);\n    const adaptive = activity ? this.core.learning.getDifficulty(activity, ageId) : { level: 1 };\n    const world = new LearningWorldGame('game-container', this.audio, onWin, onBack);
+    if (gameId === 'discovery-sounds') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
+    if (gameId === 'discovery-animals' || gameId === 'animals') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('discover-animals',{items:vocabularyData.animals, difficulty: adaptive.level}); }
+    if (gameId === 'discovery-colors' || gameId === 'colors') return world.start('discover-colors',{items:vocabularyData.colors, difficulty: adaptive.level});
+    if (gameId === 'find-color') return world.start('find-color',{items:vocabularyData.colors, difficulty: adaptive.level});
+    if (gameId === 'find-animal') return world.start('find-animal',{items:vocabularyData.animals, difficulty: adaptive.level});
+    if (gameId === 'sound-guess') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'shape-match') return world.start('shape-match');
     if (gameId === 'odd-one-out') return world.start('odd-one-out');
-    if (gameId === 'size-sort') return world.start('size-sort');
-    if (gameId === 'count') return world.start('count');
-    if (gameId === 'number-match') return world.start('number-match');
-    if (gameId === 'sequence') return world.start('sequence');
+    if (gameId === 'size-sort') return world.start('size-sort',{difficulty: adaptive.level});
+    if (gameId === 'count') return world.start('count',{difficulty: adaptive.level});
+    if (gameId === 'number-match') return world.start('number-match',{difficulty: adaptive.level});
+    if (gameId === 'sequence') return world.start('sequence',{difficulty: adaptive.level});
     if (gameId === 'syllables') return world.start('syllables');
     if (gameId === 'discover-objects') return world.start('discover-objects');
     if (gameId === 'body-parts') return world.start('body-parts');
@@ -293,18 +293,18 @@ class App {
     if (gameId === 'action-words') return world.start('vocabulary');
     if (gameId === 'story-choices') return world.start('story-interactive');
     if (gameId === 'phrase-builder-2') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
-    if (gameId === 'color-hunt-2') return world.start('find-color',{items:vocabularyData.colors});
-    if (gameId === 'shape-sequence') return world.start('sequence');
-    if (gameId === 'compare-sizes') return world.start('size-sort');
-    if (gameId === 'animal-sound-memory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals}); }
-    if (gameId === 'animal-homes') return world.start('find-animal',{items:vocabularyData.animals});
-    if (gameId === 'count-more') return world.start('count');
-    if (gameId === 'number-order') return world.start('sequence');
+    if (gameId === 'color-hunt-2') return world.start('find-color',{items:vocabularyData.colors, difficulty: adaptive.level});
+    if (gameId === 'shape-sequence') return world.start('sequence',{difficulty: adaptive.level});
+    if (gameId === 'compare-sizes') return world.start('size-sort',{difficulty: adaptive.level});
+    if (gameId === 'animal-sound-memory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('sound-guess',{items:vocabularyData.animals, difficulty: adaptive.level}); }
+    if (gameId === 'animal-homes') return world.start('find-animal',{items:vocabularyData.animals, difficulty: adaptive.level});
+    if (gameId === 'count-more') return world.start('count',{difficulty: adaptive.level});
+    if (gameId === 'number-order') return world.start('sequence',{difficulty: adaptive.level});
     if (gameId === 'memory-objects') return world.start('match-pairs');
-    if (gameId === 'attention-path') return world.start('attention',{items:vocabularyData.animals});
+    if (gameId === 'attention-path') return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level});
     if (gameId === 'rhythm-copy') return world.start('music-rhythm');
     if (gameId === 'movement-copy') return world.start('guided-movement');
-    if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals}); }
+    if (gameId === 'attention-auditory') { this.audio.preload(vocabularyData.animals.map((x)=>x.audio)); return world.start('attention',{items:vocabularyData.animals, difficulty: adaptive.level}); }
     if (gameId === 'phrases' || gameId === 'communication') return new CardsGame('game-container',this.audio,this.storage,onWin,onBack).renderPhraseBuilder(vocabularyData.phrases);
     if (gameId === 'canvas') return new CanvasGame('game-container',this.audio,onBack).start();
     if (gameId === 'memory') return new MemoryGame('game-container',this.audio,onWin,onBack).start(vocabularyData.animals,ageId==='4-5y'?4:ageId==='3-4y'?3:2);
