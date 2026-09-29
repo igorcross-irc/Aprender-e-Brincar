@@ -26,14 +26,14 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addWorld(['discovery-sounds','attention-auditory','attention-path'], 'attention', vocabularyData.animals);
   addWorld(['discovery-animals','animals'], 'discover-animals', vocabularyData.animals);
   addWorld(['discovery-colors','colors'], 'discover-colors', vocabularyData.colors);
-  addWorld(['find-color','color-hunt-2'], 'find-color', vocabularyData.colors);
+  addWorld(['find-color'], 'find-color', vocabularyData.colors);
   addWorld(['find-animal','animal-homes'], 'find-animal', vocabularyData.animals);
   addWorld(['sound-guess','animal-sound-memory'], 'sound-guess', vocabularyData.animals);
   addWorld(['shape-match'], 'shape-match');
   addWorld(['size-sort','compare-sizes'], 'size-sort');
   addWorld(['count','count-more'], 'count');
   addWorld(['number-match'], 'number-match');
-  addWorld(['sequence','shape-sequence','number-order'], 'sequence');
+  addWorld(['sequence','shape-sequence'], 'sequence');
   addWorld(['syllables'], 'syllables');
   addWorld(['discover-objects','object-hunt'], 'discover-objects');
   addWorld(['body-parts'], 'body-parts');
@@ -46,7 +46,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addWorld(['baby-colors'], 'baby-colors');
   addWorld(['vocabulary','action-words'], 'vocabulary');
   addWorld(['story-interactive','story-choices'], 'story-interactive');
-  addWorld(['music-rhythm','rhythm-copy'], 'music-rhythm');
+  addWorld(['music-rhythm'], 'music-rhythm');
 
   addIndependent(['odd-one-out'], OddOneOutGame);
   addIndependent(['number-order'], NumberOrderGame);
