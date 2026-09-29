@@ -1,7 +1,7 @@
 const KEY = 'aprender_brincar_progress_v1';
 const DAY_MS = 86400000;
 const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
-const DEFAULT = { version: 4, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, lastSessionAt: null }, updatedAt: null };
+const DEFAULT = { version: 5, stars: 0, activities: {}, worlds: {}, rewards: {}, sessions: { total: 0, streak: 0, lastDay: null, activities: 0, lastSessionAt: null }, updatedAt: null };
 
 function read() {
   try {
@@ -42,6 +42,8 @@ export class ProgressStore {
     current.lastPlayedAt = new Date().toISOString();
     current.level = mode === 'evaluate' ? Math.min(5, Math.max(1, Math.round(current.mastery) + 1)) : Math.max(1, Number(current.level || 1));
     current.explored = true;
+    current.explorationCount = Number(current.explorationCount || 0) + (mode === 'explore' ? 1 : 0);
+    current.evaluationCount = Number(current.evaluationCount || 0) + (mode === 'evaluate' ? 1 : 0);
     current.lastScore = normalizedScore;
     current.lastRounds = rounds;
     current.accuracy = mode === 'evaluate' ? Math.round((normalizedScore / rounds) * 100) : null;
@@ -59,6 +61,8 @@ export class ProgressStore {
     }
     this.state.sessions.total += 1;
     this.state.sessions.activities = Number(this.state.sessions.activities || 0) + 1;
+    this.state.sessions.explorations = Number(this.state.sessions.explorations || 0) + (mode === 'explore' ? 1 : 0);
+    this.state.sessions.evaluations = Number(this.state.sessions.evaluations || 0) + (mode === 'evaluate' ? 1 : 0);
     this.state.sessions.lastSessionAt = current.lastPlayedAt;
     this.state.activities[activityId] = current;
     this.persist();
