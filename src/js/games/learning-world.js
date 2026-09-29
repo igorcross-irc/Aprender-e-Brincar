@@ -172,8 +172,12 @@ export class LearningWorldGame {
       if (!item || this.completed) return;
       this.discoveryTouched.add(item.id);
       button.classList.add('border-emerald-400', 'bg-emerald-50');
-      const spoken = item.sound ? `${item.label}. ${item.sound}` : item.label;
-      this.speak(spoken, withAudio ? item.audio : null);
+      if (withAudio && item.audio) {
+        this.speak(item.label, item.audio);
+        if (item.sound) window.setTimeout(() => this.speak(item.sound), 900);
+      } else {
+        this.speak(item.sound ? `${item.label}. ${item.sound}` : item.label);
+      }
       if (next) {
         next.disabled = false;
         next.classList.remove('opacity-50');
@@ -245,7 +249,8 @@ export class LearningWorldGame {
     const pool = this.shuffle(this.items).slice(0, 4);
     const target = pool[Math.floor(Math.random() * pool.length)];
     const prompt = soundMode ? 'Ouça com atenção. Quem fez esse som?' : `Onde está o ${target.label}?`;
-    this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, soundMode ? target.audio : null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
+    this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, soundMode ? null : null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
+    if (soundMode) this.speak(target.sound || target.label);
   }
 
   renderShape() {
