@@ -1,6 +1,7 @@
 import { normalizeExperienceResult } from './experience-result.js';
 
 const SESSION_KEY = 'aprender_brincar_learning_session_v1';
+const MAX_SESSION_AGE = 12 * 60 * 60 * 1000;
 
 function safeParse(value) {
   try { return value ? JSON.parse(value) : null; } catch { return null; }
@@ -87,8 +88,9 @@ export class LearningSession {
     try {
       const saved = safeParse(localStorage.getItem(SESSION_KEY));
       if (!saved || !saved.ageId || !saved.startedAt || !Array.isArray(saved.completed)) return null;
-      const age = Date.now() - new Date(saved.startedAt).getTime();
-      if (!Number.isFinite(age) || age > 12 * 60 * 60 * 1000) {
+      const started = new Date(saved.startedAt).getTime();
+      const age = Date.now() - started;
+      if (!Number.isFinite(started) || age < 0 || age > MAX_SESSION_AGE) {
         localStorage.removeItem(SESSION_KEY);
         return null;
       }
