@@ -33,7 +33,7 @@ export class LearningWorldGame {
     this.score = 0;
     this.completed = false;
     this.roundLocked = false;
-    this.options = { difficulty: 1, ...options };
+    this.options = { difficulty: 1, mode: 'evaluate', ...options };
 
     const sources = {
       'discover-animals': options.items || [],
@@ -431,7 +431,7 @@ export class LearningWorldGame {
     this.completed = true;
     this.clearPending();
     this.speak('Muito bem! Você terminou a brincadeira!');
-    this.onComplete?.({ score: this.score, rounds: 5 });
+    this.onComplete?.({ score: this.score, rounds: 5, mode: this.options.mode || 'evaluate' });
     this.container.innerHTML = `<div class="w-full max-w-md bg-white rounded-[2rem] p-8 shadow-2xl text-center my-auto"><div class="text-7xl mb-4">🌟</div><h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2><p class="text-slate-600 mt-2 mb-2">Você completou esta brincadeira.</p><p class="text-indigo-600 font-black mb-6">${this.score} de 5 respostas corretas</p><div class="flex gap-3"><button id="learning-menu" class="flex-1 bg-slate-100 text-slate-700 font-black py-4 rounded-2xl touch-target">Menu</button><button id="learning-again" class="flex-1 bg-emerald-500 text-white font-black py-4 rounded-2xl touch-target">Jogar</button></div></div>`;
     this.container.querySelector('#learning-menu').addEventListener('click', () => this.onBack());
     this.container.querySelector('#learning-again').addEventListener('click', () => this.start(this.mode, this.options));
