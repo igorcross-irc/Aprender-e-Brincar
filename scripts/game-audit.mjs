@@ -66,7 +66,7 @@ if (!experienceController.includes('getContentReadiness') || !experienceControll
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
-if (!app.includes('let finished = false') || !app.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
+if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!app.includes('learning.recommend') || !app.includes('getDifficulty')) fail('integração adaptativa incompleta');
 if (!app.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
 if (!app.includes('core.session.ensure') || !app.includes('core.session.complete')) fail('controlador central de sessão não integrado');
