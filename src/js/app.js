@@ -218,6 +218,7 @@ class App {
               <span class="text-xs text-slate-500">Explorar • brincar • descobrir</span>
             </button>`).join('')}
         </div>
+        </div>
       </div>`;
     this.container.querySelectorAll('[data-age]').forEach((button) => button.addEventListener('click', () => this.renderWorldMap(button.dataset.age)));
   }
