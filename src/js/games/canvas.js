@@ -7,13 +7,14 @@ export class CanvasGame {
     this.isDrawing = false;
     this.currentColor = '#EF4444';
     this.currentTool = 'pen'; // 'pen', 'eraser', 'stamp'
-    this.currentStamp = '⭐';
+    this.currentStamp = this.level >= 3 ? '🚀' : this.level === 2 ? '🌈' : '⭐';
     this.history = [];
     this.interactions = 0;
     this.completed = false;
   }
 
-  start() {
+  start(level = 1) {
+    this.level = Math.max(1, Math.min(3, Number(level) || 1));
     this.interactions = 0;
     this.completed = false;
     this.container.innerHTML = `
@@ -110,7 +111,7 @@ export class CanvasGame {
         this.isDrawing = false;
         saveState();
         this.interactions++;
-        if (this.interactions >= 5 && !this.completed) {
+        if (this.interactions >= (this.level === 1 ? 3 : this.level === 2 ? 4 : 5) && !this.completed) {
           this.completed = true;
           this.audio.play(null, 'Que desenho incrível!');
           this.onComplete?.({ score: 5, rounds: 5 });
