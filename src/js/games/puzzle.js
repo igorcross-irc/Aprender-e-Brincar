@@ -10,6 +10,7 @@ export class PuzzleGame {
   start(itemsData, level = this.level) {
     this.itemsData = itemsData;
     this.level = Math.max(1, Math.min(4, level));
+    this.finished = false;
     const count = Math.min(itemsData.length, this.level + 2);
     const puzzleItems = [...itemsData].sort(() => Math.random() - 0.5).slice(0, count);
     let matches = 0;
@@ -86,8 +87,11 @@ export class PuzzleGame {
   }
 
   finish(count, attempts) {
+    if (this.finished) return;
+    this.finished = true;
+    const score = Math.max(0, Math.min(count, count - Math.max(0, attempts - count)));
     this.audio.play(null, 'Parabéns! Você completou o quebra-cabeça!');
-    this.onComplete?.();
+    this.onComplete?.({ score, rounds: count });
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';
     modal.innerHTML = `<div class="bg-white rounded-3xl p-7 text-center shadow-2xl max-w-sm w-full"><div class="text-7xl">🧩</div><h3 class="text-3xl font-black text-indigo-600 mt-3">Quebra-cabeça completo!</h3><p class="text-slate-600 mt-2">${count} peças • ${attempts} tentativas</p><div class="flex gap-3 mt-6"><button id="puzzle-menu" class="flex-1 bg-slate-100 font-black py-3 rounded-2xl touch-target">Menu</button><button id="puzzle-next" class="flex-1 bg-emerald-500 text-white font-black py-3 rounded-2xl touch-target">Próximo nível</button></div></div>`;
