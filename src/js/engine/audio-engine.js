@@ -1,11 +1,8 @@
-/**
+/** 
  * Motor de áudio do Aprender e Brincar.
- *
- * - Toca os arquivos mp3 de /assets/audio/ (Web Audio API: baixa uma vez,
- *   guarda decodificado na memória e toca sem atraso nos próximos toques).
- * - Se o mp3 não existir ou falhar, cai para a voz do navegador (speechSynthesis).
- * - Destrava o áudio no primeiro toque (exigência do Safari/iPhone e do Chrome).
- * - Só uma fala por vez: começar um som novo interrompe o anterior.
+ * Prioridade: MP3 próprio -> voz do navegador.
+ * O motor também tenta localizar automaticamente um MP3 pelo texto curto,
+ * o que evita depender de SpeechSynthesis para palavras e comandos já gravados.
  */
 const AUDIO_BASE = '/assets/audio/';
 
@@ -14,49 +11,39 @@ export class ResilientAudioEngine {
     this.isMuted = this.getSafeMuteState();
     this.speech = window.speechSynthesis || null;
     this.ctx = null;
-    this.buffers = new Map();   // nome do arquivo -> AudioBuffer já decodificado
-    this.loading = new Map();   // nome do arquivo -> Promise em andamento
-    this.missing = new Set();   // arquivos que falharam (não tenta de novo)
-    this.current = null;        // fonte de áudio tocando agora
-    this.playToken = 0;         // evita que um som atrasado atropele um mais novo
-
+    this.buffers = new Map();
+    this.loading = new Map();
+    this.missing = new Set();
+    this.current = null;
+    this.playToken = 0;
     this.installUnlock();
   }
 
   getSafeMuteState() {
-    try {
-      return localStorage.getItem('ab_muted') === 'true';
-    } catch (e) {
-      return false;
-    }
+    try { return localStorage.getItem('ab_muted') === 'true'; } catch (e) { return false; }
   }
 
   toggleMute() {
     this.isMuted = !this.isMuted;
-    try {
-      localStorage.setItem('ab_muted', this.isMuted.toString());
-    } catch (e) {}
+    try { localStorage.setItem('ab_muted', String(this.isMuted)); } catch (e) {}
     if (this.isMuted) this.stop();
     return this.isMuted;
   }
 
-  // ---------- Destravar áudio no primeiro toque ----------
   installUnlock() {
     const unlock = () => {
-      this.getContext();
-      if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
-      // Toca 1 frame de silêncio: é o que "abre" o áudio no iOS.
+      const ctx = this.getContext();
+      if (ctx?.state === 'suspended') ctx.resume().catch(() => {});
       try {
-        const buf = this.ctx.createBuffer(1, 1, 22050);
-        const src = this.ctx.createBufferSource();
+        if (!ctx) return;
+        const buf = ctx.createBuffer(1, 1, 22050);
+        const src = ctx.createBufferSource();
         src.buffer = buf;
-        src.connect(this.ctx.destination);
+        src.connect(ctx.destination);
         src.start(0);
       } catch (e) {}
     };
-    ['pointerdown', 'touchend', 'click', 'keydown'].forEach((evt) =>
-      window.addEventListener(evt, unlock, { once: true, passive: true })
-    );
+    ['pointerdown', 'touchend', 'click', 'keydown'].forEach((evt) => window.addEventListener(evt, unlock, { once: true, passive: true }));
   }
 
   getContext() {
@@ -67,11 +54,26 @@ export class ResilientAudioEngine {
     return this.ctx;
   }
 
-  // ---------- Carregar mp3 ----------
   normalize(audioPath) {
     if (!audioPath) return null;
     const name = String(audioPath).split('/').pop();
     return name.endsWith('.mp3') ? name : `${name}.mp3`;
+  }
+
+  slugify(text) {
+    return String(text || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  inferAudioName(text) {
+    const value = String(text || '').trim();
+    if (!value || value.length > 32 || value.includes('?')) return null;
+    const slug = this.slugify(value);
+    return slug ? `${slug}.mp3` : null;
   }
 
   async load(name) {
@@ -82,10 +84,9 @@ export class ResilientAudioEngine {
     const ctx = this.getContext();
     if (!ctx) return null;
 
-    const job = fetch(AUDIO_BASE + encodeURIComponent(name))
+    const job = fetch(AUDIO_BASE + encodeURIComponent(name), { cache: 'force-cache' })
       .then((res) => {
         const type = res.headers.get('content-type') || '';
-        // Se o servidor devolver a página inicial (HTML) no lugar do mp3, é arquivo inexistente.
         if (!res.ok || type.includes('text/html')) throw new Error(`HTTP ${res.status}`);
         return res.arrayBuffer();
       })
@@ -95,8 +96,8 @@ export class ResilientAudioEngine {
         return buffer;
       })
       .catch((err) => {
-        console.warn(`[áudio] não foi possível carregar ${name}:`, err.message || err);
         this.missing.add(name);
+        console.warn(`[áudio] MP3 indisponível: ${name}`, err.message || err);
         return null;
       })
       .finally(() => this.loading.delete(name));
@@ -105,36 +106,35 @@ export class ResilientAudioEngine {
     return job;
   }
 
-  /** Baixa vários mp3 antes de precisar deles (ex.: ao abrir um jogo). */
   preload(names = []) {
-    names.map((n) => this.normalize(n)).filter(Boolean).forEach((n) => this.load(n));
+    [...new Set(names.map((n) => this.normalize(n)).filter(Boolean))].forEach((name) => this.load(name));
   }
 
-  // ---------- Tocar ----------
   stop() {
-    this.playToken++;
+    this.playToken += 1;
     if (this.current) {
       try { this.current.stop(); } catch (e) {}
       this.current = null;
     }
-    if (this.speech) this.speech.cancel();
+    try { this.speech?.cancel(); } catch (e) {}
   }
 
   async play(audioPath, fallbackText) {
-    if (this.isMuted) return;
+    if (this.isMuted) return false;
 
     this.stop();
     const token = this.playToken;
-    const name = this.normalize(audioPath);
+    const explicitName = this.normalize(audioPath);
+    const inferredName = explicitName ? null : this.inferAudioName(fallbackText);
+    const name = explicitName || inferredName;
 
     if (name) {
       const ctx = this.getContext();
-      if (ctx && ctx.state === 'suspended') {
+      if (ctx?.state === 'suspended') {
         try { await ctx.resume(); } catch (e) {}
       }
       const buffer = await this.load(name);
-      if (token !== this.playToken) return;   // outro som começou enquanto carregava
-
+      if (token !== this.playToken) return false;
       if (buffer && ctx) {
         const src = ctx.createBufferSource();
         src.buffer = buffer;
@@ -142,22 +142,25 @@ export class ResilientAudioEngine {
         src.onended = () => { if (this.current === src) this.current = null; };
         this.current = src;
         src.start(0);
-        return;
+        return true;
       }
     }
 
+    if (token !== this.playToken) return false;
     this.speak(fallbackText);
+    return false;
   }
 
-  // ---------- Plano B: voz do navegador ----------
   speak(text) {
-    if (!text || !this.speech) return;
+    if (!text || !this.speech || this.isMuted) return;
     try {
+      this.speech.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'pt-BR';
       utterance.rate = 0.85;
       utterance.pitch = 1.1;
-      const voice = this.speech.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('pt-br'));
+      const voices = this.speech.getVoices();
+      const voice = voices.find((v) => v.lang?.toLowerCase().startsWith('pt-br')) || voices.find((v) => v.lang?.toLowerCase().startsWith('pt'));
       if (voice) utterance.voice = voice;
       this.speech.speak(utterance);
     } catch (e) {
