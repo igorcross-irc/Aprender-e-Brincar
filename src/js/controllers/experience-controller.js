@@ -24,7 +24,7 @@ export class ExperienceController {
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode });
+      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || 0) });
       if (sessionResult.completed) {
         this.app.evaluateRewards(gameId);
         this.app.updateScoreUI();
