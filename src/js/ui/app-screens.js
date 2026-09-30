@@ -94,8 +94,10 @@ export class AppScreens {
         </button>
         <button id="child-change-age" class="child-change-age touch-target">Trocar idade</button>
       </div>`;
-    this.audio?.play?.(null, profile.audioFirst ? 'Vamos brincar!' : '');
-    this.container.querySelector('#child-start-button')?.addEventListener('click', () => this.launchGame(preferred.id, ageId));
+    this.container.querySelector('#child-start-button')?.addEventListener('click', () => {
+      if (profile.audioFirst) this.audio?.play?.(null, 'Vamos brincar!');
+      this.launchGame(preferred.id, ageId);
+    });
     this.container.querySelector('#child-change-age')?.addEventListener('click', () => {
       this.storage.clearChildAge();
       this.renderAgeSelection({ force: true });
