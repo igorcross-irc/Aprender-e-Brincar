@@ -113,6 +113,14 @@ export class ProgressStore {
     return this.persist(previous);
   }
   getActivity(activityId) { return this.state.activities[activityId] || null; }
+  getRecentActivityIds(limit = 5) {
+    return this.getHistory(limit).map((item) => item.activityId).filter(Boolean);
+  }
+  clearHistory() {
+    const previous = structuredClone(this.state);
+    this.state.history = [];
+    return this.persist(previous);
+  }
   getSessionSummary() {
     const sessions = this.state.sessions || {};
     return {
