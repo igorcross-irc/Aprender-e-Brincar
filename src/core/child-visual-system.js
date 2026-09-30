@@ -1,18 +1,18 @@
 const VISUAL_LIBRARY = {
-  apple: { icon: '🍎', tone: 'rose', label: 'maçã' },
-  banana: { icon: '🍌', tone: 'amber', label: 'banana' },
-  ball: { icon: '⚽', tone: 'sky', label: 'bola' },
-  car: { icon: '🚗', tone: 'indigo', label: 'carro' },
-  house: { icon: '🏠', tone: 'emerald', label: 'casa' },
-  tree: { icon: '🌳', tone: 'green', label: 'árvore' },
-  cat: { icon: '🐱', tone: 'violet', label: 'gato' },
-  dog: { icon: '🐶', tone: 'amber', label: 'cachorro' },
-  bird: { icon: '🐦', tone: 'sky', label: 'pássaro' },
-  butterfly: { icon: '🦋', tone: 'pink', label: 'borboleta' },
-  sun: { icon: '☀️', tone: 'yellow', label: 'sol' },
-  flower: { icon: '🌸', tone: 'pink', label: 'flor' },
-  hand: { icon: '🖐️', tone: 'peach', label: 'mão' },
-  foot: { icon: '🦶', tone: 'sky', label: 'pé' }
+  apple: { icon: '🍎', tone: 'rose', label: 'maçã', imagePath: null },
+  banana: { icon: '🍌', tone: 'amber', label: 'banana', imagePath: null },
+  ball: { icon: '⚽', tone: 'sky', label: 'bola', imagePath: null },
+  car: { icon: '🚗', tone: 'indigo', label: 'carro', imagePath: null },
+  house: { icon: '🏠', tone: 'emerald', label: 'casa', imagePath: null },
+  tree: { icon: '🌳', tone: 'green', label: 'árvore', imagePath: null },
+  cat: { icon: '🐱', tone: 'violet', label: 'gato', imagePath: null },
+  dog: { icon: '🐶', tone: 'amber', label: 'cachorro', imagePath: null },
+  bird: { icon: '🐦', tone: 'sky', label: 'pássaro', imagePath: null },
+  butterfly: { icon: '🦋', tone: 'pink', label: 'borboleta', imagePath: null },
+  sun: { icon: '☀️', tone: 'yellow', label: 'sol', imagePath: null },
+  flower: { icon: '🌸', tone: 'pink', label: 'flor', imagePath: null },
+  hand: { icon: '🖐️', tone: 'peach', label: 'mão', imagePath: null },
+  foot: { icon: '🦶', tone: 'sky', label: 'pé', imagePath: null }
 };
 
 const NORMALIZATION = {
@@ -37,9 +37,20 @@ export function childVisualMarkup(value = '', { fallbackIcon = '✨', decorative
   const visual = getChildVisual(value, fallbackIcon);
   const aria = decorative ? ' aria-hidden="true"' : ` role="img" aria-label="${String(visual.label || value).replace(/"/g, '&quot;')}"`;
   const sizeClass = size === 'small' ? 'text-5xl' : size === 'medium' ? 'text-6xl' : 'text-7xl';
-  return `<span class="child-visual child-visual-${visual.tone} ${sizeClass}" data-visual-key="${getVisualKey(value)}"${aria}>${visual.icon}</span>`;
+  const visualBody = visual.imagePath
+    ? `<img src="${visual.imagePath}" alt="" loading="lazy" draggable="false">`
+    : visual.icon;
+  return `<span class="child-visual child-visual-${visual.tone} ${sizeClass}" data-visual-key="${getVisualKey(value)}"${aria}>${visualBody}</span>`;
 }
 
 export function childVisualLibrarySize() {
   return Object.keys(VISUAL_LIBRARY).length;
+}
+
+export function getVisualAssetManifest() {
+  return Object.fromEntries(Object.entries(VISUAL_LIBRARY).map(([key, visual]) => [key, {
+    label: visual.label,
+    imagePath: visual.imagePath,
+    fallback: visual.icon
+  }]));
 }
