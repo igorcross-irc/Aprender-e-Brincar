@@ -11,7 +11,7 @@ import { initPwaExperience } from '../core/pwa-status.js';
 import { setSfxEngine, installTapSounds } from './engine/sfx.js';
 import '@fontsource-variable/nunito';
 
-const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup'];
+const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum'];
 
 class App {
   constructor() {

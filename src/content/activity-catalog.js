@@ -1,4 +1,7 @@
 const allActivities = [
+  { id: 'bubbles', title: 'Bolhas', type: 'activity', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'descoberta', difficulty: 1, skills: ['causa e efeito','coordenação olho-mão','vocabulário'], developmentDomains: ['motricidade fina','linguagem'], world: 'discover' },
+  { id: 'count-tap', title: 'Contar Tocando', type: 'game', ages: ['12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'numeros', difficulty: 1, skills: ['contagem','correspondência um a um'], developmentDomains: ['cognição','matemática inicial'], world: 'numbers-logic' },
+  { id: 'music-keys', title: 'Piano dos Animais', type: 'creative', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'música', difficulty: 1, skills: ['música','causa e efeito','escuta'], developmentDomains: ['audição','criatividade'], world: 'create-move' },
   { id: 'discovery-sounds', title: 'Sons e Descobertas', type: 'activity', ages: ['6-12m','12-18m'], category: 'audição', difficulty: 1, skills: ['atenção auditiva','causa e efeito'], developmentDomains: ['audição','atenção','comunicação'], world: 'animals-sounds' },
   { id: 'discovery-animals', title: 'Descobrir Animais', type: 'activity', ages: ['6-12m','12-18m','18-24m'], category: 'descoberta', difficulty: 1, skills: ['atenção','vocabulário'], developmentDomains: ['linguagem','cognição'], world: 'discover' },
   { id: 'discovery-colors', title: 'Descobrir Cores', type: 'activity', ages: ['6-12m','12-18m','18-24m'], category: 'cores', difficulty: 1, skills: ['atenção visual','vocabulário'], developmentDomains: ['visão','cognição'], world: 'colors-shapes' },
@@ -20,7 +23,7 @@ const allActivities = [
   { id: 'rhymes', title: 'Rimas Divertidas', type: 'activity', ages: ['3-4y','4-5y'], category: 'fala', difficulty: 2, skills: ['rimas','escuta','vocabulário'], developmentDomains: ['linguagem','pré-alfabetização'], audioNeeds: ['pares-de-rimas'], world: 'language' },
   { id: 'sound-initial', title: 'Com Que Som Começa?', type: 'activity', ages: ['4-5y'], category: 'fala', difficulty: 3, skills: ['som inicial','atenção auditiva','vocabulário'], developmentDomains: ['fala','linguagem','pré-alfabetização'], audioNeeds: ['sons-iniciais','palavras-modelo'], world: 'language' },
   { id: 'story-sequence', title: 'Hora da História', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'linguagem', difficulty: 2, skills: ['narrativa','sequência','compreensão'], developmentDomains: ['linguagem','cognição'], audioNeeds: ['historias-curtas'], world: 'language' },
-  { id: 'communication', title: 'O Que Eu Posso Dizer?', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'comunicacao', difficulty: 2, skills: ['comunicação funcional','expressão','interação'], developmentDomains: ['comunicação','linguagem'], audioNeeds: ['modelos-de-frases'], world: 'language' },
+  { id: 'communication', title: 'Eu Quero…', type: 'activity', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'comunicacao', difficulty: 2, skills: ['comunicação funcional','expressão','interação'], developmentDomains: ['comunicação','linguagem'], audioNeeds: ['modelos-de-frases'], world: 'language' },
   { id: 'memory', title: 'Memória', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','associação'], developmentDomains: ['cognição','atenção'], world: 'memory-attention' },
   { id: 'puzzle', title: 'Encaixe e Quebra-Cabeça', type: 'game', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'coordenação', difficulty: 2, skills: ['coordenação','percepção','resolução de problemas'], developmentDomains: ['motricidade fina','cognição'], world: 'create-move' },
   { id: 'canvas', title: 'Lousa Mágica', type: 'creative', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'criatividade', difficulty: 1, skills: ['coordenação','criatividade','expressão'], developmentDomains: ['motricidade fina','criatividade'], world: 'create-move' },
@@ -58,7 +61,7 @@ const allActivities = [
 ];
 
 // Atividades ainda sem mecânica jogável real ficam fora do app até serem implementadas.
-export const DRAFT_ACTIVITY_IDS = Object.freeze(['phrases', 'communication', 'phrase-builder-2', 'rhymes', 'sound-initial', 'story-sequence']);
+export const DRAFT_ACTIVITY_IDS = Object.freeze(['rhymes', 'sound-initial', 'story-sequence']);
 
 export const draftActivities = allActivities.filter((activity) => DRAFT_ACTIVITY_IDS.includes(activity.id));
 export const activityCatalog = allActivities.filter((activity) => !DRAFT_ACTIVITY_IDS.includes(activity.id));

@@ -11,6 +11,32 @@ const PATTERNS = {
 
 export function setSfxEngine(audioEngine) { engine = audioEngine; }
 
+// Nota musical curta com timbre suave (piano de brinquedo).
+export function playNote(freq, duration = 0.5) {
+  if (!engine || engine.isMuted) return;
+  const ctx = engine.getContext?.();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume?.().catch?.(() => {});
+  const now = ctx.currentTime;
+  try {
+    const osc = ctx.createOscillator();
+    const overtone = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    overtone.type = 'sine';
+    osc.frequency.setValueAtTime(freq, now);
+    overtone.frequency.setValueAtTime(freq * 2, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.25, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    osc.connect(gain);
+    overtone.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now); overtone.start(now);
+    osc.stop(now + duration + 0.05); overtone.stop(now + duration + 0.05);
+  } catch {}
+}
+
 export function playSfx(name = 'tap') {
   const pattern = PATTERNS[name];
   if (!pattern || !engine || engine.isMuted) return;
@@ -36,6 +62,6 @@ export function playSfx(name = 'tap') {
 // Um "toque" suave em qualquer botão dá retorno imediato ao dedo da criança.
 export function installTapSounds(root = document) {
   root.addEventListener('pointerdown', (event) => {
-    if (event.target.closest?.('button:not(:disabled)')) playSfx('tap');
+    if (event.target.closest?.('button:not(:disabled):not([data-no-tap])')) playSfx('tap');
   }, { capture: true, passive: true });
 }

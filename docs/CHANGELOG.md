@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-30 — Fase 3 — Brincadeiras mais profundas
+- **Bolhas** (todas as idades): bolhas com animais sobem pela tela; estourar diz o nome do animal.
+- **Contar Tocando** (12 meses+): cada objeto tocado ganha um número falado — correspondência um a um; quantidade máxima cresce com a idade.
+- **Piano dos Animais** (todas as idades): teclas coloridas com notas sintetizadas e "Brilha, brilha, estrelinha" para ouvir e imitar.
+- **Eu Quero…** (18 meses+): prancha de comunicação que fala pedidos e sentimentos pela criança; substitui o rascunho de comunicação.
+- **Montar Frases** e **Frases em Ação** reativadas com o montador de frases existente.
+- **Álbum de adesivos** no início: cada brincadeira concluída pela primeira vez vira um adesivo; o resultado mostra "Novo adesivo!".
+- Moldura comum para brincadeiras novas (`game-shell.js`) com bolinhas de progresso e botão "Pronto!".
+- E2E cobre as novas brincadeiras e o álbum.
+
 ## 2026-09-30 — Fase 2 — Visual
 - Nova mascote: corujinha roxa em SVG com expressões (feliz, curiosa, comemorando).
 - Fonte Nunito (arredondada) empacotada no app — funciona offline e sem chamar serviços externos.

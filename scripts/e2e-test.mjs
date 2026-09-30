@@ -3,11 +3,12 @@
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
+import { DRAFT_ACTIVITY_IDS } from '../src/content/activity-catalog.js';
 
 const PORT = 4175;
 const BASE = `http://localhost:${PORT}`;
 const AGES = ['6-12m', '12-18m', '18-24m', '2-3y', '3-4y', '4-5y'];
-const DRAFTS = ['phrases', 'communication', 'phrase-builder-2', 'rhymes', 'sound-initial', 'story-sequence'];
+const DRAFTS = DRAFT_ACTIVITY_IDS;
 
 if (!existsSync('dist/index.html')) {
   console.error('E2E FAIL — dist/ ausente. Rode npm run build antes.');
@@ -191,6 +192,44 @@ async function run() {
   if ((await page.$('#session-again'))) fail('desenho interrompido antes de a criança terminar');
   await page.click('#btn-canvas-done');
   await expectResultScreen(page, 'desenho');
+
+  console.log('Brincadeiras novas (2 a 3 anos)');
+  await openGame(page, '2-3y', 'bubbles');
+  for (let i = 0; i < 40 && !(await page.$('#session-again')); i += 1) {
+    const bubble = await page.$('.bubble:not(.popping)');
+    if (bubble) await bubble.dispatchEvent('pointerdown');
+    await page.waitForTimeout(250);
+  }
+  await expectResultScreen(page, 'bolhas');
+
+  await openGame(page, '2-3y', 'count-tap');
+  for (let i = 0; i < 60 && !(await page.$('#session-again')); i += 1) {
+    const item = await page.$('.count-item:not(.counted)');
+    if (item) await item.click();
+    else await page.waitForTimeout(400);
+  }
+  await expectResultScreen(page, 'contar tocando');
+
+  await openGame(page, '2-3y', 'music-keys');
+  for (let i = 0; i < 10; i += 1) await page.dispatchEvent(`[data-key="${i % 8}"]`, 'pointerdown');
+  await page.click('#music-done');
+  await expectResultScreen(page, 'piano dos animais');
+
+  await openGame(page, '2-3y', 'communication');
+  for (const id of ['agua', 'colo', 'brincar']) await page.click(`[data-talk="${id}"]`);
+  await page.click('#talk-done');
+  await expectResultScreen(page, 'prancha eu quero');
+
+  await openGame(page, '2-3y', 'phrases');
+  await page.click('.word-card');
+  await page.click('#btn-speak-sentence');
+  await expectResultScreen(page, 'montar frases');
+
+  await goHome(page);
+  await page.click('#btn-album');
+  const stickers = await page.$$eval('.sticker.earned', (els) => els.length);
+  if (stickers >= 5) pass(`álbum mostra ${stickers} adesivos conquistados`);
+  else fail(`álbum mostra só ${stickers} adesivos`);
 
   await context.close();
 

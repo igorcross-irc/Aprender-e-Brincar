@@ -10,13 +10,14 @@ export const GAME_ICONS = {
   colors: '🎨', 'find-color': '🌈', animals: '🐶', 'find-animal': '🔎', 'sound-guess': '🔊', 'shape-match': '🔷',
   'odd-one-out': '🧩', 'size-sort': '📏', sequence: '🔁', count: '🔢', 'number-match': '🔢', balloons: '🎈',
   phrases: '🗣️', syllables: '👄', rhymes: '🎵', 'sound-initial': '🔤', 'story-sequence': '📖',
-  communication: '💬', memory: '🧠', puzzle: '🧩', canvas: '🖍️', movement: '🏃', 'discover-objects': '🔎',
+  communication: '🙋', memory: '🧠', puzzle: '🧩', canvas: '🖍️', movement: '🏃', 'discover-objects': '🔎',
   'body-parts': '🧍', 'match-pairs': '🧦', 'classify-animals': '🐾', opposites: '↔️', 'sound-sequence': '👂',
   rhythm: '🥁', 'guided-movement': '🤸', 'baby-discover': '🌱', 'baby-colors': '🌈', vocabulary: '🗣️',
   'story-interactive': '📖', 'music-rhythm': '🎵', 'sort-groups': '🧺', 'object-hunt': '🔎', 'animal-families': '🐣',
   'action-words': '🏃', 'story-choices': '📚', 'phrase-builder-2': '💬', 'color-hunt-2': '🌈', 'shape-sequence': '🔷',
   'compare-sizes': '📏', 'animal-sound-memory': '🔊', 'animal-homes': '🏠', 'count-more': '🔢', 'number-order': '🔢',
-  'memory-objects': '🧠', 'attention-path': '👀', 'rhythm-copy': '👏', 'movement-copy': '🙆'
+  'memory-objects': '🧠', 'attention-path': '👀', 'rhythm-copy': '👏', 'movement-copy': '🙆',
+  bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹'
 };
 
 export const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
@@ -61,9 +62,15 @@ export class AppScreens {
               <span class="world-tile-icon" aria-hidden="true">${world.icon}</span>
               <span class="world-tile-title">${this.escape(world.title)}</span>
             </button>`).join('')}
+          <button id="btn-album" class="world-tile album-tile" aria-label="Meus adesivos">
+            <span class="world-tile-deco" aria-hidden="true">⭐</span>
+            <span class="world-tile-icon" aria-hidden="true">📒</span>
+            <span class="world-tile-title">Meus adesivos</span>
+          </button>
         </div>
       </div>`;
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
+    this.container.querySelector('#btn-album').addEventListener('click', () => this.renderAlbum());
     this.audio.prompt?.(null, greeting);
   }
 
@@ -104,6 +111,35 @@ export class AppScreens {
     this.audio.prompt?.(null, world.title);
   }
 
+  // Álbum: cada brincadeira concluída pela primeira vez vira um adesivo.
+  renderAlbum() {
+    this.container.scrollTop = 0;
+    const ageId = this.childAge();
+    const snapshot = this.core.progress.snapshot();
+    const activities = activityCatalog.filter((activity) => activity.ages.includes(ageId));
+    const earned = activities.filter((activity) => snapshot.rewards?.[`activity:${activity.id}`]);
+    this.container.innerHTML = `
+      <div class="screen page-enter">
+        <div class="screen-bar">
+          <button id="album-back" class="round-button" aria-label="Voltar">⬅️</button>
+          <h2 class="screen-title"><span aria-hidden="true">📒</span> Meus adesivos</h2>
+        </div>
+        <p class="album-count">${earned.length} de ${activities.length}</p>
+        <div class="sticker-grid">
+          ${activities.map((activity, index) => {
+            const has = earned.includes(activity);
+            return `<button class="sticker ${has ? 'earned' : 'locked'}" ${has ? `data-sticker="${activity.id}"` : 'disabled'} style="--tilt:${(index % 5) * 3 - 6}deg" aria-label="${has ? this.escape(activity.title) : 'Adesivo ainda não conquistado'}"><span aria-hidden="true">${GAME_ICONS[activity.id] || '✨'}</span></button>`;
+          }).join('')}
+        </div>
+      </div>`;
+    this.container.querySelector('#album-back').addEventListener('click', () => this.renderHome());
+    this.container.querySelectorAll('[data-sticker]').forEach((button) => button.addEventListener('click', () => {
+      const activity = activityCatalog.find((item) => item.id === button.dataset.sticker);
+      if (activity) this.audio.play(null, activity.title);
+    }));
+    this.audio.prompt?.(null, earned.length ? 'Seus adesivos!' : 'Brinque para ganhar adesivos!');
+  }
+
   renderSessionResult(result) {
     this.container.scrollTop = 0;
     const name = this.storage.getChildName();
@@ -123,7 +159,7 @@ export class AppScreens {
           ${childMascotMarkup({ size: 'large', mood: 'celebrate' })}
           <h2 class="result-title">${this.escape(message)}</h2>
           ${result.starAwarded
-            ? '<div class="result-star" aria-label="Você ganhou uma estrela">⭐</div>'
+            ? `<div class="result-star" aria-label="Você ganhou uma estrela">⭐</div><div class="result-sticker"><span aria-hidden="true">${GAME_ICONS[result.activityId] || '✨'}</span> Novo adesivo!</div>`
             : '<p class="result-subtitle">Você brincou de novo! 🎉</p>'}
           <div class="result-actions">
             <button id="session-again" class="big-action action-again"><span aria-hidden="true">🔁</span><small>De novo</small></button>

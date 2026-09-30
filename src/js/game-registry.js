@@ -9,12 +9,16 @@ import { NumberOrderGame } from './games/independent/number-order.js';
 import { ColorHuntGame } from './games/independent/color-hunt.js';
 import { RhythmCopyGame } from './games/independent/rhythm-copy.js';
 import { SoundSequenceGame } from './games/independent/sound-sequence.js';
+import { BubblesGame } from './games/toddler/bubbles.js';
+import { CountTapGame } from './games/toddler/count-tap.js';
+import { MusicKeysGame } from './games/toddler/music-keys.js';
+import { CommunicationBoardGame } from './games/toddler/communication-board.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -53,8 +57,13 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['color-hunt-2'], ColorHuntGame, vocabularyData.colors);
   addIndependent(['rhythm-copy'], RhythmCopyGame, developmentContent.musicPatterns);
   addIndependent(['sound-sequence'], SoundSequenceGame, vocabularyData.animals);
+  addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
+  addIndependent(['count-tap'], CountTapGame, developmentContent.objects);
+  addIndependent(['music-keys'], MusicKeysGame);
+  addIndependent(['communication'], CommunicationBoardGame);
 
-  addGuided(['phrases','communication','phrase-builder-2','rhymes','sound-initial','story-sequence','movement']);
+  addGuided(['rhymes','sound-initial','story-sequence','movement']);
+  ['phrases','phrase-builder-2'].forEach((id) => definitions.set(id, { id, kind: 'phrases', exploration: true }));
 
   definitions.set('canvas', { id:'canvas', kind:'canvas', Game:CanvasGame, exploration:true });
   definitions.set('memory', { id:'memory', kind:'memory', Game:MemoryGame });
@@ -84,6 +93,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
       if (def.kind === 'memory') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
       if (def.kind === 'puzzle') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
       if (def.kind === 'balloons') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
+      if (def.kind === 'phrases') return new CardsGame(containerId, audio, storage, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases, { ageId, level: id === 'phrase-builder-2' ? level + 1 : level });
       if (def.kind === 'guided') return { guided: true };
       throw new Error(`Tipo de execução desconhecido para ${id}: ${def.kind}`);
     }
