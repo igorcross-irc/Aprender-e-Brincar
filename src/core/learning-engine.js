@@ -53,6 +53,7 @@ export class LearningEngine {
     const snapshot = this.progress.snapshot();
     const recentIds = this.recentIds(5);
     const weakSkills = new Set((this.skills?.weakest?.(5) || []).map(([skill]) => skill));
+    const sessionRecent = new Set((snapshot.history || []).slice(0, 5).map((item) => item.activityId));
     return activityCatalog.filter((activity) => activity.ages?.includes(ageId) && (!worldId || activity.world === worldId)).map((activity) => {
       const progress = snapshot.activities?.[activity.id];
       const mastery = Number(progress?.mastery || 0);
@@ -65,7 +66,8 @@ export class LearningEngine {
       const recoveryBoost = recentAccuracy != null && accuracy != null && recentAccuracy > accuracy + 10 ? 8 : 0;
       const novelty = evaluations === 0 ? 55 : 18;
       const repetitionPenalty = recentIds.includes(activity.id) ? 35 : 0;
-      const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty;
+      const sessionPenalty = sessionRecent.has(activity.id) ? 18 : 0;
+      const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty - sessionPenalty;
       const reason = evaluations === 0 ? 'Nova descoberta' : recentAccuracy != null && recentAccuracy < 60 ? 'Vamos reforçar esta habilidade' : recoveryBoost ? 'Você está evoluindo' : 'Boa hora para variar';
       return { activity, score, reason, difficulty: this.getDifficulty(activity, ageId) };
     }).sort((a, b) => b.score - a.score).slice(0, limit);
