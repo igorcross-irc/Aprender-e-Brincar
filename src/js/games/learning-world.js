@@ -33,7 +33,8 @@ export class LearningWorldGame {
     this.score = 0;
     this.completed = false;
     this.roundLocked = false;
-    this.options = { difficulty: 1, mode: 'evaluate', ...options };
+    this.options = { difficulty: 1, mode: 'evaluate', ageId: '2-3y', ...options };
+    this.voiceFirst = ['6-12m','12-18m','18-24m','2-3y'].includes(this.options.ageId);
 
     const sources = {
       'discover-animals': options.items || [],
@@ -94,7 +95,7 @@ export class LearningWorldGame {
           <div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-indigo-700">${title}</div>
           <div class="flex gap-2"><div class="hidden sm:block bg-violet-50 rounded-full px-3 py-2 shadow font-black text-violet-600">${difficultyLabel}</div><div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-amber-600">⭐ ${this.round + 1}/5</div></div>
         </div>
-        ${instruction ? `<p class="text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
+        ${instruction ? `<p class="child-instruction text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
       </div>`;
     this.container.querySelector('#learning-back')?.addEventListener('click', () => {
@@ -170,10 +171,10 @@ export class LearningWorldGame {
           ${pool.map((item) => `
             <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target transition">
               <span class="text-6xl block">${item.icon || '🎨'}</span>
-              <span class="font-black text-sky-800">${this.escape(item.label)}</span>
+              <span class="child-label font-black text-sky-800">${this.escape(item.label)}</span>
             </button>`).join('')}
         </div>
-        <button id="discover-next" class="mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
+        <button id="discover-next" aria-label="Continuar" class="child-control mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
       </div>`, instruction);
 
     const next = this.container.querySelector('#discover-next');
@@ -204,12 +205,12 @@ export class LearningWorldGame {
   renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Vamos tentar novamente!') {
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <p class="text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
+        <p class="child-instruction text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           ${options.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${option.icon || '✨'}</span>
-              <span class="font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
+              <span class="child-label font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
             </button>`).join('')}
         </div>
       </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.');
