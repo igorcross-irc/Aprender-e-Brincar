@@ -151,3 +151,18 @@ Crítica da rodada:
 - áudio deve continuar sendo auditado por atividade, especialmente nas experiências novas e nos motores legados.
 
 Regra mantida: desenvolver em staging, testar/criticar e só então promover para `main`.
+
+
+## Saltos 86–100 — Experiência por idade e identidade visual preparatória
+
+- expandida a biblioteca visual central para 25+ elementos;
+- catálogo visual passou a ser imutável e com normalização ampliada;
+- suporte opcional a rótulos visuais para faixas que já usam texto;
+- contrato de dificuldade passou a expor escolhas, sequência, rodadas, nível máximo, densidade visual e alvo de toque;
+- política de idade passou a devolver configuração unificada para os motores;
+- feedback ganhou estados de incentivo/calma e limpeza explícita;
+- cobertura passou a medir profundidade por mundos, categorias e áudio;
+- auditorias elevadas para impedir regressões na biblioteca visual e cobertura;
+- testes centrais ampliados para a nova biblioteca visual.
+
+Crítica: esta rodada prepara a substituição progressiva de emojis por arte própria, mas não finge que essa substituição já aconteceu. Os caminhos de assets continuam seguros e a biblioteca mantém fallback enquanto as ilustrações reais não forem integradas.
