@@ -1,7 +1,7 @@
 import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-difficulty-policy.js';
 export class ColorHuntGame {
   constructor(containerId,audio,onComplete,onBack){this.container=document.getElementById(containerId);this.audio=audio;this.onComplete=onComplete;this.onBack=onBack;}
-  start(items=[],level=1){this.items=items;this.ageId=options.ageId||'2-3y';this.difficulty=resolveGameDifficulty(this.ageId,level,options);this.level=this.difficulty.level;this.round=0;this.correct=0;this.attempts=0;this.finished=false;this.render();}
+  start(items=[],level=1,options={}){this.items=items;this.ageId=options.ageId||'2-3y';this.difficulty=resolveGameDifficulty(this.ageId,level,options);this.level=this.difficulty.level;this.round=0;this.correct=0;this.attempts=0;this.finished=false;this.render();}
   shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
   render(){if(this.round>=this.difficulty.rounds)return this.finish();const pool=this.shuffle(this.items).slice(0,getGameChoiceCount(this.difficulty,2,1,5));const target=pool[Math.floor(Math.random()*pool.length)];this.target=target;
     this.container.innerHTML=`
