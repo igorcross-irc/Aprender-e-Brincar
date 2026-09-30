@@ -29,7 +29,7 @@ export class OddOneOutGame {
     else {btn.classList.add('border-rose-300','animate-shake');this.audio?.play(null,'Observe mais uma vez.');setTimeout(()=>btn.classList.remove('border-rose-300','animate-shake'),450);}
   }
   finish(){
-    this.finished=true; const max=5; const score=Math.min(max,this.correct);
+    this.finished=true; const max=this.difficulty.rounds; const score=Math.min(max,this.correct);
     this.onComplete?.({score,rounds:max,correct:this.correct,attempts:this.attempts,maxScore:max,completedRounds:this.correct,difficulty:this.level,ageId:this.ageId});
   }
 }
