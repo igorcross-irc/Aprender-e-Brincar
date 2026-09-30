@@ -35,16 +35,40 @@ export function getChildVisual(value = '', fallbackIcon = '✨') {
 
 export function childVisualMarkup(value = '', { fallbackIcon = '✨', decorative = true, size = 'large' } = {}) {
   const visual = getChildVisual(value, fallbackIcon);
-  const aria = decorative ? ' aria-hidden="true"' : ` role="img" aria-label="${String(visual.label || value).replace(/"/g, '&quot;')}"`;
+  const aria = decorative ? ' aria-hidden="true"' : ` role="img" aria-label="${escapeAttribute(visual.label || value)}"`;
   const sizeClass = size === 'small' ? 'text-5xl' : size === 'medium' ? 'text-6xl' : 'text-7xl';
-  const visualBody = visual.imagePath
-    ? `<img src="${visual.imagePath}" alt="" loading="eager" draggable="false">`
-    : visual.icon;
-  return `<span class="child-visual child-visual-${visual.tone} ${sizeClass}" data-visual-key="${getVisualKey(value)}"${aria}>${visualBody}</span>`;
+  const visualBody = isVisualAssetPathSafe(visual.imagePath)
+    ? `<img src="${escapeAttribute(visual.imagePath)}" alt="" loading="eager" draggable="false">`
+    : escapeAttribute(visual.icon);
+  return `<span class="child-visual child-visual-${visual.tone} ${sizeClass}" data-visual-key="${escapeAttribute(getVisualKey(value))}"${aria}>${visualBody}</span>`;
 }
 
 export function childVisualLibrarySize() {
   return Object.keys(VISUAL_LIBRARY).length;
+}
+
+function escapeAttribute(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+export function isVisualAssetPathSafe(imagePath) {
+  if (!imagePath) return false;
+  const value = String(imagePath).trim();
+  return value.startsWith('/') && !value.includes('..') && /\\.(png|jpe?g|webp|avif|svg)$/i.test(value);
+}
+
+export function getVisualAssetStatus(value = '') {
+  const visual = getChildVisual(value);
+  return {
+    key: getVisualKey(value),
+    label: visual.label,
+    hasAsset: isVisualAssetPathSafe(visual.imagePath),
+    fallback: visual.icon
+  };
 }
 
 export function getVisualAssetManifest() {
