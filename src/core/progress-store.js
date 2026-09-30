@@ -46,6 +46,7 @@ export class ProgressStore {
   addStar() { const previous = structuredClone(this.state); this.state.stars = this.getStars() + 1; this.persist(previous); return this.state.stars; }
   reset() { this.state = structuredClone(DEFAULT); this.persist(); return this.state; }
   getHistory(limit = 10) { return Array.isArray(this.state.history) ? this.state.history.slice(0, Math.max(0, Number(limit) || 0)) : []; }
+  getRecentHistory(limit = 10) { return this.getHistory(limit).map((item) => ({ ...item, activityId: String(item.activityId || ''), accuracy: item.accuracy == null ? null : Math.max(0, Math.min(100, Number(item.accuracy))), completedAt: item.completedAt || null })); }
   complete(activityId, extra = {}) {
     if (!activityId) return null;
     const current = this.state.activities[activityId] || { completions: 0, bestScore: 0, attempts: 0, correct: 0, mastery: 0 };
@@ -121,6 +122,8 @@ export class ProgressStore {
     this.state.history = [];
     return this.persist(previous);
   }
+  getLastSessionDurationMs() { return Math.max(0, Number(this.state.sessions?.lastDurationMs) || 0); }
+  getTotalMinutes() { return Math.round(Math.max(0, Number(this.state.sessions?.totalDurationMs) || 0) / 60000); }
   getSessionSummary() {
     const sessions = this.state.sessions || {};
     return {
