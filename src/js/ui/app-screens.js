@@ -1,7 +1,7 @@
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
-import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
+import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';\nimport { childVisualMarkup } from '../../core/child-visual-system.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -265,7 +265,7 @@ export class AppScreens {
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
           <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
-          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
+          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target">${childVisualMarkup(label, { fallbackIcon: ['👏','👋','🦘','💃'][index%4], decorative: true, size: 'large' })}<span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
     this.audio?.play?.(null, text);
