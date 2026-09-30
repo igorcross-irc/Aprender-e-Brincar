@@ -13,7 +13,8 @@
     "audit:audio": "node scripts/audio-audit.mjs",
     "test:e2e": "npm run build && node scripts/e2e-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
-    "prebuild": "node scripts/audio-index.mjs"
+    "prebuild": "node scripts/audio-index.mjs",
+    "test:play-all": "npm run build && node scripts/play-all.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

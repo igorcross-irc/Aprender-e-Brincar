@@ -207,6 +207,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 #game-container #discover-next, #game-container #discover-object-next, #game-container #btn-canvas-done { border-radius: 1.5rem; font-size: 1.2rem; box-shadow: var(--ab-shadow); }
 
 #game-container > .my-auto { margin-top: 0; }
+#game-container .color-dot { display: block; width: 88px; height: 88px; margin: 0 auto .4rem; border-radius: 999px; border: 5px solid #fff; box-shadow: 0 4px 12px rgba(0, 0, 0, .15); }
 #game-container .color-swatch { min-height: 150px; border-color: rgba(255, 255, 255, .9); }
 .memory-card:not(.flipped):not(.matched) { background: linear-gradient(160deg, #c4b5fd, #8b5cf6); border-color: #ede9fe; }
 .memory-card .card-back { filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .15)); }

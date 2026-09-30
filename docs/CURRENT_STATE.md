@@ -16,12 +16,13 @@ Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico,
 - `src/js/ui/app-screens.js`: telas da criança. `src/js/ui/family-settings.js`: Área da Família.
 - `src/js/controllers/experience-controller.js`: inicia/encerra brincadeiras, sessão, resultado e limpeza.
 - `src/js/game-registry.js`: mapeia cada atividade para seu motor. Motores: `learning-world.js` (26 modos), `games/independent/*`, `games/toddler/*` (bolhas, contar, piano, prancha), memória, quebra-cabeça, balões, lousa, frases.
-- `src/content/activity-catalog.js`: catálogo; `DRAFT_ACTIVITY_IDS` mantém fora do app o que ainda não tem mecânica real (rimas, som inicial, história em sequência).
+- `src/content/activity-catalog.js`: catálogo; `DRAFT_ACTIVITY_IDS` mantém fora do app o que ainda não tem mecânica real (rimas, som inicial, história em sequência) e `DUPLICATE_ACTIVITY_IDS` esconde cópias.
 - `src/core/screen-time.js`: tempo de tela. `src/js/engine/sfx.js`: sons sintetizados. `src/js/engine/audio-engine.js`: MP3 + voz do navegador.
 - PWA: `public/sw.js` (shell tolerante, mídia com atualização em segundo plano), `public/manifest.json`.
 
 ## Qualidade
 - `npm run test:e2e`: abre todas as brincadeiras em todas as idades e joga os fluxos completos no Chromium (verificação principal).
+- `npm run test:play-all`: robô que joga todas as brincadeiras até o fim e detecta travamentos (≈25 min; rodar antes de publicar).
 - `test:core`, `smoke`, `audit:*`: verificações de contrato e conteúdo.
 - CI: `.github/workflows/build.yml`.
 

@@ -44,11 +44,14 @@ export function getChildVisual(value = '', fallbackIcon = '✨') {
   return VISUAL_LIBRARY[key] || { icon: fallbackIcon, tone: 'sky', label: value };
 }
 
+// Os SVGs atuais são provisórios e ficam piores que o emoji; ligue quando houver ilustrações finais.
+const RENDER_ILLUSTRATIONS = false;
+
 export function childVisualMarkup(value = '', { fallbackIcon = '✨', decorative = true, size = 'large', showLabel = false } = {}) {
   const visual = getChildVisual(value, fallbackIcon);
   const aria = decorative ? ' aria-hidden="true"' : ` role="img" aria-label="${escapeAttribute(visual.label || value)}"`;
   const sizeClass = size === 'small' ? 'text-5xl' : size === 'medium' ? 'text-6xl' : 'text-7xl';
-  const visualBody = isVisualAssetPathSafe(visual.imagePath)
+  const visualBody = RENDER_ILLUSTRATIONS && isVisualAssetPathSafe(visual.imagePath)
     ? `<img src="${escapeAttribute(visual.imagePath)}" alt="" loading="eager" draggable="false">`
     : escapeAttribute(visual.icon);
   const labelMarkup = showLabel && visual.label ? `<span class="child-visual-label">${escapeAttribute(visual.label)}</span>` : '';

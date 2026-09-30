@@ -104,6 +104,7 @@ async function run() {
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', (error) => pageErrors.push(error.message));
+  page.on('dialog', (dialog) => dialog.accept());
   page.on('console', (message) => { if (message.type() === 'error') pageErrors.push(message.text()); });
   await page.goto(BASE);
 
@@ -164,13 +165,13 @@ async function run() {
   await playDiscover(page);
   await expectResultScreen(page, 'descobrir animais');
 
-  await openGame(page, '2-3y', 'object-hunt');
+  await openGame(page, '2-3y', 'discover-objects');
   for (let round = 0; round < 5; round += 1) {
     await page.click('[data-object]');
     await page.click('#discover-object-next');
     await page.waitForTimeout(800);
   }
-  await expectResultScreen(page, 'caça aos objetos');
+  await expectResultScreen(page, 'descobrir objetos');
 
   await openGame(page, '2-3y', 'odd-one-out');
   for (let round = 0; round < 10 && await page.$('.odd-option'); round += 1) {
@@ -230,6 +231,39 @@ async function run() {
   const stickers = await page.$$eval('.sticker.earned', (els) => els.length);
   if (stickers >= 5) pass(`álbum mostra ${stickers} adesivos conquistados`);
   else fail(`álbum mostra só ${stickers} adesivos`);
+
+  console.log('Área da Família');
+  const openFamily = async () => {
+    await page.click('#btn-settings');
+    const eq = await page.textContent('#gate-title ~ div');
+    const [p1, p2] = eq.match(/\d+/g).map(Number);
+    await page.fill('#gate-input', '1');
+    await page.click('#btn-gate-confirm');
+    if (!(await page.$('#gate-error:not([hidden])'))) fail('verificação aceitou resposta errada');
+    await page.fill('#gate-input', String(p1 * p2));
+    await page.click('#btn-gate-confirm');
+    await page.waitForSelector('.family-panel');
+  };
+  await goHome(page);
+  await openFamily();
+  await page.fill('#child-name-input', 'Bia');
+  await page.click('[data-family-age="4-5y"]');
+  await page.uncheck('#sound-toggle');
+  await page.click('#btn-save-settings');
+  await page.waitForSelector('[data-world]');
+  const greeting = await page.textContent('.home-greeting');
+  const age = await page.evaluate(() => localStorage.getItem('aprender_brincar_child_age'));
+  const muted = await page.evaluate(() => localStorage.getItem('ab_muted'));
+  if (greeting.includes('Bia') && age === '4-5y' && muted === 'true') pass('perfil, idade e som salvos pela Área da Família');
+  else fail(`configurações não salvas (saudação="${greeting}", idade=${age}, mudo=${muted})`);
+  await openFamily();
+  await page.check('#sound-toggle');
+  await page.click('[data-family-age="2-3y"]');
+  await page.click('#btn-reset-stars');
+  await page.waitForSelector('[data-world]');
+  if ((await page.textContent('#star-count')).trim() === '0') pass('zerar progresso volta as estrelas a 0');
+  else fail('zerar progresso não zerou as estrelas');
+  await page.evaluate(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
 
   console.log('Saída no meio e tempo de tela');
   pageErrors.length = 0;

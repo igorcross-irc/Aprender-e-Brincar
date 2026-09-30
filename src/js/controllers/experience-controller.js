@@ -4,12 +4,13 @@ import { getAgeExperienceConfig, isAgeCompatible } from '../../core/age-experien
 import { applyChildInterfacePolicy } from '../../core/child-interface-policy.js';
 
 export class ExperienceController {
-  constructor(app) { this.app = app; this.active = null; }
+  constructor(app) { this.app = app; this.active = null; this.launchToken = 0; }
 
   // Interrompe timers, sons e ouvintes do jogo atual ao sair no meio.
   stopActive() {
     const game = this.active;
     this.active = null;
+    this.launchToken += 1;
     if (!game) return;
     for (const method of ['clearPending', 'stop', 'stopSong', 'cleanupListeners']) {
       try { game[method]?.(); } catch {}
@@ -37,9 +38,11 @@ export class ExperienceController {
     this.app.core.learning.remember(gameId);
     const playMode = this.app.gameRegistry.mode(gameId);
     const startedAt = Date.now();
+    const token = ++this.launchToken;
     let finished = false;
     const onWin = (result = {}) => {
-      if (finished) return;
+      // Ignora conclusões atrasadas de um jogo que a criança já deixou.
+      if (finished || token !== this.launchToken) return;
       finished = true;
       const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || Date.now() - startedAt) });
       this.active = null;
@@ -56,7 +59,7 @@ export class ExperienceController {
     const adaptive = activity ? this.app.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
     if (activity?.audio) this.app.audio.preload([activity.audio]);
     try {
-      const result = this.app.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content });
+      const result = this.app.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content, title: activity.title });
       if (result?.guided) return this.app.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
       this.active = result || null;
       return result;

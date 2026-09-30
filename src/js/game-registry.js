@@ -75,7 +75,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
     get(id) { return definitions.get(id) || null; },
     mode(id) { return definitions.get(id)?.exploration ? 'explore' : 'evaluate'; },
     all() { return [...definitions.values()]; },
-    launch(id, { adaptive = { level: 1 }, ageId = '2-3y', onWin, onBack }) {
+    launch(id, { adaptive = { level: 1 }, ageId = '2-3y', onWin, onBack, title = null }) {
       const def = definitions.get(id);
       if (!def) throw new Error(`Atividade sem registro de execução: ${id}`);
       const age = adaptive?.age || getAgeExperienceConfig(ageId, adaptive?.level || 1);
@@ -83,7 +83,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
       if (def.kind === WORLD) {
         const game = new LearningWorldGame(containerId, audio, onWin, onBack);
         if (def.items) audio?.preload?.(def.items.map((x) => x.audio).filter(Boolean));
-        game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age });
+        game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age, title });
         return game;
       }
       if (def.kind === 'independent') {

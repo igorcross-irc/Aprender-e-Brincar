@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-09-30 — Revisão completa jogando tudo
+Novo `npm run test:play-all`: um robô joga todas as brincadeiras de todas as idades até o fim (tenta as opções como uma criança), detecta travamentos, erros de JavaScript e grava o texto de cada rodada em `play-all-report.json`. Primeira passada: 19 travamentos em 173 jogadas. Corrigido:
+- **Travamentos**: em "Encontre o Animal", "Quem Fez Esse Som?" e similares o animal pedido às vezes não estava entre as opções; em "Complete a Sequência" e "Sequência de Sons" a resposta certa podia ser sorteada para fora.
+- **Conclusão atrasada**: um jogo que terminava depois de a criança sair (ex.: quebra-cabeça) abria a comemoração por cima de outra tela.
+- **"Grande e Pequeno"** podia ter dois objetos grandes (só um aceito) ou nenhum; agora sempre um grande. Carro passou a ser "grande".
+- **Gramática**: artigo correto nas perguntas ("Onde está a galinha?", "Encontre a estrela", "Onde está o pé?").
+- **"Descobrir Cores"** mostrava três paletas iguais; agora mostra as cores.
+- **Ícones provisórios** (SVGs com emoji pequeno dentro de um círculo) desligados até existirem ilustrações finais.
+- **Histórias** agora narram frases de verdade, uma história completa por partida.
+- **13 brincadeiras duplicadas** (mesma mecânica com outro nome, ex.: "Onde Vive o Animal?" abria "Encontre o Animal") saíram da lista; faixas etárias sobrepostas ajustadas; "Opostos" passou para 3+ anos.
+- Título dentro do jogo agora é o mesmo do cartão; ritmos com ícones legíveis.
+- E2E cobre a Área da Família (verificação, nome, idade, som, zerar progresso).
+
 ## 2026-09-30 — Fase 4 — Família e qualidade
 - **Tempo de tela opcional** (15 a 60 min/dia) na Área da Família; conta só com o app visível. Ao atingir o limite, a brincadeira atual termina e aparece a tela "Hora de descansar"; só um adulto libera +10 minutos.
 - Relatório com gráfico dos últimos 7 dias de uso.
