@@ -209,11 +209,15 @@ export class LearningWorldGame {
   }
 
   renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Vamos tentar novamente!') {
+    const maxChoices = this.interfacePolicy?.maxChoices || 4;
+    const correct = options.find((item) => String(item.id) === String(correctId));
+    const alternatives = options.filter((item) => String(item.id) !== String(correctId));
+    const safeOptions = correct ? [correct, ...this.shuffle(alternatives).slice(0, Math.max(1, maxChoices - 1))] : options.slice(0, maxChoices);
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p class="child-instruction text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          ${options.map((option) => `
+          ${safeOptions.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               ${childVisualMarkup(option.label, { fallbackIcon: option.icon || '✨', decorative: true, size: 'large' })}
               <span class="child-label font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
@@ -221,7 +225,7 @@ export class LearningWorldGame {
         </div>
       </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.', false);
     this.speak(prompt, audio);
-    this.bindChoice(correctId, success, retry, options);
+    this.bindChoice(correctId, success, retry, safeOptions);
   }
 
   bindChoice(correctId, success, retry, options = []) {
