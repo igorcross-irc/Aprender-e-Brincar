@@ -64,3 +64,14 @@ Em implementação na staging.
 - Histórico local recente acessível diretamente pela jornada.
 - Nível contextual exibido nas sugestões do mundo.
 - Testes de núcleo ampliados para esses contratos.
+
+## Saltos 37–41 — Comunicação infantil por idade
+Implementados na staging.
+- Política central de interface por faixa etária.
+- 6–24 meses: voz como canal principal, rótulos infantis visuais reduzidos e instruções preservadas por acessibilidade/áudio.
+- 2–3 anos: modelo voice-supported, mantendo texto curto como apoio.
+- 3–5 anos: interface mista, com texto progressivamente útil para linguagem e pré-alfabetização.
+- Experiências principais passaram a marcar instruções e rótulos como conteúdo infantil, permitindo adaptação consistente.
+- Instruções das experiências centrais são narradas automaticamente no modo voice-first.
+- Experiências guiadas também priorizam voz e reduzem texto visual nas faixas iniciais.
+- Regra de produto: a criança não deve precisar ler para conseguir brincar.
