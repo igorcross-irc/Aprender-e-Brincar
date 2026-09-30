@@ -23,7 +23,7 @@ class App {
     this.screens = new AppScreens();
     this.family = new FamilySettings(this);
     this.experience = new ExperienceController(this);
-    ['renderAgeSelection','ageIcon','renderWorldMap','renderJourney','renderWorld','renderSessionResult','renderGuidedExperience'].forEach((method) => { this[method] = this.screens[method].bind(this); });
+    ['renderAgeSelection','renderChildStart','ageIcon','renderWorldMap','renderJourney','renderWorld','renderSessionResult','renderGuidedExperience'].forEach((method) => { this[method] = this.screens[method].bind(this); });
     this.init();
   }
 
@@ -58,7 +58,7 @@ class App {
   openSettingsModal() { return this.family.openSettingsModal(); }
 
   setupHeaderEvents() {
-    document.getElementById('btn-home-logo')?.addEventListener('click', () => this.renderAgeSelection());
+    document.getElementById('btn-home-logo')?.addEventListener('click', () => this.renderAgeSelection({ force: true }));
     const muteBtn = document.getElementById('btn-mute');
     if (muteBtn) {
       muteBtn.textContent = this.audio.isMuted ? '🔇' : '🔊';
