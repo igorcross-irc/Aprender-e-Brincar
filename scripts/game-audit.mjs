@@ -52,6 +52,10 @@ if (!guidedIds.length || !app.includes('renderGuidedExperience')) fail('atividad
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
   if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score')) fail(`jogo independente sem contrato de resultado: ${file}`);
 }
+for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
+  const source = read(`src/js/games/independent/${file}`);
+  if (!source.includes('resolveGameDifficulty') || !source.includes('ageId')) fail(`jogo independente sem adaptação por idade: ${file}`);
+}
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
 if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
 const discoverBlock = learning.match(/renderDiscover\([\s\S]*?\n  \}\n\n  renderChoice/);
