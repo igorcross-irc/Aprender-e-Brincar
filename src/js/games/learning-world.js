@@ -85,7 +85,7 @@ export class LearningWorldGame {
     this.audio?.play(audio, text);
   }
 
-  shell(title, body, instruction = '') {
+  shell(title, body, instruction = '', speakInstruction = true) {
     const difficulty = Number(this.options.difficulty || 1);
     const difficultyLabel = difficulty <= 1 ? '🌱 Descoberta' : difficulty === 2 ? '⭐ Explorar' : difficulty === 3 ? '🚀 Desafio' : '🏆 Avançado';
     this.container.innerHTML = `
@@ -98,6 +98,7 @@ export class LearningWorldGame {
         ${instruction ? `<p class="child-instruction text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
       </div>`;
+    if (instruction && speakInstruction && this.voiceFirst) window.setTimeout(() => this.speak(instruction), 120);
     this.container.querySelector('#learning-back')?.addEventListener('click', () => {
       this.clearPending();
       this.onBack();
@@ -213,7 +214,7 @@ export class LearningWorldGame {
               <span class="child-label font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
             </button>`).join('')}
         </div>
-      </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.');
+      </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.', false);
     this.speak(prompt, audio);
     this.bindChoice(correctId, success, retry, options);
   }
