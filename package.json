@@ -9,7 +9,8 @@
     "smoke": "node scripts/smoke-test.mjs",
     "test:core": "node scripts/core-test.mjs",
     "audit:games": "node scripts/game-audit.mjs",
-    "audit:child-interface": "node scripts/child-interface-audit.mjs"
+    "audit:child-interface": "node scripts/child-interface-audit.mjs",
+    "audit:audio": "node scripts/audio-audit.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
