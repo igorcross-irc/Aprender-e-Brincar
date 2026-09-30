@@ -68,9 +68,15 @@ export class LearningEngine {
       const repetitionPenalty = recentIds.includes(activity.id) ? 35 : 0;
       const sessionPenalty = sessionRecent.has(activity.id) ? 18 : 0;
       const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty - sessionPenalty;
-      const reason = evaluations === 0 ? 'Nova descoberta' : recentAccuracy != null && recentAccuracy < 60 ? 'Vamos reforçar esta habilidade' : recoveryBoost ? 'Você está evoluindo' : 'Boa hora para variar';
-      return { activity, score, reason, difficulty: this.getDifficulty(activity, ageId) };
+      const reasonCode = evaluations === 0 ? 'new' : recentAccuracy != null && recentAccuracy < 60 ? 'reinforce' : recoveryBoost ? 'improving' : 'vary';
+      const reason = { new: 'Nova descoberta', reinforce: 'Vamos reforçar esta habilidade', improving: 'Você está evoluindo', vary: 'Boa hora para variar' }[reasonCode];
+      const priority = reasonCode === 'reinforce' ? 'support' : reasonCode === 'improving' ? 'progress' : reasonCode === 'new' ? 'discover' : 'variety';
+      return { activity, score, reason, reasonCode, priority, difficulty: this.getDifficulty(activity, ageId) };
     }).sort((a, b) => b.score - a.score).slice(0, limit);
+  }
+
+  getRecommendationSummary(ageId, worldId, limit = 3) {
+    return this.recommend(ageId, worldId, limit).map(({ activity, reason, reasonCode, priority, difficulty }) => ({ activityId: activity.id, title: activity.title, reason, reasonCode, priority, difficulty: difficulty.level }));
   }
 
   getJourneySummary() {
