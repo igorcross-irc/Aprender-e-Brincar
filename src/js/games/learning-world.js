@@ -171,7 +171,7 @@ export class LearningWorldGame {
         <div class="grid grid-cols-2 gap-4">
           ${pool.map((item) => `
             <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target transition">
-              <span class="text-6xl block">${item.icon || '🎨'}</span>
+              ${childVisualMarkup(item.label, { fallbackIcon: item.icon || '🎨', decorative: true, size: 'large' })}
               <span class="child-label font-black text-sky-800">${this.escape(item.label)}</span>
             </button>`).join('')}
         </div>
@@ -210,7 +210,7 @@ export class LearningWorldGame {
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           ${options.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
-              <span class="text-6xl">${option.icon || '✨'}</span>
+              ${childVisualMarkup(option.label, { fallbackIcon: option.icon || '✨', decorative: true, size: 'large' })}
               <span class="child-label font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
             </button>`).join('')}
         </div>
