@@ -58,7 +58,7 @@ function escapeAttribute(value = '') {
 export function isVisualAssetPathSafe(imagePath) {
   if (!imagePath) return false;
   const value = String(imagePath).trim();
-  return value.startsWith('/') && !value.includes('..') && /\\.(png|jpe?g|webp|avif|svg)$/i.test(value);
+  return value.startsWith('/') && !value.includes('..') && /\.(png|jpe?g|webp|avif|svg)$/i.test(value);
 }
 
 export function getVisualAssetStatus(value = '') {
