@@ -21,6 +21,12 @@ function ensureChildInterfaceStyles() {
     #game-container.voice-first .child-control { min-height:56px; }\n    #game-container.voice-first .child-visual { transform:scale(1.08); }\n    #game-container.voice-first .child-visual-label { display:none; }\n    .child-visual { display:inline-flex; align-items:center; justify-content:center; width:4.5rem; height:4.5rem; border-radius:1.5rem; line-height:1; }\n    .child-visual-small { width:3.5rem; height:3.5rem; border-radius:1rem; }\n    .child-visual-medium { width:4rem; height:4rem; border-radius:1.25rem; }\n    .child-visual-large { width:5.5rem; height:5.5rem; border-radius:1.5rem; }\n    .child-visual-sky { background:linear-gradient(145deg,#e0f2fe,#bae6fd); }\n    .child-visual-rose,.child-visual-pink { background:linear-gradient(145deg,#fce7f3,#fbcfe8); }\n    .child-visual-amber,.child-visual-yellow,.child-visual-peach { background:linear-gradient(145deg,#fef3c7,#fde68a); }\n    .child-visual-indigo,.child-visual-violet { background:linear-gradient(145deg,#ede9fe,#ddd6fe); }\n    .child-visual-emerald,.child-visual-green { background:linear-gradient(145deg,#d1fae5,#a7f3d0); }\n    #game-container.voice-first .learning-option .child-visual { width:5.5rem; height:5.5rem; }
     #game-container.voice-supported .child-instruction { max-width:38rem; margin-left:auto; margin-right:auto; }
     #game-container.voice-supported .child-instruction::before { content:'🔊 '; }
+    .child-feedback-overlay { position:absolute; inset:0; pointer-events:none; display:flex; align-items:center; justify-content:center; z-index:30; animation:child-feedback-fade .65s ease-out both; }
+    .child-feedback-bubble { width:7rem; height:7rem; display:flex; align-items:center; justify-content:center; border-radius:999px; font-size:4rem; background:rgba(255,255,255,.94); box-shadow:0 12px 35px rgba(15,23,42,.16); }
+    .child-feedback-success { animation:child-feedback-pop .65s ease-out both; }
+    .child-feedback-retry { animation:child-feedback-pop .5s ease-out both; }
+    @keyframes child-feedback-pop { 0%{transform:scale(.65);opacity:0} 55%{transform:scale(1.08);opacity:1} 100%{transform:scale(1);opacity:1} }
+    @keyframes child-feedback-fade { 0%{opacity:0} 15%{opacity:1} 85%{opacity:1} 100%{opacity:0} }
   `;
   document.head.appendChild(style);
 }
