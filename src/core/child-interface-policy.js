@@ -21,7 +21,7 @@ function ensureChildInterfaceStyles() {
     #game-container.voice-first .child-control { min-height:56px; }
     #game-container.voice-first .child-visual { transform:scale(1.08); }
     #game-container.voice-first .child-visual-label { display:none; }
-    .child-visual img { width:82%; height:82%; object-fit:contain; user-select:none; pointer-events:none; }
+    #game-container { position:relative; }\n    .child-visual img { width:82%; height:82%; object-fit:contain; user-select:none; pointer-events:none; }
     .child-visual { display:inline-flex; align-items:center; justify-content:center; width:4.5rem; height:4.5rem; border-radius:1.5rem; line-height:1; }
     .child-visual-small { width:3.5rem; height:3.5rem; border-radius:1rem; }
     .child-visual-medium { width:4rem; height:4rem; border-radius:1.25rem; }
