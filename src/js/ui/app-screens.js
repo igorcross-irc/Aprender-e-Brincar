@@ -67,6 +67,7 @@ export class AppScreens {
     const candidates = activityCatalog.filter((activity) => activity.ages?.includes(ageId));
     const preferred = candidates.find((activity) => ['discover-objects','discovery-animals','discovery-colors','baby-discover','baby-colors','colors','animals'].includes(activity.id)) || candidates[0];
     if (!preferred) return this.renderAgeSelection({ force: true });
+    this.currentWorld = preferred.world || null;
     this.container.innerHTML = `
       <div class="child-start-screen page-enter" data-child-age="${this.escape(ageId)}">
         <div class="child-start-mascot">${childMascotMarkup({ size: 'large', mood: 'curious' })}</div>
