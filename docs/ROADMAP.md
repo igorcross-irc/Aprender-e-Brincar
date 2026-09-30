@@ -166,3 +166,14 @@ Regra mantida: desenvolver em staging, testar/criticar e só então promover par
 - testes centrais ampliados para a nova biblioteca visual.
 
 Crítica: esta rodada prepara a substituição progressiva de emojis por arte própria, mas não finge que essa substituição já aconteceu. Os caminhos de assets continuam seguros e a biblioteca mantém fallback enquanto as ilustrações reais não forem integradas.
+
+
+## Saltos 101–110 — Identidade e distribuição PWA
+Implementados na staging e validados pelo build de produção do Vercel.
+- Mascote reutilizável em SVG, sem dependência externa, incorporado à entrada e ao feedback de conclusão.
+- Identidade infantil passa a ter um elemento consistente além de emojis e cartões.
+- Status online/offline visível no cabeçalho.
+- Fluxo de instalação PWA preparado com `beforeinstallprompt` e ação explícita de instalação quando o navegador oferecer suporte.
+- Estado offline não bloqueia a experiência local-first já existente.
+- Revisão crítica: a biblioteca de objetos ainda usa emojis como fallback; as ilustrações próprias dos objetos continuam pendentes e devem substituir o fallback sem alterar os contratos dos motores.
+- CI do GitHub Actions está falhando antes da primeira etapa em execuções recentes (jobs encerrados em ~2s com zero steps); isso foi separado dos testes de aplicação porque o Vercel concluiu o build da staging como READY.
