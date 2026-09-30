@@ -78,12 +78,12 @@ export function createGameRegistry({ containerId, audio, storage }) {
       }
       if (def.kind === 'independent') {
         const game = new def.Game(containerId, audio, onWin, onBack);
-        return def.items ? game.start(def.items, level) : game.start(level);
+        return def.items ? game.start(def.items, level, { ageId, age }) : game.start(level, { ageId, age });
       }
-      if (def.kind === 'canvas') return new def.Game(containerId, audio, onWin, onBack).start(level);
-      if (def.kind === 'memory') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level);
-      if (def.kind === 'puzzle') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level);
-      if (def.kind === 'balloons') return new def.Game(containerId, audio, onWin, onBack).start(level);
+      if (def.kind === 'canvas') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
+      if (def.kind === 'memory') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
+      if (def.kind === 'puzzle') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
+      if (def.kind === 'balloons') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
       if (def.kind === 'guided') return { guided: true };
       throw new Error(`Tipo de execução desconhecido para ${id}: ${def.kind}`);
     }
