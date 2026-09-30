@@ -22,7 +22,7 @@ export class CardsGame {
       const borderClass = item.border ? 'border-4 border-slate-300' : 'border-2 border-indigo-100';
       const textShadowClass = item.textDark ? '' : 'drop-shadow-md';
 
-      cardsHtml += '<button data-id="' + item.id + '" class="card-item game-card p-6 rounded-2xl flex flex-col items-center justify-center gap-2 shadow-md ' + borderClass + '" style="background-color: ' + bgColor + '; color: ' + textColor + ';">';
+      cardsHtml += '<button data-id="' + item.id + '" class="card-item game-card touch-target p-6 rounded-2xl flex flex-col items-center justify-center gap-2 shadow-md ' + borderClass + '" style="background-color: ' + bgColor + '; color: ' + textColor + ';">';
       cardsHtml += '<span class="text-5xl">' + iconDisplay + '</span>';
       cardsHtml += '<span class="text-lg font-bold ' + textShadowClass + '">' + item.label + '</span>';
       cardsHtml += '</button>';
@@ -31,7 +31,7 @@ export class CardsGame {
     this.container.innerHTML = `
       <div class="w-full max-w-2xl flex flex-col items-center gap-4 my-auto">
         <div class="w-full flex justify-between items-center">
-          <button id="btn-back-cards" class="bg-white/90 hover:bg-white text-slate-700 px-5 py-2.5 rounded-full font-bold shadow flex items-center gap-2">
+          <button id="btn-back-cards" class="bg-white/90 hover:bg-white text-slate-700 px-5 py-2.5 rounded-full font-bold shadow flex items-center gap-2 touch-target">
             ⬅️ Voltar
           </button>
           <h2 class="text-2xl font-bold text-indigo-700">${title}</h2>
