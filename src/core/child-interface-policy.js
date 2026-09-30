@@ -27,7 +27,7 @@ function ensureChildInterfaceStyles() {
     .child-feedback-retry { animation:child-feedback-pop .5s ease-out both; }
     @keyframes child-feedback-pop { 0%{transform:scale(.65);opacity:0} 55%{transform:scale(1.08);opacity:1} 100%{transform:scale(1);opacity:1} }
     @keyframes child-feedback-fade { 0%{opacity:0} 15%{opacity:1} 85%{opacity:1} 100%{opacity:0} }
-  `;
+    @media (prefers-reduced-motion: reduce) { .child-feedback-overlay, .child-feedback-bubble { animation:none !important; } }\n  `;
   document.head.appendChild(style);
 }
 
