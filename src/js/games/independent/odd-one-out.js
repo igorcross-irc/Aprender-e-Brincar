@@ -2,7 +2,7 @@ import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-di
 export class OddOneOutGame {
   constructor(containerId, audio, onComplete, onBack) { this.container=document.getElementById(containerId); this.audio=audio; this.onComplete=onComplete; this.onBack=onBack; this.level=1; this.round=0; this.correct=0; this.attempts=0; this.finished=false; }
   start(items=[], level=1, options={}) {
-    this.items=items; this.level=Math.max(1,Math.min(5,Number(level)||1)); this.round=0; this.correct=0; this.attempts=0; this.finished=false; this.render();
+    this.items=items; this.ageId=options.ageId||'2-3y'; this.difficulty=resolveGameDifficulty(this.ageId,level,options); this.level=this.difficulty.level; this.round=0; this.correct=0; this.attempts=0; this.finished=false; this.render();
   }
   shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
   render(){
