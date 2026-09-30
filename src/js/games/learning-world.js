@@ -1,5 +1,7 @@
 import { developmentContent } from '../../content/development-content.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
+import { getChildInterfacePolicy } from '../../core/child-interface-policy.js';
+import { showChildFeedback } from '../../core/child-feedback-system.js';
 
 export class LearningWorldGame {
   constructor(containerId, audioEngine, onComplete, onBack) {
@@ -35,7 +37,8 @@ export class LearningWorldGame {
     this.completed = false;
     this.roundLocked = false;
     this.options = { difficulty: 1, mode: 'evaluate', ageId: '2-3y', ...options };
-    this.voiceFirst = ['6-12m','12-18m','18-24m','2-3y'].includes(this.options.ageId);
+    this.interfacePolicy = getChildInterfacePolicy(this.options.ageId);
+    this.voiceFirst = this.interfacePolicy.voiceFirst;
 
     const sources = {
       'discover-animals': options.items || [],
@@ -164,7 +167,7 @@ export class LearningWorldGame {
   }
 
   renderDiscover(title, instruction, withAudio) {
-    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
+    const poolSize = Math.min(this.items.length, this.interfacePolicy.maxChoices || 4, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
     const pool = this.shuffle(this.items).slice(0, poolSize);
     this.discoveryTouched.clear();
     this.shell(title, `
@@ -184,6 +187,7 @@ export class LearningWorldGame {
       const item = pool.find((entry) => entry.id === button.dataset.discover);
       if (!item || this.completed) return;
       this.discoveryTouched.add(item.id);
+      showChildFeedback(this.container, 'selected', 420);
       button.classList.add('border-emerald-400', 'bg-emerald-50');
       if (withAudio && item.audio) {
         this.speak(item.label, item.audio);
@@ -227,6 +231,7 @@ export class LearningWorldGame {
       if (correct) {
         this.roundLocked = true;
         this.score += 1;
+        showChildFeedback(this.container, 'success', 650);
         button.classList.add('border-emerald-400', 'bg-emerald-50');
         const option = options.find((item) => String(item.id) === String(correctId));
         if (option?.audio) this.speak(option.label, option.audio);
@@ -237,6 +242,7 @@ export class LearningWorldGame {
           this.nextRound();
         }, option?.audio ? 900 : 600);
       } else {
+        showChildFeedback(this.container, 'retry', 500);
         button.classList.add('border-rose-300', 'animate-shake');
         this.speak(retry);
         window.setTimeout(() => button.classList.remove('border-rose-300', 'animate-shake'), 450);
