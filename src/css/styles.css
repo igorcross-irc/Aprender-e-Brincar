@@ -214,3 +214,12 @@ button:focus-visible, input:focus-visible {
 .child-change-age{border:0;background:transparent;color:#64748b;font-weight:800;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:480px){.child-start-screen{min-height:calc(100dvh - 7rem);padding:.75rem}.child-start-mascot{width:7rem;height:7rem}.child-start-button{min-height:6rem}}
 @media(prefers-reduced-motion:reduce){.child-start-button{transition:none}}
+
+
+/* Etapas 2–3 — linguagem visual e escala por faixa */
+.child-age-6-12m .child-start-copy h2,.child-age-12-18m .child-start-copy h2,.child-age-18-24m .child-start-copy h2{font-size:clamp(2.5rem,12vw,4.25rem)}
+.child-age-6-12m .child-start-mascot,.child-age-12-18m .child-start-mascot,.child-age-18-24m .child-start-mascot{width:10rem;height:10rem}
+.child-age-6-12m .child-start-button,.child-age-12-18m .child-start-button{min-height:7rem;width:min(100%,21rem)}
+.child-age-4-5y .child-start-copy h2{font-size:clamp(2rem,8vw,3.25rem)}
+.child-age-4-5y .child-start-copy p{font-size:1rem}
+@media(max-width:480px){.child-age-6-12m .child-start-mascot,.child-age-12-18m .child-start-mascot,.child-age-18-24m .child-start-mascot{width:8.5rem;height:8.5rem}}
