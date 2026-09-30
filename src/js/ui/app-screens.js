@@ -17,7 +17,10 @@ const GAME_ICONS = {
 const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
 
 export class AppScreens {
-  renderAgeSelection() {
+  renderAgeSelection(options = {}) {
+    const force = Boolean(options.force);
+    const savedAge = this.storage.getChildAge();
+    if (!force && savedAge && AGE_BANDS.some((age) => age.id === savedAge)) return this.renderChildStart(savedAge);
     this.currentAge = null; this.currentWorld = null;
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
@@ -50,10 +53,46 @@ export class AppScreens {
         </div>
         </div>
       </div>`;
-    this.container.querySelectorAll('[data-age]').forEach((button) => button.addEventListener('click', () => this.renderWorldMap(button.dataset.age)));
+    this.container.querySelectorAll('[data-age]').forEach((button) => button.addEventListener('click', () => {
+      this.storage.setChildAge(button.dataset.age);
+      this.renderChildStart(button.dataset.age);
+    }));
   }
 
-
+  renderChildStart(ageId) {
+    const age = AGE_BANDS.find((item) => item.id === ageId);
+    const profile = getAgeExperienceConfig(ageId, 1);
+    if (!age) return this.renderAgeSelection({ force: true });
+    this.currentAge = ageId;
+    this.currentWorld = null;
+    const candidates = activityCatalog.filter((activity) => activity.ages?.includes(ageId));
+    const preferred = candidates.find((activity) => ['discover-objects','discovery-animals','discovery-colors','baby-discover','baby-colors','colors','animals'].includes(activity.id)) || candidates[0];
+    if (!preferred) return this.renderAgeSelection({ force: true });
+    this.currentWorld = preferred.world || null;
+    const startLabel = profile.audioFirst ? 'Ouvir e brincar' : 'Brincar';
+    const helper = profile.text === false ? 'Toque para começar.' : profile.text === 'short' ? 'Vamos começar uma brincadeira.' : 'Escolha uma brincadeira para começar.';
+    this.container.innerHTML = `
+      <div class="child-start-screen page-enter child-age-${this.escape(ageId)}" data-child-age="${this.escape(ageId)}">
+        <div class="child-start-mascot">${childMascotMarkup({ size: 'large', mood: 'curious' })}</div>
+        <div class="child-start-age">${this.ageIcon(ageId)}</div>
+        <div class="child-start-copy">
+          <span class="child-start-eyebrow">${profile.audioFirst ? 'Vamos descobrir juntos' : 'Pronto para descobrir'}</span>
+          <h2>${ageId === '4-5y' ? 'Escolha uma brincadeira' : 'Vamos brincar!'}</h2>
+          <p>${helper}</p>
+        </div>
+        <button id="child-start-button" class="child-start-button touch-target" aria-label="${this.escape(startLabel)}">
+          <span class="child-start-button-icon">${profile.audioFirst ? '🔊' : '▶️'}</span>
+          <span>${startLabel}</span>
+        </button>
+        <button id="child-change-age" class="child-change-age touch-target">Trocar idade</button>
+      </div>`;
+    this.audio?.play?.(null, profile.audioFirst ? 'Vamos brincar!' : '');
+    this.container.querySelector('#child-start-button')?.addEventListener('click', () => this.launchGame(preferred.id, ageId));
+    this.container.querySelector('#child-change-age')?.addEventListener('click', () => {
+      this.storage.clearChildAge();
+      this.renderAgeSelection({ force: true });
+    });
+  }
 
   ageIcon(ageId) {
     return ({'6-12m':'🌱','12-18m':'🧸','18-24m':'🐾','2-3y':'🎨','3-4y':'🧠','4-5y':'🚀'})[ageId] || '🌈';
@@ -88,7 +127,7 @@ export class AppScreens {
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
         <div class="text-center text-xs text-slate-500">💡 Não existe competição: cada descoberta vale por si.</div>
       </div>`;
-    this.container.querySelector('#btn-back-age').addEventListener('click', () => this.renderAgeSelection());
+    this.container.querySelector('#btn-back-age').addEventListener('click', () => this.renderAgeSelection({ force: true }));
     this.container.querySelector('#btn-journey')?.addEventListener('click', () => this.renderJourney());
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
   }
@@ -194,7 +233,7 @@ export class AppScreens {
           }).join('')}
         </div>
       </div>`;
-    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderWorldMap(this.currentAge));
+    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderChildStart(this.currentAge));
     this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));
     this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
@@ -262,16 +301,20 @@ export class AppScreens {
       'guided-movement':['🏃','Desafio do Movimento','Siga o comando e faça junto.',['Bata palmas','Pule','Gire','Dê tchau']]
     };
     const [icon,title,text,cards]=guided[gameId] || ['✨','Nova Brincadeira','Explore e descubra!',['Vamos brincar']];
-    const visibleCards = cards.slice(0, optionLimit);
+    const ageId = age?.id || this.currentAge || '2-3y';
+    const profile = getAgeExperienceConfig(ageId, age?.level || 1);
+    const visibleCards = cards.slice(0, Math.max(1, Math.min(profile.optionCount, cards.length)));
+    const childFirst = ['6-12m','12-18m','18-24m'].includes(ageId);
+    const compactText = profile.text === false ? '' : profile.text === 'short' ? text.split('. ')[0] + '.' : text;
     this.container.innerHTML=`
       <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
-          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
+          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(compactText)}</p>
           <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target">${childVisualMarkup(label, { fallbackIcon: ['👏','👋','🦘','💃'][index%4], decorative: true, size: 'large' })}<span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
-    this.audio?.play?.(null, text);
+    this.audio?.play?.(null, childFirst ? `Vamos brincar! ${text}` : text);
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
     let touched=0;
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{

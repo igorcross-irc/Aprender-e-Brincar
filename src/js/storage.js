@@ -2,6 +2,7 @@ export class StorageManager {
   constructor() {
     this.SCORE_KEY = 'aprender_brincar_stars';
     this.CHILD_NAME_KEY = 'aprender_brincar_child_name';
+    this.CHILD_AGE_KEY = 'aprender_brincar_child_age';
   }
 
   getStars() {
@@ -26,6 +27,23 @@ export class StorageManager {
       const name = localStorage.getItem(this.CHILD_NAME_KEY);
       return name ? name.trim().slice(0, 15) : '';
     } catch { return ''; }
+  }
+
+  getChildAge() {
+    try {
+      const age = localStorage.getItem(this.CHILD_AGE_KEY);
+      return age || '';
+    } catch { return ''; }
+  }
+
+  setChildAge(ageId) {
+    const clean = String(ageId || '').trim();
+    try { localStorage.setItem(this.CHILD_AGE_KEY, clean); } catch {}
+    return clean;
+  }
+
+  clearChildAge() {
+    try { localStorage.removeItem(this.CHILD_AGE_KEY); } catch {}
   }
 
   setChildName(name) {

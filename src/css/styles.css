@@ -197,3 +197,29 @@ button:focus-visible, input:focus-visible {
 
 /* Identidade infantil reutilizável */
 .child-mascot{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;filter:drop-shadow(0 10px 18px rgba(79,70,229,.16))}.child-mascot svg{width:88%;height:88%;position:relative;z-index:2}.child-mascot-glow{position:absolute;inset:8%;border-radius:999px;background:radial-gradient(circle,rgba(251,191,36,.32),rgba(125,211,252,.08) 65%,transparent 70%);animation:mascot-breathe 2.8s ease-in-out infinite}.child-mascot-face{position:absolute;z-index:3;bottom:7%;right:5%;font-size:1.15rem}.child-mascot-small .child-mascot-face{font-size:.8rem}.child-mascot-large .child-mascot-face{font-size:1.5rem}@keyframes mascot-breathe{0%,100%{transform:scale(.96);opacity:.75}50%{transform:scale(1.05);opacity:1}}@media(prefers-reduced-motion:reduce){.child-mascot-glow{animation:none}}
+
+
+/* Etapa 1 — entrada infantil: um único próximo passo claro */
+.child-start-screen{width:100%;max-width:34rem;margin:auto;min-height:min(78dvh,42rem);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;text-align:center;padding:1.25rem}
+.child-start-mascot{width:8rem;height:8rem;display:grid;place-items:center}
+.child-start-age{font-size:3.25rem;line-height:1;margin-top:-.25rem}
+.child-start-copy{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.child-start-eyebrow{font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#6366f1}
+.child-start-copy h2{margin:0;font-size:clamp(2.25rem,10vw,3.75rem);line-height:1;font-weight:1000;color:#4338ca;letter-spacing:-.045em}
+.child-start-copy p{margin:.35rem 0 0;font-size:1.15rem;font-weight:800;color:#64748b}
+.child-start-button{width:min(100%,19rem);min-height:6.5rem;border:0;border-radius:2rem;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:clamp(1.65rem,7vw,2.25rem);font-weight:1000;display:flex;align-items:center;justify-content:center;gap:.8rem;box-shadow:0 18px 35px -14px rgba(79,70,229,.65);transition:transform .15s ease,box-shadow .15s ease}
+.child-start-button:hover{transform:translateY(-2px);box-shadow:0 22px 40px -14px rgba(79,70,229,.7)}
+.child-start-button:active{transform:scale(.97)}
+.child-start-button-icon{font-size:1.4em;line-height:1}
+.child-change-age{border:0;background:transparent;color:#64748b;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:480px){.child-start-screen{min-height:calc(100dvh - 7rem);padding:.75rem}.child-start-mascot{width:7rem;height:7rem}.child-start-button{min-height:6rem}}
+@media(prefers-reduced-motion:reduce){.child-start-button{transition:none}}
+
+
+/* Etapas 2–3 — linguagem visual e escala por faixa */
+.child-age-6-12m .child-start-copy h2,.child-age-12-18m .child-start-copy h2,.child-age-18-24m .child-start-copy h2{font-size:clamp(2.5rem,12vw,4.25rem)}
+.child-age-6-12m .child-start-mascot,.child-age-12-18m .child-start-mascot,.child-age-18-24m .child-start-mascot{width:10rem;height:10rem}
+.child-age-6-12m .child-start-button,.child-age-12-18m .child-start-button{min-height:7rem;width:min(100%,21rem)}
+.child-age-4-5y .child-start-copy h2{font-size:clamp(2rem,8vw,3.25rem)}
+.child-age-4-5y .child-start-copy p{font-size:1rem}
+@media(max-width:480px){.child-age-6-12m .child-start-mascot,.child-age-12-18m .child-start-mascot,.child-age-18-24m .child-start-mascot{width:8.5rem;height:8.5rem}}
