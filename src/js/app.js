@@ -9,6 +9,8 @@ import { FamilySettings } from './ui/family-settings.js';
 import { ExperienceController } from './controllers/experience-controller.js';
 import { initPwaExperience } from '../core/pwa-status.js';
 
+const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup'];
+
 class App {
   constructor() {
     this.audio = new ResilientAudioEngine();
@@ -23,24 +25,43 @@ class App {
     this.screens = new AppScreens();
     this.family = new FamilySettings(this);
     this.experience = new ExperienceController(this);
-    ['renderAgeSelection','ageIcon','renderWorldMap','renderJourney','renderWorld','renderSessionResult','renderGuidedExperience'].forEach((method) => { this[method] = this.screens[method].bind(this); });
+    SCREEN_METHODS.forEach((method) => { this[method] = this.screens[method].bind(this); });
     this.init();
   }
 
   init() {
     registerPWA();
-    initPwaExperience();
+    this.pwa = initPwaExperience();
     this.updateScoreUI();
     this.setupHeaderEvents();
-    this.renderAgeSelection();
+    this.renderHome();
   }
 
   updateScoreUI() {
     if (this.starCountEl) this.starCountEl.textContent = this.core.stars();
   }
 
+  // Estrela voa do centro da tela até o contador do cabeçalho.
+  flyStarToCounter() {
+    const target = document.getElementById('score-board');
+    if (!target || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const rect = target.getBoundingClientRect();
+    const star = document.createElement('div');
+    star.className = 'flying-star';
+    star.textContent = '⭐';
+    star.style.setProperty('--fly-x', `${rect.left + rect.width / 2 - window.innerWidth / 2}px`);
+    star.style.setProperty('--fly-y', `${rect.top + rect.height / 2 - window.innerHeight / 2}px`);
+    document.body.appendChild(star);
+    star.addEventListener('animationend', () => {
+      star.remove();
+      target.classList.remove('bump');
+      void target.offsetWidth;
+      target.classList.add('bump');
+    });
+  }
+
   escape(value = '') {
-    return String(value).replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+    return String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
   }
 
   complete(activityId, options = {}) {
@@ -58,14 +79,11 @@ class App {
   openSettingsModal() { return this.family.openSettingsModal(); }
 
   setupHeaderEvents() {
-    document.getElementById('btn-home-logo')?.addEventListener('click', () => this.renderAgeSelection());
-    const muteBtn = document.getElementById('btn-mute');
-    if (muteBtn) {
-      muteBtn.textContent = this.audio.isMuted ? '🔇' : '🔊';
-      muteBtn.addEventListener('click', () => {
-        muteBtn.textContent = this.audio.toggleMute() ? '🔇' : '🔊';
-      });
-    }
+    document.getElementById('btn-home-logo')?.addEventListener('click', () => {
+      this.audio.stop();
+      this.renderHome();
+    });
+    document.getElementById('btn-replay')?.addEventListener('click', () => this.audio.replayPrompt());
     document.getElementById('btn-settings')?.addEventListener('click', () => this.openParentalGate());
   }
 }

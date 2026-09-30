@@ -22,7 +22,7 @@ export class OddOneOutGame {
       </div>`;
     this.container.querySelector('#odd-back').onclick=()=>this.onBack();
     this.container.querySelectorAll('.odd-option').forEach(btn=>btn.onclick=()=>this.answer(btn,options[Number(btn.dataset.index)]?.odd===true));
-    this.audio?.play(null,'Qual é diferente?');
+    this.audio?.prompt?.(null,'Qual é diferente?');
   }
   answer(btn,correct){
     if(this.finished)return; this.attempts++;

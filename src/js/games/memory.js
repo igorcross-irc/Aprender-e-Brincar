@@ -21,7 +21,7 @@ export class MemoryGame {
       </div>`;
     document.getElementById('btn-back-memory').addEventListener('click',()=>this.onBack());
     this.container.querySelectorAll('.memory-card').forEach(card=>card.addEventListener('click',()=>{const item=items.find(i=>i.id===card.dataset.id);this.flipCard(card,item,pairCount);}));
-    this.audio.play(null,this.difficulty.audioFirst?'Vamos encontrar os pares!':'Encontre os pares iguais.');
+    this.audio.prompt(null,this.difficulty.audioFirst?'Vamos encontrar os pares!':'Encontre os pares iguais.');
   }
   flipCard(card,item,totalPairs){
     if(!item||this.flippedCards.length===2||card.classList.contains('flipped')||card.classList.contains('matched')||this.finished)return;

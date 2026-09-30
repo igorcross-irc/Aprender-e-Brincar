@@ -1,46 +1,187 @@
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { rewardCatalog } from '../../content/reward-catalog.js';
+import { learningWorlds } from '../../content/world-catalog.js';
+import { AGE_BANDS } from '../../core/activity-registry.js';
 
+// Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
   constructor(app) { this.app = app; }
+
   evaluateRewards(activityId) {
     const snapshot = this.app.core.progress.snapshot();
     const explored = Object.values(snapshot.activities || {}).filter((item) => item.explored).length;
     const worlds = new Set();
-    Object.entries(snapshot.activities || {}).forEach(([id, item]) => { if (!item.explored) return; const activity = activityCatalog.find((a) => a.id === id); if (activity?.world) worlds.add(activity.world); });
+    Object.entries(snapshot.activities || {}).forEach(([id, item]) => {
+      if (!item.explored) return;
+      const activity = activityCatalog.find((a) => a.id === id);
+      if (activity?.world) worlds.add(activity.world);
+    });
     const candidates = [];
     if (explored >= 1) candidates.push('first-discovery');
     if (explored >= 5) candidates.push('five-discoveries');
     if (explored >= 10) candidates.push('ten-discoveries');
     if (worlds.size >= 3) candidates.push('world-explorer');
-    const current = snapshot.activities?.[activityId];
-    if ((current?.completions || 0) >= 2) candidates.push('repeat-player');
+    if ((snapshot.activities?.[activityId]?.completions || 0) >= 2) candidates.push('repeat-player');
     candidates.forEach((id) => this.app.core.progress.award(id));
   }
+
   getRewards() {
     const snapshot = this.app.core.progress.snapshot();
     return rewardCatalog.map((reward) => ({ ...reward, earned: Boolean(snapshot.rewards?.[reward.id]) }));
   }
+
   openParentalGate() {
     const previousFocus = document.activeElement;
     const n1 = Math.floor(Math.random() * 8) + 3;
     const n2 = Math.floor(Math.random() * 4) + 2;
     const answer = n1 * n2;
-    const modal = document.createElement('div'); modal.className = 'modal-overlay';
-    modal.innerHTML = `<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gate-title"><div class="text-5xl">👨‍👩‍👧</div><h3 id="gate-title" class="text-xl font-black text-slate-800">Área da Família</h3><p class="text-sm text-slate-500 text-center">Esta área é protegida para responsáveis.</p><div class="text-2xl font-black text-indigo-600 bg-indigo-50 px-6 py-2 rounded-xl">${n1} × ${n2} = ?</div><input type="number" id="gate-input" inputmode="numeric" aria-label="Resposta da conta" class="w-24 text-center text-2xl font-bold border-2 border-indigo-200 rounded-xl p-2" /><div class="flex gap-2 w-full"><button id="btn-gate-cancel" class="flex-1 bg-slate-100 font-bold py-3 rounded-xl touch-target">Cancelar</button><button id="btn-gate-confirm" class="flex-1 bg-indigo-600 text-white font-bold py-3 rounded-xl touch-target">Entrar</button></div></div>`;
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+        <div class="text-5xl" aria-hidden="true">👨‍👩‍👧</div>
+        <h3 id="gate-title" class="text-xl font-black text-slate-800">Área da Família</h3>
+        <p class="text-sm text-slate-500 text-center">Para adultos. Responda a conta para entrar.</p>
+        <div class="text-2xl font-black text-violet-700 bg-violet-50 px-6 py-2 rounded-xl">${n1} × ${n2} = ?</div>
+        <input type="number" id="gate-input" inputmode="numeric" aria-label="Resposta da conta" class="w-28 text-center text-2xl font-bold border-2 border-violet-200 rounded-xl p-2" />
+        <p id="gate-error" class="text-sm text-rose-600 font-bold" hidden>Resposta incorreta.</p>
+        <div class="flex gap-2 w-full">
+          <button id="btn-gate-cancel" class="flex-1 bg-slate-100 font-bold py-3 rounded-xl touch-target">Cancelar</button>
+          <button id="btn-gate-confirm" class="flex-1 bg-violet-600 text-white font-bold py-3 rounded-xl touch-target">Entrar</button>
+        </div>
+      </div>`;
     document.body.appendChild(modal);
     const closeGate = () => { modal.remove(); previousFocus?.focus?.(); };
+    const input = modal.querySelector('#gate-input');
+    const confirm = () => {
+      if (Number.parseInt(input.value, 10) === answer) { modal.remove(); this.openSettingsModal(); return; }
+      input.value = '';
+      modal.querySelector('#gate-error').hidden = false;
+      input.focus();
+    };
     modal.querySelector('#btn-gate-cancel').addEventListener('click', closeGate);
-    modal.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeGate(); });
-    modal.querySelector('#btn-gate-confirm').addEventListener('click', () => { const input = modal.querySelector('#gate-input'); if (Number.parseInt(input.value,10) === answer) { modal.remove(); this.openSettingsModal(); } else { input.value=''; input.focus(); } });
-    modal.querySelector('#gate-input').focus();
+    modal.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeGate();
+      if (event.key === 'Enter') confirm();
+    });
+    modal.querySelector('#btn-gate-confirm').addEventListener('click', confirm);
+    input.focus();
   }
+
+  buildReport() {
+    const { core } = this.app;
+    const snapshot = core.progress.snapshot();
+    const entries = Object.entries(snapshot.activities || {})
+      .map(([id, progress]) => ({ activity: activityCatalog.find((a) => a.id === id), progress }))
+      .filter((entry) => entry.activity);
+    const worlds = new Set(entries.filter((entry) => entry.progress.explored).map((entry) => entry.activity.world));
+    const domains = {};
+    entries.forEach(({ activity, progress }) => {
+      (activity.developmentDomains || []).forEach((domain) => { domains[domain] = (domains[domain] || 0) + Number(progress.completions || 0); });
+    });
+    return {
+      stars: snapshot.stars || 0,
+      explored: entries.filter((entry) => entry.progress.explored).length,
+      total: activityCatalog.length,
+      worlds: worlds.size,
+      totalWorlds: learningWorlds.length,
+      minutes: core.progress.getTotalMinutes(),
+      streak: snapshot.sessions?.streak || 0,
+      topDomains: Object.entries(domains).sort((a, b) => b[1] - a[1]).slice(0, 6),
+      recent: core.progress.getRecentHistory(8).map((item) => ({ ...item, activity: activityCatalog.find((a) => a.id === item.activityId) })).filter((item) => item.activity)
+    };
+  }
+
   openSettingsModal() {
-    const { app } = this; const safeName = app.storage.escapeHtml(app.storage.getChildName()); const snapshot=app.core.progress.snapshot();
-    const played=Object.keys(snapshot.activities||{}).length; const total=activityCatalog.length; const completedCount=Object.values(snapshot.activities||{}).reduce((sum,item)=>sum+(item.completions||0),0); const domains={};
-    Object.entries(snapshot.activities||{}).forEach(([id,item])=>{if(!item.explored)return; const activity=activityCatalog.find((a)=>a.id===id); (activity?.developmentDomains||[]).forEach((domain)=>{domains[domain]=(domains[domain]||0)+1;});});
-    const topDomains=Object.entries(domains).sort((a,b)=>b[1]-a[1]).slice(0,4); const profile=app.core.learning.getProfile(); const pct=profile.accuracy==null?null:profile.accuracy; const recentHistory=(snapshot.history||[]).slice(0,6);
-    const modal=document.createElement('div'); modal.className='modal-overlay'; modal.innerHTML=`<div class="modal-card max-w-lg" role="dialog" aria-modal="true" aria-labelledby="settings-title"><div class="w-full flex justify-between items-center border-b pb-2"><h3 id="settings-title" class="text-xl font-black text-slate-800">👨‍👩‍👧 Área da Família</h3><button id="btn-close-settings" class="touch-target text-slate-400 font-bold text-xl" aria-label="Fechar">✕</button></div><div class="w-full grid grid-cols-4 gap-2"><div class="bg-amber-50 rounded-2xl p-3 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars||0}</strong><small class="block text-slate-500">estrelas</small></div><div class="bg-indigo-50 rounded-2xl p-3 text-center"><div class="text-2xl">🎮</div><strong>${played}</strong><small class="block text-slate-500">experiências</small></div><div class="bg-emerald-50 rounded-2xl p-3 text-center"><div class="text-2xl">🌈</div><strong>${total}</strong><small class="block text-slate-500">disponíveis</small></div><div class="bg-violet-50 rounded-2xl p-3 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak||0}</strong><small class="block text-slate-500">dias seguidos</small></div></div><div class="w-full bg-violet-50 rounded-2xl p-4"><strong class="text-violet-800">🏅 Conquistas</strong><div class="reward-grid mt-3">${this.getRewards().map((reward)=>`<div class="reward-chip ${reward.earned?'earned':'locked'}"><span>${reward.earned?reward.icon:'🔒'}</span><div><strong>${app.escape(reward.title)}</strong><small>${app.escape(reward.description)}</small></div></div>`).join('')}</div></div><div class="w-full bg-emerald-50 rounded-2xl p-4 text-sm text-slate-600"><strong class="text-emerald-800">🌱 Visão do desenvolvimento</strong><p class="mt-1">${completedCount} registro(s) de atividade. Esta visão descreve experiências oferecidas e não é uma avaliação clínica.</p><div class="domain-list mt-2">${topDomains.map(([domain,count])=>`<span>${app.escape(app.core.learning.labelDomain(domain))} · ${count}</span>`).join('')||'<span>Ainda sem dados</span>'}</div></div><div class="w-full bg-indigo-50 rounded-2xl p-4 text-sm text-slate-600"><div class="flex items-center justify-between gap-2"><strong class="text-indigo-800">🧭 Perfil de aprendizagem</strong><span class="text-xs font-black text-indigo-500">${profile.exploration} explorações</span></div><p class="mt-1">O sistema usa apenas o histórico local para variar propostas, sem diagnóstico.</p><div class="grid grid-cols-2 gap-2 mt-3"><div class="bg-white rounded-xl p-3"><strong class="block text-indigo-700">${profile.evaluated}</strong><small>habilidades observadas</small></div><div class="bg-white rounded-xl p-3"><strong class="block text-indigo-700">${pct==null?'—':pct+'%'}</strong><small>média das atividades avaliadas</small></div></div><div class="grid md:grid-cols-2 gap-3 mt-3"><div class="bg-white rounded-xl p-3"><strong class="text-emerald-700">✨ Mais exploradas</strong><div class="domain-list mt-2">${profile.strengths.map(([s,d])=>`<span>${app.escape(app.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('')||'<span>Ainda sem dados</span>'}</div></div><div class="bg-white rounded-xl p-3"><strong class="text-violet-700">🌱 Próximas áreas</strong><div class="domain-list mt-2">${profile.areas.map(([s,d])=>`<span>${app.escape(app.core.learning.labelDomain(s))} · ${d.mastery.toFixed(1)}/5</span>`).join('')||'<span>Ainda sem dados</span>'}</div></div></div></div><div class="w-full flex flex-col gap-2"><label class="text-sm font-bold text-slate-600" for="child-name-input">Nome da criança</label><input type="text" id="child-name-input" value="${safeName}" maxlength="15" autocomplete="off" class="border-2 border-slate-200 rounded-xl p-3 font-bold text-indigo-600" /></div><div class="w-full bg-amber-50 rounded-2xl p-4 text-sm text-slate-600"><strong class="text-amber-800">🕘 Últimas brincadeiras</strong><p class="mt-1 text-xs text-slate-500">Histórico local recente.</p><div class="grid gap-2 mt-3">${recentHistory.map((entry)=>{const activity=activityCatalog.find((a)=>a.id===entry.activityId);const when=entry.completedAt?new Date(entry.completedAt).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"";return `<div class="bg-white rounded-xl p-3 flex items-center justify-between"><div><strong class="text-amber-800">${app.escape(activity?.title||entry.activityId)}</strong><small class="block text-slate-400">${entry.mode==="evaluate"?(entry.accuracy==null?"atividade avaliada":entry.accuracy+"% observado"):"exploração livre"} · ${when}</small></div><span>✨</span></div>`}).join("")||"<span class=\"text-xs text-slate-500\">A jornada ainda está começando.</span>"}</div></div><div class="w-full bg-sky-50 rounded-2xl p-4 text-sm text-slate-600"><strong class="text-sky-800">Privacidade</strong><p class="mt-1">O progresso desta versão é mantido localmente no dispositivo. Não usamos anúncios, perfil comportamental ou venda de dados.</p></div><button id="btn-reset-stars" class="w-full bg-rose-100 text-rose-700 font-bold py-3 rounded-xl text-sm touch-target">Zerar progresso</button><button id="btn-save-settings" class="w-full bg-emerald-500 text-white font-black py-3 rounded-xl shadow-lg touch-target">Salvar</button></div>`;
-    document.body.appendChild(modal); modal.querySelector('#btn-close-settings').addEventListener('click',()=>modal.remove()); modal.querySelector('#btn-reset-stars').addEventListener('click',()=>{if(confirm('Tem certeza que deseja zerar as conquistas acumuladas?')){app.core.resetProgress();app.updateScoreUI();modal.remove();}}); modal.querySelector('#btn-save-settings').addEventListener('click',()=>{app.storage.setChildName(modal.querySelector('#child-name-input').value);modal.remove();});
+    const { app } = this;
+    const esc = (value) => app.escape(value);
+    const report = this.buildReport();
+    const currentAge = app.storage.getChildAge();
+    const canInstall = app.pwa?.canInstall?.();
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-card family-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="family-head">
+          <h3 id="settings-title">👨‍👩‍👧 Área da Família</h3>
+          <button id="btn-close-settings" class="touch-target" aria-label="Fechar">✕</button>
+        </div>
+
+        <section class="family-section">
+          <h4>Perfil</h4>
+          <label for="child-name-input">Nome ou apelido</label>
+          <input type="text" id="child-name-input" value="${esc(app.storage.getChildName())}" maxlength="15" autocomplete="off" />
+          <p class="family-label">Idade</p>
+          <div class="setup-ages family-ages">
+            ${AGE_BANDS.map((age) => `<button data-family-age="${age.id}" class="setup-age ${age.id === currentAge ? 'selected' : ''}" aria-pressed="${age.id === currentAge}">${esc(age.label)}</button>`).join('')}
+          </div>
+          <p class="family-hint">A idade define quais brincadeiras aparecem e o nível de ajuda.</p>
+        </section>
+
+        <section class="family-section">
+          <h4>Som</h4>
+          <label class="family-toggle"><input type="checkbox" id="sound-toggle" ${app.audio.isMuted ? '' : 'checked'} /> Sons e voz ligados</label>
+        </section>
+
+        <section class="family-section">
+          <h4>Resumo</h4>
+          <div class="family-stats">
+            <div><strong>${report.stars}</strong><small>estrelas</small></div>
+            <div><strong>${report.explored}/${report.total}</strong><small>brincadeiras</small></div>
+            <div><strong>${report.worlds}/${report.totalWorlds}</strong><small>mundos</small></div>
+            <div><strong>${report.minutes}</strong><small>minutos</small></div>
+            <div><strong>${report.streak}</strong><small>dias seguidos</small></div>
+          </div>
+          <p class="family-label">Áreas mais exercitadas</p>
+          <div class="domain-list">${report.topDomains.map(([domain, count]) => `<span>${esc(domain)} · ${count}</span>`).join('') || '<span>Ainda sem dados</span>'}</div>
+          <p class="family-label">Últimas brincadeiras</p>
+          <ul class="family-history">
+            ${report.recent.map((item) => {
+              const when = item.completedAt ? new Date(item.completedAt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+              return `<li><span>${esc(item.activity.title)}</span><small>${esc(when)}</small></li>`;
+            }).join('') || '<li><span>A jornada ainda está começando.</span></li>'}
+          </ul>
+          <p class="family-label">Conquistas</p>
+          <div class="reward-grid">${this.getRewards().map((reward) => `<div class="reward-chip ${reward.earned ? 'earned' : 'locked'}"><span>${reward.earned ? reward.icon : '🔒'}</span><div><strong>${esc(reward.title)}</strong><small>${esc(reward.description)}</small></div></div>`).join('')}</div>
+          <p class="family-hint">Um retrato das brincadeiras, não uma avaliação. Não substitui acompanhamento profissional.</p>
+        </section>
+
+        ${canInstall ? `<section class="family-section"><h4>Instalar</h4><p class="family-hint">Instale para abrir em tela cheia e brincar sem internet.</p><button id="btn-install" class="family-button">📲 Instalar aplicativo</button></section>` : ''}
+
+        <section class="family-section">
+          <h4>Privacidade</h4>
+          <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo.</p>
+        </section>
+
+        <button id="btn-reset-stars" class="family-danger">Zerar progresso</button>
+        <button id="btn-save-settings" class="family-save">Salvar e voltar</button>
+      </div>`;
+    document.body.appendChild(modal);
+
+    let selectedAge = currentAge;
+    modal.querySelectorAll('[data-family-age]').forEach((button) => button.addEventListener('click', () => {
+      selectedAge = button.dataset.familyAge;
+      modal.querySelectorAll('[data-family-age]').forEach((item) => {
+        item.classList.toggle('selected', item === button);
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+    }));
+    modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
+    modal.querySelector('#btn-install')?.addEventListener('click', async () => { await app.pwa.promptInstall(); modal.remove(); });
+    modal.querySelector('#btn-reset-stars').addEventListener('click', () => {
+      if (!confirm('Tem certeza que deseja apagar todo o progresso?')) return;
+      app.core.resetProgress();
+      app.updateScoreUI();
+      modal.remove();
+      app.renderHome();
+    });
+    modal.querySelector('#btn-save-settings').addEventListener('click', () => {
+      app.storage.setChildName(modal.querySelector('#child-name-input').value);
+      if (selectedAge) app.storage.setChildAge(selectedAge);
+      const wantSound = modal.querySelector('#sound-toggle').checked;
+      if (wantSound === app.audio.isMuted) app.audio.toggleMute();
+      modal.remove();
+      app.renderHome();
+    });
   }
 }

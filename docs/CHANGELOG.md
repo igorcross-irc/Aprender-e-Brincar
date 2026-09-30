@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-09-30 — Fase 1 — Pensado para a criança
+- Primeira abertura pede ao responsável nome (opcional) e idade; a criança não escolhe mais a faixa etária.
+- Início mostra saudação pelo nome e os mundos da idade configurada, em blocos grandes e coloridos.
+- Removidos das telas da criança: porcentagens, "aproveitamento", dias seguidos, perfil de aprendizagem, sugestões com justificativas e a tela de jornada.
+- Área da Família reúne perfil (nome/idade), som, resumo, histórico, conquistas, instalação do app, privacidade e "zerar progresso".
+- Botão 🔊 no cabeçalho repete a última instrução (`audio.prompt` / `audio.replayPrompt`); todas as brincadeiras registram sua instrução.
+- Fim de brincadeira com confete, mascote, estrela voando até o contador e três botões grandes: de novo, outra, voltar.
+- Tempo de brincadeira passa a ser medido (antes era sempre 0).
+- Telas voltam ao topo ao navegar.
+- Novo `docs/PRIVACY.md` com as regras de privacidade infantil.
+
 ## 2026-09-30 — Fase 0 — Estabilização
 - Corrigida a "Ordem dos Números": a resposta esperada pulava um número (4,5,6,7 → 9).
 - Corrigidas "Descobrir Objetos" e "Caça aos Objetos", que nunca abriam (ReferenceError `safeOptions`).

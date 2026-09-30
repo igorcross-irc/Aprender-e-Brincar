@@ -159,6 +159,20 @@ export class ResilientAudioEngine {
     return false;
   }
 
+  // Instruções ficam guardadas para o botão "ouvir de novo".
+  prompt(audioPath, text) {
+    this.lastPrompt = { audioPath: audioPath || null, text: text || '' };
+    return this.play(audioPath, text);
+  }
+
+  replayPrompt(fallbackText = 'Vamos brincar!') {
+    const last = this.lastPrompt;
+    if (last && (last.audioPath || last.text)) return this.play(last.audioPath, last.text);
+    return this.play(null, fallbackText);
+  }
+
+  clearPrompt() { this.lastPrompt = null; }
+
   diagnostics() {
     return {
       muted: this.isMuted,

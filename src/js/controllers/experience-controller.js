@@ -10,23 +10,25 @@ export class ExperienceController {
     const activity = activityCatalog.find((item) => item.id === gameId);
     if (!activity || !this.app.gameRegistry.has(gameId)) {
       console.warn('[experience] atividade indisponível', gameId);
-      this.app.renderAgeSelection();
+      this.app.renderHome();
       return null;
     }
     if (ageId && !isAgeCompatible(activity, ageId)) {
       console.warn('[experience] faixa etária incompatível', { gameId, ageId, allowed: activity.ages });
-      this.app.renderWorldMap(ageId);
+      this.app.renderHome();
       return null;
     }
+    this.app.container.scrollTop = 0;
     this.app.core.session.ensure(ageId, this.app.currentWorld);
     applyChildInterfacePolicy(this.app.container, ageId);
     this.app.core.learning.remember(gameId);
     const playMode = this.app.gameRegistry.mode(gameId);
+    const startedAt = Date.now();
     let finished = false;
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || 0) });
+      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || Date.now() - startedAt) });
       if (sessionResult.completed) {
         this.app.evaluateRewards(gameId);
         this.app.updateScoreUI();
@@ -35,7 +37,7 @@ export class ExperienceController {
         this.app.renderWorld(this.app.currentWorld);
       }
     };
-    const onBack = () => this.app.renderWorld(this.app.currentWorld);
+    const onBack = () => (this.app.currentWorld ? this.app.renderWorld(this.app.currentWorld) : this.app.renderHome());
     const content = getContentReadiness(gameId);
     const adaptive = activity ? this.app.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
     if (activity?.audio) this.app.audio.preload([activity.audio]);

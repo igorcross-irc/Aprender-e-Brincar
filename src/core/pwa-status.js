@@ -34,5 +34,15 @@ export function initPwaExperience({ statusId = "pwa-status", installId = "btn-in
     install?.setAttribute("hidden", "");
   });
 
-  return { isOffline: () => !navigator.onLine };
+  return {
+    isOffline: () => !navigator.onLine,
+    canInstall: () => Boolean(deferredPrompt),
+    async promptInstall() {
+      if (!deferredPrompt) return false;
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch {}
+      deferredPrompt = null;
+      return true;
+    }
+  };
 }

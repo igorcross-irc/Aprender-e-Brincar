@@ -103,7 +103,10 @@ export class LearningWorldGame {
         ${instruction ? `<p class="child-instruction text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
       </div>`;
-    if (instruction && speakInstruction && this.voiceFirst) window.setTimeout(() => this.speak(instruction), 120);
+    if (instruction && speakInstruction) {
+      if (this.voiceFirst) window.setTimeout(() => this.audio?.prompt?.(null, instruction), 120);
+      else if (this.audio) this.audio.lastPrompt = { audioPath: null, text: instruction };
+    }
     this.container.querySelector('#learning-back')?.addEventListener('click', () => {
       this.clearPending();
       this.onBack();
@@ -225,7 +228,7 @@ export class LearningWorldGame {
             </button>`).join('')}
         </div>
       </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.', false);
-    this.speak(prompt, audio);
+    this.audio?.prompt?.(audio, prompt);
     this.bindChoice(correctId, success, retry, safeOptions);
   }
 
@@ -275,7 +278,7 @@ export class LearningWorldGame {
     const pool = keepCorrectChoice(this.shuffle(this.items).slice(0, 4), target.id, this.options.ageId);
     const prompt = soundMode ? 'Ouça com atenção. Quem fez esse som?' : `Onde está o ${target.label}?`;
     this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
-    if (soundMode) window.setTimeout(() => this.speak(target.sound || target.label), 1100);
+    if (soundMode) window.setTimeout(() => this.audio?.prompt?.(null, target.sound || target.label), 1100);
   }
 
   renderShape() {
@@ -337,7 +340,7 @@ export class LearningWorldGame {
       </div>`, 'Bata palmas ou conte as partes da palavra.');
     this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label, item.audio));
     this.bindChoice(String(correct), `${item.parts.join(' - ')}. Muito bem!`, 'Vamos ouvir mais uma vez.', choices);
-    this.speak(item.label, item.audio);
+    this.audio?.prompt?.(item.audio, item.label);
   }
 
   renderSequence() {
@@ -363,7 +366,7 @@ export class LearningWorldGame {
       <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">${pool.map((item) => `<button data-answer="${this.escape(item.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[140px] shadow touch-target"><span class="text-6xl">${item.icon}</span><span class="font-black">${this.escape(item.label)}</span></button>`).join('')}</div></div>`);
     this.container.querySelector('#listen-again').addEventListener('click', () => this.speak(target.label, target.audio));
     this.bindChoice(target.id, 'Muito bem! Você encontrou.', 'Vamos ouvir mais uma vez.', pool);
-    this.speak(target.label, target.audio);
+    this.audio?.prompt?.(target.audio, target.label);
   }
 
   renderVocabulary() {
@@ -378,14 +381,14 @@ export class LearningWorldGame {
     const scene = story.scenes[this.round % story.scenes.length];
     this.shell('📖 História Interativa', `<div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><div class="text-8xl mb-4">${scene}</div><h3 class="text-2xl font-black text-indigo-700 mb-2">${this.escape(story.title)}</h3><p class="text-slate-600 mb-5">O que aconteceu nesta parte?</p><button id="story-next" class="bg-violet-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">Continuar ▶️</button></div>`, 'Vamos descobrir a história juntos.');
     this.container.querySelector('#story-next').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.scheduleNext(500); });
-    this.speak(story.words?.[this.round % story.words.length] || story.title);
+    this.audio?.prompt?.(null, story.words?.[this.round % story.words.length] || story.title);
   }
 
   renderMusic() {
     const pattern = this.items[this.round % this.items.length];
     this.shell('🎵 Música e Ritmo', `<div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><div class="text-7xl mb-4">${pattern.pattern.join(' ')}</div><h3 class="text-2xl font-black text-indigo-700">${this.escape(pattern.label)}</h3><p class="text-slate-600 my-4">Faça o ritmo junto comigo.</p><button id="music-done" class="bg-emerald-500 text-white font-black px-8 py-4 rounded-2xl shadow touch-target">👏 Fiz o ritmo!</button></div>`, 'Observe, imite e brinque com o ritmo.');
     this.container.querySelector('#music-done').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.speak('Muito bem!'); this.scheduleNext(650); });
-    this.speak(pattern.label);
+    this.audio?.prompt?.(null, pattern.label);
   }
 
   renderSortGroups() {
@@ -475,7 +478,7 @@ export class LearningWorldGame {
     const item = this.items[Math.floor(Math.random() * this.items.length)];
     this.shell('🏃 Desafio do Movimento', `<div class="bg-white/95 rounded-3xl p-8 shadow-xl text-center"><div class="text-8xl mb-5">${item.icon}</div><h3 class="text-3xl font-black text-indigo-700 mb-3">${this.escape(item.label)}</h3><p class="text-slate-600 mb-6">Faça o movimento e toque quando terminar.</p><button id="movement-done" class="bg-emerald-500 text-white font-black text-xl px-8 py-5 rounded-3xl shadow-lg touch-target">✅ Fiz!</button></div>`, 'Vamos brincar juntos!');
     this.container.querySelector('#movement-done').addEventListener('click', () => { if (this.roundLocked) return; this.score += 1; this.speak('Muito bem!'); this.scheduleNext(650); });
-    this.speak(item.label);
+    this.audio?.prompt?.(null, item.label);
   }
 
   finish() {

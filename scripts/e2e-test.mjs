@@ -27,15 +27,19 @@ async function waitForServer() {
   throw new Error('servidor de preview não respondeu');
 }
 
+async function setAge(page, ageId) {
+  await page.evaluate((age) => localStorage.setItem('aprender_brincar_child_age', age), ageId);
+}
+
 async function goHome(page) {
   await page.click('#btn-home-logo');
-  await page.waitForSelector('[data-age]');
+  await page.waitForSelector('[data-world]');
 }
 
 // Navega idade → mundo → brincadeira pela interface. Retorna false se a brincadeira não aparece.
 async function openGame(page, ageId, gameId) {
+  await setAge(page, ageId);
   await goHome(page);
-  await page.click(`[data-age="${ageId}"]`);
   const worlds = await page.$$eval('[data-world]', (els) => els.map((el) => el.dataset.world));
   for (const world of worlds) {
     await page.click(`[data-world="${world}"]`);
@@ -49,8 +53,8 @@ async function openGame(page, ageId, gameId) {
 }
 
 async function listGames(page, ageId) {
+  await setAge(page, ageId);
   await goHome(page);
-  await page.click(`[data-age="${ageId}"]`);
   const worlds = await page.$$eval('[data-world]', (els) => els.map((el) => el.dataset.world));
   const games = new Set();
   for (const world of worlds) {
@@ -102,6 +106,21 @@ async function run() {
   page.on('console', (message) => { if (message.type() === 'error') pageErrors.push(message.text()); });
   await page.goto(BASE);
 
+  console.log('Primeira abertura');
+  await page.waitForSelector('#setup-start');
+  if (await page.$('[data-world]')) fail('mundos aparecem antes da configuração');
+  await page.fill('#setup-name', 'Teste');
+  await page.click('[data-setup-age="2-3y"]');
+  await page.click('#setup-start');
+  await page.waitForSelector('[data-world]');
+  if ((await page.textContent('.home-greeting')).includes('Teste')) pass('configuração leva ao início com saudação pelo nome');
+  else fail('saudação sem o nome configurado');
+  if (await page.$('[data-age]')) fail('criança ainda vê escolha de idade');
+  const adultWords = ['%', 'aproveitamento', 'dias de sequência', 'Perfil de aprendizagem'];
+  const homeText = await page.textContent('#game-container');
+  const leaked = adultWords.filter((word) => homeText.includes(word));
+  if (leaked.length) fail(`informação de adulto no início: ${leaked.join(', ')}`);
+
   console.log('Todas as brincadeiras abrem em todas as idades');
   for (const ageId of AGES) {
     const games = await listGames(page, ageId);
@@ -131,14 +150,14 @@ async function run() {
   await openGame(page, '2-3y', 'memory');
   await playMemory(page);
   await expectResultScreen(page, 'memória');
-  if ((await page.textContent('#game-container')).includes('+1')) pass('primeira vez ganha estrela');
+  if (await page.$('.result-star')) pass('primeira vez ganha estrela');
   else fail('primeira conclusão não mostrou estrela');
   await page.click('#session-again');
   await page.waitForSelector('.memory-card');
   await playMemory(page);
   await expectResultScreen(page, 'memória repetida');
-  if ((await page.textContent('#game-container')).includes('De novo!')) pass('repetição mostra "De novo!" sem estrela extra');
-  else fail('repetição não sinalizou "De novo!"');
+  if (!(await page.$('.result-star')) && await page.$('.result-subtitle')) pass('repetição comemora sem estrela extra');
+  else fail('repetição não sinalizou a brincadeira repetida');
 
   await openGame(page, '2-3y', 'animals');
   await playDiscover(page);
