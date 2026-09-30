@@ -264,10 +264,11 @@ export class AppScreens {
       <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
-          <p class="text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
-          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
+          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
+          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
+    this.audio?.play?.(null, text);
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
     let touched=0;
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{
