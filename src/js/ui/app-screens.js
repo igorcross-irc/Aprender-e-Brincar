@@ -228,7 +228,7 @@ export class AppScreens {
           }).join('')}
         </div>
       </div>`;
-    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderWorldMap(this.currentAge));
+    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderChildStart(this.currentAge));
     this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));
     this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
