@@ -65,7 +65,6 @@ export class AppScreens {
       ...world,
       activities: world.activityIds.map((id) => activityCatalog.find((a) => a.id === id)).filter(Boolean).filter((a) => a.ages.includes(ageId))
     })).filter((world) => world.activities.length);
-    const progressSnapshot = this.core.progress.snapshot();
     const worldProgress = (world) => this.core.progress.getWorldProgress(world.id, world.activities.map((a) => a.id));
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
@@ -81,7 +80,7 @@ export class AppScreens {
               <h3 class="text-xl font-black text-slate-800 mt-3">${world.title}</h3>
               <p class="text-sm text-slate-500 mt-1">${world.description}</p>
               <span class="inline-flex mt-3 bg-slate-100 rounded-full px-3 py-1 text-xs font-bold text-slate-600">${world.activities.length} brincadeiras</span>
-              <div class="world-progress mt-3"><div class="world-progress-head"><span>${worldProgress(world).explored} de ${world.activities.length} descobertas</span><strong>${worldProgress(world).percentage}%</strong></div><div class="progress-track"><span style="width:${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%"></span></div></div>
+              <div class="world-progress mt-3"><div class="world-progress-head"><span>${worldProgress(world).explored} de ${world.activities.length} descobertas</span><strong>${worldProgress(world).percentage}%</strong></div><div class="progress-track"><span style="width:${worldProgress(world).percentage}%"></span></div></div>
             </button>`).join('')}
         </div>
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
