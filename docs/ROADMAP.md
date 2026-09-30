@@ -55,3 +55,12 @@ Não criar centenas de jogos isolados. Criar motores reutilizáveis e combiná-l
 
 ### Regra de segurança de produto
 Não apagar uma experiência ou asset válido sem evidência de que está órfão e sem substituição equivalente.
+
+## Saltos 31–36 — Leitura de jornada e contexto adaptativo
+Em implementação na staging.
+- Leitura centralizada de tempo, sessões e histórico recente.
+- Recomendações com contexto estruturado e nível adaptativo.
+- Jornada familiar consumindo o resumo central do núcleo.
+- Histórico local recente acessível diretamente pela jornada.
+- Nível contextual exibido nas sugestões do mundo.
+- Testes de núcleo ampliados para esses contratos.
