@@ -110,3 +110,12 @@ Em desenvolvimento na staging.
 - Feedback infantil tornou-se resistente a sobreposição de timers, evitando que um feedback antigo remova um feedback novo.
 - Criado mapa de cobertura por faixa etária para detectar lacunas de conteúdo antes de avançar para novas experiências.
 - Testes de núcleo ampliados para escolhas, cobertura etária, feedback e segurança de assets.
+
+
+## Saltos 57–60 — Contrato de interação e auditoria
+Em desenvolvimento na staging.
+- Contrato único de interação infantil combina política de interface e perfil de experiência por idade.
+- Tamanho mínimo de alvo de toque foi explicitado por faixa etária, com piso de segurança de 56px.
+- Auditoria estática dedicada verifica cobertura das seis faixas, densidade de escolhas, ausência de pressão competitiva, cobertura de conteúdo e biblioteca visual.
+- Auditoria adicionada como comando de desenvolvimento para ser incorporada ao ciclo de validação antes de futuros merges.
+- Testes centrais cobrem o contrato de interação e seus limites.
