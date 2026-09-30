@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "smoke": "node scripts/smoke-test.mjs",
     "test:core": "node scripts/core-test.mjs",
-    "audit:games": "node scripts/game-audit.mjs"
+    "audit:games": "node scripts/game-audit.mjs",
+    "audit:child-interface": "node scripts/child-interface-audit.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
