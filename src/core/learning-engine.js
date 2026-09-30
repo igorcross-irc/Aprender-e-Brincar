@@ -73,6 +73,15 @@ export class LearningEngine {
     }).sort((a, b) => b.score - a.score).slice(0, limit);
   }
 
+  getJourneySummary() {
+    const snapshot = this.progress.snapshot();
+    const entries = Object.values(snapshot.activities || {});
+    const explored = entries.filter((item) => item.explored).length;
+    const evaluated = entries.filter((item) => Number(item.evaluationCount || 0) > 0).length;
+    const worlds = new Set(activityCatalog.filter((activity) => snapshot.activities?.[activity.id]?.explored).map((activity) => activity.world).filter(Boolean)).size;
+    return { explored, evaluated, worlds, sessions: Number(snapshot.sessions?.total || 0), minutes: Math.round(Number(snapshot.sessions?.totalDurationMs || 0) / 60000) };
+  }
+
   getProfile() {
     const snapshot = this.progress.snapshot();
     const skills = this.skills?.get?.() || {};
