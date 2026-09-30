@@ -75,3 +75,15 @@ Implementados na staging.
 - Instruções das experiências centrais são narradas automaticamente no modo voice-first.
 - Experiências guiadas também priorizam voz e reduzem texto visual nas faixas iniciais.
 - Regra de produto: a criança não deve precisar ler para conseguir brincar.
+
+
+## Saltos 42–46 — Sistema visual infantil
+Implementados na staging.
+- Base central de visuais infantis reutilizáveis, separada do conteúdo e pronta para receber ilustrações próprias.
+- Biblioteca visual inicial com chaves semânticas para objetos, animais, natureza e partes do corpo.
+- Componentes visuais passam a priorizar imagem/ícone grande antes do rótulo.
+- Faixas iniciais mantêm rótulos infantis ocultos, mas preservam instruções acessíveis e áudio.
+- Experiências de descoberta, escolha e experiências guiadas passaram a consumir o sistema visual.
+- Estilos visuais foram preparados para baixa poluição, áreas grandes de toque e substituição gradual de emojis por ilustrações próprias.
+- Testes centrais cobrem normalização e disponibilidade mínima da biblioteca visual.
+- Próxima evolução: substituir os fallbacks emoji por ilustrações próprias reais, mantendo a mesma API visual.
