@@ -19,6 +19,11 @@ export function getContentCoverageByAge() {
   }));
 }
 
+export function getContentCoverageQuality(ageId = null) {
+  const entries = Object.values(getContentCoverageByAge()).filter((item) => !ageId || item.ageId === ageId);
+  return entries.map((item) => ({ ...item, worldDepth: item.activities ? Math.min(100, Math.round((item.worlds / 7) * 100)) : 0, categoryDepth: item.activities ? Math.min(100, Math.round((item.categories / 8) * 100)) : 0, audioCoverage: item.activities ? Math.min(100, Math.round((item.audioPlanned / item.activities) * 100)) : 0 }));
+}
+
 export function getContentCoverageGaps() {
   return Object.values(getContentCoverageByAge()).filter((item) => item.activities === 0);
 }
