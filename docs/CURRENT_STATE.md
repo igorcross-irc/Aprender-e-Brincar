@@ -73,3 +73,12 @@ As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem cl
 - Build correspondente ao commit `d32286b8615757bb1fe930f0e6b3dffa9d788846` foi concluído como READY no Vercel.
 - O GitHub Actions apresenta falha de infraestrutura/inicialização nas execuções recentes: o job termina com zero steps em aproximadamente dois segundos. Isso não deve ser confundido com falha de build da aplicação.
 - A identidade visual final dos objetos ainda não está completa: o sistema de visuais continua preparado para substituir emojis por ilustrações próprias reais.
+
+
+## Biblioteca visual — revisão 30/09/2026
+- Os ícones de navegação já estavam versionados no GitHub.
+- A biblioteca visual anterior gerada fora do repositório (pacote WebP/PNG citado no histórico) não estava disponível como arquivo binário recuperável no ambiente desta execução; portanto, não foi apresentada como se tivesse sido recuperada.
+- Foi implementado no staging um conjunto de 24 assets SVG em `public/assets/images/visual-library/`, cobrindo todos os objetos já reconhecidos pelo `child-visual-system`.
+- O `child-visual-system` agora aponta para esses assets com fallback preservado.
+- Crítica: estes SVGs são uma camada de integração/compatibilidade, não devem ser considerados a versão artística final da biblioteca. A próxima substituição pode usar ilustrações próprias detalhadas mantendo exatamente os mesmos caminhos e contratos.
+- O deployment do commit `8d105042acb900c5a66b90b6d84ad1ae9f8d48da` foi concluído como READY no Vercel.
