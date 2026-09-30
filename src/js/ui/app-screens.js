@@ -311,7 +311,6 @@ export class AppScreens {
     const ageId = age?.id || this.currentAge || '2-3y';
     const profile = getAgeExperienceConfig(ageId, age?.level || 1);
     const childFirst = ['6-12m','12-18m','18-24m'].includes(ageId);
-    const mature = ['3-4y','4-5y'].includes(ageId);
     const compactText = profile.text === false ? '' : profile.text === 'short' ? text.split('. ')[0] + '.' : text;
     const labels = cards.slice(0, profile.optionCount);
     const visualSize = childFirst ? 'large' : 'medium';
