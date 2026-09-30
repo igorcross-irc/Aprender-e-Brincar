@@ -96,7 +96,11 @@ assert.deepEqual(progress.getRecentActivityIds(2), ['explore-then-evaluate', 'ex
 assert.equal(progress.getSessionSummary().lastDurationMs, 0);
 progress.complete('duration-check', { mode: 'explore', durationMs: 3500 });
 assert.equal(progress.getSessionSummary().lastDurationMs, 3500);
-assert.ok(progress.getJourneySummary === undefined);
+const journey = new LearningEngine(progress).getJourneySummary();
+assert.equal(journey.explored, 2);
+assert.equal(journey.evaluated, 1);
+assert.equal(journey.sessions, progress.snapshot().sessions.total);
+assert.ok(journey.minutes >= 0);
 assert.equal(getContentReadiness('rhymes').hasAudioPlan, true);
 assert.equal(getContentReadiness('canvas').ready, true);
 assert.ok(getContentSummary().total >= 1);
