@@ -7,7 +7,8 @@ import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experi
 import { getContentReadiness, getContentSummary, getCatalogIntegrity } from '../src/core/content-readiness.js';
 import { ProgressStore } from '../src/core/progress-store.js';
 import { getChildInterfacePolicy } from '../src/core/child-interface-policy.js';
-import { getVisualKey, getChildVisual, childVisualLibrarySize } from '../src/core/child-visual-system.js';
+import { getVisualKey, getChildVisual, childVisualLibrarySize, getVisualAssetManifest } from '../src/core/child-visual-system.js';
+import { getChildFeedback } from '../src/core/child-feedback-system.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -54,11 +55,14 @@ assert.equal(getAgeExperienceConfig('6-12m', 5).level, 1);
 assert.equal(getAgeExperienceConfig('4-5y', 5).level, 5);
 assert.equal(getChildInterfacePolicy('6-12m').voiceFirst, true);
 assert.equal(getChildInterfacePolicy('6-12m').showLabels, false);
+assert.equal(getChildInterfacePolicy('6-12m').maxChoices, 2);
 assert.equal(getChildInterfacePolicy('2-3y').instructionMode, 'voice-supported');
 assert.equal(getChildInterfacePolicy('4-5y').showLabels, true);
 assert.equal(getVisualKey('Maçã'), 'apple');
 assert.equal(getChildVisual('bola').icon, '⚽');
 assert.ok(childVisualLibrarySize() >= 10);
+assert.equal(getVisualAssetManifest().apple.fallback, '🍎');
+assert.equal(getChildFeedback('success').icon, '✨');
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '2-3y'), true);
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '4-5y'), false);
 engine.progress.state = progressStates[1];
