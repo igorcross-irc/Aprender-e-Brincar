@@ -31,7 +31,9 @@ Primeira camada implementada: recompensas não competitivas e leitura familiar d
 - Ilustrações próprias.
 - Animações leves.
 - Feedback visual e sonoro consistente.
-- Recompensas não competitivas.\n- Conquistas persistentes por exploração, repetição e diversidade de mundos.\n- Visão familiar por domínios de desenvolvimento, sem avaliação clínica.
+- Recompensas não competitivas.
+- Conquistas persistentes por exploração, repetição e diversidade de mundos.
+- Visão familiar por domínios de desenvolvimento, sem avaliação clínica.
 - Ambientes próprios para cada mundo.
 - Sistema visual preparado para futuros ícones e artes dedicadas.
 
