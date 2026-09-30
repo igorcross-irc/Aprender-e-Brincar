@@ -26,13 +26,13 @@ const VISUAL_LIBRARY = Object.freeze({
   shoe: { icon: '👟', tone: 'sky', label: 'sapato', imagePath: null }
 });
 
-const NORMALIZATION = {
+const NORMALIZATION = Object.freeze({
   maçã: 'apple', maca: 'apple', banana: 'banana', bola: 'ball',
   carro: 'car', casa: 'house', árvore: 'tree', arvore: 'tree',
   gato: 'cat', cachorro: 'dog', pássaro: 'bird', passaro: 'bird',
   borboleta: 'butterfly', sol: 'sun', flor: 'flower',
   mão: 'hand', mao: 'hand', pé: 'foot', pe: 'foot', copo: 'cup', colher: 'spoon', livro: 'book', lua: 'moon', estrela: 'star', peixe: 'fish', coelho: 'rabbit', tulipa: 'flowerRed', leite: 'milk', cama: 'bed', sapato: 'shoe'
-};
+});
 
 export function getVisualKey(value = '') {
   const raw = String(value).trim().toLowerCase();
