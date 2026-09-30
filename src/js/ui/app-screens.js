@@ -17,7 +17,10 @@ const GAME_ICONS = {
 const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
 
 export class AppScreens {
-  renderAgeSelection() {
+  renderAgeSelection(options = {}) {
+    const force = Boolean(options.force);
+    const savedAge = this.storage.getChildAge();
+    if (!force && savedAge && AGE_BANDS.some((age) => age.id === savedAge)) return this.renderChildStart(savedAge);
     this.currentAge = null; this.currentWorld = null;
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
@@ -50,10 +53,42 @@ export class AppScreens {
         </div>
         </div>
       </div>`;
-    this.container.querySelectorAll('[data-age]').forEach((button) => button.addEventListener('click', () => this.renderWorldMap(button.dataset.age)));
+    this.container.querySelectorAll('[data-age]').forEach((button) => button.addEventListener('click', () => {
+      this.storage.setChildAge(button.dataset.age);
+      this.renderChildStart(button.dataset.age);
+    }));
   }
 
-
+  renderChildStart(ageId) {
+    const age = AGE_BANDS.find((item) => item.id === ageId);
+    if (!age) return this.renderAgeSelection({ force: true });
+    this.currentAge = ageId;
+    this.currentWorld = null;
+    const candidates = activityCatalog.filter((activity) => activity.ages?.includes(ageId));
+    const preferred = candidates.find((activity) => ['discover-objects','discovery-animals','discovery-colors','baby-discover','baby-colors','colors','animals'].includes(activity.id)) || candidates[0];
+    if (!preferred) return this.renderAgeSelection({ force: true });
+    this.currentWorld = preferred.world || null;
+    this.container.innerHTML = `
+      <div class="child-start-screen page-enter" data-child-age="${this.escape(ageId)}">
+        <div class="child-start-mascot">${childMascotMarkup({ size: 'large', mood: 'curious' })}</div>
+        <div class="child-start-age">${this.ageIcon(ageId)}</div>
+        <div class="child-start-copy">
+          <span class="child-start-eyebrow">${this.escape(age.label)}</span>
+          <h2>Vamos brincar!</h2>
+          <p>Toque para começar.</p>
+        </div>
+        <button id="child-start-button" class="child-start-button touch-target" aria-label="Começar a brincadeira">
+          <span class="child-start-button-icon">▶️</span>
+          <span>Brincar</span>
+        </button>
+        <button id="child-change-age" class="child-change-age touch-target">Trocar idade</button>
+      </div>`;
+    this.container.querySelector('#child-start-button')?.addEventListener('click', () => this.launchGame(preferred.id, ageId));
+    this.container.querySelector('#child-change-age')?.addEventListener('click', () => {
+      this.storage.clearChildAge();
+      this.renderAgeSelection({ force: true });
+    });
+  }
 
   ageIcon(ageId) {
     return ({'6-12m':'🌱','12-18m':'🧸','18-24m':'🐾','2-3y':'🎨','3-4y':'🧠','4-5y':'🚀'})[ageId] || '🌈';
@@ -88,7 +123,7 @@ export class AppScreens {
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
         <div class="text-center text-xs text-slate-500">💡 Não existe competição: cada descoberta vale por si.</div>
       </div>`;
-    this.container.querySelector('#btn-back-age').addEventListener('click', () => this.renderAgeSelection());
+    this.container.querySelector('#btn-back-age').addEventListener('click', () => this.renderAgeSelection({ force: true }));
     this.container.querySelector('#btn-journey')?.addEventListener('click', () => this.renderJourney());
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
   }
@@ -194,7 +229,7 @@ export class AppScreens {
           }).join('')}
         </div>
       </div>`;
-    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderWorldMap(this.currentAge));
+    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderChildStart(this.currentAge));
     this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, this.currentAge)));
     this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
