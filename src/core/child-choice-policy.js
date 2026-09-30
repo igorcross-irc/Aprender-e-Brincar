@@ -17,6 +17,10 @@ export function keepCorrectChoice(options = [], correctId, ageId = '2-3y') {
   return [correct, ...alternatives].slice(0, maxChoices);
 }
 
+export function getChoiceGridClass(ageId = '2-3y', count = null) {
+  return `grid-cols-${getChoiceGridColumns(ageId, count)}`;
+}
+
 export function getChoiceGridColumns(ageId = '2-3y', count = null) {
   const max = getChildMaxChoices(ageId);
   const actual = Math.min(max, Math.max(2, Number(count) || max));
