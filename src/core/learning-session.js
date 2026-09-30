@@ -23,7 +23,8 @@ export class LearningSession {
       goal,
       startedAt: new Date().toISOString(),
       completed: [],
-      stars: 0
+      stars: 0,
+      activityCount: 0
     };
     this.persist();
     return this.snapshot();
@@ -53,6 +54,7 @@ export class LearningSession {
     const progress = this.progress.complete(activityId, normalized);
     if (this.reward) this.reward(activityId);
     this.active.completed.push(activityId);
+    this.active.activityCount = this.active.completed.length;
     this.active.stars += 1;
     this.persist();
 
@@ -71,6 +73,7 @@ export class LearningSession {
     const durationMs = Math.max(0, Date.now() - new Date(this.active.startedAt).getTime());
     return {
       ...this.snapshot(),
+      sessionDurationMs: Math.max(0, Date.now() - new Date(this.active.startedAt).getTime()),
       durationSeconds: Math.round(durationMs / 1000),
       completedCount: this.active.completed.length,
       next: this.chooseNext(3)
