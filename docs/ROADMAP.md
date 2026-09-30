@@ -127,3 +127,27 @@ Em desenvolvimento na staging.
 - Criado contrato de auditoria do áudio para referências explícitas do catálogo e fallback de voz.
 - Criada base para validar os motores antigos sem substituir seus contratos de resultado.
 - Revisão crítica identificou que a validação visual em navegador e a execução real do pipeline ainda precisam ser observadas antes de promover para main.
+
+
+## Saltos 66–85 — Adaptação real dos motores legados
+
+Objetivo: sair de uma política central apenas consumida pelo Learning World e fazer os jogos antigos respeitarem a mesma lógica de idade.
+
+Implementado nesta rodada:
+- política central `game-difficulty-policy.js`;
+- propagação de `ageId` e configuração adaptativa pelo `game-registry`;
+- Memory, Puzzle, Balloon Pop, Canvas e Cards adaptados à configuração de idade;
+- Odd One Out, Number Order, Color Hunt, Rhythm Copy e Sound Sequence adaptados;
+- quantidade de opções/pares/rodadas/sequências limitada pela faixa etária;
+- contratos de resultado passaram a carregar `ageId` nos motores revisados;
+- alvos de toque reforçados também nas ferramentas da lousa;
+- auditoria de jogos ampliada para impedir regressão da adaptação etária;
+- testes centrais ampliados para a política de dificuldade.
+
+Crítica da rodada:
+- o próximo risco não é mais somente “quantidade de escolhas”; é a qualidade da experiência por idade;
+- ainda é necessário validar os motores em navegador e executar a suíte real antes de promover esta rodada para `main`;
+- a identidade visual própria continua pendente: emojis ainda são fallback em várias experiências;
+- áudio deve continuar sendo auditado por atividade, especialmente nas experiências novas e nos motores legados.
+
+Regra mantida: desenvolver em staging, testar/criticar e só então promover para `main`.
