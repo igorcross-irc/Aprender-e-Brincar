@@ -305,6 +305,16 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 .family-danger { padding: .8rem; border-radius: 1rem; background: #ffe4e6; color: #be123c; font-weight: 800; }
 .family-save { padding: .9rem; border-radius: 1rem; background: var(--ab-success); color: #fff; font-weight: 900; box-shadow: var(--ab-shadow); }
 
+.week-bars { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; height: 120px; align-items: end; }
+.week-bar { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: .2rem; }
+.week-bar span { width: 70%; min-height: 3px; border-radius: .5rem .5rem .2rem .2rem; background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+.week-bar small { font-size: .65rem; color: #64748b; text-transform: capitalize; }
+.week-bar b { font-size: .7rem; color: var(--ab-primary); }
+.rest-card { background: linear-gradient(180deg, #1e1b4b, #4c1d95); color: #fff; }
+.rest-card .result-subtitle { color: #ddd6fe; }
+.rest-moon { font-size: 3.5rem; }
+.rest-family { margin-top: 1rem; padding: .6rem 1.2rem; border-radius: 999px; background: rgba(255, 255, 255, .15); color: #ede9fe; font-weight: 800; font-size: .9rem; }
+
 .reward-grid { display: grid; grid-template-columns: 1fr; gap: .5rem; }
 .reward-chip { display: flex; gap: .7rem; align-items: center; padding: .6rem; border-radius: 1rem; background: #fff; border: 2px solid #ede9fe; }
 .reward-chip span { font-size: 1.6rem; }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-30 — Fase 4 — Família e qualidade
+- **Tempo de tela opcional** (15 a 60 min/dia) na Área da Família; conta só com o app visível. Ao atingir o limite, a brincadeira atual termina e aparece a tela "Hora de descansar"; só um adulto libera +10 minutos.
+- Relatório com gráfico dos últimos 7 dias de uso.
+- Sair de uma brincadeira pelo meio (casinha ou voltar) interrompe timers, sons e ouvintes do jogo (`ExperienceController.stopActive`).
+- Áudio: índice dos MP3 gerado no build (`scripts/audio-index.mjs` → `src/content/audio-files.js`). O motor usa qualquer MP3 existente, inclusive perguntas, e vai direto para a voz do navegador quando não há gravação — sem downloads que falham.
+- `npm run audio:coverage` gera `docs/AUDIO_COVERAGE.md` com as falas que ainda precisam de gravação e o nome exato de cada arquivo.
+- Desempenho medido em perfil de celular lento (CPU 6× mais lenta, rede 1,6 Mbps): início em ~1,6 s, 180 KB transferidos.
+- E2E cobre saída no meio do jogo, limite de tempo e liberação pelo adulto.
+
 ## 2026-09-30 — Fase 3 — Brincadeiras mais profundas
 - **Bolhas** (todas as idades): bolhas com animais sobem pela tela; estourar diz o nome do animal.
 - **Contar Tocando** (12 meses+): cada objeto tocado ganha um número falado — correspondência um a um; quantidade máxima cresce com a idade.

@@ -4,9 +4,22 @@ import { getAgeExperienceConfig, isAgeCompatible } from '../../core/age-experien
 import { applyChildInterfacePolicy } from '../../core/child-interface-policy.js';
 
 export class ExperienceController {
-  constructor(app) { this.app = app; }
+  constructor(app) { this.app = app; this.active = null; }
+
+  // Interrompe timers, sons e ouvintes do jogo atual ao sair no meio.
+  stopActive() {
+    const game = this.active;
+    this.active = null;
+    if (!game) return;
+    for (const method of ['clearPending', 'stop', 'stopSong', 'cleanupListeners']) {
+      try { game[method]?.(); } catch {}
+    }
+    this.app.audio.stop();
+  }
 
   launchGame(gameId, ageId) {
+    this.stopActive();
+    if (this.app.screenTime?.isOverLimit()) return this.app.renderRest();
     const activity = activityCatalog.find((item) => item.id === gameId);
     if (!activity || !this.app.gameRegistry.has(gameId)) {
       console.warn('[experience] atividade indisponível', gameId);
@@ -29,6 +42,7 @@ export class ExperienceController {
       if (finished) return;
       finished = true;
       const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || Date.now() - startedAt) });
+      this.active = null;
       if (sessionResult.completed) {
         this.app.evaluateRewards(gameId);
         this.app.updateScoreUI();
@@ -37,13 +51,14 @@ export class ExperienceController {
         this.app.renderWorld(this.app.currentWorld);
       }
     };
-    const onBack = () => (this.app.currentWorld ? this.app.renderWorld(this.app.currentWorld) : this.app.renderHome());
+    const onBack = () => (this.stopActive(), this.app.currentWorld ? this.app.renderWorld(this.app.currentWorld) : this.app.renderHome());
     const content = getContentReadiness(gameId);
     const adaptive = activity ? this.app.core.learning.getDifficulty(activity, ageId) : { level: 1, age: getAgeExperienceConfig(ageId, 1) };
     if (activity?.audio) this.app.audio.preload([activity.audio]);
     try {
       const result = this.app.gameRegistry.launch(gameId, { adaptive, ageId, onWin, onBack, content });
       if (result?.guided) return this.app.renderGuidedExperience(gameId, onWin, onBack, adaptive.age);
+      this.active = result || null;
       return result;
     } catch (error) {
       console.error('[game-registry] Falha ao iniciar atividade', gameId, error);

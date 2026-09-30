@@ -83,17 +83,18 @@ export function createGameRegistry({ containerId, audio, storage }) {
       if (def.kind === WORLD) {
         const game = new LearningWorldGame(containerId, audio, onWin, onBack);
         if (def.items) audio?.preload?.(def.items.map((x) => x.audio).filter(Boolean));
-        return game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age });
+        game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age });
+        return game;
       }
       if (def.kind === 'independent') {
         const game = new def.Game(containerId, audio, onWin, onBack);
-        return def.items ? game.start(def.items, level, { ageId, age }) : game.start(level, { ageId, age });
+        if (def.items) game.start(def.items, level, { ageId, age });
+        else game.start(level, { ageId, age });
+        return game;
       }
-      if (def.kind === 'canvas') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
-      if (def.kind === 'memory') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
-      if (def.kind === 'puzzle') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
-      if (def.kind === 'balloons') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
-      if (def.kind === 'phrases') return new CardsGame(containerId, audio, storage, onWin, onBack).renderPhraseBuilder(vocabularyData.phrases, { ageId, level: id === 'phrase-builder-2' ? level + 1 : level });
+      if (['canvas', 'balloons'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(level, { ageId, age }); return game; }
+      if (['memory', 'puzzle'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(vocabularyData.animals, level, { ageId, age }); return game; }
+      if (def.kind === 'phrases') { const game = new CardsGame(containerId, audio, storage, onWin, onBack); game.renderPhraseBuilder(vocabularyData.phrases, { ageId, level: id === 'phrase-builder-2' ? level + 1 : level }); return game; }
       if (def.kind === 'guided') return { guided: true };
       throw new Error(`Tipo de execução desconhecido para ${id}: ${def.kind}`);
     }

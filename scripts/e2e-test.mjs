@@ -231,6 +231,32 @@ async function run() {
   if (stickers >= 5) pass(`álbum mostra ${stickers} adesivos conquistados`);
   else fail(`álbum mostra só ${stickers} adesivos`);
 
+  console.log('Saída no meio e tempo de tela');
+  pageErrors.length = 0;
+  await openGame(page, '2-3y', 'bubbles');
+  await goHome(page);
+  await page.waitForTimeout(1500);
+  if (pageErrors.length) fail(`sair das bolhas gerou erro: ${pageErrors[0]}`);
+  else pass('sair de uma brincadeira no meio não deixa erros');
+
+  await page.evaluate(() => {
+    const d = new Date();
+    const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    localStorage.setItem('aprender_brincar_screen_time_v1', JSON.stringify({ limitMinutes: 15, days: { [day]: 20 * 60000 }, extraMinutes: {} }));
+  });
+  await page.reload();
+  await page.waitForSelector('.rest-card');
+  if (!(await page.$('[data-world]'))) pass('limite diário atingido mostra a tela de descanso');
+  else fail('mundos continuam disponíveis após o limite');
+  await page.click('#rest-family');
+  const equation = await page.textContent('#gate-title ~ div');
+  const [x, y] = equation.match(/\d+/g).map(Number);
+  await page.fill('#gate-input', String(x * y));
+  await page.click('#btn-gate-confirm');
+  await page.click('#btn-extra-time');
+  await page.waitForSelector('[data-world]');
+  pass('adulto libera mais 10 minutos pela Área da Família');
+
   await context.close();
 
   console.log('Modo offline');

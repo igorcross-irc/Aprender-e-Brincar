@@ -2,6 +2,7 @@ import { activityCatalog } from '../../content/activity-catalog.js';
 import { rewardCatalog } from '../../content/reward-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { AGE_BANDS } from '../../core/activity-registry.js';
+import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -98,6 +99,9 @@ export class FamilySettings {
     const report = this.buildReport();
     const currentAge = app.storage.getChildAge();
     const canInstall = app.pwa?.canInstall?.();
+    const { screenTime } = app;
+    const week = screenTime.lastDays(7);
+    const weekMax = Math.max(15, ...week.map((day) => day.minutes));
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
@@ -116,6 +120,18 @@ export class FamilySettings {
             ${AGE_BANDS.map((age) => `<button data-family-age="${age.id}" class="setup-age ${age.id === currentAge ? 'selected' : ''}" aria-pressed="${age.id === currentAge}">${esc(age.label)}</button>`).join('')}
           </div>
           <p class="family-hint">A idade define quais brincadeiras aparecem e o nível de ajuda.</p>
+        </section>
+
+        <section class="family-section">
+          <h4>Tempo de tela</h4>
+          <p class="family-label">Limite por dia</p>
+          <div class="setup-ages family-limits">
+            ${SCREEN_TIME_OPTIONS.map((minutes) => `<button data-limit="${minutes}" class="setup-age ${minutes === screenTime.limitMinutes ? 'selected' : ''}" aria-pressed="${minutes === screenTime.limitMinutes}">${minutes ? `${minutes} min` : 'Sem limite'}</button>`).join('')}
+          </div>
+          <p class="family-hint">Hoje: ${screenTime.minutesToday()} min${screenTime.limitMinutes ? ` de ${screenTime.allowedToday()} min` : ''}. Ao atingir o limite, a brincadeira atual termina e o app sugere um descanso.</p>
+          ${screenTime.isOverLimit() ? '<button id="btn-extra-time" class="family-button">+10 minutos hoje</button>' : ''}
+          <p class="family-label">Últimos 7 dias</p>
+          <div class="week-bars">${week.map((day) => `<div class="week-bar"><span style="height:${Math.round((day.minutes / weekMax) * 100)}%"></span><small>${esc(day.label)}</small><b>${day.minutes}</b></div>`).join('')}</div>
         </section>
 
         <section class="family-section">
@@ -166,6 +182,19 @@ export class FamilySettings {
         item.setAttribute('aria-pressed', String(item === button));
       });
     }));
+    let selectedLimit = screenTime.limitMinutes;
+    modal.querySelectorAll('[data-limit]').forEach((button) => button.addEventListener('click', () => {
+      selectedLimit = Number(button.dataset.limit);
+      modal.querySelectorAll('[data-limit]').forEach((item) => {
+        item.classList.toggle('selected', item === button);
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+    }));
+    modal.querySelector('#btn-extra-time')?.addEventListener('click', () => {
+      screenTime.addExtraMinutes(10);
+      modal.remove();
+      app.renderHome();
+    });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
     modal.querySelector('#btn-install')?.addEventListener('click', async () => { await app.pwa.promptInstall(); modal.remove(); });
     modal.querySelector('#btn-reset-stars').addEventListener('click', () => {
@@ -178,6 +207,7 @@ export class FamilySettings {
     modal.querySelector('#btn-save-settings').addEventListener('click', () => {
       app.storage.setChildName(modal.querySelector('#child-name-input').value);
       if (selectedAge) app.storage.setChildAge(selectedAge);
+      screenTime.setLimit(selectedLimit);
       const wantSound = modal.querySelector('#sound-toggle').checked;
       if (wantSound === app.audio.isMuted) app.audio.toggleMute();
       modal.remove();

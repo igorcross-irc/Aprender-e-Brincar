@@ -39,6 +39,7 @@ export class AppScreens {
   renderHome() {
     this.container.scrollTop = 0;
     if (!this.storage.getChildAge()) return this.renderSetup();
+    if (this.screenTime?.isOverLimit()) return this.renderRest();
     const ageId = this.childAge();
     this.currentAge = ageId;
     this.currentWorld = null;
@@ -80,6 +81,7 @@ export class AppScreens {
 
   renderWorld(worldId) {
     this.container.scrollTop = 0;
+    if (this.screenTime?.isOverLimit()) return this.renderRest();
     const world = learningWorlds.find((item) => item.id === worldId);
     if (!world) return this.renderHome();
     const ageId = this.childAge();
@@ -140,6 +142,25 @@ export class AppScreens {
     this.audio.prompt?.(null, earned.length ? 'Seus adesivos!' : 'Brinque para ganhar adesivos!');
   }
 
+  // Limite diário atingido: descanso gentil; só um adulto libera mais tempo.
+  renderRest() {
+    this.container.scrollTop = 0;
+    const name = this.storage.getChildName();
+    const message = name ? `Hora de descansar, ${name}! Até mais tarde!` : 'Hora de descansar! Até mais tarde!';
+    this.container.innerHTML = `
+      <div class="screen page-enter">
+        <section class="result-card rest-card">
+          <div class="rest-moon" aria-hidden="true">🌙</div>
+          ${childMascotMarkup({ size: 'large', mood: 'celebrate' })}
+          <h2 class="result-title">${this.escape(message)}</h2>
+          <p class="result-subtitle">Os olhinhos precisam brincar de outro jeito agora. 💤</p>
+          <button id="rest-family" class="rest-family">Área da família</button>
+        </section>
+      </div>`;
+    this.container.querySelector('#rest-family').addEventListener('click', () => this.openParentalGate());
+    this.audio.prompt?.(null, message);
+  }
+
   renderSessionResult(result) {
     this.container.scrollTop = 0;
     const name = this.storage.getChildName();
@@ -174,6 +195,10 @@ export class AppScreens {
     playSfx('celebrate');
     this.audio.prompt?.(null, message);
     if (result.starAwarded) this.flyStarToCounter?.();
+    if (this.screenTime?.isOverLimit()) {
+      const resultCard = this.container.querySelector('.result-card');
+      window.setTimeout(() => { if (resultCard?.isConnected) this.renderRest(); }, 3500);
+    }
   }
 
   renderGuidedExperience(gameId, onWin, onBack, age = {}) {
