@@ -61,6 +61,7 @@ export class AppScreens {
 
   renderChildStart(ageId) {
     const age = AGE_BANDS.find((item) => item.id === ageId);
+    const profile = getAgeExperienceConfig(ageId, 1);
     if (!age) return this.renderAgeSelection({ force: true });
     this.currentAge = ageId;
     this.currentWorld = null;
@@ -68,21 +69,24 @@ export class AppScreens {
     const preferred = candidates.find((activity) => ['discover-objects','discovery-animals','discovery-colors','baby-discover','baby-colors','colors','animals'].includes(activity.id)) || candidates[0];
     if (!preferred) return this.renderAgeSelection({ force: true });
     this.currentWorld = preferred.world || null;
+    const startLabel = profile.audioFirst ? 'Ouvir e brincar' : 'Brincar';
+    const helper = profile.text === false ? 'Toque para começar.' : profile.text === 'short' ? 'Vamos começar uma brincadeira.' : 'Escolha uma brincadeira para começar.';
     this.container.innerHTML = `
-      <div class="child-start-screen page-enter" data-child-age="${this.escape(ageId)}">
+      <div class="child-start-screen page-enter child-age-${this.escape(ageId)}" data-child-age="${this.escape(ageId)}">
         <div class="child-start-mascot">${childMascotMarkup({ size: 'large', mood: 'curious' })}</div>
         <div class="child-start-age">${this.ageIcon(ageId)}</div>
         <div class="child-start-copy">
-          <span class="child-start-eyebrow">${this.escape(age.label)}</span>
-          <h2>Vamos brincar!</h2>
-          <p>Toque para começar.</p>
+          <span class="child-start-eyebrow">${profile.audioFirst ? 'Vamos descobrir juntos' : 'Pronto para descobrir'}</span>
+          <h2>${ageId === '4-5y' ? 'Escolha uma brincadeira' : 'Vamos brincar!'}</h2>
+          <p>${helper}</p>
         </div>
-        <button id="child-start-button" class="child-start-button touch-target" aria-label="Começar a brincadeira">
-          <span class="child-start-button-icon">▶️</span>
-          <span>Brincar</span>
+        <button id="child-start-button" class="child-start-button touch-target" aria-label="${this.escape(startLabel)}">
+          <span class="child-start-button-icon">${profile.audioFirst ? '🔊' : '▶️'}</span>
+          <span>${startLabel}</span>
         </button>
         <button id="child-change-age" class="child-change-age touch-target">Trocar idade</button>
       </div>`;
+    this.audio?.play?.(null, profile.audioFirst ? 'Vamos brincar!' : '');
     this.container.querySelector('#child-start-button')?.addEventListener('click', () => this.launchGame(preferred.id, ageId));
     this.container.querySelector('#child-change-age')?.addEventListener('click', () => {
       this.storage.clearChildAge();
