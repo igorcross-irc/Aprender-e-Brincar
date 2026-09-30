@@ -1,4 +1,4 @@
-import { developmentContent } from '../../content/development-content.js';
+import { developmentContent } from '../../content/development-content.js';\nimport { childVisualMarkup } from '../../core/child-visual-system.js';
 
 export class LearningWorldGame {
   constructor(containerId, audioEngine, onComplete, onBack) {
