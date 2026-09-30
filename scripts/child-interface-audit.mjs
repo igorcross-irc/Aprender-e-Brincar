@@ -17,6 +17,8 @@ for (const ageId of ageIds) {
 }
 
 assert.equal(getContentCoverageGaps().length, 0, 'há faixa etária sem conteúdo');
+assert.ok(getChildInteractionContract('6-12m').maxChoices <= 2);
+assert.ok(getChildInteractionContract('4-5y').maxChoices <= 5);
 assert.ok(childVisualLibrarySize() >= 10, 'biblioteca visual pequena demais');
 assert.ok(Object.keys(getVisualAssetManifest()).length === childVisualLibrarySize());
 
