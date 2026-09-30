@@ -1,6 +1,7 @@
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { getContentReadiness } from '../../core/content-readiness.js';
 import { getAgeExperienceConfig, isAgeCompatible } from '../../core/age-experience-policy.js';
+import { applyChildInterfacePolicy } from '../../core/child-interface-policy.js';
 
 export class ExperienceController {
   constructor(app) { this.app = app; }
@@ -18,6 +19,7 @@ export class ExperienceController {
       return null;
     }
     this.app.core.session.ensure(ageId, this.app.currentWorld);
+    applyChildInterfacePolicy(this.app.container, ageId);
     this.app.core.learning.remember(gameId);
     const playMode = this.app.gameRegistry.mode(gameId);
     let finished = false;
