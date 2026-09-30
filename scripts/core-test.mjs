@@ -6,6 +6,7 @@ import { getAgeExperienceConfig, isAgeCompatible } from '../src/core/age-experie
 import { sanitizeProgressState, isProgressStateUsable } from '../src/core/experience-health.js';
 import { getContentReadiness, getContentSummary, getCatalogIntegrity } from '../src/core/content-readiness.js';
 import { ProgressStore } from '../src/core/progress-store.js';
+import { getChildInterfacePolicy } from '../src/core/child-interface-policy.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
 assert.equal(legacy.correct, 3);
@@ -50,6 +51,10 @@ const engine = new LearningEngine({
 assert.equal(engine.getDifficulty(activity).level, 2);
 assert.equal(getAgeExperienceConfig('6-12m', 5).level, 1);
 assert.equal(getAgeExperienceConfig('4-5y', 5).level, 5);
+assert.equal(getChildInterfacePolicy('6-12m').voiceFirst, true);
+assert.equal(getChildInterfacePolicy('6-12m').showLabels, false);
+assert.equal(getChildInterfacePolicy('2-3y').instructionMode, 'voice-supported');
+assert.equal(getChildInterfacePolicy('4-5y').showLabels, true);
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '2-3y'), true);
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '4-5y'), false);
 engine.progress.state = progressStates[1];
