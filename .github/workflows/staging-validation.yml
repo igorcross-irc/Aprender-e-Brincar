@@ -32,3 +32,7 @@ jobs:
         run: npm run audit:audio
       - name: Build
         run: npm run build
+      - name: Install Chromium
+        run: npx playwright-core install --with-deps chromium
+      - name: Browser audit
+        run: npm run test:browser

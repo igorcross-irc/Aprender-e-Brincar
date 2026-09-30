@@ -48,7 +48,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addWorld(['story-interactive','story-choices'], 'story-interactive');
   addWorld(['music-rhythm'], 'music-rhythm');
 
-  addIndependent(['odd-one-out'], OddOneOutGame);
+  addIndependent(['odd-one-out'], OddOneOutGame, [...vocabularyData.animals.map((item) => ({ ...item, group: 'animais' })), ...developmentContent.objects]);
   addIndependent(['number-order'], NumberOrderGame);
   addIndependent(['color-hunt-2'], ColorHuntGame, vocabularyData.colors);
   addIndependent(['rhythm-copy'], RhythmCopyGame, developmentContent.musicPatterns);

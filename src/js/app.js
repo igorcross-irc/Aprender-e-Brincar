@@ -70,4 +70,6 @@ class App {
   }
 }
 
-new App();
+const app = new App();
+// Só no servidor de desenvolvimento: usado por scripts/browser-audit.mjs. O build de produção remove este bloco.
+if (import.meta.env.DEV) window.__abApp = app;

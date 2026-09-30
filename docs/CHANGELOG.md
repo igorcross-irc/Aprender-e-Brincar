@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-09-30 — Salto de estabilização (sobre a staging etapa-3-5)
+Status: IMPLEMENTADO e TESTADO localmente (suíte + navegador). Não validado no deploy do Vercel. Não promovido.
+- Corrigidas 3 atividades que quebravam ao abrir: `discover-objects` e `object-hunt` (variável `safeOptions` fora de escopo) e `odd-one-out` (registrado sem conteúdo).
+- `odd-one-out` passa a montar rodadas com um grupo principal (animais) e um item de outro grupo (objetos), reaproveitando conteúdo existente.
+- PWA: `manifest.json` movido para `public/` (o Vite gerava um nome com hash e o Service Worker falhava ao instalar). O Service Worker agora pré-carrega o build, só guarda respostas válidas, não devolve HTML no lugar de asset ausente e atualiza áudios/imagens em segundo plano.
+- Cache HTTP: `immutable` mantido só para arquivos com hash; áudios e imagens (nome fixo) passam a ser revalidados.
+- Catálogo: `guided-movement` recebeu o mundo `create-move`.
+- Testes: `core-test` e `game-audit` atualizados para o código atual (estavam desatualizados e falhavam também na main).
+- Nova auditoria no navegador (`npm run test:browser`): abre todas as atividades em todas as idades, verifica a jornada infantil, a persistência e o PWA offline. Incluída nos workflows do GitHub Actions.
+- Adicionados `package-lock.json` (exigido pelo `npm ci` da workflow de staging) e `.gitignore`.
+
 ## 2026-09-28 — Fase 6 — Reengenharia do Universo
 - Reescrito o motor universal LearningWorldGame.
 - Corrigida lógica de respostas em múltiplos desafios.

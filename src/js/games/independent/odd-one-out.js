@@ -2,15 +2,17 @@ import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-di
 export class OddOneOutGame {
   constructor(containerId, audio, onComplete, onBack) { this.container=document.getElementById(containerId); this.audio=audio; this.onComplete=onComplete; this.onBack=onBack; this.level=1; this.round=0; this.correct=0; this.attempts=0; this.finished=false; }
   start(items=[], level=1, options={}) {
-    this.items=items; this.ageId=options.ageId||'2-3y'; this.difficulty=resolveGameDifficulty(this.ageId,level,options); this.level=this.difficulty.level; this.round=0; this.correct=0; this.attempts=0; this.finished=false; this.render();
+    this.items=Array.isArray(items)?items:[]; this.ageId=options.ageId||'2-3y'; this.difficulty=resolveGameDifficulty(this.ageId,level,options); this.level=this.difficulty.level; this.round=0; this.correct=0; this.attempts=0; this.finished=false; this.render();
   }
   shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
   render(){
     if(this.round>=this.difficulty.rounds) return this.finish();
-    const poolSize=Math.min(this.items.length, getGameChoiceCount(this.difficulty,2,1,5));
-    const base=this.shuffle(this.items).slice(0,poolSize-1);
-    const candidates=this.items.filter(x=>!base.some(b=>b.id===x.id));
-    const odd=this.shuffle(candidates)[0]||base[0];
+    const poolSize=Math.min(this.items.length, Math.max(3, getGameChoiceCount(this.difficulty,2,1,5)));
+    const groups=Object.values(this.items.reduce((acc,x)=>{(acc[x.group||'geral']??=[]).push(x);return acc;},{})).filter(g=>g.length>=Math.max(2,poolSize-1));
+    const main=groups.sort((a,b)=>b.length-a.length)[0]||this.items;
+    const base=this.shuffle(main).slice(0,poolSize-1);
+    const candidates=this.items.filter(x=>(x.group||'geral')!==(base[0]?.group||'geral'));
+    const odd=this.shuffle(candidates)[0]||this.items.find(x=>!base.some(b=>b.id===x.id))||base[0];
     const options=this.shuffle([...base,odd]);
     this.current=odd;
     this.container.innerHTML=`

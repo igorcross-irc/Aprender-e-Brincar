@@ -2,7 +2,7 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const required = [
   'index.html',
-  'manifest.json',
+  'public/manifest.json',
   'package.json',
   'tailwind.config.js',
   'postcss.config.js',

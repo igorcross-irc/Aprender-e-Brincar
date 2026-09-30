@@ -84,7 +84,8 @@ assert.deepEqual(keepCorrectChoice(choiceSet, 'correct', '6-12m').map((item) => 
 assert.equal(isVisualAssetPathSafe('/assets/apple.webp'), true);
 assert.equal(isVisualAssetPathSafe('../apple.webp'), false);
 assert.equal(isVisualAssetPathSafe('https://example.com/apple.webp'), false);
-assert.equal(getVisualAssetStatus('Maçã').hasAsset, false);
+assert.equal(getVisualAssetStatus('Maçã').hasAsset, true);
+assert.equal(getVisualAssetStatus('Girafa').hasAsset, false);
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '2-3y'), true);
 assert.equal(isAgeCompatible({ ages: ['2-3y'] }, '4-5y'), false);
 engine.progress.state = progressStates[1];

@@ -401,7 +401,7 @@ export class LearningWorldGame {
     this.shell('🔎 Descobrir Objetos', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p id="discover-object-feedback" class="text-xl font-black text-indigo-700 mb-5">Toque em qualquer objeto para descobrir o nome.</p>
-        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-object="${this.escape(item.id)}" class="learning-object bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${item.icon || '✨'}</span>

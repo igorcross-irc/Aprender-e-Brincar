@@ -3,6 +3,8 @@ import { resolve } from 'node:path';
 
 const root = process.cwd();
 const read = (file) => readFileSync(resolve(root, file), 'utf8');
+// Compara ignorando espaços: o código dos jogos é compactado e a auditoria verifica o contrato, não a formatação.
+const hasCode = (source, token) => source.replace(/\s+/g, '').includes(token.replace(/\s+/g, ''));
 const fail = (message) => { console.error(`GAME AUDIT FAIL — ${message}`); process.exit(1); };
 
 const app = read('src/js/app.js');
@@ -68,14 +70,14 @@ if (!health.includes('sanitizeProgressState')) fail('reparo de persistência aus
 if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
 if (!experienceController.includes('getContentReadiness') || !experienceController.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
 if (!experienceController.includes('gameRegistry.has(gameId)')) fail('pré-validação do registro de atividade ausente');
-if (!experienceController.includes('activity.ages.includes(ageId)')) fail('proteção de faixa etária ausente');
+if (!experienceController.includes('isAgeCompatible(activity, ageId)')) fail('proteção de faixa etária ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
 if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
 if (!appScreens.includes('learning.recommend') || !experienceController.includes('getDifficulty')) fail('integração adaptativa incompleta');
-if (!appScreens.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
+if (!appScreens.includes('onWin({score:touched,rounds})')) fail('experiências guiadas sem pontuação real');
 if (!experienceController.includes('core.session.ensure') || !experienceController.includes('core.session.complete')) fail('controlador central de sessão não integrado');
 if (!appScreens.includes('renderSessionResult') || !appScreens.includes('data-next')) fail('tela de resultado da sessão ausente');
 if (!appScreens.includes('journeyStage') || !appScreens.includes('journey-node')) fail('jornada dinâmica ausente');
@@ -96,11 +98,11 @@ const balloons = read('src/js/games/balloon-pop.js');
 const canvas = read('src/js/games/canvas.js');
 const cards = read('src/js/games/cards.js');
 
-if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
-if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
-if (!balloons.includes('attempts: this.attempts') || !balloons.includes('maxScore: this.difficulty.rounds')) fail('balões sem métricas semânticas');
-if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
-if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
+if (!hasCode(memory, 'attempts: this.moves') || !hasCode(memory, 'maxScore: rounds')) fail('memória sem métricas semânticas');
+if (!hasCode(puzzle, 'attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
+if (!hasCode(balloons, 'attempts: this.attempts') || !hasCode(balloons, 'maxScore: this.difficulty.rounds')) fail('balões sem métricas semânticas');
+if (!hasCode(canvas, "mode: 'explore'") || !hasCode(canvas, 'difficulty: this.level')) fail('lousa sem contrato de exploração');
+if (!hasCode(cards, "mode: 'explore'") || !hasCode(cards, 'completedRounds: 1')) fail('frases sem contrato de exploração');
 if (!cards.includes('touch-target') || !cards.includes('resolveGameDifficulty')) fail('cards sem política central e alvos de toque');
 if (!canvas.includes('touch-target') || !canvas.includes('resolveGameDifficulty')) fail('canvas sem política central e alvos de toque');
 for (const [name, source] of [['memory', memory], ['puzzle', puzzle], ['balloons', balloons]]) {
