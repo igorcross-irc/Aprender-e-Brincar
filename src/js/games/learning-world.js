@@ -173,7 +173,7 @@ export class LearningWorldGame {
     this.discoveryTouched.clear();
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target transition">
               ${childVisualMarkup(item.label, { fallbackIcon: item.icon || '🎨', decorative: true, size: 'large' })}
@@ -217,7 +217,7 @@ export class LearningWorldGame {
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p class="child-instruction text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
           ${safeOptions.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               ${childVisualMarkup(option.label, { fallbackIcon: option.icon || '✨', decorative: true, size: 'large' })}
@@ -401,7 +401,7 @@ export class LearningWorldGame {
     this.shell('🔎 Descobrir Objetos', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p id="discover-object-feedback" class="text-xl font-black text-indigo-700 mb-5">Toque em qualquer objeto para descobrir o nome.</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-object="${this.escape(item.id)}" class="learning-object bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${item.icon || '✨'}</span>
