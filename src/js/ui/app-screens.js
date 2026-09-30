@@ -174,7 +174,7 @@ export class AppScreens {
             <span class="text-xs font-black text-violet-500">${this.core.progress.snapshot().sessions?.streak || 0} dia(s) de sequência</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
-            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span></button>`).join('')}
+            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason,difficulty})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span><span class="block text-[10px] text-violet-500 mt-1">Nível: ${this.escape(difficulty.label)}</span></button>`).join('')}
           </div>
         </div>
         <div class="activity-grid">
