@@ -96,8 +96,9 @@ export class AppScreens {
 
   renderJourney() {
     const snapshot = this.core.progress.snapshot();
+    const journeySummary = this.core.learning.getJourneySummary();
     const entries = Object.entries(snapshot.activities || {}).map(([id, progress]) => ({ activity: activityCatalog.find((a) => a.id === id), progress })).filter((item) => item.activity);
-    const explored = entries.length;
+    const explored = journeySummary.explored;
     const weakest = this.core.skills.weakest(4);
     const next = this.core.learning.recommend(this.currentAge, this.currentWorld, 3);
     const worldCount = new Set(entries.map(({activity}) => activity.world).filter(Boolean)).size;
@@ -105,7 +106,7 @@ export class AppScreens {
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
     const sessionSummary = this.core.progress.getSessionSummary();
-    const totalMinutes = Math.round(sessionSummary.totalDurationMs / 60000);
+    const totalMinutes = this.core.progress.getTotalMinutes();
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
     const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
@@ -125,6 +126,7 @@ export class AppScreens {
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
           <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>\n          <div class="bg-orange-50 rounded-2xl p-4 text-center"><div class="text-2xl">⏱️</div><strong>${totalMinutes}</strong><small class="block text-slate-500">minutos de brincadeira</small></div>
+          <div class="bg-cyan-50 rounded-2xl p-4 text-center"><div class="text-2xl">🎯</div><strong>${journeySummary.sessions}</strong><small class="block text-slate-500">sessões</small></div>
           <div class="bg-indigo-50 rounded-2xl p-4 text-center"><div class="text-2xl">🧭</div><strong>${profile.accuracy==null?'—':profile.accuracy+'%'}</strong><small class="block text-slate-500">média recente</small></div>
           <div class="bg-rose-50 rounded-2xl p-4 text-center"><div class="text-2xl">📈</div><strong>${improving}</strong><small class="block text-slate-500">em evolução</small></div>
         </div>
