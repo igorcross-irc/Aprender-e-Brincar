@@ -11,6 +11,7 @@ import { getVisualKey, getChildVisual, childVisualLibrarySize, getVisualAssetMan
 import { getChildFeedback, getChildFeedbackMessage } from '../src/core/child-feedback-system.js';
 import { keepCorrectChoice, getChildMaxChoices, getChoiceGridColumns } from '../src/core/child-choice-policy.js';
 import { getContentCoverageByAge, getContentCoverageGaps } from '../src/core/content-coverage.js';
+import { getChildInteractionContract, getTouchTargetMinimum } from '../src/core/child-interaction-contract.js';
 import { isVisualAssetPathSafe, getVisualAssetStatus } from '../src/core/child-visual-system.js';
 
 const legacy = normalizeExperienceResult({ score: 3, rounds: 5 });
@@ -69,6 +70,9 @@ assert.equal(getChildFeedback('success').icon, '✨');
 assert.equal(getChildFeedbackMessage('success'), 'Muito bem!');
 assert.equal(getChildMaxChoices('6-12m'), 2);
 assert.equal(getChoiceGridColumns('6-12m', 4), 2);
+assert.equal(getTouchTargetMinimum('6-12m'), 64);
+assert.equal(getChildInteractionContract('6-12m').pressure, false);
+assert.equal(getChildInteractionContract('4-5y').touchTargetPx, 56);
 const choiceSet = [{ id: 'correct' }, { id: 'a' }, { id: 'b' }, { id: 'c' }];
 assert.deepEqual(keepCorrectChoice(choiceSet, 'correct', '6-12m').map((item) => item.id), ['correct', 'a']);
 assert.equal(isVisualAssetPathSafe('/assets/apple.webp'), true);
