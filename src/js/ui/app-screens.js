@@ -101,6 +101,7 @@ export class AppScreens {
     const explored = journeySummary.explored;
     const weakest = this.core.skills.weakest(4);
     const next = this.core.learning.recommend(this.currentAge, this.currentWorld, 3);
+    const recentHistory = this.core.progress.getRecentHistory(6);
     const worldCount = new Set(entries.map(({activity}) => activity.world).filter(Boolean)).size;
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
@@ -135,6 +136,7 @@ export class AppScreens {
             <button data-journey-game="${activity.id}" class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${progress.accuracy == null ? 'Exploração livre' : progress.accuracy + '% observado'} · ${progress.completions || 0} vez(es)</small>${progress.accuracy != null && progress.recentAccuracy != null ? `<div class="progress-track mt-2"><span style="width:${Math.min(100, progress.recentAccuracy)}%"></span></div><small class="text-[10px] text-slate-400">${progress.recentAccuracy}% média recente</small>` : ""}</button>
           `).join('') || '<div class="text-sm text-slate-500">A jornada começa na primeira brincadeira. ✨</div>'}
         </div></div>
+        <div class="bg-white rounded-[2rem] p-5 shadow-lg border border-sky-100"><h3 class="text-xl font-black text-sky-800">🕘 Brincadeiras recentes</h3><p class="text-sm text-slate-500 mt-1">Um histórico local para a família acompanhar o caminho sem criar ranking.</p><div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">${recentHistory.map((item) => { const activity = activityCatalog.find((a) => a.id === item.activityId); if (!activity) return ""; const date = item.completedAt ? new Date(item.completedAt).toLocaleDateString("pt-BR") : ""; const detail = item.accuracy == null ? "Exploração livre" : item.accuracy + "% observado"; return "<button data-history-game=\"" + activity.id + "\" class=\"bg-slate-50 rounded-xl p-3 text-left border border-slate-100 touch-target\"><span class=\"text-lg\">" + (GAME_ICONS[activity.id] || "✨") + "</span><strong class=\"block text-indigo-700 mt-1\">" + this.escape(activity.title) + "</strong><small class=\"text-slate-500\">" + detail + " · " + date + "</small></button>"; }).join("") || "<span class=\"text-sm text-slate-500\">Ainda não há brincadeiras recentes.</span>"}</div></div>
         <div class="bg-violet-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-violet-800">🧠 Habilidades para explorar agora</h3><p class="text-sm text-violet-600 mt-1">São sugestões de exploração, não avaliações clínicas nem notas.</p><div class="grid gap-3 mt-3">
           ${weakest.map(([skill,data]) => { const pct=Math.min(100,Math.round((Number(data.mastery||0)/5)*100)); return `<div class="bg-white rounded-2xl p-3"><div class="flex justify-between gap-3 text-xs font-bold text-violet-700"><span>${this.escape(this.core.learning.labelDomain(skill))}</span><span>${data.mastery.toFixed(1)}/5</span></div><div class="progress-track mt-2"><span style="width:${pct}%"></span></div></div>`; }).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
         </div></div>
@@ -145,6 +147,7 @@ export class AppScreens {
       </div>`;
     this.container.querySelector('#journey-back').addEventListener('click', () => this.currentWorld ? this.renderWorld(this.currentWorld) : this.renderWorldMap(this.currentAge));
     this.container.querySelectorAll('[data-journey-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyGame, this.currentAge)));
+    this.container.querySelectorAll('[data-history-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.historyGame, this.currentAge)));
     this.container.querySelectorAll('[data-journey-next]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyNext, this.currentAge)));
   }
 
