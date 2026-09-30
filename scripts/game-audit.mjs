@@ -91,7 +91,7 @@ const puzzle = read('src/js/games/puzzle.js');
 const balloons = read('src/js/games/balloon-pop.js');
 const canvas = read('src/js/games/canvas.js');
 const cards = read('src/js/games/cards.js');
-const cards = read('src/js/games/cards.js');
+
 if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
 if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
 if (!balloons.includes('attempts: this.attempts, maxScore: 5')) fail('balões sem métricas semânticas');
