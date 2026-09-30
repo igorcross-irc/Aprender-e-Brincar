@@ -87,3 +87,14 @@ Implementados na staging.
 - Estilos visuais foram preparados para baixa poluição, áreas grandes de toque e substituição gradual de emojis por ilustrações próprias.
 - Testes centrais cobrem normalização e disponibilidade mínima da biblioteca visual.
 - Próxima evolução: substituir os fallbacks emoji por ilustrações próprias reais, mantendo a mesma API visual.
+
+
+## Saltos 47–51 — Feedback, densidade e validação
+Implementados na staging.
+- Feedback visual infantil reutilizável para seleção, acerto e nova tentativa, com animação curta e respeito a redução de movimento.
+- Contrato de assets preparado para substituir fallbacks emoji por ilustrações próprias sem alterar os jogos.
+- Política de interface ampliada com densidade de escolhas e escala visual por faixa etária.
+- Experiências centrais limitam a quantidade de escolhas de acordo com a idade sem remover a alternativa correta.
+- Biblioteca visual e feedback passaram a ter cobertura adicional nos testes de núcleo.
+- Criada validação automática da staging para executar testes de núcleo e build a cada push em branches staging.
+- Revisão crítica: a base visual está funcional, mas ainda não deve ser considerada identidade visual final; emojis continuam como fallback até as ilustrações próprias serem realmente produzidas e integradas.
