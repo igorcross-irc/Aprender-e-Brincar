@@ -119,3 +119,11 @@ Em desenvolvimento na staging.
 - Auditoria estática dedicada verifica cobertura das seis faixas, densidade de escolhas, ausência de pressão competitiva, cobertura de conteúdo e biblioteca visual.
 - Auditoria adicionada como comando de desenvolvimento para ser incorporada ao ciclo de validação antes de futuros merges.
 - Testes centrais cobrem o contrato de interação e seus limites.
+
+
+## Saltos 61–65 — Auditoria profunda dos motores
+- Pipeline de staging ampliado com smoke test, auditoria de jogos e auditoria de interface infantil.
+- Grids do motor Learning World passaram a consumir a política central de densidade por idade.
+- Criado contrato de auditoria do áudio para referências explícitas do catálogo e fallback de voz.
+- Criada base para validar os motores antigos sem substituir seus contratos de resultado.
+- Revisão crítica identificou que a validação visual em navegador e a execução real do pipeline ainda precisam ser observadas antes de promover para main.
