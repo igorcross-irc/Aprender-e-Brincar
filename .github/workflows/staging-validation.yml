@@ -22,5 +22,11 @@ jobs:
         run: npm ci
       - name: Core tests
         run: npm run test:core
+      - name: Smoke test
+        run: npm run smoke
+      - name: Game audit
+        run: npm run audit:games
+      - name: Child interface audit
+        run: npm run audit:child-interface
       - name: Build
         run: npm run build
