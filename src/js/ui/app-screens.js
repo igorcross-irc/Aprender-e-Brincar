@@ -3,6 +3,7 @@ import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
+import { childMascotMarkup } from '../../core/child-mascot.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -34,7 +35,7 @@ export class AppScreens {
         <div class="w-full">
         <div class="hero-panel text-center mb-6">
           <div class="hero-orbit" aria-hidden="true">✨</div>
-          <div class="text-6xl mb-2">🌈🧸✨</div>
+          <div class="flex justify-center items-center gap-3 mb-2">${childMascotMarkup({ size: "medium", mood: "curious" })}<div class="text-5xl">🌈✨</div></div>
           <p class="eyebrow">MAPA DE DESCOBERTAS</p>
           <h2 class="text-3xl md:text-4xl font-black text-indigo-700">${childName ? this.escape(childName)+', vamos brincar?' : 'Vamos descobrir juntos?'}</h2>
           <p class="text-slate-600 mt-2 max-w-xl mx-auto">Escolha uma idade para abrir os mundos. Você pode explorar livremente e voltar quando quiser.</p>

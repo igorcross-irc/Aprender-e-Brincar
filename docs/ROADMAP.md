@@ -127,3 +127,53 @@ Em desenvolvimento na staging.
 - Criado contrato de auditoria do áudio para referências explícitas do catálogo e fallback de voz.
 - Criada base para validar os motores antigos sem substituir seus contratos de resultado.
 - Revisão crítica identificou que a validação visual em navegador e a execução real do pipeline ainda precisam ser observadas antes de promover para main.
+
+
+## Saltos 66–85 — Adaptação real dos motores legados
+
+Objetivo: sair de uma política central apenas consumida pelo Learning World e fazer os jogos antigos respeitarem a mesma lógica de idade.
+
+Implementado nesta rodada:
+- política central `game-difficulty-policy.js`;
+- propagação de `ageId` e configuração adaptativa pelo `game-registry`;
+- Memory, Puzzle, Balloon Pop, Canvas e Cards adaptados à configuração de idade;
+- Odd One Out, Number Order, Color Hunt, Rhythm Copy e Sound Sequence adaptados;
+- quantidade de opções/pares/rodadas/sequências limitada pela faixa etária;
+- contratos de resultado passaram a carregar `ageId` nos motores revisados;
+- alvos de toque reforçados também nas ferramentas da lousa;
+- auditoria de jogos ampliada para impedir regressão da adaptação etária;
+- testes centrais ampliados para a política de dificuldade.
+
+Crítica da rodada:
+- o próximo risco não é mais somente “quantidade de escolhas”; é a qualidade da experiência por idade;
+- ainda é necessário validar os motores em navegador e executar a suíte real antes de promover esta rodada para `main`;
+- a identidade visual própria continua pendente: emojis ainda são fallback em várias experiências;
+- áudio deve continuar sendo auditado por atividade, especialmente nas experiências novas e nos motores legados.
+
+Regra mantida: desenvolver em staging, testar/criticar e só então promover para `main`.
+
+
+## Saltos 86–100 — Experiência por idade e identidade visual preparatória
+
+- expandida a biblioteca visual central para 25+ elementos;
+- catálogo visual passou a ser imutável e com normalização ampliada;
+- suporte opcional a rótulos visuais para faixas que já usam texto;
+- contrato de dificuldade passou a expor escolhas, sequência, rodadas, nível máximo, densidade visual e alvo de toque;
+- política de idade passou a devolver configuração unificada para os motores;
+- feedback ganhou estados de incentivo/calma e limpeza explícita;
+- cobertura passou a medir profundidade por mundos, categorias e áudio;
+- auditorias elevadas para impedir regressões na biblioteca visual e cobertura;
+- testes centrais ampliados para a nova biblioteca visual.
+
+Crítica: esta rodada prepara a substituição progressiva de emojis por arte própria, mas não finge que essa substituição já aconteceu. Os caminhos de assets continuam seguros e a biblioteca mantém fallback enquanto as ilustrações reais não forem integradas.
+
+
+## Saltos 101–110 — Identidade e distribuição PWA
+Implementados na staging e validados pelo build de produção do Vercel.
+- Mascote reutilizável em SVG, sem dependência externa, incorporado à entrada e ao feedback de conclusão.
+- Identidade infantil passa a ter um elemento consistente além de emojis e cartões.
+- Status online/offline visível no cabeçalho.
+- Fluxo de instalação PWA preparado com `beforeinstallprompt` e ação explícita de instalação quando o navegador oferecer suporte.
+- Estado offline não bloqueia a experiência local-first já existente.
+- Revisão crítica: a biblioteca de objetos ainda usa emojis como fallback; as ilustrações próprias dos objetos continuam pendentes e devem substituir o fallback sem alterar os contratos dos motores.
+- CI do GitHub Actions está falhando antes da primeira etapa em execuções recentes (jobs encerrados em ~2s com zero steps); isso foi separado dos testes de aplicação porque o Vercel concluiu o build da staging como READY.

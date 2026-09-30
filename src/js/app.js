@@ -7,6 +7,7 @@ import { createGameRegistry } from './game-registry.js';
 import { AppScreens } from './ui/app-screens.js';
 import { FamilySettings } from './ui/family-settings.js';
 import { ExperienceController } from './controllers/experience-controller.js';
+import { initPwaExperience } from '../core/pwa-status.js';
 
 class App {
   constructor() {
@@ -28,6 +29,7 @@ class App {
 
   init() {
     registerPWA();
+    initPwaExperience();
     this.updateScoreUI();
     this.setupHeaderEvents();
     this.renderAgeSelection();

@@ -52,6 +52,10 @@ if (!guidedIds.length || !app.includes('renderGuidedExperience')) fail('atividad
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
   if (!read(`src/js/games/independent/${file}`).includes('onComplete?.({score')) fail(`jogo independente sem contrato de resultado: ${file}`);
 }
+for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
+  const source = read(`src/js/games/independent/${file}`);
+  if (!source.includes('resolveGameDifficulty') || !source.includes('ageId')) fail(`jogo independente sem adaptação por idade: ${file}`);
+}
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
 if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
 const discoverBlock = learning.match(/renderDiscover\([\s\S]*?\n  \}\n\n  renderChoice/);
@@ -81,7 +85,7 @@ if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso po
 if (!learning.includes('difficultyLabel')) fail('feedback visual de dificuldade ausente');
 if (!learning.includes("level === 2 ? 5 : 7")) fail('dificuldade adaptativa não altera conjunto de desafios');
 if (!registry.includes("'baby-discover'")) fail('baby-discover sem registro central');
-if (!read('src/js/games/canvas.js').includes('this.level === 1 ? 3 : this.level === 2 ? 4 : 5')) fail('lousa sem adaptação real por nível');
+if (!read('src/js/games/canvas.js').includes('resolveGameDifficulty') || !read('src/js/games/canvas.js').includes('this.difficulty.rounds')) fail('lousa sem política central de idade');
 const rendererIds = [...learning.matchAll(/(?:['\"]([^'\"]+)['\"]|([A-Za-z0-9-]+))\s*:\s*\(\)\s*=>\s*this\./g)].map((m) => m[1] || m[2]);
 const supportedModes = new Set(rendererIds);
 console.log(`GAME AUDIT OK — ${animals.length} animais com MP3, ${activityIds.length} atividades roteadas, ${supportedModes.size} modos verificados e núcleo adaptativo integrado.`);
@@ -94,11 +98,14 @@ const cards = read('src/js/games/cards.js');
 
 if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
 if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
-if (!balloons.includes('attempts: this.attempts, maxScore: 5')) fail('balões sem métricas semânticas');
+if (!balloons.includes('attempts: this.attempts') || !balloons.includes('maxScore: this.difficulty.rounds')) fail('balões sem métricas semânticas');
 if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
 if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
-if (!cards.includes('touch-target')) fail('cards sem alvos de toque reforçados');
-if (!canvas.includes('touch-target')) fail('canvas sem alvos de toque reforçados');
+if (!cards.includes('touch-target') || !cards.includes('resolveGameDifficulty')) fail('cards sem política central e alvos de toque');
+if (!canvas.includes('touch-target') || !canvas.includes('resolveGameDifficulty')) fail('canvas sem política central e alvos de toque');
+for (const [name, source] of [['memory', memory], ['puzzle', puzzle], ['balloons', balloons]]) {
+  if (!source.includes('resolveGameDifficulty') || !source.includes('ageId')) fail(`${name} sem adaptação por faixa etária`);
+}
 
 console.log('Game audit OK');
 
@@ -106,7 +113,7 @@ const core = await read('src/core/app-core.js');
 if (!core.includes('rewardActivity(activityId)')) fail('recompensa central nao encontrada');
 if (!core.includes('this.progress.grantReward(rewardId)')) fail('recompensa sem transação local');
 
-const engine = await read('src/core/learning-engine.js');
+const engine = read('src/core/learning-engine.js');
 if (!engine.includes('getOutcome(activityId)')) fail('resultado adaptativo ausente');
 if (!engine.includes("recentAccuracy != null && recentAccuracy >= 85")) fail('regra de avanço ausente');
 if (!engine.includes('level = clamp(level, base - 1, base + 1)')) fail('dificuldade pode variar mais de uma faixa por chamada');

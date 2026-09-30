@@ -22,7 +22,10 @@
       </button>
       <h1 class="text-lg font-bold text-indigo-600 tracking-wide">Aprender & Brincar</h1>
     </div>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <span id="pwa-status" class="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full" aria-live="polite">Online</span>
+      <button id="btn-install-app" hidden class="touch-target bg-indigo-100 text-indigo-700 px-3 py-2 rounded-full text-xs font-black" aria-label="Instalar aplicativo">Instalar</button>
+      <div class="flex items-center gap-3">
       <button id="btn-mute" class="touch-target bg-slate-100 p-2 rounded-full text-xl shadow-sm focus-visible:ring-4 focus-visible:ring-indigo-300" aria-label="Alternar som">🔊</button>
       <div id="score-board" class="flex items-center gap-1.5 bg-amber-100 px-3 py-1 rounded-full text-amber-800 font-bold text-sm border border-amber-300" aria-live="polite">
         ⭐ <span id="star-count">0</span>
