@@ -1,4 +1,8 @@
 import { developmentContent } from '../../content/development-content.js';
+import { childVisualMarkup } from '../../core/child-visual-system.js';
+import { getChildInterfacePolicy } from '../../core/child-interface-policy.js';
+import { showChildFeedback } from '../../core/child-feedback-system.js';
+import { keepCorrectChoice, getChoiceGridClass } from '../../core/child-choice-policy.js';
 
 export class LearningWorldGame {
   constructor(containerId, audioEngine, onComplete, onBack) {
@@ -33,7 +37,9 @@ export class LearningWorldGame {
     this.score = 0;
     this.completed = false;
     this.roundLocked = false;
-    this.options = { difficulty: 1, mode: 'evaluate', ...options };
+    this.options = { difficulty: 1, mode: 'evaluate', ageId: '2-3y', ...options };
+    this.interfacePolicy = getChildInterfacePolicy(this.options.ageId);
+    this.voiceFirst = this.interfacePolicy.voiceFirst;
 
     const sources = {
       'discover-animals': options.items || [],
@@ -84,7 +90,7 @@ export class LearningWorldGame {
     this.audio?.play(audio, text);
   }
 
-  shell(title, body, instruction = '') {
+  shell(title, body, instruction = '', speakInstruction = true) {
     const difficulty = Number(this.options.difficulty || 1);
     const difficultyLabel = difficulty <= 1 ? '🌱 Descoberta' : difficulty === 2 ? '⭐ Explorar' : difficulty === 3 ? '🚀 Desafio' : '🏆 Avançado';
     this.container.innerHTML = `
@@ -94,9 +100,10 @@ export class LearningWorldGame {
           <div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-indigo-700">${title}</div>
           <div class="flex gap-2"><div class="hidden sm:block bg-violet-50 rounded-full px-3 py-2 shadow font-black text-violet-600">${difficultyLabel}</div><div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-amber-600">⭐ ${this.round + 1}/5</div></div>
         </div>
-        ${instruction ? `<p class="text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
+        ${instruction ? `<p class="child-instruction text-center text-slate-600 font-semibold px-3">${this.escape(instruction)}</p>` : ''}
         ${body}
       </div>`;
+    if (instruction && speakInstruction && this.voiceFirst) window.setTimeout(() => this.speak(instruction), 120);
     this.container.querySelector('#learning-back')?.addEventListener('click', () => {
       this.clearPending();
       this.onBack();
@@ -161,19 +168,19 @@ export class LearningWorldGame {
   }
 
   renderDiscover(title, instruction, withAudio) {
-    const poolSize = Math.min(this.items.length, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
+    const poolSize = Math.min(this.items.length, this.interfacePolicy.maxChoices || 4, this.options.difficulty >= 3 ? 5 : this.options.difficulty === 2 ? 4 : 3);
     const pool = this.shuffle(this.items).slice(0, poolSize);
     this.discoveryTouched.clear();
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-discover="${this.escape(item.id)}" class="bg-sky-50 rounded-3xl p-6 min-h-[155px] shadow border-4 border-sky-100 touch-target transition">
-              <span class="text-6xl block">${item.icon || '🎨'}</span>
-              <span class="font-black text-sky-800">${this.escape(item.label)}</span>
+              ${childVisualMarkup(item.label, { fallbackIcon: item.icon || '🎨', decorative: true, size: 'large' })}
+              <span class="child-label font-black text-sky-800">${this.escape(item.label)}</span>
             </button>`).join('')}
         </div>
-        <button id="discover-next" class="mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
+        <button id="discover-next" aria-label="Continuar" class="child-control mt-5 w-full bg-emerald-500 text-white font-black px-6 py-4 rounded-2xl shadow touch-target opacity-50" disabled>Continuar ▶️</button>
       </div>`, instruction);
 
     const next = this.container.querySelector('#discover-next');
@@ -181,6 +188,7 @@ export class LearningWorldGame {
       const item = pool.find((entry) => entry.id === button.dataset.discover);
       if (!item || this.completed) return;
       this.discoveryTouched.add(item.id);
+      showChildFeedback(this.container, 'selected', 420);
       button.classList.add('border-emerald-400', 'bg-emerald-50');
       if (withAudio && item.audio) {
         this.speak(item.label, item.audio);
@@ -202,19 +210,23 @@ export class LearningWorldGame {
   }
 
   renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Vamos tentar novamente!') {
+    const maxChoices = this.interfacePolicy?.maxChoices || 4;
+    const correct = options.find((item) => String(item.id) === String(correctId));
+    const alternatives = options.filter((item) => String(item.id) !== String(correctId));
+    const safeOptions = correct ? [correct, ...this.shuffle(alternatives).slice(0, Math.max(1, maxChoices - 1))] : options.slice(0, maxChoices);
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
-        <p class="text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          ${options.map((option) => `
+        <p class="child-instruction text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
+          ${safeOptions.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
-              <span class="text-6xl">${option.icon || '✨'}</span>
-              <span class="font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
+              ${childVisualMarkup(option.label, { fallbackIcon: option.icon || '✨', decorative: true, size: 'large' })}
+              <span class="child-label font-black text-indigo-800 text-lg">${this.escape(option.label)}</span>
             </button>`).join('')}
         </div>
-      </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.');
+      </div>`, 'Escolha a resposta. Você pode tentar quantas vezes quiser.', false);
     this.speak(prompt, audio);
-    this.bindChoice(correctId, success, retry, options);
+    this.bindChoice(correctId, success, retry, safeOptions);
   }
 
   bindChoice(correctId, success, retry, options = []) {
@@ -224,6 +236,7 @@ export class LearningWorldGame {
       if (correct) {
         this.roundLocked = true;
         this.score += 1;
+        showChildFeedback(this.container, 'success', 650);
         button.classList.add('border-emerald-400', 'bg-emerald-50');
         const option = options.find((item) => String(item.id) === String(correctId));
         if (option?.audio) this.speak(option.label, option.audio);
@@ -234,6 +247,7 @@ export class LearningWorldGame {
           this.nextRound();
         }, option?.audio ? 900 : 600);
       } else {
+        showChildFeedback(this.container, 'retry', 500);
         button.classList.add('border-rose-300', 'animate-shake');
         this.speak(retry);
         window.setTimeout(() => button.classList.remove('border-rose-300', 'animate-shake'), 450);
@@ -257,8 +271,8 @@ export class LearningWorldGame {
   }
 
   renderFindAnimal(soundMode) {
-    const pool = this.shuffle(this.items).slice(0, 4);
-    const target = pool[Math.floor(Math.random() * pool.length)];
+    const target = this.items[Math.floor(Math.random() * this.items.length)];
+    const pool = keepCorrectChoice(this.shuffle(this.items).slice(0, 4), target.id, this.options.ageId);
     const prompt = soundMode ? 'Ouça com atenção. Quem fez esse som?' : `Onde está o ${target.label}?`;
     this.renderChoice(soundMode ? '🔊 Quem Fez Esse Som?' : '🐾 Encontre o Animal', prompt, pool, target.id, null, 'Muito bem! Você encontrou!', 'Vamos ouvir e tentar novamente.');
     if (soundMode) window.setTimeout(() => this.speak(target.sound || target.label), 1100);
@@ -292,19 +306,19 @@ export class LearningWorldGame {
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p class="text-xl font-black text-indigo-700 mb-4">Quantos ${icon} você vê?</p>
         <div class="flex flex-wrap justify-center gap-2 text-5xl bg-amber-50 rounded-3xl p-6 mb-5">${Array.from({ length: target }, () => `<span>${icon}</span>`).join('')}</div>
-        <div class="grid grid-cols-4 gap-3">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-3">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Conte os objetos e escolha a quantidade.');
     this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
 
   renderNumberMatch() {
     const target = Math.floor(Math.random() * 5) + 1;
-    const options = this.shuffle([1, 2, 3, 4, 5]).map((number) => ({ id: String(number), label: String(number) }));
+    const options = keepCorrectChoice(this.shuffle([1, 2, 3, 4, 5]).map((number) => ({ id: String(number), label: String(number) })), String(target), this.options.ageId);
     this.shell('🔢 Número e Quantidade', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <div class="text-6xl mb-4">${Array.from({ length: target }, () => '🍓').join(' ')}</div>
         <p class="text-xl font-black text-indigo-700 mb-4">Qual número combina com essa quantidade?</p>
-        <div class="grid grid-cols-5 gap-2">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-2">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Observe a quantidade e escolha o número.');
     this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
@@ -318,7 +332,7 @@ export class LearningWorldGame {
         <div class="text-7xl mb-3">${item.icon}</div><p class="text-3xl font-black text-indigo-700 mb-2">${this.escape(item.label)}</p>
         <p class="text-slate-600 mb-4">Vamos ouvir e separar em partes.</p>
         <div class="flex justify-center flex-wrap gap-2 mb-5">${item.parts.map((part) => `<span class="bg-violet-100 text-violet-800 font-black px-4 py-2 rounded-xl">${part}</span>`).join('')}</div>
-        <div class="grid grid-cols-3 gap-3">${choices.map((c) => `<button data-answer="${c.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${c.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, choices.length)} gap-3">${choices.map((c) => `<button data-answer="${c.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${c.label}</button>`).join('')}</div>
         <button id="speak-word" class="mt-4 bg-emerald-500 text-white font-black px-6 py-3 rounded-2xl touch-target">🔊 Ouvir palavra</button>
       </div>`, 'Bata palmas ou conte as partes da palavra.');
     this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label, item.audio));
@@ -333,20 +347,20 @@ export class LearningWorldGame {
     this.shell('🔁 Complete a Sequência', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><p class="text-xl font-black text-indigo-700 mb-4">O que vem depois?</p>
       <div class="flex justify-center gap-3 text-5xl bg-sky-50 rounded-3xl p-6 mb-5">${sequence.items.map((x) => `<span>${x}</span>`).join('')}</div>
-      <div class="grid grid-cols-4 gap-3">${choices.map((c) => `<button data-answer="${this.escape(c.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-4xl shadow touch-target">${c.icon}</button>`).join('')}</div></div>`, 'Observe o padrão e escolha o que vem depois.');
+      <div class="grid ${getChoiceGridClass(this.options.ageId, choices.length)} gap-3">${choices.map((c) => `<button data-answer="${this.escape(c.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-4xl shadow touch-target">${c.icon}</button>`).join('')}</div></div>`, 'Observe o padrão e escolha o que vem depois.');
     this.bindChoice(answer, 'Muito bem! Você descobriu o padrão.', 'Observe a sequência mais uma vez.', choices);
   }
 
   renderAttention() {
     if (!this.items.length) return this.renderDiscover('👂 Atenção Auditiva', 'Vamos ouvir e descobrir!', true);
     const target = this.items[Math.floor(Math.random() * this.items.length)];
-    const pool = this.shuffle(this.items).slice(0, 4);
+    const pool = keepCorrectChoice(this.shuffle(this.items).slice(0, 4), target.id, this.options.ageId);
     if (!pool.some((item) => item.id === target.id)) pool[0] = target;
     this.shell('👂 Ouça e Encontre', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-5">👂</div>
       <p class="text-lg font-bold text-slate-700 mb-5">Ouça com atenção e encontre o que você ouviu.</p>
       <button id="listen-again" class="bg-indigo-600 text-white font-black px-7 py-4 rounded-2xl shadow touch-target mb-5">🔊 Ouvir novamente</button>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">${pool.map((item) => `<button data-answer="${this.escape(item.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[140px] shadow touch-target"><span class="text-6xl">${item.icon}</span><span class="font-black">${this.escape(item.label)}</span></button>`).join('')}</div></div>`);
+      <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">${pool.map((item) => `<button data-answer="${this.escape(item.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[140px] shadow touch-target"><span class="text-6xl">${item.icon}</span><span class="font-black">${this.escape(item.label)}</span></button>`).join('')}</div></div>`);
     this.container.querySelector('#listen-again').addEventListener('click', () => this.speak(target.label, target.audio));
     this.bindChoice(target.id, 'Muito bem! Você encontrou.', 'Vamos ouvir mais uma vez.', pool);
     this.speak(target.label, target.audio);
@@ -354,7 +368,7 @@ export class LearningWorldGame {
 
   renderVocabulary() {
     const target = this.items[Math.floor(Math.random() * this.items.length)];
-    const pool = this.shuffle(this.items).slice(0, 4);
+    const pool = keepCorrectChoice(this.shuffle(this.items).slice(0, 4), target.id, this.options.ageId);
     if (!pool.some((x) => x.id === target.id)) pool[0] = target;
     this.renderChoice('🗣️ Palavras do Dia a Dia', `Onde está ${target.label.toLowerCase()}?`, pool, target.id, null, 'Muito bem!', 'Vamos tentar novamente.');
   }
@@ -382,12 +396,12 @@ export class LearningWorldGame {
   }
 
   renderDiscoverObjects() {
-    const pool = this.shuffle(this.items).slice(0, 4);
+    const pool = keepCorrectChoice(this.shuffle(this.items).slice(0, 4), null, this.options.ageId);
     this.discoveryTouched.clear();
     this.shell('🔎 Descobrir Objetos', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p id="discover-object-feedback" class="text-xl font-black text-indigo-700 mb-5">Toque em qualquer objeto para descobrir o nome.</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-object="${this.escape(item.id)}" class="learning-object bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${item.icon || '✨'}</span>
@@ -452,8 +466,8 @@ export class LearningWorldGame {
 
   renderRhythm() {
     const item = this.items[this.round % this.items.length];
-    const options = this.shuffle(this.items).map((entry) => ({ id: entry.id, label: entry.label, icon: entry.pattern.join(' ') }));
-    this.shell('🎵 Brinque com o Ritmo', `<div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern.join(' ')}</div><p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p><div class="grid grid-cols-2 gap-3">${options.map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.icon}</button>`).join('')}</div></div>`, 'Você pode bater palmas junto.');
+    const options = keepCorrectChoice(this.shuffle(this.items).map((entry) => ({ id: entry.id, label: entry.label, icon: entry.pattern.join(' ') })), item.id, this.options.ageId);
+    this.shell('🎵 Brinque com o Ritmo', `<div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern.join(' ')}</div><p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p><div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-3">${options.map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.icon}</button>`).join('')}</div></div>`, 'Você pode bater palmas junto.');
     this.bindChoice(item.id, 'Muito bem! Ritmo combinado.', 'Vamos observar de novo.', options);
   }
 

@@ -1,6 +1,7 @@
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { getContentReadiness } from '../../core/content-readiness.js';
-import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
+import { getAgeExperienceConfig, isAgeCompatible } from '../../core/age-experience-policy.js';
+import { applyChildInterfacePolicy } from '../../core/child-interface-policy.js';
 
 export class ExperienceController {
   constructor(app) { this.app = app; }
@@ -12,19 +13,20 @@ export class ExperienceController {
       this.app.renderAgeSelection();
       return null;
     }
-    if (ageId && Array.isArray(activity.ages) && !activity.ages.includes(ageId)) {
+    if (ageId && !isAgeCompatible(activity, ageId)) {
       console.warn('[experience] faixa etária incompatível', { gameId, ageId, allowed: activity.ages });
       this.app.renderWorldMap(ageId);
       return null;
     }
     this.app.core.session.ensure(ageId, this.app.currentWorld);
+    applyChildInterfacePolicy(this.app.container, ageId);
     this.app.core.learning.remember(gameId);
     const playMode = this.app.gameRegistry.mode(gameId);
     let finished = false;
     const onWin = (result = {}) => {
       if (finished) return;
       finished = true;
-      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode });
+      const sessionResult = this.app.core.session.complete(gameId, { ...result, mode: result.mode || playMode, durationMs: Number(result.durationMs || 0) });
       if (sessionResult.completed) {
         this.app.evaluateRewards(gameId);
         this.app.updateScoreUI();

@@ -29,7 +29,7 @@ export class CanvasGame {
     this.container.innerHTML = `
       <div class="w-full max-w-xl flex flex-col items-center gap-3 my-auto">
         <div class="flex justify-between items-center w-full">
-          <button id="btn-back-canvas" class="bg-white/90 hover:bg-white text-slate-700 px-4 py-2 rounded-full font-bold shadow">⬅️ Voltar</button>
+          <button id="btn-back-canvas" class="bg-white/90 hover:bg-white text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
           <div class="bg-white/90 px-3 py-2 rounded-full text-xs font-black text-indigo-700">🎨 Nível ${this.level}</div>
           <div class="flex gap-2">
             <button id="btn-undo" class="bg-amber-400 text-white p-3 rounded-full shadow font-bold min-w-[48px]">↩️</button>
@@ -39,7 +39,7 @@ export class CanvasGame {
         <canvas id="magic-canvas" class="bg-white rounded-3xl shadow-lg border-4 border-indigo-200 touch-none w-full h-[280px] cursor-crosshair"></canvas>
         <div class="flex flex-wrap justify-center gap-3 bg-white/90 p-3 rounded-3xl shadow w-full">
           ${['#EF4444', '#3B82F6', '#22C55E', '#FACC15', '#A855F7'].map(c => `
-            <button data-color="${c}" class="tool-btn w-14 h-14 rounded-full shadow-md border-4 ${c === '#EF4444' ? 'border-slate-800 scale-110' : 'border-white'}" style="background-color: ${c}"></button>`).join('')}
+            <button data-color="${c}" class="tool-btn w-14 h-14 touch-target rounded-full shadow-md border-4 ${c === '#EF4444' ? 'border-slate-800 scale-110' : 'border-white'}" style="background-color: ${c}"></button>`).join('')}
           <button id="btn-eraser" class="tool-btn w-14 h-14 rounded-2xl bg-slate-100 border-2 border-slate-300 flex items-center justify-center text-2xl shadow-sm">🧽</button>
           ${['⭐', '🐾', '❤️'].map(s => `
             <button data-stamp="${s}" class="tool-btn w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl shadow-sm">${s}</button>`).join('')}

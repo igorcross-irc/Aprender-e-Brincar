@@ -91,11 +91,14 @@ const puzzle = read('src/js/games/puzzle.js');
 const balloons = read('src/js/games/balloon-pop.js');
 const canvas = read('src/js/games/canvas.js');
 const cards = read('src/js/games/cards.js');
+
 if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
 if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
 if (!balloons.includes('attempts: this.attempts, maxScore: 5')) fail('balões sem métricas semânticas');
 if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
 if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
+if (!cards.includes('touch-target')) fail('cards sem alvos de toque reforçados');
+if (!canvas.includes('touch-target')) fail('canvas sem alvos de toque reforçados');
 
 console.log('Game audit OK');
 

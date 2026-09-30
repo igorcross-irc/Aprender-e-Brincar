@@ -44,6 +44,11 @@ export function getAgeExperienceLevel(ageId, level = 1) {
   return clamp(Number(level) || 1, 1, profile.maxLevel);
 }
 
+export function isAgeCompatible(activity, ageId) {
+  if (!activity || !ageId) return false;
+  return Array.isArray(activity.ages) && activity.ages.includes(ageId);
+}
+
 export function getAgeExperienceConfig(ageId, level = 1) {
   const profile = getAgeExperienceProfile(ageId);
   return Object.freeze({

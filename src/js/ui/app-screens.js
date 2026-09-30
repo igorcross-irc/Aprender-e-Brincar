@@ -2,6 +2,7 @@ import { AGE_BANDS } from '../../core/activity-registry.js';
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
+import { childVisualMarkup } from '../../core/child-visual-system.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -65,6 +66,7 @@ export class AppScreens {
       ...world,
       activities: world.activityIds.map((id) => activityCatalog.find((a) => a.id === id)).filter(Boolean).filter((a) => a.ages.includes(ageId))
     })).filter((world) => world.activities.length);
+    const worldProgress = (world) => this.core.progress.getWorldProgress(world.id, world.activities.map((a) => a.id));
     const childName = this.storage.getChildName();
     this.container.innerHTML = `
       <div class="w-full max-w-5xl flex flex-col gap-5 my-auto page-enter">
@@ -79,7 +81,7 @@ export class AppScreens {
               <h3 class="text-xl font-black text-slate-800 mt-3">${world.title}</h3>
               <p class="text-sm text-slate-500 mt-1">${world.description}</p>
               <span class="inline-flex mt-3 bg-slate-100 rounded-full px-3 py-1 text-xs font-bold text-slate-600">${world.activities.length} brincadeiras</span>
-              <div class="world-progress mt-3"><div class="world-progress-head"><span>${world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length} de ${world.activities.length} descobertas</span><strong>${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%</strong></div><div class="progress-track"><span style="width:${world.activities.length ? Math.round(world.activities.filter((a) => this.core.progress.snapshot().activities?.[a.id]?.explored).length / world.activities.length * 100) : 0}%"></span></div></div>
+              <div class="world-progress mt-3"><div class="world-progress-head"><span>${worldProgress(world).explored} de ${world.activities.length} descobertas</span><strong>${worldProgress(world).percentage}%</strong></div><div class="progress-track"><span style="width:${worldProgress(world).percentage}%"></span></div></div>
             </button>`).join('')}
         </div>
         <div class="bg-white/90 rounded-[1.75rem] p-4 shadow-sm border border-sky-100"><div class="flex items-center justify-between gap-3"><div><strong class="text-sky-800">🗺️ Minha jornada</strong><p class="text-xs text-slate-500 mt-1">Veja o que já foi explorado e descubra os próximos passos.</p></div><button id="btn-journey" class="bg-sky-600 text-white font-black px-4 py-2 rounded-xl touch-target">Ver jornada</button></div></div>
@@ -95,14 +97,18 @@ export class AppScreens {
 
   renderJourney() {
     const snapshot = this.core.progress.snapshot();
+    const journeySummary = this.core.learning.getJourneySummary();
     const entries = Object.entries(snapshot.activities || {}).map(([id, progress]) => ({ activity: activityCatalog.find((a) => a.id === id), progress })).filter((item) => item.activity);
-    const explored = entries.length;
+    const explored = journeySummary.explored;
     const weakest = this.core.skills.weakest(4);
     const next = this.core.learning.recommend(this.currentAge, this.currentWorld, 3);
+    const recentHistory = this.core.progress.getRecentHistory(6);
     const worldCount = new Set(entries.map(({activity}) => activity.world).filter(Boolean)).size;
     const totalCompletions = entries.reduce((sum, item) => sum + Number(item.progress.completions || 0), 0);
     const totalExplorations = entries.reduce((sum, item) => sum + Number(item.progress.explorationCount || 0), 0);
     const totalEvaluations = entries.reduce((sum, item) => sum + Number(item.progress.evaluationCount || 0), 0);
+    const sessionSummary = this.core.progress.getSessionSummary();
+    const totalMinutes = this.core.progress.getTotalMinutes();
     const profile = this.core.learning.getProfile();
     const improving = profile.improving || 0;
     const journeyStage = totalEvaluations === 0 ? 1 : improving > 0 ? 3 : profile.accuracy != null && profile.accuracy >= 85 ? 4 : 2;
@@ -122,6 +128,8 @@ export class AppScreens {
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
           <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
+          <div class="bg-orange-50 rounded-2xl p-4 text-center"><div class="text-2xl">⏱️</div><strong>${totalMinutes}</strong><small class="block text-slate-500">minutos de brincadeira</small></div>
+          <div class="bg-cyan-50 rounded-2xl p-4 text-center"><div class="text-2xl">🎯</div><strong>${journeySummary.sessions}</strong><small class="block text-slate-500">sessões</small></div>
           <div class="bg-indigo-50 rounded-2xl p-4 text-center"><div class="text-2xl">🧭</div><strong>${profile.accuracy==null?'—':profile.accuracy+'%'}</strong><small class="block text-slate-500">média recente</small></div>
           <div class="bg-rose-50 rounded-2xl p-4 text-center"><div class="text-2xl">📈</div><strong>${improving}</strong><small class="block text-slate-500">em evolução</small></div>
         </div>
@@ -130,6 +138,7 @@ export class AppScreens {
             <button data-journey-game="${activity.id}" class="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 touch-target"><span class="text-2xl">${GAME_ICONS[activity.id] || '✨'}</span><strong class="block text-indigo-700 mt-1">${this.escape(activity.title)}</strong><small class="text-slate-500">${progress.accuracy == null ? 'Exploração livre' : progress.accuracy + '% observado'} · ${progress.completions || 0} vez(es)</small>${progress.accuracy != null && progress.recentAccuracy != null ? `<div class="progress-track mt-2"><span style="width:${Math.min(100, progress.recentAccuracy)}%"></span></div><small class="text-[10px] text-slate-400">${progress.recentAccuracy}% média recente</small>` : ""}</button>
           `).join('') || '<div class="text-sm text-slate-500">A jornada começa na primeira brincadeira. ✨</div>'}
         </div></div>
+        <div class="bg-white rounded-[2rem] p-5 shadow-lg border border-sky-100"><h3 class="text-xl font-black text-sky-800">🕘 Brincadeiras recentes</h3><p class="text-sm text-slate-500 mt-1">Um histórico local para a família acompanhar o caminho sem criar ranking.</p><div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">${recentHistory.map((item) => { const activity = activityCatalog.find((a) => a.id === item.activityId); if (!activity) return ""; const date = item.completedAt ? new Date(item.completedAt).toLocaleDateString("pt-BR") : ""; const detail = item.accuracy == null ? "Exploração livre" : item.accuracy + "% observado"; return "<button data-history-game=\"" + activity.id + "\" class=\"bg-slate-50 rounded-xl p-3 text-left border border-slate-100 touch-target\"><span class=\"text-lg\">" + (GAME_ICONS[activity.id] || "✨") + "</span><strong class=\"block text-indigo-700 mt-1\">" + this.escape(activity.title) + "</strong><small class=\"text-slate-500\">" + detail + " · " + date + "</small></button>"; }).join("") || "<span class=\"text-sm text-slate-500\">Ainda não há brincadeiras recentes.</span>"}</div></div>
         <div class="bg-violet-50 rounded-[2rem] p-5 shadow-lg"><h3 class="text-xl font-black text-violet-800">🧠 Habilidades para explorar agora</h3><p class="text-sm text-violet-600 mt-1">São sugestões de exploração, não avaliações clínicas nem notas.</p><div class="grid gap-3 mt-3">
           ${weakest.map(([skill,data]) => { const pct=Math.min(100,Math.round((Number(data.mastery||0)/5)*100)); return `<div class="bg-white rounded-2xl p-3"><div class="flex justify-between gap-3 text-xs font-bold text-violet-700"><span>${this.escape(this.core.learning.labelDomain(skill))}</span><span>${data.mastery.toFixed(1)}/5</span></div><div class="progress-track mt-2"><span style="width:${pct}%"></span></div></div>`; }).join('') || '<span class="text-sm text-slate-500">Ainda estamos conhecendo seu caminho.</span>'}
         </div></div>
@@ -140,6 +149,7 @@ export class AppScreens {
       </div>`;
     this.container.querySelector('#journey-back').addEventListener('click', () => this.currentWorld ? this.renderWorld(this.currentWorld) : this.renderWorldMap(this.currentAge));
     this.container.querySelectorAll('[data-journey-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyGame, this.currentAge)));
+    this.container.querySelectorAll('[data-history-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.historyGame, this.currentAge)));
     this.container.querySelectorAll('[data-journey-next]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.journeyNext, this.currentAge)));
   }
 
@@ -166,7 +176,7 @@ export class AppScreens {
             <span class="text-xs font-black text-violet-500">${this.core.progress.snapshot().sessions?.streak || 0} dia(s) de sequência</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
-            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span></button>`).join('')}
+            ${this.core.learning.recommend(this.currentAge, worldId, 3).map(({activity,reason,difficulty})=>`<button data-recommend="${activity.id}" class="bg-white rounded-xl p-3 text-left border border-violet-100 shadow-sm touch-target"><span class="font-black text-indigo-700">${GAME_ICONS[activity.id]||'✨'} ${this.escape(activity.title)}</span><span class="block text-[11px] text-slate-500 mt-1">${this.escape(reason)}</span><span class="block text-[10px] text-violet-500 mt-1">Nível: ${this.escape(difficulty.label)}</span></button>`).join('')}
           </div>
         </div>
         <div class="activity-grid">
@@ -256,10 +266,11 @@ export class AppScreens {
       <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
-          <p class="text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
-          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target"><span class="text-5xl block">${['👏','👋','🦘','💃'][index%4]}</span><span class="font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
+          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
+          <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target">${childVisualMarkup(label, { fallbackIcon: ['👏','👋','🦘','💃'][index%4], decorative: true, size: 'large' })}<span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
+    this.audio?.play?.(null, text);
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
     let touched=0;
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{

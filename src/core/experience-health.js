@@ -19,6 +19,9 @@ export function sanitizeProgressState(input, defaults) {
   state.sessions.explorations = Math.max(0, Number(state.sessions.explorations) || 0);
   state.sessions.evaluations = Math.max(0, Number(state.sessions.evaluations) || 0);
   state.sessions.streak = Math.max(0, Number(state.sessions.streak) || 0);
+  state.sessions.totalDurationMs = Math.max(0, Number(state.sessions.totalDurationMs) || 0);
+  state.sessions.lastDurationMs = Math.max(0, Number(state.sessions.lastDurationMs) || 0);
+  state.sessions.lastSessionAt = state.sessions.lastSessionAt || null;
 
   for (const [id, item] of Object.entries(state.activities)) {
     if (!item || typeof item !== 'object') { delete state.activities[id]; continue; }

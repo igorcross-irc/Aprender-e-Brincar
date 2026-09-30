@@ -53,6 +53,7 @@ export class LearningEngine {
     const snapshot = this.progress.snapshot();
     const recentIds = this.recentIds(5);
     const weakSkills = new Set((this.skills?.weakest?.(5) || []).map(([skill]) => skill));
+    const sessionRecent = new Set((snapshot.history || []).slice(0, 5).map((item) => item.activityId));
     return activityCatalog.filter((activity) => activity.ages?.includes(ageId) && (!worldId || activity.world === worldId)).map((activity) => {
       const progress = snapshot.activities?.[activity.id];
       const mastery = Number(progress?.mastery || 0);
@@ -65,10 +66,26 @@ export class LearningEngine {
       const recoveryBoost = recentAccuracy != null && accuracy != null && recentAccuracy > accuracy + 10 ? 8 : 0;
       const novelty = evaluations === 0 ? 55 : 18;
       const repetitionPenalty = recentIds.includes(activity.id) ? 35 : 0;
-      const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty;
-      const reason = evaluations === 0 ? 'Nova descoberta' : recentAccuracy != null && recentAccuracy < 60 ? 'Vamos reforçar esta habilidade' : recoveryBoost ? 'Você está evoluindo' : 'Boa hora para variar';
-      return { activity, score, reason, difficulty: this.getDifficulty(activity, ageId) };
+      const sessionPenalty = sessionRecent.has(activity.id) ? 18 : 0;
+      const score = novelty + Math.min(days, 30) + (5 - mastery) * 9 + skillBoost + performanceBoost + recoveryBoost - Number(progress?.completions || 0) * 2 - repetitionPenalty - sessionPenalty;
+      const reasonCode = evaluations === 0 ? 'new' : recentAccuracy != null && recentAccuracy < 60 ? 'reinforce' : recoveryBoost ? 'improving' : 'vary';
+      const reason = { new: 'Nova descoberta', reinforce: 'Vamos reforçar esta habilidade', improving: 'Você está evoluindo', vary: 'Boa hora para variar' }[reasonCode];
+      const priority = reasonCode === 'reinforce' ? 'support' : reasonCode === 'improving' ? 'progress' : reasonCode === 'new' ? 'discover' : 'variety';
+      return { activity, score, reason, reasonCode, priority, difficulty: this.getDifficulty(activity, ageId) };
     }).sort((a, b) => b.score - a.score).slice(0, limit);
+  }
+
+  getRecommendationSummary(ageId, worldId, limit = 3) {
+    return this.recommend(ageId, worldId, limit).map(({ activity, reason, reasonCode, priority, difficulty }) => ({ activityId: activity.id, title: activity.title, reason, reasonCode, priority, difficulty: difficulty.level }));
+  }
+
+  getJourneySummary() {
+    const snapshot = this.progress.snapshot();
+    const entries = Object.values(snapshot.activities || {});
+    const explored = entries.filter((item) => item.explored).length;
+    const evaluated = entries.filter((item) => Number(item.evaluationCount || 0) > 0).length;
+    const worlds = new Set(activityCatalog.filter((activity) => snapshot.activities?.[activity.id]?.explored).map((activity) => activity.world).filter(Boolean)).size;
+    return { explored, evaluated, worlds, sessions: Number(snapshot.sessions?.total || 0), minutes: Math.round(Number(snapshot.sessions?.totalDurationMs || 0) / 60000) };
   }
 
   getProfile() {
