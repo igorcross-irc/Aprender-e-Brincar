@@ -54,7 +54,7 @@ export function getAgeExperienceConfig(ageId, level = 1) {
   return Object.freeze({
     ...profile,
     maxChoices: profile.optionCount,
-    touchTargetPx: ageId === '6-12m' || ageId === '12-18m' || ageId === '18-24m' ? 64 : ageId === '2-3y' ? 60 : 56,
+    touchTargetPx: ageId === '6-12m' ? 96 : ageId === '12-18m' ? 88 : ageId === '18-24m' ? 80 : ageId === '2-3y' ? 68 : 60,
     visualScale: profile.visualDensity === 'high' ? 'medium' : 'large',
     level: getAgeExperienceLevel(ageId, level),
     ageLabel: AGE_BANDS.find((age) => age.id === ageId)?.label || profile.label
