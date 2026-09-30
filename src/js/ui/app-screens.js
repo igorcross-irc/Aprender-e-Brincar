@@ -301,16 +301,20 @@ export class AppScreens {
       'guided-movement':['🏃','Desafio do Movimento','Siga o comando e faça junto.',['Bata palmas','Pule','Gire','Dê tchau']]
     };
     const [icon,title,text,cards]=guided[gameId] || ['✨','Nova Brincadeira','Explore e descubra!',['Vamos brincar']];
-    const visibleCards = cards.slice(0, optionLimit);
+    const ageId = age?.id || this.currentAge || '2-3y';
+    const profile = getAgeExperienceConfig(ageId, age?.level || 1);
+    const visibleCards = cards.slice(0, Math.max(1, Math.min(profile.optionCount, cards.length)));
+    const childFirst = ['6-12m','12-18m','18-24m'].includes(ageId);
+    const compactText = profile.text === false ? '' : profile.text === 'short' ? text.split('. ')[0] + '.' : text;
     this.container.innerHTML=`
       <div class="w-full max-w-2xl flex flex-col gap-5 my-auto">
         <div class="flex justify-between items-center gap-3"><button id="guided-back" class="nav-pill touch-target">⬅️ Voltar</button><h2 class="text-xl md:text-2xl font-black text-indigo-700">${icon} ${title}</h2></div>
         <div class="bg-white/95 rounded-[2rem] p-6 shadow-xl text-center">
-          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(text)}</p>
+          <p class="child-instruction text-slate-600 font-semibold mb-5">${this.escape(compactText)}</p>
           <div class="grid grid-cols-2 gap-4">${visibleCards.map((label,index)=>`<button data-guided="${index}" class="activity-card bg-sky-50 border-4 border-sky-100 rounded-3xl p-6 min-h-[150px] shadow touch-target">${childVisualMarkup(label, { fallbackIcon: ['👏','👋','🦘','💃'][index%4], decorative: true, size: 'large' })}<span class="child-label font-black text-sky-800">${this.escape(label)}</span></button>`).join('')}</div>
         </div>
       </div>`;
-    this.audio?.play?.(null, text);
+    this.audio?.play?.(null, childFirst ? `Vamos brincar! ${text}` : text);
     this.container.querySelector('#guided-back').addEventListener('click',onBack);
     let touched=0;
     this.container.querySelectorAll('[data-guided]').forEach((button)=>button.addEventListener('click',()=>{
