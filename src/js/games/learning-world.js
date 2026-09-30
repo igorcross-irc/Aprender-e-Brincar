@@ -217,7 +217,7 @@ export class LearningWorldGame {
     this.shell(title, `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p class="child-instruction text-xl font-black text-indigo-700 mb-5">${this.escape(prompt)}</p>
-        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions.length)} gap-4">
           ${safeOptions.map((option) => `
             <button data-answer="${this.escape(option.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               ${childVisualMarkup(option.label, { fallbackIcon: option.icon || '✨', decorative: true, size: 'large' })}
@@ -401,7 +401,7 @@ export class LearningWorldGame {
     this.shell('🔎 Descobrir Objetos', `
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p id="discover-object-feedback" class="text-xl font-black text-indigo-700 mb-5">Toque em qualquer objeto para descobrir o nome.</p>
-        <div class="grid ${getChoiceGridClass(this.options.ageId, safeOptions?.length || pool.length)} gap-4">
+        <div class="grid ${getChoiceGridClass(this.options.ageId, pool.length)} gap-4">
           ${pool.map((item) => `
             <button data-object="${this.escape(item.id)}" class="learning-object bg-white border-4 border-indigo-100 rounded-3xl p-5 min-h-[145px] shadow-lg flex flex-col items-center justify-center gap-2 touch-target transition">
               <span class="text-6xl">${item.icon || '✨'}</span>
@@ -483,10 +483,8 @@ export class LearningWorldGame {
     this.completed = true;
     this.clearPending();
     this.speak('Muito bem! Você terminou a brincadeira!');
-    this.onComplete?.({ score: this.score, rounds: 5, mode: this.options.mode || 'evaluate' });
-    this.container.innerHTML = `<div class="w-full max-w-md bg-white rounded-[2rem] p-8 shadow-2xl text-center my-auto"><div class="text-7xl mb-4">🌟</div><h2 class="text-3xl font-black text-indigo-700">Muito bem!</h2><p class="text-slate-600 mt-2 mb-2">Você completou esta brincadeira.</p><p class="text-indigo-600 font-black mb-6">${this.score} de 5 respostas corretas</p><div class="flex gap-3"><button id="learning-menu" class="flex-1 bg-slate-100 text-slate-700 font-black py-4 rounded-2xl touch-target">Menu</button><button id="learning-again" class="flex-1 bg-emerald-500 text-white font-black py-4 rounded-2xl touch-target">Jogar</button></div></div>`;
-    this.container.querySelector('#learning-menu').addEventListener('click', () => this.onBack());
-    this.container.querySelector('#learning-again').addEventListener('click', () => this.start(this.mode, this.options));
+    // A tela de resultado é responsabilidade do controlador de experiência.
+    this.onComplete?.({ score: this.score, rounds: 5, correct: this.score, completedRounds: 5, mode: this.options.mode || 'evaluate' });
   }
 
   escape(value = '') {

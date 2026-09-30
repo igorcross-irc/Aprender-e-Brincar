@@ -5,8 +5,9 @@ export class NumberOrderGame {
   shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
   render(){
     if(this.round>=this.difficulty.rounds)return this.finish();
-    const count=getGameChoiceCount(this.difficulty,3,1,5); const start=Math.floor(Math.random()*4)+1; const answer=start+count;
-    const sequence=Array.from({length:count-1},(_,i)=>start+i); const options=this.shuffle([answer,answer+1,Math.max(1,answer-1),answer+2]);
+    const count=getGameChoiceCount(this.difficulty,3,1,5); const start=Math.floor(Math.random()*4)+1;
+    const sequence=Array.from({length:count-1},(_,i)=>start+i); const answer=start+sequence.length;
+    const options=this.shuffle([...new Set([answer,answer+1,answer+2,Math.max(1,answer-1)])]);
     this.answerValue=answer;
     this.container.innerHTML=`
       <div class="w-full max-w-2xl flex flex-col gap-4 my-auto">
@@ -14,6 +15,7 @@ export class NumberOrderGame {
       <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><p class="text-xl font-black text-indigo-700">Qual número vem depois?</p><div class="flex justify-center gap-3 flex-wrap my-7">${sequence.map(n=>`<span class="w-16 h-16 rounded-2xl bg-sky-50 border-4 border-sky-100 flex items-center justify-center text-3xl font-black text-sky-700">${n}</span>`).join('')}<span class="w-16 h-16 rounded-2xl bg-amber-50 border-4 border-dashed border-amber-300 flex items-center justify-center text-3xl font-black">?</span></div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${options.map(n=>`<button data-number="${n}" class="num-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${n}</button>`).join('')}</div></div></div>`;
     this.container.querySelector('#num-back').onclick=()=>this.onBack();
+    this.audio?.play(null,'Qual número vem depois?');
     this.container.querySelectorAll('.num-option').forEach(btn=>btn.onclick=()=>this.answer(btn,Number(btn.dataset.number)===this.answerValue));
   }
   answer(btn,correct){this.attempts++;if(correct){this.correct++;btn.classList.add('border-emerald-400','bg-emerald-50');this.audio?.play(null,'Muito bem!');this.round++;setTimeout(()=>this.render(),450);}else{btn.classList.add('border-rose-300','animate-shake');this.audio?.play(null,'Vamos observar a sequência.');setTimeout(()=>btn.classList.remove('border-rose-300','animate-shake'),450);}}

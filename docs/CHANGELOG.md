@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-09-30 — Fase 0 — Estabilização
+- Corrigida a "Ordem dos Números": a resposta esperada pulava um número (4,5,6,7 → 9).
+- Corrigidas "Descobrir Objetos" e "Caça aos Objetos", que nunca abriam (ReferenceError `safeOptions`).
+- "Qual é Diferente?" recebia um número no lugar da lista de itens e não abria; agora mostra objetos iguais e um diferente.
+- Fim de brincadeira unificado: jogos não abrem mais telas/modais próprios; o controlador mostra uma única tela de resultado com "Jogar de novo".
+- Repetir uma brincadeira volta a mostrar resultado; a estrela só é exibida quando realmente concedida.
+- A lousa não interrompe mais o desenho: a criança termina pelo botão "Pronto!".
+- "Caça às Cores", "Qual é Diferente?" e "Ordem dos Números" falam a instrução; o nome da cor fica legível (inclusive branco).
+- Atividades sem mecânica real (frases, comunicação, rimas, som inicial, história em sequência) ficam ocultas até serem implementadas (`DRAFT_ACTIVITY_IDS`).
+- PWA: `manifest.json` movido para `public/`; service worker instala mesmo se um arquivo faltar, não guarda erros nem redirecionamentos e atualiza mídias em segundo plano.
+- Cache no Vercel: arquivos com hash em `/build/` (imutáveis); `/assets/` (áudios e imagens) com cache de 1 dia.
+- Manifest aceita qualquer orientação de tela.
+- Testes: auditorias antigas corrigidas; novo `npm run test:e2e` joga as brincadeiras no Chromium em todas as idades.
+- CI unificada em `build.yml` com `npm ci`, auditorias, build e E2E. `.gitignore` e `package-lock.json` versionados.
+
 ## 2026-09-28 — Fase 6 — Reengenharia do Universo
 - Reescrito o motor universal LearningWorldGame.
 - Corrigida lógica de respostas em múltiplos desafios.

@@ -31,6 +31,8 @@ export class ExperienceController {
         this.app.evaluateRewards(gameId);
         this.app.updateScoreUI();
         this.app.renderSessionResult(sessionResult);
+      } else {
+        this.app.renderWorld(this.app.currentWorld);
       }
     };
     const onBack = () => this.app.renderWorld(this.app.currentWorld);

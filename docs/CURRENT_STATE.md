@@ -71,7 +71,6 @@ As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem cl
 - Mascote infantil reutilizável em SVG foi integrado à landing e ao resultado de experiência.
 - Cabeçalho ganhou indicação online/offline e preparação de instalação PWA.
 - Build correspondente ao commit `d32286b8615757bb1fe930f0e6b3dffa9d788846` foi concluído como READY no Vercel.
-- O GitHub Actions apresenta falha de infraestrutura/inicialização nas execuções recentes: o job termina com zero steps em aproximadamente dois segundos. Isso não deve ser confundido com falha de build da aplicação.
 - A identidade visual final dos objetos ainda não está completa: o sistema de visuais continua preparado para substituir emojis por ilustrações próprias reais.
 
 
@@ -82,3 +81,12 @@ As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem cl
 - O `child-visual-system` agora aponta para esses assets com fallback preservado.
 - Crítica: estes SVGs são uma camada de integração/compatibilidade, não devem ser considerados a versão artística final da biblioteca. A próxima substituição pode usar ilustrações próprias detalhadas mantendo exatamente os mesmos caminhos e contratos.
 - O deployment do commit `8d105042acb900c5a66b90b6d84ad1ae9f8d48da` foi concluído como READY no Vercel.
+
+
+## Fase 0 — Estabilização (30/09/2026)
+- Público-alvo: aplicação pública para crianças de 6 meses a 5 anos; referência de uso inicial: criança de 2 anos (faixa 2–3 anos).
+- As auditorias `audit:games` e `test:core` falhavam de fato (não era infraestrutura); foram corrigidas.
+- Bugs corrigidos e mudanças listados em `docs/CHANGELOG.md`.
+- `npm run test:e2e` é a verificação principal: abre todas as brincadeiras de todas as idades e joga os fluxos completos.
+- Atividades ocultas até ganharem mecânica real: ver `DRAFT_ACTIVITY_IDS` em `src/content/activity-catalog.js`.
+- Ao substituir um áudio ou imagem em `public/assets/`, os aparelhos recebem a nova versão em até 1 dia; para forçar, altere `VERSION` em `public/sw.js`.

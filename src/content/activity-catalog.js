@@ -1,4 +1,4 @@
-export const activityCatalog = [
+const allActivities = [
   { id: 'discovery-sounds', title: 'Sons e Descobertas', type: 'activity', ages: ['6-12m','12-18m'], category: 'audição', difficulty: 1, skills: ['atenção auditiva','causa e efeito'], developmentDomains: ['audição','atenção','comunicação'], world: 'animals-sounds' },
   { id: 'discovery-animals', title: 'Descobrir Animais', type: 'activity', ages: ['6-12m','12-18m','18-24m'], category: 'descoberta', difficulty: 1, skills: ['atenção','vocabulário'], developmentDomains: ['linguagem','cognição'], world: 'discover' },
   { id: 'discovery-colors', title: 'Descobrir Cores', type: 'activity', ages: ['6-12m','12-18m','18-24m'], category: 'cores', difficulty: 1, skills: ['atenção visual','vocabulário'], developmentDomains: ['visão','cognição'], world: 'colors-shapes' },
@@ -32,7 +32,7 @@ export const activityCatalog = [
   { id: 'opposites', title: 'Opostos Divertidos', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'linguagem', difficulty: 2, skills: ['opostos','compreensão','vocabulário'], developmentDomains: ['linguagem','cognição'], world: 'language' },
   { id: 'sound-sequence', title: 'Sequência de Sons', type: 'activity', ages: ['3-4y','4-5y'], category: 'audição', difficulty: 3, skills: ['memória auditiva','sequência','atenção'], developmentDomains: ['audição','cognição'], audioNeeds: ['sequencias-sonoras'], world: 'animals-sounds' },
   { id: 'rhythm', title: 'Brinque com o Ritmo', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'musica', difficulty: 1, skills: ['ritmo','imitação','atenção'], developmentDomains: ['audição','motricidade'], audioNeeds: ['ritmos-modelo'], world: 'create-move' },
-  { id: 'guided-movement', title: 'Desafio do Movimento', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'movimento', difficulty: 2, skills: ['imitação','coordenação','seguir instruções'], developmentDomains: ['motricidade ampla','funções executivas'], audioNeeds: ['comandos-de-movimento'] },
+  { id: 'guided-movement', title: 'Desafio do Movimento', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'movimento', difficulty: 2, skills: ['imitação','coordenação','seguir instruções'], developmentDomains: ['motricidade ampla','funções executivas'], audioNeeds: ['comandos-de-movimento'], world: 'create-move' },
   { id: 'baby-discover', title: 'Descobrir com as Mãos', type: 'activity', ages: ['6-12m','12-18m'], category: 'descoberta', difficulty: 1, skills: ['atenção','causa e efeito'], developmentDomains: ['cognição','percepção'], world: 'discover' },
   { id: 'object-hunt', title: 'Caça aos Objetos', type: 'activity', ages: ['12-18m','18-24m','2-3y'], category: 'descoberta', difficulty: 1, skills: ['atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'discover' },
   { id: 'animal-families', title: 'Famílias de Animais', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'classificação', difficulty: 2, skills: ['categorias','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'discover' },
@@ -56,3 +56,9 @@ export const activityCatalog = [
   { id: 'rhythm-copy', title: 'Copie o Ritmo', type: 'activity', ages: ['3-4y','4-5y'], category: 'musica', difficulty: 3, skills: ['ritmo','memória auditiva'], developmentDomains: ['audição','funções executivas'], world: 'create-move' },
   { id: 'movement-copy', title: 'Copie o Movimento', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'movimento', difficulty: 2, skills: ['imitação','coordenação'], developmentDomains: ['motricidade ampla','atenção'], world: 'create-move' }
 ];
+
+// Atividades ainda sem mecânica jogável real ficam fora do app até serem implementadas.
+export const DRAFT_ACTIVITY_IDS = Object.freeze(['phrases', 'communication', 'phrase-builder-2', 'rhymes', 'sound-initial', 'story-sequence']);
+
+export const draftActivities = allActivities.filter((activity) => DRAFT_ACTIVITY_IDS.includes(activity.id));
+export const activityCatalog = allActivities.filter((activity) => !DRAFT_ACTIVITY_IDS.includes(activity.id));

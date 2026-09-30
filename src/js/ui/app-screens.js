@@ -199,8 +199,6 @@ export class AppScreens {
     this.container.querySelectorAll('[data-recommend]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.recommend, this.currentAge)));
   }
 
-  launchGame(gameId, ageId) { return this.app.experience.launchGame(gameId, ageId); }
-
 
 
   renderSessionResult(result) {
@@ -216,7 +214,7 @@ export class AppScreens {
           <p class="text-slate-600 mt-2">${this.escape(current?.title || 'Brincadeira')} concluída.</p>
           ${outcome ? '<div class="mt-4 rounded-2xl bg-violet-50 border border-violet-100 p-4 text-left"><strong class="text-violet-800">' + this.escape(outcome.label) + '</strong><p class="text-sm text-slate-600 mt-1">' + this.escape(outcome.message) + '</p></div>' : ''}
           <div class="grid grid-cols-3 gap-2 mt-5">
-            <div class="bg-amber-50 rounded-2xl p-3"><div class="text-2xl">⭐</div><strong>+1</strong><small class="block text-slate-500">estrela</small></div>
+            <div class="bg-amber-50 rounded-2xl p-3"><div class="text-2xl">${result.starAwarded ? '⭐' : '🔁'}</div><strong>${result.starAwarded ? '+1' : 'De novo!'}</strong><small class="block text-slate-500">${result.starAwarded ? 'estrela' : 'brincou outra vez'}</small></div>
             <div class="bg-emerald-50 rounded-2xl p-3"><div class="text-2xl">🎯</div><strong>${progress.accuracy == null ? 'Exploração' : progress.accuracy + '%'}</strong><small class="block text-slate-500">aproveitamento</small></div>
             <div class="bg-violet-50 rounded-2xl p-3"><div class="text-2xl">🔥</div><strong>${this.core.progress.snapshot().sessions?.streak || 0}</strong><small class="block text-slate-500">dias</small></div>
           </div>
@@ -234,13 +232,13 @@ export class AppScreens {
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
+          <button id="session-again" class="bg-emerald-500 text-white font-black rounded-xl py-3 touch-target">🔁 Jogar de novo</button>
           <button id="session-world" class="nav-pill touch-target">🗺️ Voltar ao mundo</button>
-          <button id="session-continue" class="bg-indigo-600 text-white font-black rounded-xl py-3 touch-target">✨ Escolher outra</button>
         </div>
       </div>`;
     this.container.querySelectorAll('[data-next]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.next, this.currentAge)));
     this.container.querySelector('#session-world').addEventListener('click', () => this.renderWorld(this.currentWorld));
-    this.container.querySelector('#session-continue').addEventListener('click', () => this.renderWorld(this.currentWorld));
+    this.container.querySelector('#session-again').addEventListener('click', () => this.launchGame(result.activityId, this.currentAge));
   }
 
 

@@ -1,6 +1,6 @@
 {
   "name": "aprender-e-brincar",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "start": "vite",
@@ -10,10 +10,12 @@
     "test:core": "node scripts/core-test.mjs",
     "audit:games": "node scripts/game-audit.mjs",
     "audit:child-interface": "node scripts/child-interface-audit.mjs",
-    "audit:audio": "node scripts/audio-audit.mjs"
+    "audit:audio": "node scripts/audio-audit.mjs",
+    "test:e2e": "npm run build && node scripts/e2e-test.mjs"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "playwright": "1.56.1",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "vite": "^6.4.3"

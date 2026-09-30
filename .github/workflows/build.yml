@@ -1,14 +1,16 @@
-name: Build & Smoke Test
+name: Build & Test
 
 on:
   push:
-    branches: [main, 'foundation/**', 'staging/**']
+    branches: [main, 'foundation/**', 'staging/**', 'claude/**']
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,13 +18,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
       - name: Install
-        run: npm install
-      - name: Game audit
-        run: npm run audit:games
-      - name: Smoke test
-        run: npm run smoke
+        run: npm ci
       - name: Core tests
         run: npm run test:core
+      - name: Smoke test
+        run: npm run smoke
+      - name: Game audit
+        run: npm run audit:games
+      - name: Child interface audit
+        run: npm run audit:child-interface
+      - name: Audio audit
+        run: npm run audit:audio
       - name: Build
         run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: End-to-end
+        run: node scripts/e2e-test.mjs
