@@ -64,3 +64,12 @@ A arquitetura está pronta para multiplicar conteúdo sem criar centenas de moto
 
 ## Limite clínico
 As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem clínica ou promessa de tratamento.
+
+
+## Estado adicional — 30/09/2026
+- Staging acumulada em `staging/saltos-86-100` continua separada da `main` até validação final.
+- Mascote infantil reutilizável em SVG foi integrado à landing e ao resultado de experiência.
+- Cabeçalho ganhou indicação online/offline e preparação de instalação PWA.
+- Build correspondente ao commit `d32286b8615757bb1fe930f0e6b3dffa9d788846` foi concluído como READY no Vercel.
+- O GitHub Actions apresenta falha de infraestrutura/inicialização nas execuções recentes: o job termina com zero steps em aproximadamente dois segundos. Isso não deve ser confundido com falha de build da aplicação.
+- A identidade visual final dos objetos ainda não está completa: o sistema de visuais continua preparado para substituir emojis por ilustrações próprias reais.
