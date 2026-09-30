@@ -58,3 +58,13 @@ export function applyChildInterfacePolicy(container, ageId) {
   container.classList.toggle('show-child-labels', policy.showLabels);
   return policy;
 }
+
+export function getChildInterfaceClasses(ageId = '2-3y') {
+  const policy = getChildInterfacePolicy(ageId);
+  return [
+    'child-interface',
+    `child-interface-age-${ageId.replace(/[^a-z0-9]+/gi, '-')}`,
+    `child-interface-scale-${policy.visualScale}`,
+    policy.voiceFirst ? 'child-interface-voice-first' : 'child-interface-text-supported'
+  ].join(' ');
+}
