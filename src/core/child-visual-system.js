@@ -38,7 +38,7 @@ export function childVisualMarkup(value = '', { fallbackIcon = '✨', decorative
   const aria = decorative ? ' aria-hidden="true"' : ` role="img" aria-label="${String(visual.label || value).replace(/"/g, '&quot;')}"`;
   const sizeClass = size === 'small' ? 'text-5xl' : size === 'medium' ? 'text-6xl' : 'text-7xl';
   const visualBody = visual.imagePath
-    ? `<img src="${visual.imagePath}" alt="" loading="lazy" draggable="false">`
+    ? `<img src="${visual.imagePath}" alt="" loading="eager" draggable="false">`
     : visual.icon;
   return `<span class="child-visual child-visual-${visual.tone} ${sizeClass}" data-visual-key="${getVisualKey(value)}"${aria}>${visualBody}</span>`;
 }
