@@ -1,7 +1,8 @@
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
-import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';\nimport { childVisualMarkup } from '../../core/child-visual-system.js';
+import { getAgeExperienceConfig } from '../../core/age-experience-policy.js';
+import { childVisualMarkup } from '../../core/child-visual-system.js';
 
 const GAME_ICONS = {
   'discovery-sounds':'👂','discovery-animals':'🐾','discovery-colors':'🎨','attention-auditory':'👂',
@@ -126,7 +127,8 @@ export class AppScreens {
           <div class="bg-amber-50 rounded-2xl p-4 text-center"><div class="text-2xl">⭐</div><strong>${snapshot.stars || 0}</strong><small class="block text-slate-500">estrelas</small></div>
           <div class="bg-emerald-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌱</div><strong>${explored}</strong><small class="block text-slate-500">experiências</small></div>
           <div class="bg-sky-50 rounded-2xl p-4 text-center"><div class="text-2xl">🌍</div><strong>${worldCount}</strong><small class="block text-slate-500">mundos visitados</small></div>
-          <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>\n          <div class="bg-orange-50 rounded-2xl p-4 text-center"><div class="text-2xl">⏱️</div><strong>${totalMinutes}</strong><small class="block text-slate-500">minutos de brincadeira</small></div>
+          <div class="bg-violet-50 rounded-2xl p-4 text-center"><div class="text-2xl">🔥</div><strong>${snapshot.sessions?.streak || 0}</strong><small class="block text-slate-500">dias seguidos</small></div>
+          <div class="bg-orange-50 rounded-2xl p-4 text-center"><div class="text-2xl">⏱️</div><strong>${totalMinutes}</strong><small class="block text-slate-500">minutos de brincadeira</small></div>
           <div class="bg-cyan-50 rounded-2xl p-4 text-center"><div class="text-2xl">🎯</div><strong>${journeySummary.sessions}</strong><small class="block text-slate-500">sessões</small></div>
           <div class="bg-indigo-50 rounded-2xl p-4 text-center"><div class="text-2xl">🧭</div><strong>${profile.accuracy==null?'—':profile.accuracy+'%'}</strong><small class="block text-slate-500">média recente</small></div>
           <div class="bg-rose-50 rounded-2xl p-4 text-center"><div class="text-2xl">📈</div><strong>${improving}</strong><small class="block text-slate-500">em evolução</small></div>
