@@ -8,6 +8,8 @@ import { AppScreens } from './ui/app-screens.js';
 import { FamilySettings } from './ui/family-settings.js';
 import { ExperienceController } from './controllers/experience-controller.js';
 import { initPwaExperience } from '../core/pwa-status.js';
+import { setSfxEngine, installTapSounds } from './engine/sfx.js';
+import '@fontsource-variable/nunito';
 
 const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup'];
 
@@ -31,6 +33,8 @@ class App {
 
   init() {
     registerPWA();
+    setSfxEngine(this.audio);
+    installTapSounds(document);
     this.pwa = initPwaExperience();
     this.updateScoreUI();
     this.setupHeaderEvents();

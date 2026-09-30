@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-30 — Fase 2 — Visual
+- Nova mascote: corujinha roxa em SVG com expressões (feliz, curiosa, comemorando).
+- Fonte Nunito (arredondada) empacotada no app — funciona offline e sem chamar serviços externos.
+- Mundos com fundo decorado (bolhas e ícone gigante) e ícones flutuando.
+- Telas de jogo padronizadas: botão de voltar redondo, cartões arredondados com sombra, alinhamento no topo.
+- "Encontre a Cor" mostra só a cor; cartas da memória com verso de estrela.
+- Grades de escolha nunca passam de 2 colunas no celular.
+- Sons sintetizados (sem arquivos) para toque, acerto, nova tentativa, balão e comemoração — respeitam o som desligado.
+
 ## 2026-09-30 — Fase 1 — Pensado para a criança
 - Primeira abertura pede ao responsável nome (opcional) e idade; a criança não escolhe mais a faixa etária.
 - Início mostra saudação pelo nome e os mundos da idade configurada, em blocos grandes e coloridos.

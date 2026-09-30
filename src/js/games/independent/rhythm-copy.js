@@ -1,13 +1,14 @@
+import { playSfx } from '../../engine/sfx.js';
 import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-difficulty-policy.js';
 export class RhythmCopyGame {
   constructor(containerId,audio,onComplete,onBack){this.container=document.getElementById(containerId);this.audio=audio;this.onComplete=onComplete;this.onBack=onBack;}
   start(items=[],level=1,options={}){this.items=items;this.ageId=options.ageId||'2-3y';this.difficulty=resolveGameDifficulty(this.ageId,level,options);this.level=this.difficulty.level;this.round=0;this.correct=0;this.attempts=0;this.finished=false;this.render();}
   render(){if(this.round>=this.difficulty.rounds)return this.finish();const item=this.items[this.round%Math.max(1,this.items.length)]||{label:'Palmas',pattern:['👏','👏']};this.current=item;this.container.innerHTML=`
-    <div class="w-full max-w-2xl flex flex-col gap-4 my-auto"><div class="flex justify-between items-center"><button id="rh-back" class="bg-white/95 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button><div class="bg-white/90 px-4 py-2 rounded-full font-black text-indigo-700">🎵 Copie o Ritmo • ${this.round+1}/${this.difficulty.rounds}</div></div>
+    <div class="w-full max-w-2xl flex flex-col gap-4 my-auto"><div class="flex justify-between items-center"><button id="rh-back" class="game-back" aria-label="Voltar">⬅️</button><div class="bg-white/90 px-4 py-2 rounded-full font-black text-indigo-700">🎵 Copie o Ritmo • ${this.round+1}/${this.difficulty.rounds}</div></div>
     <div class="bg-white/95 rounded-3xl p-7 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern?.join(' ')||'👏 👏'}</div><h2 class="text-2xl font-black text-indigo-700">${item.label||'Ritmo'}</h2><p class="text-slate-600 my-4">Ouça, copie e toque quando terminar.</p><button id="rh-listen" class="bg-indigo-600 text-white font-black px-7 py-4 rounded-2xl shadow touch-target">🔊 Ouvir</button><button id="rh-done" class="block mx-auto mt-3 bg-emerald-500 text-white font-black px-7 py-4 rounded-2xl shadow touch-target">👏 Fiz!</button></div></div>`;
     this.container.querySelector('#rh-back').onclick=()=>this.onBack();this.container.querySelector('#rh-listen').onclick=()=>this.audio?.play(null,item.label||'Ritmo');this.container.querySelector('#rh-done').onclick=()=>this.answer();
     this.audio?.prompt?.(null,item.label||'Ritmo');
   }
-  answer(){if(this.finished)return;this.attempts++;this.correct++;this.audio?.play(null,'Muito bem! Vamos para o próximo.');this.round++;setTimeout(()=>this.render(),450);}
+  answer(){if(this.finished)return;playSfx('success');this.attempts++;this.correct++;this.audio?.play(null,'Muito bem! Vamos para o próximo.');this.round++;setTimeout(()=>this.render(),450);}
   finish(){this.finished=true;this.onComplete?.({score:this.correct,rounds:this.difficulty.rounds,correct:this.correct,attempts:this.attempts,maxScore:this.difficulty.rounds,completedRounds:this.correct,difficulty:this.level,ageId:this.ageId});}
 }

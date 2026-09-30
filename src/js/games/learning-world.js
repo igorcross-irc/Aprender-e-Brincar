@@ -96,7 +96,7 @@ export class LearningWorldGame {
     this.container.innerHTML = `
       <div class="w-full max-w-3xl flex flex-col gap-4 my-auto">
         <div class="flex items-center justify-between gap-3">
-          <button id="learning-back" class="bg-white/95 text-slate-700 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
+          <button id="learning-back" class="game-back" aria-label="Voltar">⬅️</button>
           <div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-indigo-700">${title}</div>
           <div class="flex gap-2"><div class="hidden sm:block bg-violet-50 rounded-full px-3 py-2 shadow font-black text-violet-600">${difficultyLabel}</div><div class="bg-white/90 rounded-full px-4 py-2 shadow font-black text-amber-600">⭐ ${this.round + 1}/5</div></div>
         </div>
@@ -266,6 +266,8 @@ export class LearningWorldGame {
     pool.forEach((item) => {
       const button = this.container.querySelector(`[data-answer="${CSS.escape(item.id)}"]`);
       if (button) {
+        button.querySelector('.child-visual')?.remove();
+        button.classList.add('color-swatch');
         button.style.backgroundColor = item.hex || '#fff';
         button.style.color = item.textDark ? '#1f2937' : '#fff';
         if (item.border) button.style.borderColor = '#94a3b8';

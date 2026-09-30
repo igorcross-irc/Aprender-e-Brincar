@@ -1,3 +1,4 @@
+import { playSfx } from '../../engine/sfx.js';
 import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-difficulty-policy.js';
 export class ColorHuntGame {
   constructor(containerId,audio,onComplete,onBack){this.container=document.getElementById(containerId);this.audio=audio;this.onComplete=onComplete;this.onBack=onBack;}
@@ -5,10 +6,10 @@ export class ColorHuntGame {
   shuffle(a){return [...a].sort(()=>Math.random()-0.5);}
   render(){if(this.round>=this.difficulty.rounds)return this.finish();const pool=this.shuffle(this.items).slice(0,getGameChoiceCount(this.difficulty,2,1,5));const target=pool[Math.floor(Math.random()*pool.length)];this.target=target;
     this.container.innerHTML=`
-    <div class="w-full max-w-2xl flex flex-col gap-4 my-auto"><div class="flex justify-between items-center"><button id="color-back" class="bg-white/95 px-4 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button><div class="bg-white/90 px-4 py-2 rounded-full font-black text-indigo-700">🌈 Caça às Cores • ${this.round+1}/${this.difficulty.rounds}</div></div>
+    <div class="w-full max-w-2xl flex flex-col gap-4 my-auto"><div class="flex justify-between items-center"><button id="color-back" class="game-back" aria-label="Voltar">⬅️</button><div class="bg-white/90 px-4 py-2 rounded-full font-black text-indigo-700">🌈 Caça às Cores • ${this.round+1}/${this.difficulty.rounds}</div></div>
     <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><p class="text-xl font-black text-indigo-700">Encontre a cor <span class="inline-block px-3 py-1 rounded-full border-2 border-slate-300" style="background:${target.hex||'#e2e8f0'};color:${target.textDark?'#1f2937':'white'}">${target.label}</span></p><div class="grid grid-cols-2 gap-4 mt-5">${this.shuffle(pool).map(x=>`<button data-id="${x.id}" class="color-option min-h-[145px] rounded-3xl border-4 border-white shadow-xl touch-target" style="background:${x.hex||'#e2e8f0'}"><span class="font-black text-lg" style="color:${x.textDark?'#1f2937':'white'}">${x.label}</span></button>`).join('')}</div></div></div>`;
     this.container.querySelector('#color-back').onclick=()=>this.onBack();this.audio?.prompt?.(null,`Encontre a cor ${target.label}`);this.container.querySelectorAll('.color-option').forEach(b=>b.onclick=()=>this.answer(b,b.dataset.id===String(target.id)));
   }
-  answer(btn,correct){this.attempts++;if(correct){this.correct++;btn.classList.add('scale-105','border-emerald-400');this.audio?.play(null,`Muito bem! ${this.target.label}`);this.round++;setTimeout(()=>this.render(),450);}else{btn.classList.add('animate-shake','border-rose-300');this.audio?.play(null,'Procure a cor certa.');setTimeout(()=>btn.classList.remove('animate-shake','border-rose-300'),450);}}
+  answer(btn,correct){this.attempts++;if(correct){playSfx('success');this.correct++;btn.classList.add('scale-105','border-emerald-400');this.audio?.play(null,`Muito bem! ${this.target.label}`);this.round++;setTimeout(()=>this.render(),450);}else{playSfx('retry');btn.classList.add('animate-shake','border-rose-300');this.audio?.play(null,'Procure a cor certa.');setTimeout(()=>btn.classList.remove('animate-shake','border-rose-300'),450);}}
   finish(){this.finished=true;this.onComplete?.({score:this.correct,rounds:this.difficulty.rounds,correct:this.correct,attempts:this.attempts,maxScore:this.difficulty.rounds,completedRounds:this.correct,difficulty:this.level,ageId:this.ageId});}
 }

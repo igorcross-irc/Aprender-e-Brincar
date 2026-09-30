@@ -4,7 +4,7 @@
 
 /* ===== Tokens ===== */
 :root {
-  --ab-font: "Nunito", ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
+  --ab-font: "Nunito Variable", "Nunito", ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, sans-serif;
   --ab-ink: #3b2d6b;
   --ab-ink-soft: #6b5f91;
   --ab-bg-top: #e0f2fe;
@@ -180,6 +180,36 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 .setup-privacy { font-size: .85rem; color: var(--ab-ink-soft); text-align: center; margin-top: .25rem; }
 .setup-start { align-self: stretch; margin-top: .5rem; padding: 1rem; border-radius: 1.25rem; background: var(--ab-success); color: #fff; font-weight: 900; font-size: 1.25rem; box-shadow: var(--ab-shadow); }
 .setup-start:disabled { opacity: .45; box-shadow: none; }
+
+/* Decoração dos mundos: ícone gigante e bolhas ao fundo */
+.world-tile::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, .25) 0 18px, transparent 19px), radial-gradient(circle at 12% 80%, rgba(255, 255, 255, .18) 0 26px, transparent 27px), radial-gradient(circle at 70% 88%, rgba(255, 255, 255, .14) 0 12px, transparent 13px); pointer-events: none; }
+.world-tile-deco { position: absolute; right: -14px; bottom: -18px; font-size: 6.5rem; opacity: .16; transform: rotate(-14deg); pointer-events: none; filter: grayscale(.2); }
+.world-tile-icon, .world-tile-title { position: relative; z-index: 1; }
+.world-tile-icon { animation: tile-float 3.2s ease-in-out infinite; }
+.world-tile:nth-child(2n) .world-tile-icon { animation-delay: -1.6s; }
+@keyframes tile-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+/* ===== Telas de jogo ===== */
+#game-container .game-back {
+  width: 60px; height: 60px; flex: none; border-radius: 999px;
+  display: grid; place-items: center; font-size: 1.7rem;
+  background: var(--ab-surface); box-shadow: var(--ab-shadow);
+}
+#game-container .game-back:active { transform: scale(.92); }
+#game-container :is(.learning-option, .odd-option, .num-option, .color-option, .sq-option, .learning-object, [data-discover], [data-guided], .memory-card, .puzzle-piece) {
+  border-radius: 1.75rem; box-shadow: var(--ab-shadow);
+  transition: transform .12s ease, border-color .15s ease, background-color .15s ease;
+}
+#game-container :is(.learning-option, .odd-option, .num-option, .color-option, .sq-option, .learning-object, [data-discover], [data-guided]):active { transform: scale(.95); }
+#game-container :is(.bg-white\/95, .bg-white\/90).rounded-3xl { border-radius: var(--ab-radius-lg); box-shadow: var(--ab-shadow); }
+#game-container :is(.text-indigo-700, .text-indigo-800) { color: var(--ab-ink); }
+#game-container .child-label { font-size: 1.05rem; }
+#game-container #discover-next, #game-container #discover-object-next, #game-container #btn-canvas-done { border-radius: 1.5rem; font-size: 1.2rem; box-shadow: var(--ab-shadow); }
+
+#game-container > .my-auto { margin-top: 0; }
+#game-container .color-swatch { min-height: 150px; border-color: rgba(255, 255, 255, .9); }
+.memory-card:not(.flipped):not(.matched) { background: linear-gradient(160deg, #c4b5fd, #8b5cf6); border-color: #ede9fe; }
+.memory-card .card-back { filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .15)); }
 
 /* ===== Área da Família ===== */
 .modal-overlay {
