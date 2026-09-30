@@ -11,7 +11,22 @@ export function getChildInterfacePolicy(ageId = '2-3y') {
   return CHILD_INTERFACE_POLICY[ageId] || CHILD_INTERFACE_POLICY['2-3y'];
 }
 
+function ensureChildInterfaceStyles() {
+  if (document.getElementById('child-interface-policy-style')) return;
+  const style = document.createElement('style');
+  style.id = 'child-interface-policy-style';
+  style.textContent = `
+    #game-container.voice-first .child-instruction { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    #game-container.voice-first .child-label { display:none; }
+    #game-container.voice-first .child-control { min-height:56px; }
+    #game-container.voice-supported .child-instruction { max-width:38rem; margin-left:auto; margin-right:auto; }
+    #game-container.voice-supported .child-instruction::before { content:'🔊 '; }
+  `;
+  document.head.appendChild(style);
+}
+
 export function applyChildInterfacePolicy(container, ageId) {
+  ensureChildInterfaceStyles();
   if (!container) return getChildInterfacePolicy(ageId);
   const policy = getChildInterfacePolicy(ageId);
   container.dataset.childAge = ageId || '2-3y';
