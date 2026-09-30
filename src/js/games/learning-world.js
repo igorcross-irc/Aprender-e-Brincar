@@ -2,7 +2,7 @@ import { developmentContent } from '../../content/development-content.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
 import { getChildInterfacePolicy } from '../../core/child-interface-policy.js';
 import { showChildFeedback } from '../../core/child-feedback-system.js';
-import { keepCorrectChoice } from '../../core/child-choice-policy.js';
+import { keepCorrectChoice, getChoiceGridClass } from '../../core/child-choice-policy.js';
 
 export class LearningWorldGame {
   constructor(containerId, audioEngine, onComplete, onBack) {
@@ -306,7 +306,7 @@ export class LearningWorldGame {
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <p class="text-xl font-black text-indigo-700 mb-4">Quantos ${icon} você vê?</p>
         <div class="flex flex-wrap justify-center gap-2 text-5xl bg-amber-50 rounded-3xl p-6 mb-5">${Array.from({ length: target }, () => `<span>${icon}</span>`).join('')}</div>
-        <div class="grid grid-cols-4 gap-3">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-3">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Conte os objetos e escolha a quantidade.');
     this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
@@ -318,7 +318,7 @@ export class LearningWorldGame {
       <div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center">
         <div class="text-6xl mb-4">${Array.from({ length: target }, () => '🍓').join(' ')}</div>
         <p class="text-xl font-black text-indigo-700 mb-4">Qual número combina com essa quantidade?</p>
-        <div class="grid grid-cols-5 gap-2">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-2">${options.map((option) => `<button data-answer="${option.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 text-3xl font-black shadow touch-target">${option.label}</button>`).join('')}</div>
       </div>`, 'Observe a quantidade e escolha o número.');
     this.bindChoice(String(target), 'Muito bem!', 'Vamos contar novamente!', options);
   }
@@ -332,7 +332,7 @@ export class LearningWorldGame {
         <div class="text-7xl mb-3">${item.icon}</div><p class="text-3xl font-black text-indigo-700 mb-2">${this.escape(item.label)}</p>
         <p class="text-slate-600 mb-4">Vamos ouvir e separar em partes.</p>
         <div class="flex justify-center flex-wrap gap-2 mb-5">${item.parts.map((part) => `<span class="bg-violet-100 text-violet-800 font-black px-4 py-2 rounded-xl">${part}</span>`).join('')}</div>
-        <div class="grid grid-cols-3 gap-3">${choices.map((c) => `<button data-answer="${c.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${c.label}</button>`).join('')}</div>
+        <div class="grid ${getChoiceGridClass(this.options.ageId, choices.length)} gap-3">${choices.map((c) => `<button data-answer="${c.id}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-4 shadow touch-target font-black">${c.label}</button>`).join('')}</div>
         <button id="speak-word" class="mt-4 bg-emerald-500 text-white font-black px-6 py-3 rounded-2xl touch-target">🔊 Ouvir palavra</button>
       </div>`, 'Bata palmas ou conte as partes da palavra.');
     this.container.querySelector('#speak-word').addEventListener('click', () => this.speak(item.label, item.audio));
@@ -467,7 +467,7 @@ export class LearningWorldGame {
   renderRhythm() {
     const item = this.items[this.round % this.items.length];
     const options = keepCorrectChoice(this.shuffle(this.items).map((entry) => ({ id: entry.id, label: entry.label, icon: entry.pattern.join(' ') })), item.id, this.options.ageId);
-    this.shell('🎵 Brinque com o Ritmo', `<div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern.join(' ')}</div><p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p><div class="grid grid-cols-2 gap-3">${options.map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.icon}</button>`).join('')}</div></div>`, 'Você pode bater palmas junto.');
+    this.shell('🎵 Brinque com o Ritmo', `<div class="bg-white/95 rounded-3xl p-6 shadow-xl text-center"><div class="text-7xl mb-4">${item.pattern.join(' ')}</div><p class="text-xl font-black text-indigo-700 mb-4">Observe o ritmo e escolha o mesmo padrão.</p><div class="grid ${getChoiceGridClass(this.options.ageId, options.length)} gap-3">${options.map((entry) => `<button data-answer="${this.escape(entry.id)}" class="learning-option bg-white border-4 border-indigo-100 rounded-2xl p-5 shadow touch-target font-black">${entry.icon}</button>`).join('')}</div></div>`, 'Você pode bater palmas junto.');
     this.bindChoice(item.id, 'Muito bem! Ritmo combinado.', 'Vamos observar de novo.', options);
   }
 
