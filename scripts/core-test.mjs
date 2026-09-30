@@ -96,7 +96,14 @@ assert.deepEqual(progress.getRecentActivityIds(2), ['explore-then-evaluate', 'ex
 assert.equal(progress.getSessionSummary().lastDurationMs, 0);
 progress.complete('duration-check', { mode: 'explore', durationMs: 3500 });
 assert.equal(progress.getSessionSummary().lastDurationMs, 3500);
-const journey = new LearningEngine(progress).getJourneySummary();
+assert.equal(progress.getLastSessionDurationMs(), 3500);
+assert.equal(progress.getTotalMinutes(), 0);
+assert.equal(progress.getRecentHistory(2).length, 2);
+const recommendationEngine = new LearningEngine(progress);
+const recommendationSummary = recommendationEngine.getRecommendationSummary('2-3y', null, 2);
+assert.ok(Array.isArray(recommendationSummary));
+assert.ok(recommendationSummary.every((item) => item.reasonCode && item.priority));
+const journey = recommendationEngine.getJourneySummary();
 assert.equal(journey.explored, 2);
 assert.equal(journey.evaluated, 1);
 assert.equal(journey.sessions, progress.snapshot().sessions.total);
