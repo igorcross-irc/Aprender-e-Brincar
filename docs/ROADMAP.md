@@ -100,3 +100,13 @@ Implementados na staging.
 - Biblioteca visual e feedback passaram a ter cobertura adicional nos testes de núcleo.
 - Criada validação automática da staging para executar testes de núcleo e build a cada push em branches staging.
 - Revisão crítica: a base visual está funcional, mas ainda não deve ser considerada identidade visual final; emojis continuam como fallback até as ilustrações próprias serem realmente produzidas e integradas.
+
+
+## Saltos 52–56 — Hardening do núcleo infantil
+Em desenvolvimento na staging.
+- Limite de escolhas extraído para um contrato reutilizável, preservando explicitamente a resposta correta ao reduzir alternativas.
+- Grid de escolhas passa a ter regra central de colunas por faixa etária, preparando integração uniforme entre motores.
+- Contrato visual endurecido: caminhos de imagem aceitos apenas em formato local seguro e com extensões conhecidas; fallback permanece automático.
+- Feedback infantil tornou-se resistente a sobreposição de timers, evitando que um feedback antigo remova um feedback novo.
+- Criado mapa de cobertura por faixa etária para detectar lacunas de conteúdo antes de avançar para novas experiências.
+- Testes de núcleo ampliados para escolhas, cobertura etária, feedback e segurança de assets.
