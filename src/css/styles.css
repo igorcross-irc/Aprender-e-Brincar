@@ -257,6 +257,48 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 .talk-card:active { transform: scale(.95); }
 .talk-card.speaking { border-color: var(--ab-primary); background: var(--ab-primary-soft); animation: count-bounce .4s ease-out; }
 
+/* Esconde-esconde */
+.peek-field { display: grid; grid-template-columns: repeat(min(var(--spots), 3), minmax(0, 1fr)); gap: 1rem; padding: 1.5rem 1rem; border-radius: var(--ab-radius-lg); background: linear-gradient(180deg, #dcfce7, #bbf7d0); box-shadow: var(--ab-shadow); justify-items: center; }
+.peek-spot { position: relative; width: min(38vw, 150px); aspect-ratio: 1; border-radius: 1.75rem; background: transparent; overflow: hidden; }
+.peek-animal { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(3rem, 14vw, 4.5rem); opacity: 0; transform: scale(.4); transition: transform .35s cubic-bezier(.2, 1.4, .4, 1), opacity .2s ease; }
+.peek-cover { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(4rem, 18vw, 6rem); transition: transform .35s ease, opacity .35s ease; }
+.peek-spot.open .peek-cover { transform: translateY(60%) scale(.7); opacity: .35; }
+.peek-spot.open .peek-animal { opacity: 1; transform: translateY(-10%) scale(1); }
+
+/* Separar e encaixar */
+.sort-item { align-self: center; width: 150px; height: 150px; display: grid; place-items: center; font-size: 5.5rem; border-radius: 2rem; background: #fff; box-shadow: var(--ab-shadow); animation: count-bounce .5s ease-out; transition: transform .35s ease, opacity .35s ease; }
+.sort-item.gone { transform: translateY(80px) scale(.3); opacity: 0; }
+.sort-bins { display: grid; grid-template-columns: repeat(min(var(--bins), 3), minmax(0, 1fr)); gap: 1rem; }
+@media (min-width: 640px) { .sort-bins { grid-template-columns: repeat(var(--bins), minmax(0, 1fr)); } }
+.sort-bin { position: relative; min-height: 130px; border-radius: 1.75rem; display: grid; place-items: center; box-shadow: var(--ab-shadow); background: #fff; border: 5px solid #e9e5ff; }
+.sort-colors .sort-bin { background: var(--bin); border-color: rgba(255, 255, 255, .9); }
+.sort-basket { font-size: 3.6rem; filter: drop-shadow(0 3px 0 rgba(0, 0, 0, .2)); }
+.sort-hole { font-size: 4rem; filter: brightness(0); opacity: .28; }
+.sort-bin.filled .sort-hole { filter: none; opacity: 1; }
+.sort-dropped { position: absolute; top: 6px; right: 8px; font-size: 2rem; animation: count-bounce .4s ease-out; }
+.sort-shapes .sort-bin.filled .sort-dropped { display: none; }
+
+/* Rimas e som inicial */
+.word-hero { align-self: center; display: flex; flex-direction: column; align-items: center; gap: .2rem; padding: 1rem 2rem; border-radius: 2rem; background: #fff; box-shadow: var(--ab-shadow); }
+.word-hero span { font-size: 5rem; line-height: 1; }
+.word-hero strong { font-size: 1.6rem; font-weight: 900; }
+.word-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (min-width: 560px) { .word-options { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.word-option { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .25rem; min-height: 130px; border-radius: 1.75rem; background: #fff; border: 4px solid #e9e5ff; box-shadow: var(--ab-shadow); }
+.word-option span { font-size: 3.4rem; line-height: 1; }
+.word-option small { font-weight: 900; font-size: 1rem; }
+.word-option.right { border-color: var(--ab-success); background: #ecfdf5; }
+
+/* História em sequência */
+.story-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.story-slot { position: relative; aspect-ratio: 1; border-radius: 1.5rem; border: 4px dashed #c4b5fd; background: rgba(255, 255, 255, .6); display: grid; place-items: center; font-size: 3.2rem; }
+.story-slot b { position: absolute; top: 6px; left: 10px; font-size: 1rem; color: var(--ab-primary); }
+.story-slot.filled { border-style: solid; border-color: var(--ab-success); background: #fff; animation: count-bounce .4s ease-out; }
+.story-hint { text-align: center; font-weight: 900; font-size: 1.2rem; }
+.story-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.story-card { aspect-ratio: 1; border-radius: 1.5rem; background: #fff; box-shadow: var(--ab-shadow); font-size: 3.6rem; border: 4px solid #e9e5ff; }
+.story-card.used { opacity: .25; box-shadow: none; }
+
 /* Álbum de adesivos */
 .album-tile { background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, .5), transparent 45%), linear-gradient(160deg, #fde047, #f59e0b); }
 .sticker-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .9rem; width: 100%; max-width: 42rem; margin: 0 auto; }

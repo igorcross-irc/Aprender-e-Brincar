@@ -17,7 +17,7 @@ export const GAME_ICONS = {
   'action-words': '🏃', 'story-choices': '📚', 'phrase-builder-2': '💬', 'color-hunt-2': '🌈', 'shape-sequence': '🔷',
   'compare-sizes': '📏', 'animal-sound-memory': '🔊', 'animal-homes': '🏠', 'count-more': '🔢', 'number-order': '🔢',
   'memory-objects': '🧠', 'attention-path': '👀', 'rhythm-copy': '👏', 'movement-copy': '🙆',
-  bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹'
+  bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
 };
 
 export const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));

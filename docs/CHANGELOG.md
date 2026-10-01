@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-01 — Novas brincadeiras e jogos antigos padronizados
+- **Esconde-esconde** (6 meses a 4 anos): um animal se esconde atrás de 1 a 5 esconderijos (conforme a idade); a criança toca para achar. Trabalha permanência do objeto.
+- **Separar por Cor** (18 meses+) e **Encaixe as Formas** (12 meses+): um objeto aparece e a criança toca no cesto/buraco certo — sem arrastar. Até 3 anos a voz dá a pista ("No cesto vermelho!").
+- **Rimas** (3+), **Com Que Som Começa?** (4+) e **Hora da História** (3+, tocar nas cenas na ordem) saíram de rascunho com jogos de verdade. Não há mais brincadeiras ocultas por falta de mecânica.
+- Memória, Quebra-Cabeça, Balões e Desenhar usam o mesmo cabeçalho dos jogos novos, com bolinhas de progresso no lugar de "Nível 2 • 3 pares", "Jogadas" e "Tentativas".
+- `test:play-all` aprendeu os jogos novos e aceita `--only id1,id2` para jogar só algumas brincadeiras.
+
 ## 2026-09-30 — Revisão completa jogando tudo
 Novo `npm run test:play-all`: um robô joga todas as brincadeiras de todas as idades até o fim (tenta as opções como uma criança), detecta travamentos, erros de JavaScript e grava o texto de cada rodada em `play-all-report.json`. Primeira passada: 19 travamentos em 173 jogadas. Corrigido:
 - **Travamentos**: em "Encontre o Animal", "Quem Fez Esse Som?" e similares o animal pedido às vezes não estava entre as opções; em "Complete a Sequência" e "Sequência de Sons" a resposta certa podia ser sorteada para fora.

@@ -1,4 +1,7 @@
 const allActivities = [
+  { id: 'peekaboo', title: 'Esconde-esconde', type: 'activity', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y'], category: 'descoberta', difficulty: 1, skills: ['permanência do objeto','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'discover' },
+  { id: 'color-sort', title: 'Separar por Cor', type: 'game', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'cores', difficulty: 1, skills: ['classificação','cores'], developmentDomains: ['cognição','percepção'], world: 'colors-shapes' },
+  { id: 'shape-sort', title: 'Encaixe as Formas', type: 'game', ages: ['12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'formas', difficulty: 1, skills: ['formas','associação','coordenação'], developmentDomains: ['cognição','percepção'], world: 'colors-shapes' },
   { id: 'bubbles', title: 'Bolhas', type: 'activity', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'descoberta', difficulty: 1, skills: ['causa e efeito','coordenação olho-mão','vocabulário'], developmentDomains: ['motricidade fina','linguagem'], world: 'discover' },
   { id: 'count-tap', title: 'Contar Tocando', type: 'game', ages: ['12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'numeros', difficulty: 1, skills: ['contagem','correspondência um a um'], developmentDomains: ['cognição','matemática inicial'], world: 'numbers-logic' },
   { id: 'music-keys', title: 'Piano dos Animais', type: 'creative', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'música', difficulty: 1, skills: ['música','causa e efeito','escuta'], developmentDomains: ['audição','criatividade'], world: 'create-move' },
@@ -22,7 +25,7 @@ const allActivities = [
   { id: 'syllables', title: 'Brincar com Sílabas', type: 'activity', ages: ['3-4y','4-5y'], category: 'fala', difficulty: 2, skills: ['sílabas','escuta','consciência fonológica'], developmentDomains: ['fala','linguagem','pré-alfabetização'], audioNeeds: ['palavras-modelo','sílabas-modelo'], world: 'language' },
   { id: 'rhymes', title: 'Rimas Divertidas', type: 'activity', ages: ['3-4y','4-5y'], category: 'fala', difficulty: 2, skills: ['rimas','escuta','vocabulário'], developmentDomains: ['linguagem','pré-alfabetização'], audioNeeds: ['pares-de-rimas'], world: 'language' },
   { id: 'sound-initial', title: 'Com Que Som Começa?', type: 'activity', ages: ['4-5y'], category: 'fala', difficulty: 3, skills: ['som inicial','atenção auditiva','vocabulário'], developmentDomains: ['fala','linguagem','pré-alfabetização'], audioNeeds: ['sons-iniciais','palavras-modelo'], world: 'language' },
-  { id: 'story-sequence', title: 'Hora da História', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'linguagem', difficulty: 2, skills: ['narrativa','sequência','compreensão'], developmentDomains: ['linguagem','cognição'], audioNeeds: ['historias-curtas'], world: 'language' },
+  { id: 'story-sequence', title: 'Hora da História', type: 'activity', ages: ['3-4y','4-5y'], category: 'linguagem', difficulty: 2, skills: ['narrativa','sequência','compreensão'], developmentDomains: ['linguagem','cognição'], audioNeeds: ['historias-curtas'], world: 'language' },
   { id: 'communication', title: 'Eu Quero…', type: 'activity', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'comunicacao', difficulty: 2, skills: ['comunicação funcional','expressão','interação'], developmentDomains: ['comunicação','linguagem'], audioNeeds: ['modelos-de-frases'], world: 'language' },
   { id: 'memory', title: 'Memória', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','associação'], developmentDomains: ['cognição','atenção'], world: 'memory-attention' },
   { id: 'puzzle', title: 'Encaixe e Quebra-Cabeça', type: 'game', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'coordenação', difficulty: 2, skills: ['coordenação','percepção','resolução de problemas'], developmentDomains: ['motricidade fina','cognição'], world: 'create-move' },
@@ -61,7 +64,7 @@ const allActivities = [
 ];
 
 // Atividades ainda sem mecânica jogável real ficam fora do app até serem implementadas.
-export const DRAFT_ACTIVITY_IDS = Object.freeze(['rhymes', 'sound-initial', 'story-sequence']);
+export const DRAFT_ACTIVITY_IDS = Object.freeze([]);
 
 // Cópias de outras brincadeiras com outro nome (mesma mecânica e conteúdo): ficam fora para não confundir.
 export const DUPLICATE_ACTIVITY_IDS = Object.freeze(['animal-homes', 'animal-sound-memory', 'count-more', 'compare-sizes', 'shape-sequence', 'memory-objects', 'movement-copy', 'action-words', 'story-choices', 'animal-families', 'sort-groups', 'attention-path', 'object-hunt']);

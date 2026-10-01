@@ -13,12 +13,16 @@ import { BubblesGame } from './games/toddler/bubbles.js';
 import { CountTapGame } from './games/toddler/count-tap.js';
 import { MusicKeysGame } from './games/toddler/music-keys.js';
 import { CommunicationBoardGame } from './games/toddler/communication-board.js';
+import { PeekabooGame } from './games/toddler/peekaboo.js';
+import { SortIntoGame } from './games/toddler/sort-into.js';
+import { WordSoundsGame } from './games/language/word-sounds.js';
+import { StorySequenceGame } from './games/language/story-sequence.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -61,8 +65,14 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['count-tap'], CountTapGame, developmentContent.objects);
   addIndependent(['music-keys'], MusicKeysGame);
   addIndependent(['communication'], CommunicationBoardGame);
+  addIndependent(['peekaboo'], PeekabooGame, vocabularyData.animals);
+  addIndependent(['color-sort'], SortIntoGame, 'colors');
+  addIndependent(['shape-sort'], SortIntoGame, 'shapes');
+  addIndependent(['rhymes'], WordSoundsGame, 'rhymes');
+  addIndependent(['sound-initial'], WordSoundsGame, 'initial');
+  addIndependent(['story-sequence'], StorySequenceGame, developmentContent.stories);
 
-  addGuided(['rhymes','sound-initial','story-sequence','movement']);
+  addGuided(['movement']);
   ['phrases','phrase-builder-2'].forEach((id) => definitions.set(id, { id, kind: 'phrases', exploration: true }));
 
   definitions.set('canvas', { id:'canvas', kind:'canvas', Game:CanvasGame, exploration:true });

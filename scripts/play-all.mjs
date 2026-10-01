@@ -12,6 +12,8 @@ const args = process.argv.slice(2);
 const shotsIndex = args.indexOf('--shots');
 const SHOTS = shotsIndex >= 0 ? args[shotsIndex + 1] : null;
 const AGES = args.filter((arg, index) => ALL_AGES.includes(arg) && index !== shotsIndex + 1);
+const onlyIndex = args.indexOf('--only');
+const ONLY = onlyIndex >= 0 ? args[onlyIndex + 1].split(',') : null;
 const ages = AGES.length ? AGES : ALL_AGES;
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
@@ -60,8 +62,33 @@ async function listGames(page, ageId) {
   return games;
 }
 
+const progressCount = (page) => page.evaluate(() => document.querySelectorAll('.game-dots span.done, .story-slot.filled').length + (document.getElementById('session-again') ? 100 : 0));
+
+// Toca em cada opção até o progresso (bolinhas / encaixes) aumentar.
+async function tapUntilProgress(page, selector) {
+  const before = await progressCount(page);
+  const total = (await page.$$(selector)).length;
+  // Todas as opções já usadas: a rodada está terminando (narração final); espera a próxima.
+  if (!(await page.$(`${selector}:not([disabled])`))) { await page.waitForTimeout(3000); return true; }
+  for (let i = 0; i < total; i += 1) {
+    const options = await page.$$(selector);
+    if (!options[i]) continue;
+    if (await options[i].isDisabled()) continue;
+    await options[i].click();
+    for (let wait = 0; wait < 14; wait += 1) {
+      await page.waitForTimeout(250);
+      if ((await progressCount(page)) > before) { await page.waitForTimeout(400); return true; }
+    }
+  }
+  return 'stuck';
+}
+
 // Estratégias específicas para jogos que não são de "tocar na resposta".
 async function playSpecial(page) {
+  if (await page.$('.story-card')) return tapUntilProgress(page, '.story-card');
+  if (await page.$('.peek-spot')) return tapUntilProgress(page, '.peek-spot');
+  if (await page.$('.sort-bin')) return tapUntilProgress(page, '.sort-bin');
+  if (await page.$('.word-option')) return tapUntilProgress(page, '.word-option');
   if (await page.$('.memory-card')) {
     const ids = await page.$$eval('.memory-card:not(.matched)', (els) => els.map((el) => el.dataset.idx + ':' + el.dataset.id));
     if (!ids.length) { await page.waitForTimeout(1200); return true; }
@@ -215,7 +242,7 @@ try {
   await page.evaluate(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
   await page.reload();
   for (const ageId of ages) {
-    const games = await listGames(page, ageId);
+    const games = (await listGames(page, ageId)).filter((id) => !ONLY || ONLY.includes(id));
     for (const gameId of games) {
       let entry;
       try { entry = await playGame(page, ageId, gameId, errors); }

@@ -15,8 +15,8 @@ Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico,
 - Vite + Tailwind; fonte Nunito empacotada; sem chamadas externas.
 - `src/js/ui/app-screens.js`: telas da criança. `src/js/ui/family-settings.js`: Área da Família.
 - `src/js/controllers/experience-controller.js`: inicia/encerra brincadeiras, sessão, resultado e limpeza.
-- `src/js/game-registry.js`: mapeia cada atividade para seu motor. Motores: `learning-world.js` (26 modos), `games/independent/*`, `games/toddler/*` (bolhas, contar, piano, prancha), memória, quebra-cabeça, balões, lousa, frases.
-- `src/content/activity-catalog.js`: catálogo; `DRAFT_ACTIVITY_IDS` mantém fora do app o que ainda não tem mecânica real (rimas, som inicial, história em sequência) e `DUPLICATE_ACTIVITY_IDS` esconde cópias.
+- `src/js/game-registry.js`: mapeia cada atividade para seu motor. Motores: `learning-world.js` (26 modos), `games/independent/*`, `games/toddler/*` (bolhas, contar, piano, prancha, esconde-esconde, separar/encaixar), `games/language/*` (rimas, som inicial, história em sequência), memória, quebra-cabeça, balões, lousa, frases.
+- `src/content/activity-catalog.js`: catálogo; `DRAFT_ACTIVITY_IDS` mantém fora do app o que ainda não tem mecânica real (hoje vazio) e `DUPLICATE_ACTIVITY_IDS` esconde cópias.
 - `src/core/screen-time.js`: tempo de tela. `src/js/engine/sfx.js`: sons sintetizados. `src/js/engine/audio-engine.js`: MP3 + voz do navegador.
 - PWA: `public/sw.js` (shell tolerante, mídia com atualização em segundo plano), `public/manifest.json`.
 
@@ -29,7 +29,6 @@ Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico,
 ## Próximos passos sugeridos
 - Gravar as falas listadas em `docs/AUDIO_COVERAGE.md` (voz humana é bem mais agradável que a do navegador).
 - Ilustrações próprias no lugar dos emojis (mesmos caminhos de `public/assets/images/visual-library/`).
-- Implementar rimas, som inicial e história em sequência (hoje ocultas).
 - Refatorar os jogos antigos (`learning-world.js`, `cards.js`, etc.) para a moldura `game-shell.js`.
 
 ## Limite clínico
