@@ -63,8 +63,8 @@ Origem: `aprender_brincar_icon_family.zip` (pacote 1, 24 ícones) e `aprender_br
 2. Gere a versão do app: 256 px, WebP qualidade ~88, em `public/assets/images/icons/`.
 3. Os mapeamentos ficam em `src/js/ui/app-screens.js` (`GAME_IMAGES` e `WORLD_IMAGES`); o que não tiver imagem continua com emoji.
 
-## gerados (ElevenLabs, gpt-image-2)
-Figuras de jogo geradas no estilo dos ícones aprovados.
+## gerados
+Figuras de jogo geradas no estilo dos ícones aprovados. Gerador atual: **Canva** (gerar imagem com a folha `cachorro/gato/maçã` como referência, proporção 1:1, 1264 px; exportar em PNG por uma página 1264×1264 do design "Página quadrada em branco"). As três primeiras vieram do ElevenLabs (gpt-image-2).
 
 - `originais/` — o arquivo entregue pelo gerador, sem perda (WebP lossless). É a fonte para refazer qualquer tamanho.
 - `gerados/` — recorte com fundo transparente, quadrado, no tamanho nativo (qualidade 95).
@@ -78,3 +78,4 @@ Ao gerar, peça proporção **1:1** (quadrada); a primeira leva saiu 16:9 e o de
 | cachorro | 1280×720 | figures/cachorro.webp |
 | gato | 1280×720 | figures/gato.webp |
 | maçã | 1280×720 | figures/maca.webp |
+| vaca (Canva) | 1264×1264 | figures/vaca.webp |

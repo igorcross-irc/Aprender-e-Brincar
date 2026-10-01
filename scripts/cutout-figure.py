@@ -28,16 +28,20 @@ def cutout(source, name):
     pixels = np.asarray(image).astype(np.float32)
     distance = np.sqrt(((255 - pixels) ** 2).sum(-1))
 
-    # Fundo = regiões quase brancas que tocam a borda da imagem.
-    labels, _ = ndimage.label(distance < 40)
+    # Fundo = pixels tão brancos quanto a borda da imagem e ligados a ela. O limite
+    # vem do ruído do próprio fundo, para não comer desenhos creme (vaca, ovelha).
+    border = np.concatenate([distance[0], distance[-1], distance[:, 0], distance[:, -1]])
+    threshold = max(6.0, float(np.percentile(border, 99.5)) + 4)
+    labels, _ = ndimage.label(distance < threshold)
     edge = set(np.unique(np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]]))) - {0}
     outside = np.isin(labels, list(edge))
 
-    # Borda suave: a transparência acompanha o quanto o pixel se afasta do branco.
+    # Borda suave só nos 2 px junto ao fundo: ali a transparência acompanha o
+    # quanto o pixel se afasta do branco; o interior fica totalmente opaco.
     alpha = np.where(outside, 0, 255).astype(np.float32)
-    band = outside & (distance > 8)
-    alpha[band] = np.clip((distance[band] - 8) / 32 * 255, 0, 255)
-    mask = Image.fromarray(alpha.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.8))
+    near_edge = ~outside & (ndimage.distance_transform_edt(~outside) <= 2)
+    alpha[near_edge] = np.clip((distance[near_edge] - threshold) / 24, 0.35, 1) * 255
+    mask = Image.fromarray(alpha.astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.6))
 
     rgba = image.convert('RGBA')
     rgba.putalpha(mask)
