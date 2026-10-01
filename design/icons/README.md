@@ -64,9 +64,17 @@ Origem: `aprender_brincar_icon_family.zip` (pacote 1, 24 ícones) e `aprender_br
 3. Os mapeamentos ficam em `src/js/ui/app-screens.js` (`GAME_IMAGES` e `WORLD_IMAGES`); o que não tiver imagem continua com emoji.
 
 ## gerados (ElevenLabs, gpt-image-2)
-Figuras de jogo geradas a partir do estilo dos ícones aprovados, fundo branco removido localmente. Versão do app (256 px) em `public/assets/images/figures/`.
-| Arquivo | No app |
-| --- | --- |
-| fig-cachorro | figures/cachorro.webp |
-| fig-gato | figures/gato.webp |
-| fig-maca | figures/maca.webp |
+Figuras de jogo geradas no estilo dos ícones aprovados.
+
+- `originais/` — o arquivo entregue pelo gerador, sem perda (WebP lossless). É a fonte para refazer qualquer tamanho.
+- `gerados/` — recorte com fundo transparente, quadrado, no tamanho nativo (qualidade 95).
+- App: `public/assets/images/figures/<nome>.webp`, 512 px, qualidade 85 (~20–30 KB). 512 px deixa a figura nítida mesmo grande num tablet.
+
+Para processar uma figura nova: `python3 scripts/cutout-figure.py <original.png> <nome>`.
+Ao gerar, peça proporção **1:1** (quadrada); a primeira leva saiu 16:9 e o desenho ficou com ~600 px.
+
+| Figura | Original | No app |
+| --- | --- | --- |
+| cachorro | 1280×720 | figures/cachorro.webp |
+| gato | 1280×720 | figures/gato.webp |
+| maçã | 1280×720 | figures/maca.webp |
