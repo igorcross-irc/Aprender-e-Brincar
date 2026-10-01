@@ -3,6 +3,8 @@
  * Prioridade: MP3 próprio -> voz do navegador.
  * O índice local reduz probes repetidos e mantém o fallback resiliente.
  */
+import { AUDIO_FILES } from '../../content/audio-files.js';
+
 const AUDIO_BASE = '/assets/audio/';
 const AUDIO_INDEX_KEY = 'ab_audio_index_v2';
 const MISSING_KEY = 'ab_missing_audio';
@@ -95,9 +97,10 @@ export class ResilientAudioEngine {
 
   inferAudioName(text) {
     const value = String(text || '').trim();
-    if (!value || value.length > 32 || value.includes('?')) return null;
+    if (!value || value.length > 60) return null;
     const slug = this.slugify(value);
-    return slug ? `${slug}.mp3` : null;
+    // Só tenta o MP3 se ele existe no build; senão a voz do navegador fala na hora.
+    return slug && AUDIO_FILES.has(`${slug}.mp3`) ? `${slug}.mp3` : null;
   }
 
   async load(name) {
@@ -158,6 +161,20 @@ export class ResilientAudioEngine {
     this.speak(fallbackText);
     return false;
   }
+
+  // Instruções ficam guardadas para o botão "ouvir de novo".
+  prompt(audioPath, text) {
+    this.lastPrompt = { audioPath: audioPath || null, text: text || '' };
+    return this.play(audioPath, text);
+  }
+
+  replayPrompt(fallbackText = 'Vamos brincar!') {
+    const last = this.lastPrompt;
+    if (last && (last.audioPath || last.text)) return this.play(last.audioPath, last.text);
+    return this.play(null, fallbackText);
+  }
+
+  clearPrompt() { this.lastPrompt = null; }
 
   diagnostics() {
     return {

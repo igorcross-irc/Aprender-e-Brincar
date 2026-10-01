@@ -9,12 +9,20 @@ import { NumberOrderGame } from './games/independent/number-order.js';
 import { ColorHuntGame } from './games/independent/color-hunt.js';
 import { RhythmCopyGame } from './games/independent/rhythm-copy.js';
 import { SoundSequenceGame } from './games/independent/sound-sequence.js';
+import { BubblesGame } from './games/toddler/bubbles.js';
+import { CountTapGame } from './games/toddler/count-tap.js';
+import { MusicKeysGame } from './games/toddler/music-keys.js';
+import { CommunicationBoardGame } from './games/toddler/communication-board.js';
+import { PeekabooGame } from './games/toddler/peekaboo.js';
+import { SortIntoGame } from './games/toddler/sort-into.js';
+import { WordSoundsGame } from './games/language/word-sounds.js';
+import { StorySequenceGame } from './games/language/story-sequence.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -48,13 +56,24 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addWorld(['story-interactive','story-choices'], 'story-interactive');
   addWorld(['music-rhythm'], 'music-rhythm');
 
-  addIndependent(['odd-one-out'], OddOneOutGame);
+  addIndependent(['odd-one-out'], OddOneOutGame, developmentContent.objects);
   addIndependent(['number-order'], NumberOrderGame);
   addIndependent(['color-hunt-2'], ColorHuntGame, vocabularyData.colors);
   addIndependent(['rhythm-copy'], RhythmCopyGame, developmentContent.musicPatterns);
   addIndependent(['sound-sequence'], SoundSequenceGame, vocabularyData.animals);
+  addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
+  addIndependent(['count-tap'], CountTapGame, developmentContent.objects);
+  addIndependent(['music-keys'], MusicKeysGame);
+  addIndependent(['communication'], CommunicationBoardGame);
+  addIndependent(['peekaboo'], PeekabooGame, vocabularyData.animals);
+  addIndependent(['color-sort'], SortIntoGame, 'colors');
+  addIndependent(['shape-sort'], SortIntoGame, 'shapes');
+  addIndependent(['rhymes'], WordSoundsGame, 'rhymes');
+  addIndependent(['sound-initial'], WordSoundsGame, 'initial');
+  addIndependent(['story-sequence'], StorySequenceGame, developmentContent.stories);
 
-  addGuided(['phrases','communication','phrase-builder-2','rhymes','sound-initial','story-sequence','movement']);
+  addGuided(['movement']);
+  ['phrases','phrase-builder-2'].forEach((id) => definitions.set(id, { id, kind: 'phrases', exploration: true }));
 
   definitions.set('canvas', { id:'canvas', kind:'canvas', Game:CanvasGame, exploration:true });
   definitions.set('memory', { id:'memory', kind:'memory', Game:MemoryGame });
@@ -66,7 +85,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
     get(id) { return definitions.get(id) || null; },
     mode(id) { return definitions.get(id)?.exploration ? 'explore' : 'evaluate'; },
     all() { return [...definitions.values()]; },
-    launch(id, { adaptive = { level: 1 }, ageId = '2-3y', onWin, onBack }) {
+    launch(id, { adaptive = { level: 1 }, ageId = '2-3y', onWin, onBack, title = null }) {
       const def = definitions.get(id);
       if (!def) throw new Error(`Atividade sem registro de execução: ${id}`);
       const age = adaptive?.age || getAgeExperienceConfig(ageId, adaptive?.level || 1);
@@ -74,16 +93,18 @@ export function createGameRegistry({ containerId, audio, storage }) {
       if (def.kind === WORLD) {
         const game = new LearningWorldGame(containerId, audio, onWin, onBack);
         if (def.items) audio?.preload?.(def.items.map((x) => x.audio).filter(Boolean));
-        return game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age });
+        game.start(def.mode, { items: def.items || undefined, difficulty: level, mode: def.exploration ? 'explore' : 'evaluate', age, title });
+        return game;
       }
       if (def.kind === 'independent') {
         const game = new def.Game(containerId, audio, onWin, onBack);
-        return def.items ? game.start(def.items, level, { ageId, age }) : game.start(level, { ageId, age });
+        if (def.items) game.start(def.items, level, { ageId, age });
+        else game.start(level, { ageId, age });
+        return game;
       }
-      if (def.kind === 'canvas') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
-      if (def.kind === 'memory') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
-      if (def.kind === 'puzzle') return new def.Game(containerId, audio, onWin, onBack).start(vocabularyData.animals, level, { ageId, age });
-      if (def.kind === 'balloons') return new def.Game(containerId, audio, onWin, onBack).start(level, { ageId, age });
+      if (['canvas', 'balloons'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(level, { ageId, age }); return game; }
+      if (['memory', 'puzzle'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(vocabularyData.animals, level, { ageId, age }); return game; }
+      if (def.kind === 'phrases') { const game = new CardsGame(containerId, audio, storage, onWin, onBack); game.renderPhraseBuilder(vocabularyData.phrases, { ageId, level: id === 'phrase-builder-2' ? level + 1 : level }); return game; }
       if (def.kind === 'guided') return { guided: true };
       throw new Error(`Tipo de execução desconhecido para ${id}: ${def.kind}`);
     }

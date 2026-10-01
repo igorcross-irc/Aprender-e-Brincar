@@ -1,3 +1,4 @@
+import { playSfx } from '../js/engine/sfx.js';
 export const CHILD_FEEDBACK = {
   success: { className: 'child-feedback-success', icon: '✨', text: 'Muito bem!' },
   retry: { className: 'child-feedback-retry', icon: '💛', text: 'Vamos tentar!' },
@@ -18,6 +19,7 @@ export function getChildFeedbackMessage(type = 'selected') {
 
 export function showChildFeedback(container, type = 'selected', duration = 650) {
   if (!container) return;
+  if (type === 'success' || type === 'retry') playSfx(type);
   const feedback = getChildFeedback(type);
   const oldTimer = feedbackTimers.get(container);
   if (oldTimer) window.clearTimeout(oldTimer);

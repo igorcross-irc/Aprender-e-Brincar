@@ -17,8 +17,11 @@ export function keepCorrectChoice(options = [], correctId, ageId = '2-3y') {
   return [correct, ...alternatives].slice(0, maxChoices);
 }
 
+// Classes literais para o Tailwind gerar; no celular nunca passa de 2 colunas.
+const GRID_CLASSES = { 2: 'grid-cols-2', 3: 'grid-cols-2 sm:grid-cols-3', 4: 'grid-cols-2 md:grid-cols-4', 5: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5' };
+
 export function getChoiceGridClass(ageId = '2-3y', count = null) {
-  return `grid-cols-${getChoiceGridColumns(ageId, count)}`;
+  return GRID_CLASSES[getChoiceGridColumns(ageId, count)];
 }
 
 export function getChoiceGridColumns(ageId = '2-3y', count = null) {

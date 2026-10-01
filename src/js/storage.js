@@ -2,6 +2,22 @@ export class StorageManager {
   constructor() {
     this.SCORE_KEY = 'aprender_brincar_stars';
     this.CHILD_NAME_KEY = 'aprender_brincar_child_name';
+    this.CHILD_AGE_KEY = 'aprender_brincar_child_age';
+    this.AGE_IDS = ['6-12m', '12-18m', '18-24m', '2-3y', '3-4y', '4-5y'];
+  }
+
+  // Faixa etária escolhida pelo responsável; vazio enquanto o app não foi configurado.
+  getChildAge() {
+    try {
+      const age = localStorage.getItem(this.CHILD_AGE_KEY);
+      return this.AGE_IDS.includes(age) ? age : '';
+    } catch { return ''; }
+  }
+
+  setChildAge(ageId) {
+    if (!this.AGE_IDS.includes(ageId)) return '';
+    try { localStorage.setItem(this.CHILD_AGE_KEY, ageId); } catch {}
+    return ageId;
   }
 
   getStars() {

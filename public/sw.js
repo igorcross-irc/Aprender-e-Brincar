@@ -1,21 +1,31 @@
-const VERSION = 'ab-0.3.0';
+// Troque VERSION a cada publicação que altere o shell para limpar caches antigos.
+const VERSION = 'ab-0.4.0';
 const SHELL = [
   '/',
-  '/index.html',
   '/manifest.json',
   '/assets/images/icon-master.png',
   '/assets/images/icon-home.png',
-  '/assets/images/icon-settings.png',
-  '/assets/images/icon-numeros.png',
-  '/assets/images/icon-animais.png',
-  '/assets/images/icon-alfabeto.png',
-  '/assets/images/icon-desenhos.png'
+  '/assets/images/icon-settings.png'
 ];
 const SHELL_CACHE = VERSION + '-shell';
 const RUNTIME_CACHE = VERSION + '-runtime';
 
+// Guarda apenas respostas válidas; nunca um 404/500 ou um redirecionamento.
+function cacheIfValid(request, response) {
+  if (response && response.ok && !response.redirected && response.type === 'basic') {
+    const copy = response.clone();
+    caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy)).catch(() => {});
+  }
+  return response;
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(SHELL_CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()));
+  // Um arquivo ausente não pode impedir a instalação do restante.
+  event.waitUntil(
+    caches.open(SHELL_CACHE)
+      .then((cache) => Promise.allSettled(SHELL.map((url) => cache.add(url))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {
@@ -30,22 +40,31 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) return;
   const url = new URL(request.url);
 
+  // Arquivos do build têm hash no nome: podem vir direto do cache.
+  if (url.pathname.startsWith('/build/')) {
+    event.respondWith(caches.match(request).then((cached) => cached || fetch(request).then((response) => cacheIfValid(request, response))));
+    return;
+  }
+
+  // Áudios e imagens: responde do cache e atualiza em segundo plano.
   if (url.pathname.startsWith('/assets/')) {
     event.respondWith(
-      caches.match(request).then((cached) => cached || fetch(request).then((response) => {
-        const copy = response.clone();
-        caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
-        return response;
-      }).catch(() => caches.match('/index.html')))
+      caches.match(request).then((cached) => {
+        const network = fetch(request).then((response) => cacheIfValid(request, response));
+        if (cached) {
+          event.waitUntil(network.catch(() => {}));
+          return cached;
+        }
+        return network;
+      })
     );
     return;
   }
 
+  // Páginas e demais arquivos: rede primeiro, cache quando offline.
   event.respondWith(
-    fetch(request).then((response) => {
-      const copy = response.clone();
-      caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy));
-      return response;
-    }).catch(() => caches.match(request).then((cached) => cached || caches.match('/index.html')))
+    fetch(request)
+      .then((response) => cacheIfValid(request, response))
+      .catch(() => caches.match(request).then((cached) => cached || (request.mode === 'navigate' ? caches.match('/') : Response.error())))
   );
 });

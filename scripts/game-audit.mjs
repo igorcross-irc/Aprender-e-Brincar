@@ -15,6 +15,9 @@ const audio = read('src/js/engine/audio-engine.js');
 const health = read('src/core/experience-health.js');
 const readiness = read('src/core/content-readiness.js');
 
+// Compara ignorando espaços: o contrato importa, não a formatação.
+const has = (source, token) => source.replace(/\s+/g, '').includes(token.replace(/\s+/g, ''));
+
 // Detecta corrupção comum de geração de código: \\n literal fora de strings/template literals.
 const sourceFiles = ['src/js/app.js', 'src/js/games/learning-world.js', 'src/js/games/memory.js', 'src/js/games/puzzle.js', 'src/js/games/balloon-pop.js', 'src/js/games/canvas.js', 'src/js/games/cards.js', 'src/js/engine/audio-engine.js', 'src/core/app-core.js', 'src/core/activity-registry.js', 'src/core/learning-engine.js', 'src/core/learning-session.js', 'src/core/progress-store.js', 'src/core/skill-progress.js', 'src/js/game-registry.js', 'src/js/games/independent/odd-one-out.js', 'src/js/games/independent/number-order.js', 'src/js/games/independent/color-hunt.js', 'src/js/games/independent/rhythm-copy.js', 'src/js/games/independent/sound-sequence.js'];
 for (const file of sourceFiles) {
@@ -54,7 +57,7 @@ for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-c
 }
 for (const file of ['odd-one-out.js','number-order.js','color-hunt.js','rhythm-copy.js','sound-sequence.js']) {
   const source = read(`src/js/games/independent/${file}`);
-  if (!source.includes('resolveGameDifficulty') || !source.includes('ageId')) fail(`jogo independente sem adaptação por idade: ${file}`);
+  if (!has(source, 'resolveGameDifficulty') || !has(source, 'ageId')) fail(`jogo independente sem adaptação por idade: ${file}`);
 }
 if (!app.includes('createGameRegistry')) fail('app não usa registro central');
 if (app.includes('renderers[this.mode] || renderers[\'discover-animals\']')) fail('fallback silencioso de renderer ainda presente');
@@ -68,17 +71,17 @@ if (!health.includes('sanitizeProgressState')) fail('reparo de persistência aus
 if (!readiness.includes('getContentReadiness')) fail('camada de prontidão de conteúdo ausente');
 if (!experienceController.includes('getContentReadiness') || !experienceController.includes('audio.preload')) fail('integração de conteúdo/áudio ausente');
 if (!experienceController.includes('gameRegistry.has(gameId)')) fail('pré-validação do registro de atividade ausente');
-if (!experienceController.includes('activity.ages.includes(ageId)')) fail('proteção de faixa etária ausente');
+if (!experienceController.includes('isAgeCompatible(activity, ageId)')) fail('proteção de faixa etária ausente');
 
 if (!existsSync(resolve(root, 'src/core/learning-engine.js'))) fail('motor adaptativo ausente');
 const progress = read('src/core/progress-store.js');
 if (!progress.includes('sessions') || !progress.includes('mastery') || !progress.includes('accuracy') || !progress.includes('lastAttempts')) fail('persistência adaptativa incompleta');
-if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished) return')) fail('proteção contra conclusão duplicada ausente');
-if (!appScreens.includes('learning.recommend') || !experienceController.includes('getDifficulty')) fail('integração adaptativa incompleta');
-if (!appScreens.includes('onWin({score:touched,rounds:visibleCards.length})')) fail('experiências guiadas sem pontuação real');
+if (!experienceController.includes('let finished = false') || !experienceController.includes('if (finished ||')) fail('proteção contra conclusão duplicada ausente');
+if (!read('src/core/learning-session.js').includes('learning.recommend') || !experienceController.includes('getDifficulty')) fail('integração adaptativa incompleta');
+if (!has(appScreens, 'onWin({ score: touched, rounds: visibleCards.length')) fail('experiências guiadas sem pontuação real');
 if (!experienceController.includes('core.session.ensure') || !experienceController.includes('core.session.complete')) fail('controlador central de sessão não integrado');
 if (!appScreens.includes('renderSessionResult') || !appScreens.includes('data-next')) fail('tela de resultado da sessão ausente');
-if (!appScreens.includes('journeyStage') || !appScreens.includes('journey-node')) fail('jornada dinâmica ausente');
+if (!read('src/js/ui/family-settings.js').includes('buildReport')) fail('relatório da família ausente');
 if (app.includes('setTimeout(onBack,700)')) fail('sessão encerra antes da criança escolher continuar');
 if (!existsSync(resolve(root, 'src/core/learning-session.js'))) fail('controlador de sessão ausente');
 if (!existsSync(resolve(root, 'src/core/skill-progress.js'))) fail('progresso por habilidade ausente');
@@ -96,15 +99,15 @@ const balloons = read('src/js/games/balloon-pop.js');
 const canvas = read('src/js/games/canvas.js');
 const cards = read('src/js/games/cards.js');
 
-if (!memory.includes('attempts: this.moves') || !memory.includes('maxScore: rounds')) fail('memória sem métricas semânticas');
-if (!puzzle.includes('attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
-if (!balloons.includes('attempts: this.attempts') || !balloons.includes('maxScore: this.difficulty.rounds')) fail('balões sem métricas semânticas');
-if (!canvas.includes("mode: 'explore'") || !canvas.includes('difficulty: this.level')) fail('lousa sem contrato de exploração');
-if (!cards.includes("mode: 'explore'") || !cards.includes('completedRounds: 1')) fail('frases sem contrato de exploração');
-if (!cards.includes('touch-target') || !cards.includes('resolveGameDifficulty')) fail('cards sem política central e alvos de toque');
-if (!canvas.includes('touch-target') || !canvas.includes('resolveGameDifficulty')) fail('canvas sem política central e alvos de toque');
+if (!has(memory, 'attempts: this.moves') || !has(memory, 'maxScore: rounds')) fail('memória sem métricas semânticas');
+if (!has(puzzle, 'attempts, maxScore: count')) fail('quebra-cabeça sem métricas semânticas');
+if (!has(balloons, 'attempts: this.attempts') || !has(balloons, 'maxScore: this.difficulty.rounds')) fail('balões sem métricas semânticas');
+if (!has(canvas, "mode: 'explore'") || !has(canvas, 'difficulty: this.level')) fail('lousa sem contrato de exploração');
+if (!has(cards, "mode: 'explore'") || !has(cards, 'completedRounds: 1')) fail('frases sem contrato de exploração');
+if (!has(cards, 'touch-target') || !has(cards, 'resolveGameDifficulty')) fail('cards sem política central e alvos de toque');
+if (!has(canvas, 'touch-target') || !has(canvas, 'resolveGameDifficulty')) fail('canvas sem política central e alvos de toque');
 for (const [name, source] of [['memory', memory], ['puzzle', puzzle], ['balloons', balloons]]) {
-  if (!source.includes('resolveGameDifficulty') || !source.includes('ageId')) fail(`${name} sem adaptação por faixa etária`);
+  if (!has(source, 'resolveGameDifficulty') || !has(source, 'ageId')) fail(`${name} sem adaptação por faixa etária`);
 }
 
 console.log('Game audit OK');

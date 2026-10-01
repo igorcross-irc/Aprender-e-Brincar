@@ -11,7 +11,7 @@ export const developmentContent = {
   objects: [
     { id: 'bola', label: 'Bola', icon: '⚽', group: 'brinquedos', size: 'pequeno' },
     { id: 'boneca', label: 'Boneca', icon: '🪆', group: 'brinquedos', size: 'pequeno' },
-    { id: 'carro', label: 'Carro', icon: '🚗', group: 'transportes', size: 'pequeno' },
+    { id: 'carro', label: 'Carro', icon: '🚗', group: 'transportes', size: 'grande' },
     { id: 'aviao', label: 'Avião', icon: '✈️', group: 'transportes', size: 'grande' },
     { id: 'casa', label: 'Casa', icon: '🏠', group: 'lugares', size: 'grande' },
     { id: 'arvore', label: 'Árvore', icon: '🌳', group: 'natureza', size: 'grande' },
@@ -91,9 +91,9 @@ export const developmentContent = {
     { id:'casa', label:'Casa', icon:'🏠', group:'lugares' }, { id:'parque', label:'Parque', icon:'🌳', group:'lugares' }
   ],
   stories: [
-    { id:'morning', title:'Bom dia!', scenes:['☀️','🧸','🍎'], words:['acordou','brincou','comeu'] },
-    { id:'park', title:'No parque', scenes:['🏠','🌳','⚽'], words:['saiu','brincou','voltou'] },
-    { id:'rain', title:'Dia de chuva', scenes:['☁️','🌧️','🌈'], words:['nuvem','chuva','arco-íris'] }
+    { id:'morning', title:'Bom dia!', scenes:['☀️','🧸','🍎'], words:['O sol nasceu. Bom dia!','O ursinho acordou e foi brincar.','Depois, comeu uma maçã. Hum, que gostoso!'] },
+    { id:'park', title:'No parque', scenes:['🏠','🌳','⚽'], words:['A família saiu de casa.','No parque tem uma árvore bem grande.','Vamos jogar bola? Chuta!'] },
+    { id:'rain', title:'Dia de chuva', scenes:['☁️','🌧️','🌈'], words:['Apareceu uma nuvem no céu.','Começou a chover. Plic, ploc!','A chuva parou e apareceu o arco-íris!'] }
   ],
   musicPatterns: [
     { id:'p1', label:'Palma', pattern:['👏'] }, { id:'p2', label:'Duas palmas', pattern:['👏','👏'] },

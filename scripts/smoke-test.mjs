@@ -2,7 +2,7 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const required = [
   'index.html',
-  'manifest.json',
+  'public/manifest.json',
   'package.json',
   'tailwind.config.js',
   'postcss.config.js',
@@ -34,7 +34,7 @@ const app = readFileSync('src/js/app.js', 'utf8');
 const html = readFileSync('index.html', 'utf8');
 const sw = readFileSync('public/sw.js', 'utf8');
 
-for (const token of ['registerPWA', 'AppCore', 'activityCatalog', 'escape', 'renderAgeSelection', 'renderWorldMap', 'renderJourney', 'launchGame']) {
+for (const token of ['registerPWA', 'AppCore', 'activityCatalog', 'escape', 'renderHome', 'renderSetup', 'launchGame']) {
   if (!app.includes(token)) throw new Error(`SMOKE FAIL — app.js sem ${token}`);
 }
 if (html.includes('cdn.tailwindcss.com')) throw new Error('SMOKE FAIL — Tailwind CDN ainda presente');
@@ -47,8 +47,8 @@ for (const token of ['AudioContext', 'sessionStorage', 'localStorage', 'preload'
 }
 
 const css = readFileSync('src/css/styles.css', 'utf8');
-for (const token of ['page-enter', 'hero-panel', 'page-toolbar', 'world-progress', 'journey-highlight', 'journey-node', 'overflow-y:auto']) {
-  if (!css.includes(token)) throw new Error(`SMOKE FAIL — estilos de jornada sem ${token}`);
+for (const token of ['page-enter', 'world-tile', 'activity-tile', 'result-card', 'setup-card', 'overflow-y: auto']) {
+  if (!css.includes(token)) throw new Error(`SMOKE FAIL — estilos da interface sem ${token}`);
 }
 
 console.log('SMOKE OK — fundação, PWA e segurança básica presentes.');

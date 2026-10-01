@@ -1,3 +1,4 @@
+import { playSfx } from '../engine/sfx.js';
 import { resolveGameDifficulty, getGameChoiceCount } from '../../core/game-difficulty-policy.js';
 
 export class MemoryGame {
@@ -14,26 +15,22 @@ export class MemoryGame {
     const selected=this.shuffle([...items]).slice(0,pairCount); const deck=this.shuffle([...selected,...selected]);
     this.container.innerHTML=`
       <div class="w-full max-w-3xl flex flex-col items-center gap-4 my-auto">
-        <div class="w-full flex justify-between items-center gap-2"><button id="btn-back-memory" class="bg-white/95 text-slate-700 px-5 py-3 rounded-full font-bold shadow touch-target">⬅️ Voltar</button>
-        <div class="text-right"><h2 class="text-2xl font-black text-indigo-700">🧠 Memória</h2><p class="text-xs text-slate-500">Nível ${this.level} • ${pairCount} pares</p></div></div>
-        <div class="w-full flex justify-center gap-2 text-xs font-black text-indigo-700"><span class="bg-white/90 px-3 py-2 rounded-full shadow">Pares: <b id="memory-pairs">0</b>/${pairCount}</span><span class="bg-white/90 px-3 py-2 rounded-full shadow">Jogadas: <b id="memory-moves">0</b></span></div>
-        <div class="memory-grid level-${this.level} gap-3 w-full">${deck.map((item,idx)=>`<button data-id="${item.id}" data-idx="${idx}" aria-label="Carta da memória" class="memory-card bg-white rounded-3xl p-3 min-h-[105px] md:min-h-[125px] flex items-center justify-center text-5xl shadow-md border-4 border-slate-200 touch-target"><span class="card-back">❓</span><span class="card-front hidden">${item.icon}</span></button>`).join('')}</div>
+        <div class="game-bar w-full"><button id="btn-back-memory" class="game-back" aria-label="Voltar">⬅️</button><h2 class="game-title">🧠 Memória</h2><div class="game-dots" id="memory-dots">${Array.from({length:pairCount},()=>'<span></span>').join('')}</div></div>
+        <span class="sr-only">Pares: <b id="memory-pairs">0</b>/${pairCount} · Jogadas: <b id="memory-moves">0</b></span>
+        <div class="memory-grid level-${this.level} gap-3 w-full">${deck.map((item,idx)=>`<button data-id="${item.id}" data-idx="${idx}" aria-label="Carta da memória" class="memory-card bg-white rounded-3xl p-3 min-h-[105px] md:min-h-[125px] flex items-center justify-center text-5xl shadow-md border-4 border-slate-200 touch-target"><span class="card-back">⭐</span><span class="card-front hidden">${item.icon}</span></button>`).join('')}</div>
       </div>`;
     document.getElementById('btn-back-memory').addEventListener('click',()=>this.onBack());
     this.container.querySelectorAll('.memory-card').forEach(card=>card.addEventListener('click',()=>{const item=items.find(i=>i.id===card.dataset.id);this.flipCard(card,item,pairCount);}));
-    this.audio.play(null,this.difficulty.audioFirst?'Vamos encontrar os pares!':'Encontre os pares iguais.');
+    this.audio.prompt(null,this.difficulty.audioFirst?'Vamos encontrar os pares!':'Encontre os pares iguais.');
   }
   flipCard(card,item,totalPairs){
     if(!item||this.flippedCards.length===2||card.classList.contains('flipped')||card.classList.contains('matched')||this.finished)return;
     card.classList.add('flipped'); card.querySelector('.card-back').classList.add('hidden'); card.querySelector('.card-front').classList.remove('hidden'); this.audio.play(item.audio,item.label); this.flippedCards.push({card,item});
     if(this.flippedCards.length===2){this.moves++; const movesEl=document.getElementById('memory-moves'); if(movesEl)movesEl.textContent=this.moves;
       const [first,second]=this.flippedCards;
-      if(first.item.id===second.item.id){this.matchedPairs++; first.card.classList.add('matched','border-emerald-400','bg-emerald-50'); second.card.classList.add('matched','border-emerald-400','bg-emerald-50'); this.flippedCards=[]; const pairsEl=document.getElementById('memory-pairs'); if(pairsEl)pairsEl.textContent=this.matchedPairs; if(this.matchedPairs===totalPairs)setTimeout(()=>this.finish(),700);}
-      else{this.audio.play(null,this.difficulty.feedback==='gentle'?'Vamos tentar de novo!':'Vamos comparar as duas cartas e tentar de novo!'); setTimeout(()=>{if(this.finished)return;[first.card,second.card].forEach(c=>{c.classList.remove('flipped');c.querySelector('.card-back').classList.remove('hidden');c.querySelector('.card-front').classList.add('hidden');});this.flippedCards=[];},this.level>=4?750:1000);}
+      if(first.item.id===second.item.id){playSfx('success');this.matchedPairs++; first.card.classList.add('matched','border-emerald-400','bg-emerald-50'); second.card.classList.add('matched','border-emerald-400','bg-emerald-50'); this.flippedCards=[]; const pairsEl=document.getElementById('memory-pairs'); if(pairsEl)pairsEl.textContent=this.matchedPairs; document.querySelectorAll('#memory-dots span')[this.matchedPairs-1]?.classList.add('done'); if(this.matchedPairs===totalPairs)setTimeout(()=>this.finish(),700);}
+      else{playSfx('retry');this.audio.play(null,this.difficulty.feedback==='gentle'?'Vamos tentar de novo!':'Vamos comparar as duas cartas e tentar de novo!'); setTimeout(()=>{if(this.finished)return;[first.card,second.card].forEach(c=>{c.classList.remove('flipped');c.querySelector('.card-back').classList.remove('hidden');c.querySelector('.card-front').classList.add('hidden');});this.flippedCards=[];},this.level>=4?750:1000);}
     }
   }
-  finish(){if(this.finished)return;this.finished=true;const rounds=Math.max(1,this.matchedPairs);const score=Math.max(0,Math.min(rounds,Math.round((rounds/Math.max(rounds,this.moves))*rounds)));this.audio.play(null,'Parabéns! Você encontrou todos os pares!');this.onComplete?.({score,rounds,correct:this.matchedPairs,attempts:this.moves,maxScore:rounds,completedRounds:this.matchedPairs,difficulty:this.level,ageId:this.ageId});
-    const modal=document.createElement('div');modal.className='fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4';modal.innerHTML=`<div class="bg-white rounded-3xl p-7 text-center shadow-2xl max-w-sm w-full"><div class="text-7xl mb-3">🏆</div><h3 class="text-3xl font-black text-indigo-600">Memória completa!</h3><p class="text-slate-600 mt-2">Você encontrou ${this.matchedPairs} pares em ${this.moves} jogadas.</p><div class="flex gap-3 mt-6"><button id="memory-menu" class="flex-1 bg-slate-100 font-black py-3 rounded-2xl touch-target">Menu</button><button id="memory-next" class="flex-1 bg-emerald-500 text-white font-black py-3 rounded-2xl touch-target">Próximo nível</button></div></div>`;document.body.appendChild(modal);
-    modal.querySelector('#memory-menu').addEventListener('click',()=>{modal.remove();this.onBack();});modal.querySelector('#memory-next').addEventListener('click',()=>{modal.remove();this.start(this.items,Math.min(5,this.level+1),{ageId:this.ageId});});
-  }
+  finish(){if(this.finished)return;this.finished=true;const rounds=Math.max(1,this.matchedPairs);const score=Math.max(0,Math.min(rounds,Math.round((rounds/Math.max(rounds,this.moves))*rounds)));this.audio.play(null,'Parabéns! Você encontrou todos os pares!');this.onComplete?.({score,rounds,correct:this.matchedPairs,attempts:this.moves,maxScore:rounds,completedRounds:this.matchedPairs,difficulty:this.level,ageId:this.ageId});}
 }

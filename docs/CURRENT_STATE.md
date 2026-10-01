@@ -1,84 +1,35 @@
-# Estado Atual — Fase 7 — Universo Navegável
+# Estado Atual — 30/09/2026
 
-## Base consolidada
-- Fases 0–6 incorporadas em `main`.
-- Vite + Tailwind compilado + PWA + Service Worker + CI.
-- 329 MP3s existentes preservados.
-- Catálogo central por faixa etária, domínio e habilidade.
-- Motor `LearningWorldGame` reutilizado para experiências progressivas.
+Aplicação pública (PWA) de brincadeiras educativas para crianças de 6 meses a 5 anos. Referência de uso: criança de 2 anos (faixa 2–3 anos). Detalhes de cada mudança em `docs/CHANGELOG.md`.
 
-## Fase 7 implementada
-- Criado o **Mapa do Aprender & Brincar**, com navegação em três níveis: idade → mundo → experiência.
-- Criados 7 mundos reutilizáveis:
-  - 🌱 Descobrir
-  - 🗣️ Falar & Comunicar
-  - 🎨 Cores & Formas
-  - 🐾 Animais & Sons
-  - 🔢 Números & Lógica
-  - 🧠 Memória & Atenção
-  - ✨ Criar & Mexer
-- Cada experiência agora pertence a um mundo principal e continua filtrada pela faixa etária.
-- A tela de mundo mostra objetivo, quantidade de brincadeiras, dificuldade e se a experiência já foi explorada.
-- O fluxo infantil evita competição: estrelas são recompensa simples, não ranking.
-- A Área da Família passou a apresentar estrelas, experiências exploradas, total disponível, nome da criança, privacidade e reset protegido.
-- A navegação mantém retorno claro entre idade, mundo e experiência.
-- A experiência visual ganhou cartões, caminhos, etapas, estados de progresso e hierarquia infantil.
+## Como a criança usa
+1. Na primeira abertura, o responsável informa nome (opcional) e idade.
+2. O início mostra saudação, os mundos da idade e o álbum de adesivos.
+3. Cada mundo lista brincadeiras em blocos grandes; toda instrução é falada e o botão 🔊 repete.
+4. Toda brincadeira termina numa única tela de comemoração: de novo, outra, voltar.
 
-## Conteúdo
-O catálogo atual cobre:
-- descoberta e causa/efeito;
-- cores e formas;
-- animais e sons;
-- atenção e memória;
-- números e quantidades;
-- classificação e lógica;
-- linguagem e comunicação;
-- sílabas, rimas e consciência fonológica inicial;
-- histórias e sequência;
-- movimento, ritmo e criatividade.
+## Área da Família (verificação para adultos)
+Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico, gráfico de 7 dias, conquistas, instalação do app, privacidade e "zerar progresso".
 
-## Expansão implementada nesta etapa
-- Experiências específicas para 6–18 meses: descoberta e cores.
-- Vocabulário cotidiano reutilizável.
-- Histórias interativas curtas.
-- Música e ritmo.
-- Classificação adicional.
-- Plano de locuções ampliado para os novos mundos.
+## Arquitetura
+- Vite + Tailwind; fonte Nunito empacotada; sem chamadas externas.
+- `src/js/ui/app-screens.js`: telas da criança. `src/js/ui/family-settings.js`: Área da Família.
+- `src/js/controllers/experience-controller.js`: inicia/encerra brincadeiras, sessão, resultado e limpeza.
+- `src/js/game-registry.js`: mapeia cada atividade para seu motor. Motores: `learning-world.js` (26 modos), `games/independent/*`, `games/toddler/*` (bolhas, contar, piano, prancha, esconde-esconde, separar/encaixar), `games/language/*` (rimas, som inicial, história em sequência), memória, quebra-cabeça, balões, lousa, frases.
+- `src/content/activity-catalog.js`: catálogo; `DRAFT_ACTIVITY_IDS` mantém fora do app o que ainda não tem mecânica real (hoje vazio) e `DUPLICATE_ACTIVITY_IDS` esconde cópias.
+- `src/core/screen-time.js`: tempo de tela. `src/js/engine/sfx.js`: sons sintetizados. `src/js/engine/audio-engine.js`: MP3 + voz do navegador.
+- PWA: `public/sw.js` (shell tolerante, mídia com atualização em segundo plano), `public/manifest.json`.
 
-## Próxima profundidade
-A arquitetura está pronta para multiplicar conteúdo sem criar centenas de motores independentes. A próxima expansão deve aumentar a variedade dentro de cada mundo, incluindo:
-- vocabulário temático;
-- histórias interativas;
-- música;
-- memória auditiva;
-- comunicação funcional;
-- padrões e lógica;
-- desafios motores;
-- experiências específicas para 6–24 meses;
-- personagens e identidade visual própria.
+## Qualidade
+- `npm run test:e2e`: abre todas as brincadeiras em todas as idades e joga os fluxos completos no Chromium (verificação principal).
+- `npm run test:play-all`: robô que joga todas as brincadeiras até o fim e detecta travamentos (≈25 min; rodar antes de publicar).
+- `test:core`, `smoke`, `audit:*`: verificações de contrato e conteúdo.
+- CI: `.github/workflows/build.yml`.
 
-## Áudio
-- Reutilizar primeiro os 329 MP3s existentes.
-- Fallback pt-BR permanece disponível.
-- Novas gravações serão consolidadas posteriormente em uma lista única, sem duplicidades.
+## Próximos passos sugeridos
+- Gravar as falas listadas em `docs/AUDIO_COVERAGE.md` (voz humana é bem mais agradável que a do navegador).
+- Ilustrações próprias no lugar dos emojis (mesmos caminhos de `public/assets/images/visual-library/`).
+- Refatorar os jogos antigos (`learning-world.js`, `cards.js`, etc.) para a moldura `game-shell.js`.
 
 ## Limite clínico
 As experiências são educativas e lúdicas. Não fazem diagnóstico, triagem clínica ou promessa de tratamento.
-
-
-## Estado adicional — 30/09/2026
-- Staging acumulada em `staging/saltos-86-100` continua separada da `main` até validação final.
-- Mascote infantil reutilizável em SVG foi integrado à landing e ao resultado de experiência.
-- Cabeçalho ganhou indicação online/offline e preparação de instalação PWA.
-- Build correspondente ao commit `d32286b8615757bb1fe930f0e6b3dffa9d788846` foi concluído como READY no Vercel.
-- O GitHub Actions apresenta falha de infraestrutura/inicialização nas execuções recentes: o job termina com zero steps em aproximadamente dois segundos. Isso não deve ser confundido com falha de build da aplicação.
-- A identidade visual final dos objetos ainda não está completa: o sistema de visuais continua preparado para substituir emojis por ilustrações próprias reais.
-
-
-## Biblioteca visual — revisão 30/09/2026
-- Os ícones de navegação já estavam versionados no GitHub.
-- A biblioteca visual anterior gerada fora do repositório (pacote WebP/PNG citado no histórico) não estava disponível como arquivo binário recuperável no ambiente desta execução; portanto, não foi apresentada como se tivesse sido recuperada.
-- Foi implementado no staging um conjunto de 24 assets SVG em `public/assets/images/visual-library/`, cobrindo todos os objetos já reconhecidos pelo `child-visual-system`.
-- O `child-visual-system` agora aponta para esses assets com fallback preservado.
-- Crítica: estes SVGs são uma camada de integração/compatibilidade, não devem ser considerados a versão artística final da biblioteca. A próxima substituição pode usar ilustrações próprias detalhadas mantendo exatamente os mesmos caminhos e contratos.
-- O deployment do commit `8d105042acb900c5a66b90b6d84ad1ae9f8d48da` foi concluído como READY no Vercel.

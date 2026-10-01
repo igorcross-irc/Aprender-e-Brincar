@@ -46,20 +46,20 @@ export class LearningSession {
 
   complete(activityId, result = {}) {
     if (!this.active) return { completed: false, reason: 'no-session' };
-    if (this.active.completed.includes(activityId)) {
-      return { completed: false, duplicate: true, session: this.snapshot() };
-    }
-
+    // Repetir é parte do aprendizado: toda conclusão é registrada, mas a estrela só vem na primeira vez.
+    const repeat = this.active.completed.includes(activityId);
     const normalized = normalizeExperienceResult(result);
     const progress = this.progress.complete(activityId, normalized);
-    if (this.reward) this.reward(activityId);
-    this.active.completed.push(activityId);
+    const starAwarded = this.reward ? Boolean(this.reward(activityId)) : false;
+    if (!repeat) this.active.completed.push(activityId);
     this.active.activityCount = this.active.completed.length;
-    this.active.stars += 1;
+    if (starAwarded) this.active.stars += 1;
     this.persist();
 
     return {
       completed: true,
+      repeat,
+      starAwarded,
       activityId,
       progress,
       outcome: this.learning.getOutcome(activityId),
