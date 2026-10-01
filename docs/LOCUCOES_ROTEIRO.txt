@@ -1,10 +1,32 @@
+Animais & Sons
+
+Có có có!
+
+Cores & Formas
+
+Criar & Mexer
+
+Descobrir
+
+Falar & Comunicar
+
+Memória & Atenção
+
+Miau!
+
+Muito bem! Você terminou a brincadeira!
+
+Muuu!
+
+Números & Lógica
+
+Quá quá!
+
+Vamos ouvir mais uma vez.
+
 Brinque para ganhar adesivos!
 
 Hora de descansar! Até mais tarde!
-
-Novo adesivo!
-
-Oi! Vamos brincar?
 
 Seus adesivos!
 
@@ -14,43 +36,89 @@ Au au!
 
 Cachorro. Au au!
 
-Có có có!
-
 Croac!
 
 Galinha. Có có có!
 
 Gato. Miau!
 
-Grrr!
-
 Leão. Grrr!
-
-Miau!
-
-Muuu!
 
 Onde está a galinha?
 
-Onde está a vaca?
-
-Onde está o cachorro?
-
-Onde está o gato?
-
-Onde está o leão?
-
-Onde está o pato?
-
-Onde está o sapo?
-
 Pato. Quá quá!
-
-Quá quá!
 
 Sapo. Croac!
 
 Vaca. Muuu!
+
+Estoure o número 1
+
+Estoure o número 2
+
+Estoure o número 3
+
+Estoure o número 4
+
+Estoure as bolhas!
+
+Bata palmas ou conte as partes da palavra.
+
+BO - LA. Muito bem!
+
+BOLA
+
+CA - SA. Muito bem!
+
+GA - TO. Muito bem!
+
+MA - MÃE. Muito bem!
+
+MAMÃE
+
+PA - TO. Muito bem!
+
+Muito bem! Ritmo combinado.
+
+Vamos observar de novo.
+
+Você pode bater palmas junto.
+
+Encontre a cor Amarelo
+
+Encontre a cor Branco
+
+Encontre a cor Laranja
+
+Encontre a cor Marrom
+
+Encontre a cor Preto
+
+Encontre a cor Rosa
+
+Encontre a cor Roxo
+
+Encontre a cor Verde
+
+Encontre a cor Vermelho
+
+Muito bem! Amarelo
+
+Muito bem! Branco
+
+Muito bem! Laranja
+
+Muito bem! Marrom
+
+Muito bem! Preto
+
+Muito bem! Rosa
+
+Muito bem! Roxo
+
+Muito bem! Verde
+
+Muito bem! Vermelho
 
 Ba! Banana e Baleia!
 
@@ -100,89 +168,87 @@ Sa! Sapo e Sapato!
 
 Sa… Sapo. Qual começa igual?
 
-Encontre a cor Amarelo
+Muito bem! Você descobriu o padrão.
+
+Observe a sequência mais uma vez.
+
+Observe o padrão e escolha o que vem depois.
+
+cinco! Muito bem!
+
+dois! Muito bem!
+
+nove! Muito bem!
+
+oito! Muito bem!
+
+quatro! Muito bem!
+
+seis! Muito bem!
+
+sete! Muito bem!
+
+três! Muito bem!
+
+um! Muito bem!
+
+Muito bem! Vamos para o próximo.
 
 Encontre a cor Azul
 
-Encontre a cor Branco
-
-Encontre a cor Laranja
-
-Encontre a cor Marrom
-
-Encontre a cor Preto
-
-Encontre a cor Rosa
-
-Encontre a cor Roxo
-
-Encontre a cor Verde
-
-Encontre a cor Vermelho
-
-Muito bem! Amarelo
-
 Muito bem! Azul
-
-Muito bem! Branco
-
-Muito bem! Laranja
-
-Muito bem! Marrom
-
-Muito bem! Preto
-
-Muito bem! Rosa
-
-Muito bem! Roxo
-
-Muito bem! Verde
-
-Muito bem! Vermelho
-
-Onde está a cor Amarelo?
-
-Onde está a cor Azul?
 
 Onde está a cor Branco?
 
-Onde está a cor Laranja?
-
-Onde está a cor Marrom?
-
-Onde está a cor Preto?
-
 Onde está a cor Rosa?
 
-Onde está a cor Roxo?
-
-Onde está a cor Verde?
-
-Onde está a cor Vermelho?
+Toque em uma cor para ouvir. Depois, toque em Continuar.
 
 Mão
 
 Olho
 
-Onde está a boca?
-
-Onde está a cabeça?
-
-Onde está a mão?
-
-Onde está o nariz?
-
-Onde está o olho?
-
-Onde está o pé?
-
 Pé
+
+Gire
+
+Vamos brincar juntos!
 
 Flor
 
 Luz
 
 Música
+
+Toque nos animais para ouvir. Quando quiser, toque em Continuar.
+
+Bola. Bola!
+
+Coração. Coração!
+
+Flor. Flor!
+
+Luz. Luz!
+
+Música. Música!
+
+Toque para descobrir. Não há respostas certas ou erradas. Toque em Continuar quando quiser.
+
+Toque nas cores para ouvir o nome. Depois, toque em Continuar.
+
+Camisa
+
+Colher
+
+Copo
+
+Escova
+
+Livro
+
+Não existe resposta errada aqui. Explore os objetos que quiser.
+
+Sapato
 
 Onde encaixa a estrela?
 
@@ -193,6 +259,48 @@ Onde encaixa o coração?
 Onde encaixa o quadrado?
 
 Onde encaixa o triângulo?
+
+Parabéns! Você completou o quebra-cabeça!
+
+Onde está a cor Amarelo?
+
+Onde está a cor Azul?
+
+Onde está a cor Laranja?
+
+Onde está a cor Marrom?
+
+Onde está a cor Preto?
+
+Onde está a cor Roxo?
+
+Onde está a cor Verde?
+
+Onde está a cor Vermelho?
+
+Onde está a vaca?
+
+Onde está o cachorro?
+
+Onde está o leão?
+
+Onde está o pato?
+
+Onde está o sapo?
+
+O que combina com Árvore?
+
+O que combina com Avião?
+
+O que combina com Banana?
+
+O que combina com Bola?
+
+O que combina com Boneca?
+
+O que combina com Carro?
+
+O que combina com Maçã?
 
 Achou! Au au!
 
@@ -236,6 +344,14 @@ Cadê o sapo? Onde se escondeu?
 
 Cadê o sapo? Toque para achar!
 
+Eu quero água
+
+Eu quero colo
+
+Eu quero comer
+
+O que você quer dizer? Toque num cartão.
+
 Está doendo
 
 Estou com sono
@@ -244,13 +360,7 @@ Estou feliz
 
 Estou triste
 
-Eu quero água
-
 Eu quero brincar
-
-Eu quero colo
-
-Eu quero comer
 
 Mais, por favor
 
@@ -260,21 +370,23 @@ Quero ir ao banheiro
 
 Sim!
 
-Encontre a estrela.
-
-Encontre o círculo.
-
-Encontre o quadrado.
-
-Encontre o triângulo.
-
-A chuva parou e apareceu o arco-íris!
+Toque no que é grande.
 
 A família saiu de casa.
 
-Apareceu uma nuvem no céu.
+No parque tem uma árvore bem grande.
+
+Vamos jogar bola? Chuta!
 
 Bom dia!
+
+Dia de chuva
+
+No parque
+
+A chuva parou e apareceu o arco-íris!
+
+Apareceu uma nuvem no céu.
 
 Bom dia! Toque nas figuras na ordem da história. O que aconteceu primeiro?
 
@@ -282,13 +394,11 @@ Começou a chover. Plic, ploc!
 
 Depois, comeu uma maçã. Hum, que gostoso!
 
-Dia de chuva
-
 Dia de chuva Toque nas figuras na ordem da história. O que aconteceu primeiro?
 
-No parque
+E depois? Pense no que veio em seguida.
 
-No parque tem uma árvore bem grande.
+Hum, o que aconteceu primeiro?
 
 No parque Toque nas figuras na ordem da história. O que aconteceu primeiro?
 
@@ -296,7 +406,31 @@ O sol nasceu. Bom dia!
 
 O ursinho acordou e foi brincar.
 
-Vamos jogar bola? Chuta!
+Que desenho incrível!
+
+Vamos desenhar! Escolha uma cor.
+
+Onde está a boca?
+
+Onde está a cabeça?
+
+Onde está a mão?
+
+Onde está o nariz?
+
+Onde está o olho?
+
+Onde está o pé?
+
+👋Dê tchau
+
+👏Bata palmas
+
+💃Dance
+
+🦘Pule
+
+Levante, imite e brinque junto.
 
 Beber
 
@@ -322,51 +456,17 @@ Quero
 
 3 palmas
 
-Bata palmas
+Encontre a estrela.
 
-Dance
+Encontre o círculo.
 
-Dê tchau
+Encontre o quadrado.
 
-Duas palmas
+Encontre o triângulo.
 
-Gire
-
-Palma
-
-Palma e pausa
-
-Palma, palma, pausa
-
-Pule
-
-Animais & Sons
-
-Cores & Formas
-
-Criar & Mexer
-
-Descobrir
-
-Falar & Comunicar
-
-Memória & Atenção
-
-Números & Lógica
-
-cinco! Muito bem!
+Observe a quantidade e escolha o número.
 
 dez! Muito bem!
-
-dois! Muito bem!
-
-Estoure o número 1
-
-Estoure o número 2
-
-Estoure o número 3
-
-Estoure o número 4
 
 Estoure o número 5
 
@@ -374,49 +474,11 @@ Estoure o número 6
 
 Estoure o número 7
 
-nove! Muito bem!
-
-oito! Muito bem!
-
-quatro! Muito bem!
-
-seis! Muito bem!
-
-sete! Muito bem!
-
-três! Muito bem!
-
-um! Muito bem!
-
 Árvore
-
-Bola
 
 Boneca
 
-Camisa
-
-Colher
-
-Copo
-
-Escova
-
-Livro
-
-O que combina com Árvore?
-
-O que combina com Avião?
-
-O que combina com Banana?
-
-O que combina com Bola?
-
-O que combina com Boneca?
-
 O que combina com Camisa?
-
-O que combina com Carro?
 
 O que combina com Casa?
 
@@ -428,11 +490,7 @@ O que combina com Escova?
 
 O que combina com Livro?
 
-O que combina com Maçã?
-
 O que combina com Sapato?
-
-O que pertence ao mesmo grupo de Animais?
 
 O que pertence ao mesmo grupo de Árvore?
 
@@ -443,8 +501,6 @@ O que pertence ao mesmo grupo de Banana?
 O que pertence ao mesmo grupo de Bola?
 
 O que pertence ao mesmo grupo de Boneca?
-
-O que pertence ao mesmo grupo de Brinquedos?
 
 O que pertence ao mesmo grupo de Camisa?
 
@@ -458,21 +514,17 @@ O que pertence ao mesmo grupo de Copo?
 
 O que pertence ao mesmo grupo de Escova?
 
-O que pertence ao mesmo grupo de Frutas?
-
 O que pertence ao mesmo grupo de Livro?
 
 O que pertence ao mesmo grupo de Maçã?
 
 O que pertence ao mesmo grupo de Sapato?
 
-O que pertence ao mesmo grupo de Veículos?
-
-Sapato
-
 Baixo
 
 Pequeno
+
+Vazio
 
 Qual é o contrário de Alto?
 
@@ -482,11 +534,9 @@ Qual é o contrário de Dia?
 
 Qual é o contrário de Grande?
 
-Vazio
+Qual número vem depois?
 
-Comida
-
-Mamãe
+Vamos observar a sequência.
 
 Onde está a água?
 
@@ -496,11 +546,19 @@ Onde está a comida?
 
 Onde está a mamãe?
 
+Onde está o gato?
+
 Onde está o papai?
 
 Onde está o parque?
 
+Comida
+
 Papai
+
+Toque nos animais para fazer música!
+
+Qual é diferente?
 
 Muito bem! Cachorro
 
@@ -516,9 +574,17 @@ Muito bem! Sapo
 
 Muito bem! Vaca
 
-Abelha rima com…?
+Grrr!
 
-Abelha, Ovelha! Rimou!
+Ouça com atenção. Quem fez esse som?
+
+O que pertence ao mesmo grupo de Animais?
+
+O que pertence ao mesmo grupo de Brinquedos?
+
+O que pertence ao mesmo grupo de Frutas?
+
+O que pertence ao mesmo grupo de Veículos?
 
 Bolo rima com…?
 
@@ -528,17 +594,25 @@ Escute de novo: Abelha rima com…?
 
 Escute de novo: Bolo rima com…?
 
+Escute de novo: Leão rima com…?
+
+Escute de novo: Queijo rima com…?
+
+Leão rima com…?
+
+Leão, Avião! Rimou!
+
+Abelha rima com…?
+
+Abelha, Ovelha! Rimou!
+
 Escute de novo: Gato rima com…?
 
 Escute de novo: Janela rima com…?
 
-Escute de novo: Leão rima com…?
-
 Escute de novo: Mão rima com…?
 
 Escute de novo: Pato rima com…?
-
-Escute de novo: Queijo rima com…?
 
 Gato rima com…?
 
@@ -547,10 +621,6 @@ Gato, Rato! Rimou!
 Janela rima com…?
 
 Janela, Panela! Rimou!
-
-Leão rima com…?
-
-Leão, Avião! Rimou!
 
 Mão rima com…?
 
@@ -563,6 +633,16 @@ Pato, Sapato! Rimou!
 Queijo rima com…?
 
 Queijo, Beijo! Rimou!
+
+Duas palmas
+
+Observe, imite e brinque com o ritmo.
+
+Palma
+
+Palma e pausa
+
+Palma, palma, pausa
 
 Onde vai a baleia?
 
@@ -612,15 +692,11 @@ Onde vai o trevo?
 
 Onde vai o trevo? No cesto verde!
 
-BO - LA. Muito bem!
+Vamos ouvir novamente.
 
-CA - SA. Muito bem!
+Conte os objetos e escolha a quantidade.
 
-GA - TO. Muito bem!
-
-MA - MÃE. Muito bem!
-
-PA - TO. Muito bem!
+Vamos contar novamente!
 
 Onde está a letra A?
 
@@ -1251,8 +1327,6 @@ Ouça e Encontre
 Palavras do Dia
 
 Piano dos Animais
-
-Qual é Diferente?
 
 Quem Fez Esse Som?
 

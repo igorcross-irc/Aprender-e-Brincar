@@ -6,10 +6,10 @@ Gerado por `node scripts/recording-list.mjs`. Marque `[x]` conforme gravar. A me
 
 | | Falas | Já gravadas | Falta gravar |
 | --- | ---: | ---: | ---: |
-| P1 — mais usadas | 7 | 1 | 6 |
-| P2 — usadas hoje | 336 | 30 | 306 |
-| P3 — futuro | 588 | 153 | 435 |
-| **Total** | **931** | **184** | **747** |
+| P1 — mais usadas | 20 | 3 | 17 |
+| P2 — usadas hoje | 363 | 30 | 333 |
+| P3 — futuro | 587 | 153 | 434 |
+| **Total** | **970** | **186** | **784** |
 
 ## Gerar em lote (mesmo processo do lote anterior)
 
@@ -30,43 +30,101 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - **Perguntas** terminam com entonação de pergunta; **comemorações** com energia; **instruções** com calma.
 - **Ordem sugerida:** P1 primeiro (aparece o tempo todo), depois P2 por brincadeira e, por fim, P3.
 
+## Falas com o nome da criança
+
+Estas falas incluem o nome configurado na Área da Família e, por isso, usam a voz do navegador. Grave a versão sem nome (já incluída em P1) — ela é usada quando não há nome configurado.
+
+- Muito bem, {nome}!
+- Oi, {nome}! Vamos brincar?
 
 ## P1 — mais usadas
 
-### Telas do app (6)
+### Mais usadas (várias brincadeiras) (13)
+
+- [ ] Animais & Sons → `animais-sons.mp3`
+- [ ] Có có có! → `co-co-co.mp3`
+- [ ] Cores & Formas → `cores-formas.mp3`
+- [ ] Criar & Mexer → `criar-mexer.mp3`
+- [ ] Descobrir → `descobrir.mp3`
+- [ ] Falar & Comunicar → `falar-comunicar.mp3`
+- [ ] Memória & Atenção → `memoria-atencao.mp3`
+- [ ] Miau! → `miau.mp3`
+- [ ] Muito bem! Você terminou a brincadeira! → `muito-bem-voce-terminou-a-brincadeira.mp3`
+- [ ] Muuu! → `muuu.mp3`
+- [ ] Números & Lógica → `numeros-logica.mp3`
+- [ ] Quá quá! → `qua-qua.mp3`
+- [ ] Vamos ouvir mais uma vez. → `vamos-ouvir-mais-uma-vez.mp3`
+
+### Telas do app (4)
 
 - [ ] Brinque para ganhar adesivos! → `brinque-para-ganhar-adesivos.mp3`
 - [ ] Hora de descansar! Até mais tarde! → `hora-de-descansar-ate-mais-tarde.mp3`
-- [ ] Novo adesivo! → `novo-adesivo.mp3`
-- [ ] Oi! Vamos brincar? → `oi-vamos-brincar.mp3`
 - [ ] Seus adesivos! → `seus-adesivos.mp3`
 - [ ] Você brincou de novo! → `voce-brincou-de-novo.mp3`
 
 ## P2 — usadas hoje
 
-### Animais (21)
+### Animais (10)
 
 - [ ] Au au! → `au-au.mp3`
 - [ ] Cachorro. Au au! → `cachorro-au-au.mp3`
-- [ ] Có có có! → `co-co-co.mp3`
 - [ ] Croac! → `croac.mp3`
 - [ ] Galinha. Có có có! → `galinha-co-co-co.mp3`
 - [ ] Gato. Miau! → `gato-miau.mp3`
-- [ ] Grrr! → `grrr.mp3`
 - [ ] Leão. Grrr! → `leao-grrr.mp3`
-- [ ] Miau! → `miau.mp3`
-- [ ] Muuu! → `muuu.mp3`
 - [ ] Onde está a galinha? → `onde-esta-a-galinha.mp3`
-- [ ] Onde está a vaca? → `onde-esta-a-vaca.mp3`
-- [ ] Onde está o cachorro? → `onde-esta-o-cachorro.mp3`
-- [ ] Onde está o gato? → `onde-esta-o-gato.mp3`
-- [ ] Onde está o leão? → `onde-esta-o-leao.mp3`
-- [ ] Onde está o pato? → `onde-esta-o-pato.mp3`
-- [ ] Onde está o sapo? → `onde-esta-o-sapo.mp3`
 - [ ] Pato. Quá quá! → `pato-qua-qua.mp3`
-- [ ] Quá quá! → `qua-qua.mp3`
 - [ ] Sapo. Croac! → `sapo-croac.mp3`
 - [ ] Vaca. Muuu! → `vaca-muuu.mp3`
+
+### Balões dos Números (4)
+
+- [ ] Estoure o número 1 → `estoure-o-numero-1.mp3`
+- [ ] Estoure o número 2 → `estoure-o-numero-2.mp3`
+- [ ] Estoure o número 3 → `estoure-o-numero-3.mp3`
+- [ ] Estoure o número 4 → `estoure-o-numero-4.mp3`
+
+### Bolhas (1)
+
+- [ ] Estoure as bolhas! → `estoure-as-bolhas.mp3`
+
+### Brincar com Sílabas (8)
+
+- [ ] Bata palmas ou conte as partes da palavra. → `bata-palmas-ou-conte-as-partes-da-palavra.mp3`
+- [ ] BO - LA. Muito bem! → `bo-la-muito-bem.mp3`
+- [ ] BOLA → `bola.mp3`
+- [ ] CA - SA. Muito bem! → `ca-sa-muito-bem.mp3`
+- [ ] GA - TO. Muito bem! → `ga-to-muito-bem.mp3`
+- [ ] MA - MÃE. Muito bem! → `ma-mae-muito-bem.mp3`
+- [ ] MAMÃE → `mamae.mp3`
+- [ ] PA - TO. Muito bem! → `pa-to-muito-bem.mp3`
+
+### Brinque com o Ritmo (3)
+
+- [ ] Muito bem! Ritmo combinado. → `muito-bem-ritmo-combinado.mp3`
+- [ ] Vamos observar de novo. → `vamos-observar-de-novo.mp3`
+- [ ] Você pode bater palmas junto. → `voce-pode-bater-palmas-junto.mp3`
+
+### Caça às Cores (18)
+
+- [ ] Encontre a cor Amarelo → `encontre-a-cor-amarelo.mp3`
+- [ ] Encontre a cor Branco → `encontre-a-cor-branco.mp3`
+- [ ] Encontre a cor Laranja → `encontre-a-cor-laranja.mp3`
+- [ ] Encontre a cor Marrom → `encontre-a-cor-marrom.mp3`
+- [ ] Encontre a cor Preto → `encontre-a-cor-preto.mp3`
+- [ ] Encontre a cor Rosa → `encontre-a-cor-rosa.mp3`
+- [ ] Encontre a cor Roxo → `encontre-a-cor-roxo.mp3`
+- [ ] Encontre a cor Verde → `encontre-a-cor-verde.mp3`
+- [ ] Encontre a cor Vermelho → `encontre-a-cor-vermelho.mp3`
+- [ ] Muito bem! Amarelo → `muito-bem-amarelo.mp3`
+- [ ] Muito bem! Branco → `muito-bem-branco.mp3`
+- [ ] Muito bem! Laranja → `muito-bem-laranja.mp3`
+- [ ] Muito bem! Marrom → `muito-bem-marrom.mp3`
+- [ ] Muito bem! Preto → `muito-bem-preto.mp3`
+- [ ] Muito bem! Rosa → `muito-bem-rosa.mp3`
+- [ ] Muito bem! Roxo → `muito-bem-roxo.mp3`
+- [ ] Muito bem! Verde → `muito-bem-verde.mp3`
+- [ ] Muito bem! Vermelho → `muito-bem-vermelho.mp3`
 
 ### Com Que Som Começa? (24)
 
@@ -95,56 +153,82 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Sa! Sapo e Sapato! → `sa-sapo-e-sapato.mp3`
 - [ ] Sa… Sapo. Qual começa igual? → `sa-sapo-qual-comeca-igual.mp3`
 
-### Cores (30)
+### Complete a Sequência (3)
 
-- [ ] Encontre a cor Amarelo → `encontre-a-cor-amarelo.mp3`
+- [ ] Muito bem! Você descobriu o padrão. → `muito-bem-voce-descobriu-o-padrao.mp3`
+- [ ] Observe a sequência mais uma vez. → `observe-a-sequencia-mais-uma-vez.mp3`
+- [ ] Observe o padrão e escolha o que vem depois. → `observe-o-padrao-e-escolha-o-que-vem-depois.mp3`
+
+### Contar Tocando (9)
+
+- [ ] cinco! Muito bem! → `cinco-muito-bem.mp3`
+- [ ] dois! Muito bem! → `dois-muito-bem.mp3`
+- [ ] nove! Muito bem! → `nove-muito-bem.mp3`
+- [ ] oito! Muito bem! → `oito-muito-bem.mp3`
+- [ ] quatro! Muito bem! → `quatro-muito-bem.mp3`
+- [ ] seis! Muito bem! → `seis-muito-bem.mp3`
+- [ ] sete! Muito bem! → `sete-muito-bem.mp3`
+- [ ] três! Muito bem! → `tres-muito-bem.mp3`
+- [ ] um! Muito bem! → `um-muito-bem.mp3`
+
+### Copie o Ritmo (1)
+
+- [ ] Muito bem! Vamos para o próximo. → `muito-bem-vamos-para-o-proximo.mp3`
+
+### Cores (4)
+
 - [ ] Encontre a cor Azul → `encontre-a-cor-azul.mp3`
-- [ ] Encontre a cor Branco → `encontre-a-cor-branco.mp3`
-- [ ] Encontre a cor Laranja → `encontre-a-cor-laranja.mp3`
-- [ ] Encontre a cor Marrom → `encontre-a-cor-marrom.mp3`
-- [ ] Encontre a cor Preto → `encontre-a-cor-preto.mp3`
-- [ ] Encontre a cor Rosa → `encontre-a-cor-rosa.mp3`
-- [ ] Encontre a cor Roxo → `encontre-a-cor-roxo.mp3`
-- [ ] Encontre a cor Verde → `encontre-a-cor-verde.mp3`
-- [ ] Encontre a cor Vermelho → `encontre-a-cor-vermelho.mp3`
-- [ ] Muito bem! Amarelo → `muito-bem-amarelo.mp3`
 - [ ] Muito bem! Azul → `muito-bem-azul.mp3`
-- [ ] Muito bem! Branco → `muito-bem-branco.mp3`
-- [ ] Muito bem! Laranja → `muito-bem-laranja.mp3`
-- [ ] Muito bem! Marrom → `muito-bem-marrom.mp3`
-- [ ] Muito bem! Preto → `muito-bem-preto.mp3`
-- [ ] Muito bem! Rosa → `muito-bem-rosa.mp3`
-- [ ] Muito bem! Roxo → `muito-bem-roxo.mp3`
-- [ ] Muito bem! Verde → `muito-bem-verde.mp3`
-- [ ] Muito bem! Vermelho → `muito-bem-vermelho.mp3`
-- [ ] Onde está a cor Amarelo? → `onde-esta-a-cor-amarelo.mp3`
-- [ ] Onde está a cor Azul? → `onde-esta-a-cor-azul.mp3`
 - [ ] Onde está a cor Branco? → `onde-esta-a-cor-branco.mp3`
-- [ ] Onde está a cor Laranja? → `onde-esta-a-cor-laranja.mp3`
-- [ ] Onde está a cor Marrom? → `onde-esta-a-cor-marrom.mp3`
-- [ ] Onde está a cor Preto? → `onde-esta-a-cor-preto.mp3`
 - [ ] Onde está a cor Rosa? → `onde-esta-a-cor-rosa.mp3`
-- [ ] Onde está a cor Roxo? → `onde-esta-a-cor-roxo.mp3`
-- [ ] Onde está a cor Verde? → `onde-esta-a-cor-verde.mp3`
-- [ ] Onde está a cor Vermelho? → `onde-esta-a-cor-vermelho.mp3`
 
-### Corpo (9)
+### Cores para Descobrir (1)
+
+- [ ] Toque em uma cor para ouvir. Depois, toque em Continuar. → `toque-em-uma-cor-para-ouvir-depois-toque-em-continuar.mp3`
+
+### Corpo (3)
 
 - [ ] Mão → `mao.mp3`
 - [ ] Olho → `olho.mp3`
-- [ ] Onde está a boca? → `onde-esta-a-boca.mp3`
-- [ ] Onde está a cabeça? → `onde-esta-a-cabeca.mp3`
-- [ ] Onde está a mão? → `onde-esta-a-mao.mp3`
-- [ ] Onde está o nariz? → `onde-esta-o-nariz.mp3`
-- [ ] Onde está o olho? → `onde-esta-o-olho.mp3`
-- [ ] Onde está o pé? → `onde-esta-o-pe.mp3`
 - [ ] Pé → `pe.mp3`
+
+### Desafio do Movimento (2)
+
+- [ ] Gire → `gire.mp3`
+- [ ] Vamos brincar juntos! → `vamos-brincar-juntos.mp3`
 
 ### Descobertas do bebê (3)
 
 - [ ] Flor → `flor.mp3`
 - [ ] Luz → `luz.mp3`
 - [ ] Música → `musica.mp3`
+
+### Descobrir Animais (1)
+
+- [ ] Toque nos animais para ouvir. Quando quiser, toque em Continuar. → `toque-nos-animais-para-ouvir-quando-quiser-toque-em-continuar.mp3`
+
+### Descobrir com as Mãos (6)
+
+- [ ] Bola. Bola! → `bola-bola.mp3`
+- [ ] Coração. Coração! → `coracao-coracao.mp3`
+- [ ] Flor. Flor! → `flor-flor.mp3`
+- [ ] Luz. Luz! → `luz-luz.mp3`
+- [ ] Música. Música! → `musica-musica.mp3`
+- [ ] Toque para descobrir. Não há respostas certas ou erradas. Toque em Continuar quando quiser. → `toque-para-descobrir-nao-ha-respostas-certas-ou-erradas-toque-em-continuar-quando-quiser.mp3`
+
+### Descobrir Cores (1)
+
+- [ ] Toque nas cores para ouvir o nome. Depois, toque em Continuar. → `toque-nas-cores-para-ouvir-o-nome-depois-toque-em-continuar.mp3`
+
+### Descobrir Objetos (7)
+
+- [ ] Camisa → `camisa.mp3`
+- [ ] Colher → `colher.mp3`
+- [ ] Copo → `copo.mp3`
+- [ ] Escova → `escova.mp3`
+- [ ] Livro → `livro.mp3`
+- [ ] Não existe resposta errada aqui. Explore os objetos que quiser. → `nao-existe-resposta-errada-aqui-explore-os-objetos-que-quiser.mp3`
+- [ ] Sapato → `sapato.mp3`
 
 ### Encaixe as Formas (5)
 
@@ -153,6 +237,39 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Onde encaixa o coração? → `onde-encaixa-o-coracao.mp3`
 - [ ] Onde encaixa o quadrado? → `onde-encaixa-o-quadrado.mp3`
 - [ ] Onde encaixa o triângulo? → `onde-encaixa-o-triangulo.mp3`
+
+### Encaixe e Quebra-Cabeça (1)
+
+- [ ] Parabéns! Você completou o quebra-cabeça! → `parabens-voce-completou-o-quebra-cabeca.mp3`
+
+### Encontre a Cor (8)
+
+- [ ] Onde está a cor Amarelo? → `onde-esta-a-cor-amarelo.mp3`
+- [ ] Onde está a cor Azul? → `onde-esta-a-cor-azul.mp3`
+- [ ] Onde está a cor Laranja? → `onde-esta-a-cor-laranja.mp3`
+- [ ] Onde está a cor Marrom? → `onde-esta-a-cor-marrom.mp3`
+- [ ] Onde está a cor Preto? → `onde-esta-a-cor-preto.mp3`
+- [ ] Onde está a cor Roxo? → `onde-esta-a-cor-roxo.mp3`
+- [ ] Onde está a cor Verde? → `onde-esta-a-cor-verde.mp3`
+- [ ] Onde está a cor Vermelho? → `onde-esta-a-cor-vermelho.mp3`
+
+### Encontre o Animal (5)
+
+- [ ] Onde está a vaca? → `onde-esta-a-vaca.mp3`
+- [ ] Onde está o cachorro? → `onde-esta-o-cachorro.mp3`
+- [ ] Onde está o leão? → `onde-esta-o-leao.mp3`
+- [ ] Onde está o pato? → `onde-esta-o-pato.mp3`
+- [ ] Onde está o sapo? → `onde-esta-o-sapo.mp3`
+
+### Encontre o Par (7)
+
+- [ ] O que combina com Árvore? → `o-que-combina-com-arvore.mp3`
+- [ ] O que combina com Avião? → `o-que-combina-com-aviao.mp3`
+- [ ] O que combina com Banana? → `o-que-combina-com-banana.mp3`
+- [ ] O que combina com Bola? → `o-que-combina-com-bola.mp3`
+- [ ] O que combina com Boneca? → `o-que-combina-com-boneca.mp3`
+- [ ] O que combina com Carro? → `o-que-combina-com-carro.mp3`
+- [ ] O que combina com Maçã? → `o-que-combina-com-maca.mp3`
 
 ### Esconde-esconde (21)
 
@@ -178,45 +295,76 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Cadê o sapo? Onde se escondeu? → `cade-o-sapo-onde-se-escondeu.mp3`
 - [ ] Cadê o sapo? Toque para achar! → `cade-o-sapo-toque-para-achar.mp3`
 
-### Eu Quero… (comunicação) (12)
+### Eu Quero… (4)
+
+- [ ] Eu quero água → `eu-quero-agua.mp3`
+- [ ] Eu quero colo → `eu-quero-colo.mp3`
+- [ ] Eu quero comer → `eu-quero-comer.mp3`
+- [ ] O que você quer dizer? Toque num cartão. → `o-que-voce-quer-dizer-toque-num-cartao.mp3`
+
+### Eu Quero… (comunicação) (9)
 
 - [ ] Está doendo → `esta-doendo.mp3`
 - [ ] Estou com sono → `estou-com-sono.mp3`
 - [ ] Estou feliz → `estou-feliz.mp3`
 - [ ] Estou triste → `estou-triste.mp3`
-- [ ] Eu quero água → `eu-quero-agua.mp3`
 - [ ] Eu quero brincar → `eu-quero-brincar.mp3`
-- [ ] Eu quero colo → `eu-quero-colo.mp3`
-- [ ] Eu quero comer → `eu-quero-comer.mp3`
 - [ ] Mais, por favor → `mais-por-favor.mp3`
 - [ ] Não, obrigado → `nao-obrigado.mp3`
 - [ ] Quero ir ao banheiro → `quero-ir-ao-banheiro.mp3`
 - [ ] Sim! → `sim.mp3`
 
-### Formas (4)
+### Grande e Pequeno (1)
 
-- [ ] Encontre a estrela. → `encontre-a-estrela.mp3`
-- [ ] Encontre o círculo. → `encontre-o-circulo.mp3`
-- [ ] Encontre o quadrado. → `encontre-o-quadrado.mp3`
-- [ ] Encontre o triângulo. → `encontre-o-triangulo.mp3`
+- [ ] Toque no que é grande. → `toque-no-que-e-grande.mp3`
 
-### Histórias (15)
+### História Interativa (3)
+
+- [ ] A família saiu de casa. → `a-familia-saiu-de-casa.mp3`
+- [ ] No parque tem uma árvore bem grande. → `no-parque-tem-uma-arvore-bem-grande.mp3`
+- [ ] Vamos jogar bola? Chuta! → `vamos-jogar-bola-chuta.mp3`
+
+### Histórias (3)
+
+- [ ] Bom dia! → `bom-dia.mp3`
+- [ ] Dia de chuva → `dia-de-chuva.mp3`
+- [ ] No parque → `no-parque.mp3`
+
+### Hora da História (11)
 
 - [ ] A chuva parou e apareceu o arco-íris! → `a-chuva-parou-e-apareceu-o-arco-iris.mp3`
-- [ ] A família saiu de casa. → `a-familia-saiu-de-casa.mp3`
 - [ ] Apareceu uma nuvem no céu. → `apareceu-uma-nuvem-no-ceu.mp3`
-- [ ] Bom dia! → `bom-dia.mp3`
 - [ ] Bom dia! Toque nas figuras na ordem da história. O que aconteceu primeiro? → `bom-dia-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3`
 - [ ] Começou a chover. Plic, ploc! → `comecou-a-chover-plic-ploc.mp3`
 - [ ] Depois, comeu uma maçã. Hum, que gostoso! → `depois-comeu-uma-maca-hum-que-gostoso.mp3`
-- [ ] Dia de chuva → `dia-de-chuva.mp3`
 - [ ] Dia de chuva Toque nas figuras na ordem da história. O que aconteceu primeiro? → `dia-de-chuva-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3`
-- [ ] No parque → `no-parque.mp3`
-- [ ] No parque tem uma árvore bem grande. → `no-parque-tem-uma-arvore-bem-grande.mp3`
+- [ ] E depois? Pense no que veio em seguida. → `e-depois-pense-no-que-veio-em-seguida.mp3`
+- [ ] Hum, o que aconteceu primeiro? → `hum-o-que-aconteceu-primeiro.mp3`
 - [ ] No parque Toque nas figuras na ordem da história. O que aconteceu primeiro? → `no-parque-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3`
 - [ ] O sol nasceu. Bom dia! → `o-sol-nasceu-bom-dia.mp3`
 - [ ] O ursinho acordou e foi brincar. → `o-ursinho-acordou-e-foi-brincar.mp3`
-- [ ] Vamos jogar bola? Chuta! → `vamos-jogar-bola-chuta.mp3`
+
+### Lousa Mágica (2)
+
+- [ ] Que desenho incrível! → `que-desenho-incrivel.mp3`
+- [ ] Vamos desenhar! Escolha uma cor. → `vamos-desenhar-escolha-uma-cor.mp3`
+
+### Meu Corpo (6)
+
+- [ ] Onde está a boca? → `onde-esta-a-boca.mp3`
+- [ ] Onde está a cabeça? → `onde-esta-a-cabeca.mp3`
+- [ ] Onde está a mão? → `onde-esta-a-mao.mp3`
+- [ ] Onde está o nariz? → `onde-esta-o-nariz.mp3`
+- [ ] Onde está o olho? → `onde-esta-o-olho.mp3`
+- [ ] Onde está o pé? → `onde-esta-o-pe.mp3`
+
+### Mexa o Corpo! (5)
+
+- [ ] 👋Dê tchau → `de-tchau.mp3`
+- [ ] 👏Bata palmas → `bata-palmas.mp3`
+- [ ] 💃Dance → `dance.mp3`
+- [ ] 🦘Pule → `pule.mp3`
+- [ ] Levante, imite e brinque junto. → `levante-imite-e-brinque-junto.mp3`
 
 ### Montar Frases (9)
 
@@ -230,116 +378,96 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Por favor → `por-favor.mp3`
 - [ ] Quero → `quero.mp3`
 
-### Movimento e ritmo (12)
+### Movimento e ritmo (3)
 
 - [ ] 1 palma → `1-palma.mp3`
 - [ ] 2 palmas → `2-palmas.mp3`
 - [ ] 3 palmas → `3-palmas.mp3`
-- [ ] Bata palmas → `bata-palmas.mp3`
-- [ ] Dance → `dance.mp3`
-- [ ] Dê tchau → `de-tchau.mp3`
-- [ ] Duas palmas → `duas-palmas.mp3`
-- [ ] Gire → `gire.mp3`
-- [ ] Palma → `palma.mp3`
-- [ ] Palma e pausa → `palma-e-pausa.mp3`
-- [ ] Palma, palma, pausa → `palma-palma-pausa.mp3`
-- [ ] Pule → `pule.mp3`
 
-### Nomes dos mundos (7)
+### Mundo das Formas (4)
 
-- [ ] Animais & Sons → `animais-sons.mp3`
-- [ ] Cores & Formas → `cores-formas.mp3`
-- [ ] Criar & Mexer → `criar-mexer.mp3`
-- [ ] Descobrir → `descobrir.mp3`
-- [ ] Falar & Comunicar → `falar-comunicar.mp3`
-- [ ] Memória & Atenção → `memoria-atencao.mp3`
-- [ ] Números & Lógica → `numeros-logica.mp3`
+- [ ] Encontre a estrela. → `encontre-a-estrela.mp3`
+- [ ] Encontre o círculo. → `encontre-o-circulo.mp3`
+- [ ] Encontre o quadrado. → `encontre-o-quadrado.mp3`
+- [ ] Encontre o triângulo. → `encontre-o-triangulo.mp3`
 
-### Números (17)
+### Número e Quantidade (1)
 
-- [ ] cinco! Muito bem! → `cinco-muito-bem.mp3`
+- [ ] Observe a quantidade e escolha o número. → `observe-a-quantidade-e-escolha-o-numero.mp3`
+
+### Números (4)
+
 - [ ] dez! Muito bem! → `dez-muito-bem.mp3`
-- [ ] dois! Muito bem! → `dois-muito-bem.mp3`
-- [ ] Estoure o número 1 → `estoure-o-numero-1.mp3`
-- [ ] Estoure o número 2 → `estoure-o-numero-2.mp3`
-- [ ] Estoure o número 3 → `estoure-o-numero-3.mp3`
-- [ ] Estoure o número 4 → `estoure-o-numero-4.mp3`
 - [ ] Estoure o número 5 → `estoure-o-numero-5.mp3`
 - [ ] Estoure o número 6 → `estoure-o-numero-6.mp3`
 - [ ] Estoure o número 7 → `estoure-o-numero-7.mp3`
-- [ ] nove! Muito bem! → `nove-muito-bem.mp3`
-- [ ] oito! Muito bem! → `oito-muito-bem.mp3`
-- [ ] quatro! Muito bem! → `quatro-muito-bem.mp3`
-- [ ] seis! Muito bem! → `seis-muito-bem.mp3`
-- [ ] sete! Muito bem! → `sete-muito-bem.mp3`
-- [ ] três! Muito bem! → `tres-muito-bem.mp3`
-- [ ] um! Muito bem! → `um-muito-bem.mp3`
 
-### Objetos (41)
+### Objetos (23)
 
 - [ ] Árvore → `arvore.mp3`
-- [ ] Bola → `bola.mp3`
 - [ ] Boneca → `boneca.mp3`
-- [ ] Camisa → `camisa.mp3`
-- [ ] Colher → `colher.mp3`
-- [ ] Copo → `copo.mp3`
-- [ ] Escova → `escova.mp3`
-- [ ] Livro → `livro.mp3`
-- [ ] O que combina com Árvore? → `o-que-combina-com-arvore.mp3`
-- [ ] O que combina com Avião? → `o-que-combina-com-aviao.mp3`
-- [ ] O que combina com Banana? → `o-que-combina-com-banana.mp3`
-- [ ] O que combina com Bola? → `o-que-combina-com-bola.mp3`
-- [ ] O que combina com Boneca? → `o-que-combina-com-boneca.mp3`
 - [ ] O que combina com Camisa? → `o-que-combina-com-camisa.mp3`
-- [ ] O que combina com Carro? → `o-que-combina-com-carro.mp3`
 - [ ] O que combina com Casa? → `o-que-combina-com-casa.mp3`
 - [ ] O que combina com Colher? → `o-que-combina-com-colher.mp3`
 - [ ] O que combina com Copo? → `o-que-combina-com-copo.mp3`
 - [ ] O que combina com Escova? → `o-que-combina-com-escova.mp3`
 - [ ] O que combina com Livro? → `o-que-combina-com-livro.mp3`
-- [ ] O que combina com Maçã? → `o-que-combina-com-maca.mp3`
 - [ ] O que combina com Sapato? → `o-que-combina-com-sapato.mp3`
-- [ ] O que pertence ao mesmo grupo de Animais? → `o-que-pertence-ao-mesmo-grupo-de-animais.mp3`
 - [ ] O que pertence ao mesmo grupo de Árvore? → `o-que-pertence-ao-mesmo-grupo-de-arvore.mp3`
 - [ ] O que pertence ao mesmo grupo de Avião? → `o-que-pertence-ao-mesmo-grupo-de-aviao.mp3`
 - [ ] O que pertence ao mesmo grupo de Banana? → `o-que-pertence-ao-mesmo-grupo-de-banana.mp3`
 - [ ] O que pertence ao mesmo grupo de Bola? → `o-que-pertence-ao-mesmo-grupo-de-bola.mp3`
 - [ ] O que pertence ao mesmo grupo de Boneca? → `o-que-pertence-ao-mesmo-grupo-de-boneca.mp3`
-- [ ] O que pertence ao mesmo grupo de Brinquedos? → `o-que-pertence-ao-mesmo-grupo-de-brinquedos.mp3`
 - [ ] O que pertence ao mesmo grupo de Camisa? → `o-que-pertence-ao-mesmo-grupo-de-camisa.mp3`
 - [ ] O que pertence ao mesmo grupo de Carro? → `o-que-pertence-ao-mesmo-grupo-de-carro.mp3`
 - [ ] O que pertence ao mesmo grupo de Casa? → `o-que-pertence-ao-mesmo-grupo-de-casa.mp3`
 - [ ] O que pertence ao mesmo grupo de Colher? → `o-que-pertence-ao-mesmo-grupo-de-colher.mp3`
 - [ ] O que pertence ao mesmo grupo de Copo? → `o-que-pertence-ao-mesmo-grupo-de-copo.mp3`
 - [ ] O que pertence ao mesmo grupo de Escova? → `o-que-pertence-ao-mesmo-grupo-de-escova.mp3`
-- [ ] O que pertence ao mesmo grupo de Frutas? → `o-que-pertence-ao-mesmo-grupo-de-frutas.mp3`
 - [ ] O que pertence ao mesmo grupo de Livro? → `o-que-pertence-ao-mesmo-grupo-de-livro.mp3`
 - [ ] O que pertence ao mesmo grupo de Maçã? → `o-que-pertence-ao-mesmo-grupo-de-maca.mp3`
 - [ ] O que pertence ao mesmo grupo de Sapato? → `o-que-pertence-ao-mesmo-grupo-de-sapato.mp3`
-- [ ] O que pertence ao mesmo grupo de Veículos? → `o-que-pertence-ao-mesmo-grupo-de-veiculos.mp3`
-- [ ] Sapato → `sapato.mp3`
 
-### Opostos (7)
+### Opostos (3)
 
 - [ ] Baixo → `baixo.mp3`
 - [ ] Pequeno → `pequeno.mp3`
+- [ ] Vazio → `vazio.mp3`
+
+### Opostos Divertidos (4)
+
 - [ ] Qual é o contrário de Alto? → `qual-e-o-contrario-de-alto.mp3`
 - [ ] Qual é o contrário de Cheio? → `qual-e-o-contrario-de-cheio.mp3`
 - [ ] Qual é o contrário de Dia? → `qual-e-o-contrario-de-dia.mp3`
 - [ ] Qual é o contrário de Grande? → `qual-e-o-contrario-de-grande.mp3`
-- [ ] Vazio → `vazio.mp3`
 
-### Palavras do dia a dia (9)
+### Ordem dos Números (2)
 
-- [ ] Comida → `comida.mp3`
-- [ ] Mamãe → `mamae.mp3`
+- [ ] Qual número vem depois? → `qual-numero-vem-depois.mp3`
+- [ ] Vamos observar a sequência. → `vamos-observar-a-sequencia.mp3`
+
+### Palavras do Dia (7)
+
 - [ ] Onde está a água? → `onde-esta-a-agua.mp3`
 - [ ] Onde está a casa? → `onde-esta-a-casa.mp3`
 - [ ] Onde está a comida? → `onde-esta-a-comida.mp3`
 - [ ] Onde está a mamãe? → `onde-esta-a-mamae.mp3`
+- [ ] Onde está o gato? → `onde-esta-o-gato.mp3`
 - [ ] Onde está o papai? → `onde-esta-o-papai.mp3`
 - [ ] Onde está o parque? → `onde-esta-o-parque.mp3`
+
+### Palavras do dia a dia (2)
+
+- [ ] Comida → `comida.mp3`
 - [ ] Papai → `papai.mp3`
+
+### Piano dos Animais (1)
+
+- [ ] Toque nos animais para fazer música! → `toque-nos-animais-para-fazer-musica.mp3`
+
+### Qual é Diferente? (1)
+
+- [ ] Qual é diferente? → `qual-e-diferente.mp3`
 
 ### Quebra-cabeça (7)
 
@@ -351,32 +479,55 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Muito bem! Sapo → `muito-bem-sapo.mp3`
 - [ ] Muito bem! Vaca → `muito-bem-vaca.mp3`
 
-### Rimas (24)
+### Quem Fez Esse Som? (2)
 
-- [ ] Abelha rima com…? → `abelha-rima-com.mp3`
-- [ ] Abelha, Ovelha! Rimou! → `abelha-ovelha-rimou.mp3`
+- [ ] Grrr! → `grrr.mp3`
+- [ ] Ouça com atenção. Quem fez esse som? → `ouca-com-atencao-quem-fez-esse-som.mp3`
+
+### Quem Pertence ao Grupo? (4)
+
+- [ ] O que pertence ao mesmo grupo de Animais? → `o-que-pertence-ao-mesmo-grupo-de-animais.mp3`
+- [ ] O que pertence ao mesmo grupo de Brinquedos? → `o-que-pertence-ao-mesmo-grupo-de-brinquedos.mp3`
+- [ ] O que pertence ao mesmo grupo de Frutas? → `o-que-pertence-ao-mesmo-grupo-de-frutas.mp3`
+- [ ] O que pertence ao mesmo grupo de Veículos? → `o-que-pertence-ao-mesmo-grupo-de-veiculos.mp3`
+
+### Rimas (8)
+
 - [ ] Bolo rima com…? → `bolo-rima-com.mp3`
 - [ ] Bolo, Rolo! Rimou! → `bolo-rolo-rimou.mp3`
 - [ ] Escute de novo: Abelha rima com…? → `escute-de-novo-abelha-rima-com.mp3`
 - [ ] Escute de novo: Bolo rima com…? → `escute-de-novo-bolo-rima-com.mp3`
+- [ ] Escute de novo: Leão rima com…? → `escute-de-novo-leao-rima-com.mp3`
+- [ ] Escute de novo: Queijo rima com…? → `escute-de-novo-queijo-rima-com.mp3`
+- [ ] Leão rima com…? → `leao-rima-com.mp3`
+- [ ] Leão, Avião! Rimou! → `leao-aviao-rimou.mp3`
+
+### Rimas Divertidas (16)
+
+- [ ] Abelha rima com…? → `abelha-rima-com.mp3`
+- [ ] Abelha, Ovelha! Rimou! → `abelha-ovelha-rimou.mp3`
 - [ ] Escute de novo: Gato rima com…? → `escute-de-novo-gato-rima-com.mp3`
 - [ ] Escute de novo: Janela rima com…? → `escute-de-novo-janela-rima-com.mp3`
-- [ ] Escute de novo: Leão rima com…? → `escute-de-novo-leao-rima-com.mp3`
 - [ ] Escute de novo: Mão rima com…? → `escute-de-novo-mao-rima-com.mp3`
 - [ ] Escute de novo: Pato rima com…? → `escute-de-novo-pato-rima-com.mp3`
-- [ ] Escute de novo: Queijo rima com…? → `escute-de-novo-queijo-rima-com.mp3`
 - [ ] Gato rima com…? → `gato-rima-com.mp3`
 - [ ] Gato, Rato! Rimou! → `gato-rato-rimou.mp3`
 - [ ] Janela rima com…? → `janela-rima-com.mp3`
 - [ ] Janela, Panela! Rimou! → `janela-panela-rimou.mp3`
-- [ ] Leão rima com…? → `leao-rima-com.mp3`
-- [ ] Leão, Avião! Rimou! → `leao-aviao-rimou.mp3`
 - [ ] Mão rima com…? → `mao-rima-com.mp3`
 - [ ] Mão, Pão! Rimou! → `mao-pao-rimou.mp3`
 - [ ] Pato rima com…? → `pato-rima-com.mp3`
 - [ ] Pato, Sapato! Rimou! → `pato-sapato-rimou.mp3`
 - [ ] Queijo rima com…? → `queijo-rima-com.mp3`
 - [ ] Queijo, Beijo! Rimou! → `queijo-beijo-rimou.mp3`
+
+### Ritmo Musical (5)
+
+- [ ] Duas palmas → `duas-palmas.mp3`
+- [ ] Observe, imite e brinque com o ritmo. → `observe-imite-e-brinque-com-o-ritmo.mp3`
+- [ ] Palma → `palma.mp3`
+- [ ] Palma e pausa → `palma-e-pausa.mp3`
+- [ ] Palma, palma, pausa → `palma-palma-pausa.mp3`
 
 ### Separar por Cor (24)
 
@@ -405,13 +556,14 @@ Se gerar só uma parte (ex.: só P1 e P2), as primeiras linhas do roteiro e do m
 - [ ] Onde vai o trevo? → `onde-vai-o-trevo.mp3`
 - [ ] Onde vai o trevo? No cesto verde! → `onde-vai-o-trevo-no-cesto-verde.mp3`
 
-### Sílabas (5)
+### Sequência de Sons (1)
 
-- [ ] BO - LA. Muito bem! → `bo-la-muito-bem.mp3`
-- [ ] CA - SA. Muito bem! → `ca-sa-muito-bem.mp3`
-- [ ] GA - TO. Muito bem! → `ga-to-muito-bem.mp3`
-- [ ] MA - MÃE. Muito bem! → `ma-mae-muito-bem.mp3`
-- [ ] PA - TO. Muito bem! → `pa-to-muito-bem.mp3`
+- [ ] Vamos ouvir novamente. → `vamos-ouvir-novamente.mp3`
+
+### Vamos Contar (2)
+
+- [ ] Conte os objetos e escolha a quantidade. → `conte-os-objetos-e-escolha-a-quantidade.mp3`
+- [ ] Vamos contar novamente! → `vamos-contar-novamente.mp3`
 
 ## P3 — futuro
 
@@ -726,7 +878,7 @@ Vocabulário e frases que o app ainda não usa, mas que novas brincadeiras prova
 - [ ] Vamos ver seus adesivos! → `vamos-ver-seus-adesivos.mp3`
 - [ ] Você ganhou um adesivo! → `voce-ganhou-um-adesivo.mp3`
 
-### Nomes das brincadeiras (48)
+### Nomes das brincadeiras (47)
 
 - [ ] Animais → `animais.mp3`
 - [ ] Balões dos Números → `baloes-dos-numeros.mp3`
@@ -767,7 +919,6 @@ Vocabulário e frases que o app ainda não usa, mas que novas brincadeiras prova
 - [ ] Ouça e Encontre → `ouca-e-encontre.mp3`
 - [ ] Palavras do Dia → `palavras-do-dia.mp3`
 - [ ] Piano dos Animais → `piano-dos-animais.mp3`
-- [ ] Qual é Diferente? → `qual-e-diferente.mp3`
 - [ ] Quem Fez Esse Som? → `quem-fez-esse-som.mp3`
 - [ ] Quem Pertence ao Grupo? → `quem-pertence-ao-grupo.mp3`
 - [ ] Rimas Divertidas → `rimas-divertidas.mp3`
