@@ -62,3 +62,11 @@ Origem: `aprender_brincar_icon_family.zip` (pacote 1, 24 ícones) e `aprender_br
 1. Coloque o arquivo limpo (fundo transparente, desenho centralizado) em `em-uso/` ou `reserva/`.
 2. Gere a versão do app: 256 px, WebP qualidade ~88, em `public/assets/images/icons/`.
 3. Os mapeamentos ficam em `src/js/ui/app-screens.js` (`GAME_IMAGES` e `WORLD_IMAGES`); o que não tiver imagem continua com emoji.
+
+## gerados (ElevenLabs, gpt-image-2)
+Figuras de jogo geradas a partir do estilo dos ícones aprovados, fundo branco removido localmente. Versão do app (256 px) em `public/assets/images/figures/`.
+| Arquivo | No app |
+| --- | --- |
+| fig-cachorro | figures/cachorro.webp |
+| fig-gato | figures/gato.webp |
+| fig-maca | figures/maca.webp |
