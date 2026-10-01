@@ -20,6 +20,19 @@ export const GAME_ICONS = {
   bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
 };
 
+// Ilustrações próprias (public/assets/images/icons); o que não estiver aqui usa o emoji de GAME_ICONS.
+const ICON_BASE = '/assets/images/icons/';
+export const GAME_IMAGES = {
+  balloons: 'balloon', puzzle: 'puzzle', memory: 'cards', 'music-keys': 'music', canvas: 'art',
+  'shape-match': 'shapes', 'shape-sort': 'shapes', count: 'numbers', 'count-tap': 'numbers', animals: 'animals'
+};
+const WORLD_IMAGES = {
+  discover: 'discovery', language: 'sound', 'colors-shapes': 'shapes', 'animals-sounds': 'animals',
+  'numbers-logic': 'numbers', 'memory-attention': 'cards', 'create-move': 'creative'
+};
+const imageTag = (name) => `<img src="${ICON_BASE}${name}.webp" alt="" draggable="false" />`;
+export const gameIconMarkup = (id) => (GAME_IMAGES[id] ? imageTag(GAME_IMAGES[id]) : GAME_ICONS[id] || '✨');
+
 export const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
 
 const CONFETTI_COLORS = ['#f472b6', '#facc15', '#34d399', '#60a5fa', '#a78bfa', '#fb923c'];
@@ -60,12 +73,12 @@ export class AppScreens {
           ${worlds.map((world) => `
             <button data-world="${world.id}" class="world-tile world-${world.color}" aria-label="${this.escape(world.title)}">
               <span class="world-tile-deco" aria-hidden="true">${world.icon}</span>
-              <span class="world-tile-icon" aria-hidden="true">${world.icon}</span>
+              <span class="world-tile-icon ${WORLD_IMAGES[world.id] ? 'has-image' : ''}" aria-hidden="true">${WORLD_IMAGES[world.id] ? imageTag(WORLD_IMAGES[world.id]) : world.icon}</span>
               <span class="world-tile-title">${this.escape(world.title)}</span>
             </button>`).join('')}
           <button id="btn-album" class="world-tile album-tile" aria-label="Meus adesivos">
             <span class="world-tile-deco" aria-hidden="true">⭐</span>
-            <span class="world-tile-icon" aria-hidden="true">📒</span>
+            <span class="world-tile-icon has-image" aria-hidden="true">${imageTag('trophy')}</span>
             <span class="world-tile-title">Meus adesivos</span>
           </button>
         </div>
@@ -94,7 +107,7 @@ export class AppScreens {
       <div class="screen page-enter">
         <div class="screen-bar">
           <button id="btn-back-worlds" class="round-button" aria-label="Voltar para os mundos">⬅️</button>
-          <h2 class="screen-title"><span aria-hidden="true">${world.icon}</span> ${this.escape(world.title)}</h2>
+          <h2 class="screen-title"><span class="title-icon" aria-hidden="true">${WORLD_IMAGES[world.id] ? imageTag(WORLD_IMAGES[world.id]) : world.icon}</span> ${this.escape(world.title)}</h2>
         </div>
         <div class="activity-grid world-${world.color}">
           ${activities.map((activity) => {
@@ -102,7 +115,7 @@ export class AppScreens {
             return `
               <button data-game="${activity.id}" class="activity-tile" aria-label="${this.escape(activity.title)}">
                 ${earned ? '<span class="activity-tile-star" aria-hidden="true">⭐</span>' : ''}
-                <span class="activity-tile-icon" aria-hidden="true">${GAME_ICONS[activity.id] || '✨'}</span>
+                <span class="activity-tile-icon ${GAME_IMAGES[activity.id] ? 'has-image' : ''}" aria-hidden="true">${gameIconMarkup(activity.id)}</span>
                 <span class="activity-tile-title">${this.escape(activity.title)}</span>
               </button>`;
           }).join('')}
@@ -124,7 +137,7 @@ export class AppScreens {
       <div class="screen page-enter">
         <div class="screen-bar">
           <button id="album-back" class="round-button" aria-label="Voltar">⬅️</button>
-          <h2 class="screen-title"><span aria-hidden="true">📒</span> Meus adesivos</h2>
+          <h2 class="screen-title"><span class="title-icon" aria-hidden="true">${imageTag('trophy')}</span> Meus adesivos</h2>
         </div>
         <p class="album-count">${earned.length} de ${activities.length}</p>
         <div class="sticker-grid">
