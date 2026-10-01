@@ -1,37 +1,64 @@
-# Ícones — arquivo de ilustrações
+# Ícones — acervo de ilustrações
 
-Ilustrações 3D aprovadas, já recortadas e limpas, em alta resolução (512 px, WebP qualidade 95). Esta pasta **não** é publicada no site: é o acervo de onde saem as versões usadas no app.
+Todas as ilustrações recebidas, já limpas e com nome descritivo, em 512 px (WebP qualidade 95). Esta pasta **não** é publicada no site; as versões usadas pelo app ficam em `public/assets/images/icons/` (256 px).
 
-## Origem e tratamento
-- `pacote-1/`: do `aprender_brincar_icon_family.zip` (24 ícones). O recorte original tinha grade deslocada, pedaços dos ícones vizinhos e fundo semitransparente; foram limpos automaticamente (fundo e faixas removidos, cantos arredondados reaplicados). Todos ficaram bons.
-- `pacote-2/`: do `aprender_brincar_icon_family_clean.zip`. Só os 11 que ficaram bons depois do tratamento. Os demais tinham manchas pretas ou partes cortadas e foram descartados (todos têm versão boa no pacote 1).
+- `em-uso/` — usadas no app hoje.
+- `reserva/` — boas, ainda sem uso; prontas para novas telas e brincadeiras.
+- `com-defeito/` — o recorte original estragou (manchas pretas ou partes cortadas). Ficam como referência: vários são desenhos únicos que valem pedir de novo.
+- `PEDIDO_DE_ICONES.md` — lista do que ainda falta, com prompts e regras de exportação.
 
-## Em uso no app (`public/assets/images/icons/`, 256 px)
-| Arquivo no app | Origem | Onde aparece |
+Origem: `aprender_brincar_icon_family.zip` (pacote 1, 24 ícones) e `aprender_brincar_icon_family_clean.zip` (pacote 2, 24 ícones). Ambos vieram de uma folha recortada com a grade deslocada; o tratamento removeu fundo semitransparente, pedaços dos vizinhos e manchas pretas, e reaplicou os cantos arredondados.
+
+## em-uso (17)
+| Arquivo | No app (`public/assets/images/icons/`) | Onde aparece |
 | --- | --- | --- |
-| `home.webp` | pacote-1/home | botão de início |
-| `settings.webp` | pacote-1/settings | Área da Família |
-| `listening.webp` | pacote-1/listening | botão "ouvir de novo" |
-| `star.webp` | pacote-1/star | contador de estrelas |
-| `back.webp` | pacote-1/back | botões de voltar |
-| `trophy.webp` | pacote-1/trophy | Meus adesivos |
-| `discovery.webp` | pacote-2/discovery (lupa) | mundo Descobrir |
-| `sound.webp` | pacote-1/sound | mundo Falar & Comunicar |
-| `shapes.webp` | pacote-1/shapes | mundo Cores & Formas; Mundo das Formas; Encaixe as Formas |
-| `animals.webp` | pacote-1/animals | mundo Animais & Sons; Animais |
-| `numbers.webp` | pacote-1/numbers | mundo Números & Lógica; Vamos Contar; Contar Tocando |
-| `cards.webp` | pacote-1/cards | mundo Memória & Atenção; Memória |
-| `creative.webp` | pacote-1/creative | mundo Criar & Mexer |
-| `balloon.webp` | pacote-1/balloon | Balões |
-| `puzzle.webp` | pacote-1/puzzle | Quebra-Cabeça |
-| `music.webp` | pacote-1/music | Piano dos Animais |
-| `art.webp` | pacote-1/art | Lousa Mágica |
+| casa-com-jardim | home.webp | botão de início |
+| engrenagem-roxa | settings.webp | Área da Família |
+| orelha-ouvindo | listening.webp | botão "ouvir de novo" |
+| estrela-sorridente | star.webp | contador de estrelas |
+| seta-voltar | back.webp | botões de voltar |
+| trofeu-estrela | trophy.webp | Meus adesivos |
+| lupa | discovery.webp | mundo Descobrir |
+| ondas-de-som | sound.webp | mundo Falar & Comunicar |
+| formas-circulo-triangulo-quadrado | shapes.webp | mundo Cores & Formas; Mundo das Formas; Encaixe as Formas |
+| leao | animals.webp | mundo Animais & Sons; Animais |
+| numeros-123 | numbers.webp | mundo Números & Lógica; Vamos Contar; Contar Tocando |
+| cartas-memoria-maca | cards.webp | mundo Memória & Atenção; Memória |
+| paleta-de-tintas | creative.webp | mundo Criar & Mexer |
+| balao-vermelho | balloon.webp | Balões |
+| quebra-cabeca-4-pecas | puzzle.webp | Quebra-Cabeça |
+| nota-musical-roxa | music.webp | Piano dos Animais |
+| pincel-arco-iris | art.webp | Lousa Mágica |
 
-## Guardados para o futuro
-- pacote-1: `dinosaur`, `discovery` (lâmpada), `learning`, `magic`, `nature`, `profile`, `target`, `worlds`.
-- pacote-2: `art`, `cards`, `dinosaur`, `magic`, `nature`, `profile-boy`, `profile-girl`, `puzzle`, `shapes`, `sun` (variações do mesmo estilo).
+## reserva (21)
+| Arquivo | Ideia de uso |
+| --- | --- |
+| dinossauro-sorrindo, dinossauro-corpo-inteiro | mascote alternativo; mundo de animais pré-históricos |
+| lampada-ideia | dicas, desafios de lógica |
+| capelo-formatura | relatório de aprendizagem na Área da Família |
+| varinha-estrela, varinha-estrela-v2 | surpresas, recompensas, faz de conta |
+| paisagem-rio, arvore-com-sol | mundo da natureza, histórias ao ar livre |
+| menino-perfil-circulo, menina | perfil da criança na configuração |
+| alvo-dardo, alvo-dardo-v2 | desafios, metas da semana |
+| planeta-terra | mapa de mundos, geografia |
+| sol-sorridente | clima, rotina da manhã |
+| paleta-pincel-v2, cartas-memoria-maca-v2, quebra-cabeca-v2, formas-v2, leao-v2, balao-rosa, trofeu-estrela-v2 | variações dos ícones em uso (as quatro últimas têm um corte leve na borda) |
+
+## com-defeito (10)
+| Arquivo | Defeito |
+| --- | --- |
+| casa-v2 | canto preto, telhado cortado |
+| livros-com-capelo | desenho cortado à direita (desenho único) |
+| fone-de-ouvido | mancha preta no canto (desenho único) |
+| nota-musical-rosa | mancha preta no canto |
+| numeros-123-v2 | faixa preta no topo, "1" cortado |
+| menino | manchas pretas no topo (desenho único) |
+| engrenagem-azul | mancha preta no topo |
+| alto-falante | desenho cortado à esquerda (desenho único) |
+| estrela-sorridente-v2 | cantos pretos, base cortada |
+| globo-com-suporte | faixa preta no topo, globo cortado (desenho único) |
 
 ## Para adicionar ou trocar
-1. Coloque o PNG/WebP limpo (fundo transparente, desenho centralizado) aqui.
-2. Gere a versão do app: 256 px em WebP (qualidade ~88) em `public/assets/images/icons/` com o nome usado no código.
-3. Mapeamentos ficam em `src/js/ui/app-screens.js` (`GAME_IMAGES` e `WORLD_IMAGES`); o que não tiver imagem usa o emoji.
+1. Coloque o arquivo limpo (fundo transparente, desenho centralizado) em `em-uso/` ou `reserva/`.
+2. Gere a versão do app: 256 px, WebP qualidade ~88, em `public/assets/images/icons/`.
+3. Os mapeamentos ficam em `src/js/ui/app-screens.js` (`GAME_IMAGES` e `WORLD_IMAGES`); o que não tiver imagem continua com emoji.
