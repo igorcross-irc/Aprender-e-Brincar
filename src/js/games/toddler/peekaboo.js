@@ -52,7 +52,7 @@ export class PeekabooGame {
       button.classList.add('open');
       if (Number(button.dataset.spot) !== hideAt) {
         playSfx('retry');
-        this.audio?.play(null, 'Aqui não! Vamos procurar mais.');
+        this.audio?.play(null, 'Hum, vamos procurar de novo!');
         this.timer = window.setTimeout(() => button.classList.remove('open'), 1200);
         return;
       }

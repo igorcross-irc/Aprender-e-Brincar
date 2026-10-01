@@ -97,7 +97,7 @@ export class ResilientAudioEngine {
 
   inferAudioName(text) {
     const value = String(text || '').trim();
-    if (!value || value.length > 60) return null;
+    if (!value || value.length > 140) return null;
     const slug = this.slugify(value);
     // Só tenta o MP3 se ele existe no build; senão a voz do navegador fala na hora.
     return slug && AUDIO_FILES.has(`${slug}.mp3`) ? `${slug}.mp3` : null;

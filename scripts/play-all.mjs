@@ -14,6 +14,9 @@ const SHOTS = shotsIndex >= 0 ? args[shotsIndex + 1] : null;
 const AGES = args.filter((arg, index) => ALL_AGES.includes(arg) && index !== shotsIndex + 1);
 const onlyIndex = args.indexOf('--only');
 const ONLY = onlyIndex >= 0 ? args[onlyIndex + 1].split(',') : null;
+const speechIndex = args.indexOf('--speech');
+const SPEECH_OUT = speechIndex >= 0 ? args[speechIndex + 1] : null;
+const spoken = {};
 const ages = AGES.length ? AGES : ALL_AGES;
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
@@ -238,6 +241,12 @@ try {
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   page.on('dialog', (dialog) => dialog.accept());
   await page.addInitScript(() => localStorage.setItem('aprender_brincar_child_name', 'Isadora'));
+  // Registra tudo que foi falado pela voz do navegador (= falas sem MP3 gravado).
+  await page.addInitScript(() => {
+    window.__spoken = [];
+    const synth = window.speechSynthesis;
+    if (synth) { const original = synth.speak.bind(synth); synth.speak = (utterance) => { window.__spoken.push(utterance.text); return original(utterance); }; }
+  });
   await page.goto(BASE);
   await page.evaluate(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
   await page.reload();
@@ -248,6 +257,9 @@ try {
       try { entry = await playGame(page, ageId, gameId, errors); }
       catch (error) { entry = { ageId, gameId, status: 'exceção', errors: [error.message.split('\n')[0]], rounds: [] }; }
       await page.waitForTimeout(700);
+      if (SPEECH_OUT) {
+        for (const text of await page.evaluate(() => window.__spoken.splice(0))) (spoken[text] ||= new Set()).add(gameId);
+      }
       report.push(entry);
       console.log(`${entry.status === 'ok' ? '✓' : '✗'} ${ageId} ${gameId} — ${entry.status} (${entry.rounds.length} telas)${entry.errors.length ? ' · ' + entry.errors[0].split('\n')[0] : ''}`);
     }
@@ -258,6 +270,7 @@ try {
 }
 
 writeFileSync('play-all-report.json', JSON.stringify(report, null, 2));
+if (SPEECH_OUT) writeFileSync(SPEECH_OUT, JSON.stringify(Object.fromEntries(Object.entries(spoken).map(([text, games]) => [text, [...games]])), null, 2));
 const bad = report.filter((entry) => entry.status !== 'ok');
 console.log(`\nPLAY-ALL — ${report.length - bad.length}/${report.length} brincadeiras jogadas até o fim.`);
 process.exit(bad.length ? 1 : 0);

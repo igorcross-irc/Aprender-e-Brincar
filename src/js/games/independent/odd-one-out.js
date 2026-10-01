@@ -27,8 +27,8 @@ export class OddOneOutGame {
   }
   answer(btn,correct){
     if(this.finished)return; this.attempts++;
-    if(correct){playSfx('success');this.correct++;btn.classList.add('border-emerald-400','bg-emerald-50');this.audio?.play(null,'Muito bem! Você encontrou o diferente.');this.round++;setTimeout(()=>this.render(),450);}
-    else {playSfx('retry');btn.classList.add('border-rose-300','animate-shake');this.audio?.play(null,'Observe mais uma vez.');setTimeout(()=>btn.classList.remove('border-rose-300','animate-shake'),450);}
+    if(correct){playSfx('success');this.correct++;btn.classList.add('border-emerald-400','bg-emerald-50');this.audio?.play(null,'Isso mesmo!');this.round++;setTimeout(()=>this.render(),450);}
+    else {playSfx('retry');btn.classList.add('border-rose-300','animate-shake');this.audio?.play(null,'Ops, tente de novo!');setTimeout(()=>btn.classList.remove('border-rose-300','animate-shake'),450);}
   }
   finish(){
     if(this.finished)return;

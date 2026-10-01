@@ -91,7 +91,7 @@ export class SortIntoGame {
       if (button.dataset.bin !== item.bin) {
         playSfx('retry');
         button.classList.add('animate-shake');
-        this.audio?.play(null, 'Hum, esse não. Tenta outro!');
+        this.audio?.play(null, 'Ops, tente de novo!');
         window.setTimeout(() => button.classList.remove('animate-shake'), 450);
         return;
       }

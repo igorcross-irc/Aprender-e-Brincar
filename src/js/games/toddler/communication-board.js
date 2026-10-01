@@ -1,7 +1,7 @@
 import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 import { gameShellMarkup, enableDoneButton } from '../game-shell.js';
 
-const CARDS = [
+export const COMMUNICATION_CARDS = [
   { id: 'agua', icon: '💧', label: 'Água', phrase: 'Eu quero água' },
   { id: 'comer', icon: '🍎', label: 'Comer', phrase: 'Eu quero comer' },
   { id: 'colo', icon: '🤗', label: 'Colo', phrase: 'Eu quero colo' },
@@ -29,7 +29,7 @@ export class CommunicationBoardGame {
   start(level = 1, options = {}) {
     this.ageId = options.ageId || '2-3y';
     this.difficulty = resolveGameDifficulty(this.ageId, level, options);
-    const cards = CARDS.slice(0, CARD_COUNT[this.ageId] || 8);
+    const cards = COMMUNICATION_CARDS.slice(0, CARD_COUNT[this.ageId] || 8);
     this.used = new Set();
     this.completed = false;
     this.container.innerHTML = gameShellMarkup({

@@ -220,7 +220,7 @@ export class LearningWorldGame {
     });
   }
 
-  renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Vamos tentar novamente!') {
+  renderChoice(title, prompt, options, correctId, audio = null, success = 'Muito bem!', retry = 'Ops, tente de novo!') {
     const maxChoices = this.interfacePolicy?.maxChoices || 4;
     const correct = options.find((item) => String(item.id) === String(correctId));
     const alternatives = options.filter((item) => String(item.id) !== String(correctId));

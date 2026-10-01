@@ -146,7 +146,7 @@ export class AppScreens {
   renderRest() {
     this.container.scrollTop = 0;
     const name = this.storage.getChildName();
-    const message = name ? `Hora de descansar, ${name}! Até mais tarde!` : 'Hora de descansar! Até mais tarde!';
+    const message = name ? `Hora de descansar, ${name}! Até mais tarde!` : 'Hora de descansar um pouco!';
     this.container.innerHTML = `
       <div class="screen page-enter">
         <section class="result-card rest-card">

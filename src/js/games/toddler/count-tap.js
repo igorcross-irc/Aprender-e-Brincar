@@ -46,13 +46,14 @@ export class CountTapGame {
       body: `<div class="count-board">${Array.from({ length: count }, (_, index) => `<button class="count-item" data-index="${index}" aria-label="${item.label}"><span aria-hidden="true">${item.icon}</span></button>`).join('')}</div>`
     });
     this.container.querySelector('#count-back').addEventListener('click', () => this.onBack());
-    this.audio?.prompt?.(null, 'Toque em cada um para contar!');
+    this.audio?.prompt?.(null, 'Vamos contar juntos!');
     this.container.querySelectorAll('.count-item').forEach((button) => button.addEventListener('click', () => {
       if (button.classList.contains('counted') || this.finished) return;
       counted += 1;
       button.classList.add('counted');
       button.insertAdjacentHTML('beforeend', `<b class="count-badge">${counted}</b>`);
-      this.audio?.play(null, NUMBER_WORDS[counted] || String(counted));
+      // num-N.mp3 já existe no lote gravado; a palavra é o texto alternativo.
+      this.audio?.play(`num-${counted}`, NUMBER_WORDS[counted] || String(counted));
       if (counted < count) return;
       playSfx('success');
       window.setTimeout(() => this.audio?.play(null, `${NUMBER_WORDS[count] || count}! Muito bem!`), 700);

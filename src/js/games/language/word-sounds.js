@@ -3,7 +3,7 @@ import { playSfx } from '../../engine/sfx.js';
 import { gameShellMarkup } from '../game-shell.js';
 
 // Rimas e som inicial: a criança ouve uma palavra e escolhe a figura que combina pelo som.
-const SETS = {
+export const WORD_SOUND_SETS = {
   rhymes: {
     title: '🎵 Rimas',
     prompt: (word) => `${word.label} rima com…?`,
@@ -52,7 +52,7 @@ export class WordSoundsGame {
   }
 
   start(setName = 'rhymes', level = 1, options = {}) {
-    this.set = SETS[setName] || SETS.rhymes;
+    this.set = WORD_SOUND_SETS[setName] || WORD_SOUND_SETS.rhymes;
     this.setName = setName;
     this.ageId = options.ageId || '3-4y';
     this.difficulty = resolveGameDifficulty(this.ageId, level, options);
@@ -91,7 +91,7 @@ export class WordSoundsGame {
       if (option !== word.answer) {
         playSfx('retry');
         button.classList.add('animate-shake');
-        this.audio?.play(null, `${option.label}? Escute de novo: ${prompt}`);
+        this.audio?.play(null, `Escute de novo: ${prompt}`);
         window.setTimeout(() => button.classList.remove('animate-shake'), 450);
         return;
       }
