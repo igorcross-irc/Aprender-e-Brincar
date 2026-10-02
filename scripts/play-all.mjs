@@ -246,7 +246,7 @@ try {
       .replace(/<link rel="modulepreload"[^>]*>/g, '')
       .replace(/<script nomodule/g, '<script');
     await context.route(`${BASE}/`, (route) => route.fulfill({ status: 200, contentType: 'text/html', body: legacyHtml }));
-    await context.addInitScript(() => { window.__AB_SIMULATE_LEGACY__ = true; delete window.PointerEvent; });
+    await context.addInitScript(() => { window.__AB_SIMULATE_LEGACY__ = true; delete window.PointerEvent; delete window.Proxy; delete window.fetch; delete String.prototype.normalize; });
   }
   const page = await context.newPage();
   const errors = [];

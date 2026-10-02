@@ -4,14 +4,14 @@
 // Nada aqui substitui o bloqueio do sistema (Acesso Guiado no iOS, Fixar app no
 // Android), que é o único jeito de impedir o botão Início.
 
-import { Capacitor, registerPlugin } from '@capacitor/core';
+import { isNativeApp, nativePlugin } from './native.js';
 
 const STORAGE_KEY = 'ab_kid_lock';
 
 // App Android (Capacitor): a trava é nativa — fixa o app na tela, esconde as barras
 // e engole o botão Voltar (android/app/src/main/java/.../KidLockPlugin.java).
-const NativeKidLock = registerPlugin('KidLock');
-export const isNativeApp = () => Capacitor.isNativePlatform();
+const nativeKidLock = () => nativePlugin('KidLock').then(({ plugin }) => plugin);
+export { isNativeApp };
 
 const root = () => document.documentElement;
 
@@ -95,12 +95,12 @@ export class KidLock {
 
   async pinApp() {
     this.pinned = true; // evita pedir de novo a cada toque enquanto o sistema responde
-    try { this.pinned = Boolean((await NativeKidLock.lock()).pinned); } catch { this.pinned = false; }
+    try { this.pinned = Boolean((await (await nativeKidLock()).lock()).pinned); } catch { this.pinned = false; }
   }
 
   // Adulto pode ter soltado pelo sistema (Voltar + Recentes): o próximo toque fixa de novo.
   async refreshPinned() {
-    try { this.pinned = Boolean((await NativeKidLock.getStatus()).pinned); } catch {}
+    try { this.pinned = Boolean((await (await nativeKidLock()).getStatus()).pinned); } catch {}
   }
 
   trapHistory() {
@@ -164,7 +164,7 @@ export class KidLock {
     this.hideReturn();
     if (isNativeApp()) {
       this.pinned = false;
-      NativeKidLock.unlock().catch(() => {});
+      nativeKidLock().then((plugin) => plugin.unlock()).catch(() => {});
       return;
     }
     try { navigator.keyboard?.unlock?.(); } catch {}

@@ -73,6 +73,10 @@ async function run() {
   await context.addInitScript(() => {
     window.__AB_SIMULATE_LEGACY__ = true;
     delete window.PointerEvent;
+    // O que o Safari 9 não tem e não dá para completar (Proxy) ou tem alternativa própria (fetch, normalize).
+    delete window.Proxy;
+    delete window.fetch;
+    delete String.prototype.normalize;
     // Sem gap e sem aspect-ratio, como no iOS 9 (o display:grid é anulado pelas regras .no-grid).
     document.addEventListener('DOMContentLoaded', () => {
       const style = document.createElement('style');
