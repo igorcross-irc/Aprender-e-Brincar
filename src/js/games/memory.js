@@ -21,7 +21,7 @@ export class MemoryGame {
       </div>`;
     document.getElementById('btn-back-memory').addEventListener('click',()=>this.onBack());
     this.container.querySelectorAll('.memory-card').forEach(card=>card.addEventListener('click',()=>{const item=items.find(i=>i.id===card.dataset.id);this.flipCard(card,item,pairCount);}));
-    this.audio.prompt(null,this.difficulty.audioFirst?'Vamos encontrar os pares!':'Encontre os pares iguais.');
+    this.audio.prompt(null,'Procure o par igual!');
   }
   flipCard(card,item,totalPairs){
     if(!item||this.flippedCards.length===2||card.classList.contains('flipped')||card.classList.contains('matched')||this.finished)return;
@@ -29,8 +29,8 @@ export class MemoryGame {
     if(this.flippedCards.length===2){this.moves++; const movesEl=document.getElementById('memory-moves'); if(movesEl)movesEl.textContent=this.moves;
       const [first,second]=this.flippedCards;
       if(first.item.id===second.item.id){playSfx('success');this.matchedPairs++; first.card.classList.add('matched','border-emerald-400','bg-emerald-50'); second.card.classList.add('matched','border-emerald-400','bg-emerald-50'); this.flippedCards=[]; const pairsEl=document.getElementById('memory-pairs'); if(pairsEl)pairsEl.textContent=this.matchedPairs; document.querySelectorAll('#memory-dots span')[this.matchedPairs-1]?.classList.add('done'); if(this.matchedPairs===totalPairs)setTimeout(()=>this.finish(),700);}
-      else{playSfx('retry');this.audio.play(null,this.difficulty.feedback==='gentle'?'Vamos tentar de novo!':'Vamos comparar as duas cartas e tentar de novo!'); setTimeout(()=>{if(this.finished)return;[first.card,second.card].forEach(c=>{c.classList.remove('flipped');c.querySelector('.card-back').classList.remove('hidden');c.querySelector('.card-front').classList.add('hidden');});this.flippedCards=[];},this.level>=4?750:1000);}
+      else{playSfx('retry');this.audio.play(null,this.difficulty.feedback==='gentle'?'Sem problemas, vamos de novo!':'Quase lá! Vamos tentar mais uma vez.'); setTimeout(()=>{if(this.finished)return;[first.card,second.card].forEach(c=>{c.classList.remove('flipped');c.querySelector('.card-back').classList.remove('hidden');c.querySelector('.card-front').classList.add('hidden');});this.flippedCards=[];},this.level>=4?750:1000);}
     }
   }
-  finish(){if(this.finished)return;this.finished=true;const rounds=Math.max(1,this.matchedPairs);const score=Math.max(0,Math.min(rounds,Math.round((rounds/Math.max(rounds,this.moves))*rounds)));this.audio.play(null,'Parabéns! Você encontrou todos os pares!');this.onComplete?.({score,rounds,correct:this.matchedPairs,attempts:this.moves,maxScore:rounds,completedRounds:this.matchedPairs,difficulty:this.level,ageId:this.ageId});}
+  finish(){if(this.finished)return;this.finished=true;const rounds=Math.max(1,this.matchedPairs);const score=Math.max(0,Math.min(rounds,Math.round((rounds/Math.max(rounds,this.moves))*rounds)));this.audio.play(null,'Parabéns!');this.onComplete?.({score,rounds,correct:this.matchedPairs,attempts:this.moves,maxScore:rounds,completedRounds:this.matchedPairs,difficulty:this.level,ageId:this.ageId});}
 }

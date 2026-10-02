@@ -1,11 +1,14 @@
 // Troque VERSION a cada publicação que altere o shell para limpar caches antigos.
-const VERSION = 'ab-0.4.0';
+const VERSION = 'ab-0.6.0';
 const SHELL = [
   '/',
   '/manifest.json',
   '/assets/images/icon-master.png',
-  '/assets/images/icon-home.png',
-  '/assets/images/icon-settings.png'
+  '/assets/images/icons/home.webp',
+  '/assets/images/icons/settings.webp',
+  '/assets/images/icons/listening.webp',
+  '/assets/images/icons/star.webp',
+  '/assets/images/icons/back.webp'
 ];
 const SHELL_CACHE = VERSION + '-shell';
 const RUNTIME_CACHE = VERSION + '-runtime';

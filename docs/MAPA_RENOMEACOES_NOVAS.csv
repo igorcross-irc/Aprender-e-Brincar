@@ -1,0 +1,785 @@
+﻿ordem;arquivo_original;arquivo_renomeado;texto
+1;1_Chapter_1.mp3;animais-sons.mp3;Animais & Sons
+2;2_Chapter_1.mp3;co-co-co.mp3;Có có có!
+3;3_Chapter_1.mp3;cores-formas.mp3;Cores & Formas
+4;4_Chapter_1.mp3;criar-mexer.mp3;Criar & Mexer
+5;5_Chapter_1.mp3;descobrir.mp3;Descobrir
+6;6_Chapter_1.mp3;falar-comunicar.mp3;Falar & Comunicar
+7;7_Chapter_1.mp3;memoria-atencao.mp3;Memória & Atenção
+8;8_Chapter_1.mp3;miau.mp3;Miau!
+9;9_Chapter_1.mp3;muito-bem-voce-terminou-a-brincadeira.mp3;Muito bem! Você terminou a brincadeira!
+10;10_Chapter_1.mp3;muuu.mp3;Muuu!
+11;11_Chapter_1.mp3;numeros-logica.mp3;Números & Lógica
+12;12_Chapter_1.mp3;qua-qua.mp3;Quá quá!
+13;13_Chapter_1.mp3;vamos-ouvir-mais-uma-vez.mp3;Vamos ouvir mais uma vez.
+14;14_Chapter_1.mp3;brinque-para-ganhar-adesivos.mp3;Brinque para ganhar adesivos!
+15;15_Chapter_1.mp3;hora-de-descansar-ate-mais-tarde.mp3;Hora de descansar! Até mais tarde!
+16;16_Chapter_1.mp3;seus-adesivos.mp3;Seus adesivos!
+17;17_Chapter_1.mp3;voce-brincou-de-novo.mp3;Você brincou de novo!
+18;18_Chapter_1.mp3;au-au.mp3;Au au!
+19;19_Chapter_1.mp3;cachorro-au-au.mp3;Cachorro. Au au!
+20;20_Chapter_1.mp3;croac.mp3;Croac!
+21;21_Chapter_1.mp3;galinha-co-co-co.mp3;Galinha. Có có có!
+22;22_Chapter_1.mp3;gato-miau.mp3;Gato. Miau!
+23;23_Chapter_1.mp3;leao-grrr.mp3;Leão. Grrr!
+24;24_Chapter_1.mp3;onde-esta-a-galinha.mp3;Onde está a galinha?
+25;25_Chapter_1.mp3;pato-qua-qua.mp3;Pato. Quá quá!
+26;26_Chapter_1.mp3;sapo-croac.mp3;Sapo. Croac!
+27;27_Chapter_1.mp3;vaca-muuu.mp3;Vaca. Muuu!
+28;28_Chapter_1.mp3;estoure-o-numero-1.mp3;Estoure o número 1
+29;29_Chapter_1.mp3;estoure-o-numero-2.mp3;Estoure o número 2
+30;30_Chapter_1.mp3;estoure-o-numero-3.mp3;Estoure o número 3
+31;31_Chapter_1.mp3;estoure-o-numero-4.mp3;Estoure o número 4
+32;32_Chapter_1.mp3;estoure-as-bolhas.mp3;Estoure as bolhas!
+33;33_Chapter_1.mp3;bata-palmas-ou-conte-as-partes-da-palavra.mp3;Bata palmas ou conte as partes da palavra.
+34;34_Chapter_1.mp3;bo-la-muito-bem.mp3;BO - LA. Muito bem!
+35;35_Chapter_1.mp3;bola.mp3;BOLA
+36;36_Chapter_1.mp3;ca-sa-muito-bem.mp3;CA - SA. Muito bem!
+37;37_Chapter_1.mp3;ga-to-muito-bem.mp3;GA - TO. Muito bem!
+38;38_Chapter_1.mp3;ma-mae-muito-bem.mp3;MA - MÃE. Muito bem!
+39;39_Chapter_1.mp3;mamae.mp3;MAMÃE
+40;40_Chapter_1.mp3;pa-to-muito-bem.mp3;PA - TO. Muito bem!
+41;41_Chapter_1.mp3;muito-bem-ritmo-combinado.mp3;Muito bem! Ritmo combinado.
+42;42_Chapter_1.mp3;vamos-observar-de-novo.mp3;Vamos observar de novo.
+43;43_Chapter_1.mp3;voce-pode-bater-palmas-junto.mp3;Você pode bater palmas junto.
+44;44_Chapter_1.mp3;encontre-a-cor-amarelo.mp3;Encontre a cor Amarelo
+45;45_Chapter_1.mp3;encontre-a-cor-branco.mp3;Encontre a cor Branco
+46;46_Chapter_1.mp3;encontre-a-cor-laranja.mp3;Encontre a cor Laranja
+47;47_Chapter_1.mp3;encontre-a-cor-marrom.mp3;Encontre a cor Marrom
+48;48_Chapter_1.mp3;encontre-a-cor-preto.mp3;Encontre a cor Preto
+49;49_Chapter_1.mp3;encontre-a-cor-rosa.mp3;Encontre a cor Rosa
+50;50_Chapter_1.mp3;encontre-a-cor-roxo.mp3;Encontre a cor Roxo
+51;51_Chapter_1.mp3;encontre-a-cor-verde.mp3;Encontre a cor Verde
+52;52_Chapter_1.mp3;encontre-a-cor-vermelho.mp3;Encontre a cor Vermelho
+53;53_Chapter_1.mp3;muito-bem-amarelo.mp3;Muito bem! Amarelo
+54;54_Chapter_1.mp3;muito-bem-branco.mp3;Muito bem! Branco
+55;55_Chapter_1.mp3;muito-bem-laranja.mp3;Muito bem! Laranja
+56;56_Chapter_1.mp3;muito-bem-marrom.mp3;Muito bem! Marrom
+57;57_Chapter_1.mp3;muito-bem-preto.mp3;Muito bem! Preto
+58;58_Chapter_1.mp3;muito-bem-rosa.mp3;Muito bem! Rosa
+59;59_Chapter_1.mp3;muito-bem-roxo.mp3;Muito bem! Roxo
+60;60_Chapter_1.mp3;muito-bem-verde.mp3;Muito bem! Verde
+61;61_Chapter_1.mp3;muito-bem-vermelho.mp3;Muito bem! Vermelho
+62;62_Chapter_1.mp3;ba-banana-e-baleia.mp3;Ba! Banana e Baleia!
+63;63_Chapter_1.mp3;ba-banana-qual-comeca-igual.mp3;Ba… Banana. Qual começa igual?
+64;64_Chapter_1.mp3;bo-bola-e-bolo.mp3;Bo! Bola e Bolo!
+65;65_Chapter_1.mp3;bo-bola-qual-comeca-igual.mp3;Bo… Bola. Qual começa igual?
+66;66_Chapter_1.mp3;ca-carro-e-casa.mp3;Ca! Carro e Casa!
+67;67_Chapter_1.mp3;ca-carro-qual-comeca-igual.mp3;Ca… Carro. Qual começa igual?
+68;68_Chapter_1.mp3;escute-de-novo-ba-banana-qual-comeca-igual.mp3;Escute de novo: Ba… Banana. Qual começa igual?
+69;69_Chapter_1.mp3;escute-de-novo-bo-bola-qual-comeca-igual.mp3;Escute de novo: Bo… Bola. Qual começa igual?
+70;70_Chapter_1.mp3;escute-de-novo-ca-carro-qual-comeca-igual.mp3;Escute de novo: Ca… Carro. Qual começa igual?
+71;71_Chapter_1.mp3;escute-de-novo-ga-gato-qual-comeca-igual.mp3;Escute de novo: Ga… Gato. Qual começa igual?
+72;72_Chapter_1.mp3;escute-de-novo-lu-lua-qual-comeca-igual.mp3;Escute de novo: Lu… Lua. Qual começa igual?
+73;73_Chapter_1.mp3;escute-de-novo-ma-macaco-qual-comeca-igual.mp3;Escute de novo: Ma… Macaco. Qual começa igual?
+74;74_Chapter_1.mp3;escute-de-novo-pa-pato-qual-comeca-igual.mp3;Escute de novo: Pa… Pato. Qual começa igual?
+75;75_Chapter_1.mp3;escute-de-novo-sa-sapo-qual-comeca-igual.mp3;Escute de novo: Sa… Sapo. Qual começa igual?
+76;76_Chapter_1.mp3;ga-gato-e-galinha.mp3;Ga! Gato e Galinha!
+77;77_Chapter_1.mp3;ga-gato-qual-comeca-igual.mp3;Ga… Gato. Qual começa igual?
+78;78_Chapter_1.mp3;lu-lua-e-luva.mp3;Lu! Lua e Luva!
+79;79_Chapter_1.mp3;lu-lua-qual-comeca-igual.mp3;Lu… Lua. Qual começa igual?
+80;80_Chapter_1.mp3;ma-macaco-e-maca.mp3;Ma! Macaco e Maçã!
+81;81_Chapter_1.mp3;ma-macaco-qual-comeca-igual.mp3;Ma… Macaco. Qual começa igual?
+82;82_Chapter_1.mp3;pa-pato-e-palhaco.mp3;Pa! Pato e Palhaço!
+83;83_Chapter_1.mp3;pa-pato-qual-comeca-igual.mp3;Pa… Pato. Qual começa igual?
+84;84_Chapter_1.mp3;sa-sapo-e-sapato.mp3;Sa! Sapo e Sapato!
+85;85_Chapter_1.mp3;sa-sapo-qual-comeca-igual.mp3;Sa… Sapo. Qual começa igual?
+86;86_Chapter_1.mp3;muito-bem-voce-descobriu-o-padrao.mp3;Muito bem! Você descobriu o padrão.
+87;87_Chapter_1.mp3;observe-a-sequencia-mais-uma-vez.mp3;Observe a sequência mais uma vez.
+88;88_Chapter_1.mp3;observe-o-padrao-e-escolha-o-que-vem-depois.mp3;Observe o padrão e escolha o que vem depois.
+89;89_Chapter_1.mp3;cinco-muito-bem.mp3;cinco! Muito bem!
+90;90_Chapter_1.mp3;dois-muito-bem.mp3;dois! Muito bem!
+91;91_Chapter_1.mp3;nove-muito-bem.mp3;nove! Muito bem!
+92;92_Chapter_1.mp3;oito-muito-bem.mp3;oito! Muito bem!
+93;93_Chapter_1.mp3;quatro-muito-bem.mp3;quatro! Muito bem!
+94;94_Chapter_1.mp3;seis-muito-bem.mp3;seis! Muito bem!
+95;95_Chapter_1.mp3;sete-muito-bem.mp3;sete! Muito bem!
+96;96_Chapter_1.mp3;tres-muito-bem.mp3;três! Muito bem!
+97;97_Chapter_1.mp3;um-muito-bem.mp3;um! Muito bem!
+98;98_Chapter_1.mp3;muito-bem-vamos-para-o-proximo.mp3;Muito bem! Vamos para o próximo.
+99;99_Chapter_1.mp3;encontre-a-cor-azul.mp3;Encontre a cor Azul
+100;100_Chapter_1.mp3;muito-bem-azul.mp3;Muito bem! Azul
+101;101_Chapter_1.mp3;onde-esta-a-cor-branco.mp3;Onde está a cor Branco?
+102;102_Chapter_1.mp3;onde-esta-a-cor-rosa.mp3;Onde está a cor Rosa?
+103;103_Chapter_1.mp3;toque-em-uma-cor-para-ouvir-depois-toque-em-continuar.mp3;Toque em uma cor para ouvir. Depois, toque em Continuar.
+104;104_Chapter_1.mp3;mao.mp3;Mão
+105;105_Chapter_1.mp3;olho.mp3;Olho
+106;106_Chapter_1.mp3;pe.mp3;Pé
+107;107_Chapter_1.mp3;gire.mp3;Gire
+108;108_Chapter_1.mp3;vamos-brincar-juntos.mp3;Vamos brincar juntos!
+109;109_Chapter_1.mp3;flor.mp3;Flor
+110;110_Chapter_1.mp3;luz.mp3;Luz
+111;111_Chapter_1.mp3;musica.mp3;Música
+112;112_Chapter_1.mp3;toque-nos-animais-para-ouvir-quando-quiser-toque-em-continuar.mp3;Toque nos animais para ouvir. Quando quiser, toque em Continuar.
+113;113_Chapter_1.mp3;bola-bola.mp3;Bola. Bola!
+114;114_Chapter_1.mp3;coracao-coracao.mp3;Coração. Coração!
+115;115_Chapter_1.mp3;flor-flor.mp3;Flor. Flor!
+116;116_Chapter_1.mp3;luz-luz.mp3;Luz. Luz!
+117;117_Chapter_1.mp3;musica-musica.mp3;Música. Música!
+118;118_Chapter_1.mp3;toque-para-descobrir-nao-ha-respostas-certas-ou-erradas-toque-em-continuar-quando-quiser.mp3;Toque para descobrir. Não há respostas certas ou erradas. Toque em Continuar quando quiser.
+119;119_Chapter_1.mp3;toque-nas-cores-para-ouvir-o-nome-depois-toque-em-continuar.mp3;Toque nas cores para ouvir o nome. Depois, toque em Continuar.
+120;120_Chapter_1.mp3;camisa.mp3;Camisa
+121;121_Chapter_1.mp3;colher.mp3;Colher
+122;122_Chapter_1.mp3;copo.mp3;Copo
+123;123_Chapter_1.mp3;escova.mp3;Escova
+124;124_Chapter_1.mp3;livro.mp3;Livro
+125;125_Chapter_1.mp3;nao-existe-resposta-errada-aqui-explore-os-objetos-que-quiser.mp3;Não existe resposta errada aqui. Explore os objetos que quiser.
+126;126_Chapter_1.mp3;sapato.mp3;Sapato
+127;127_Chapter_1.mp3;onde-encaixa-a-estrela.mp3;Onde encaixa a estrela?
+128;128_Chapter_1.mp3;onde-encaixa-o-circulo.mp3;Onde encaixa o círculo?
+129;129_Chapter_1.mp3;onde-encaixa-o-coracao.mp3;Onde encaixa o coração?
+130;130_Chapter_1.mp3;onde-encaixa-o-quadrado.mp3;Onde encaixa o quadrado?
+131;131_Chapter_1.mp3;onde-encaixa-o-triangulo.mp3;Onde encaixa o triângulo?
+132;132_Chapter_1.mp3;parabens-voce-completou-o-quebra-cabeca.mp3;Parabéns! Você completou o quebra-cabeça!
+133;133_Chapter_1.mp3;onde-esta-a-cor-amarelo.mp3;Onde está a cor Amarelo?
+134;134_Chapter_1.mp3;onde-esta-a-cor-azul.mp3;Onde está a cor Azul?
+135;135_Chapter_1.mp3;onde-esta-a-cor-laranja.mp3;Onde está a cor Laranja?
+136;136_Chapter_1.mp3;onde-esta-a-cor-marrom.mp3;Onde está a cor Marrom?
+137;137_Chapter_1.mp3;onde-esta-a-cor-preto.mp3;Onde está a cor Preto?
+138;138_Chapter_1.mp3;onde-esta-a-cor-roxo.mp3;Onde está a cor Roxo?
+139;139_Chapter_1.mp3;onde-esta-a-cor-verde.mp3;Onde está a cor Verde?
+140;140_Chapter_1.mp3;onde-esta-a-cor-vermelho.mp3;Onde está a cor Vermelho?
+141;141_Chapter_1.mp3;onde-esta-a-vaca.mp3;Onde está a vaca?
+142;142_Chapter_1.mp3;onde-esta-o-cachorro.mp3;Onde está o cachorro?
+143;143_Chapter_1.mp3;onde-esta-o-leao.mp3;Onde está o leão?
+144;144_Chapter_1.mp3;onde-esta-o-pato.mp3;Onde está o pato?
+145;145_Chapter_1.mp3;onde-esta-o-sapo.mp3;Onde está o sapo?
+146;146_Chapter_1.mp3;o-que-combina-com-arvore.mp3;O que combina com Árvore?
+147;147_Chapter_1.mp3;o-que-combina-com-aviao.mp3;O que combina com Avião?
+148;148_Chapter_1.mp3;o-que-combina-com-banana.mp3;O que combina com Banana?
+149;149_Chapter_1.mp3;o-que-combina-com-bola.mp3;O que combina com Bola?
+150;150_Chapter_1.mp3;o-que-combina-com-boneca.mp3;O que combina com Boneca?
+151;151_Chapter_1.mp3;o-que-combina-com-carro.mp3;O que combina com Carro?
+152;152_Chapter_1.mp3;o-que-combina-com-maca.mp3;O que combina com Maçã?
+153;153_Chapter_1.mp3;achou-au-au.mp3;Achou! Au au!
+154;154_Chapter_1.mp3;achou-co-co-co.mp3;Achou! Có có có!
+155;155_Chapter_1.mp3;achou-croac.mp3;Achou! Croac!
+156;156_Chapter_1.mp3;achou-grrr.mp3;Achou! Grrr!
+157;157_Chapter_1.mp3;achou-miau.mp3;Achou! Miau!
+158;158_Chapter_1.mp3;achou-muuu.mp3;Achou! Muuu!
+159;159_Chapter_1.mp3;achou-qua-qua.mp3;Achou! Quá quá!
+160;160_Chapter_1.mp3;cade-a-galinha-onde-se-escondeu.mp3;Cadê a galinha? Onde se escondeu?
+161;161_Chapter_1.mp3;cade-a-galinha-toque-para-achar.mp3;Cadê a galinha? Toque para achar!
+162;162_Chapter_1.mp3;cade-a-vaca-onde-se-escondeu.mp3;Cadê a vaca? Onde se escondeu?
+163;163_Chapter_1.mp3;cade-a-vaca-toque-para-achar.mp3;Cadê a vaca? Toque para achar!
+164;164_Chapter_1.mp3;cade-o-cachorro-onde-se-escondeu.mp3;Cadê o cachorro? Onde se escondeu?
+165;165_Chapter_1.mp3;cade-o-cachorro-toque-para-achar.mp3;Cadê o cachorro? Toque para achar!
+166;166_Chapter_1.mp3;cade-o-gato-onde-se-escondeu.mp3;Cadê o gato? Onde se escondeu?
+167;167_Chapter_1.mp3;cade-o-gato-toque-para-achar.mp3;Cadê o gato? Toque para achar!
+168;168_Chapter_1.mp3;cade-o-leao-onde-se-escondeu.mp3;Cadê o leão? Onde se escondeu?
+169;169_Chapter_1.mp3;cade-o-leao-toque-para-achar.mp3;Cadê o leão? Toque para achar!
+170;170_Chapter_1.mp3;cade-o-pato-onde-se-escondeu.mp3;Cadê o pato? Onde se escondeu?
+171;171_Chapter_1.mp3;cade-o-pato-toque-para-achar.mp3;Cadê o pato? Toque para achar!
+172;172_Chapter_1.mp3;cade-o-sapo-onde-se-escondeu.mp3;Cadê o sapo? Onde se escondeu?
+173;173_Chapter_1.mp3;cade-o-sapo-toque-para-achar.mp3;Cadê o sapo? Toque para achar!
+174;174_Chapter_1.mp3;eu-quero-agua.mp3;Eu quero água
+175;175_Chapter_1.mp3;eu-quero-colo.mp3;Eu quero colo
+176;176_Chapter_1.mp3;eu-quero-comer.mp3;Eu quero comer
+177;177_Chapter_1.mp3;o-que-voce-quer-dizer-toque-num-cartao.mp3;O que você quer dizer? Toque num cartão.
+178;178_Chapter_1.mp3;esta-doendo.mp3;Está doendo
+179;179_Chapter_1.mp3;estou-com-sono.mp3;Estou com sono
+180;180_Chapter_1.mp3;estou-feliz.mp3;Estou feliz
+181;181_Chapter_1.mp3;estou-triste.mp3;Estou triste
+182;182_Chapter_1.mp3;eu-quero-brincar.mp3;Eu quero brincar
+183;183_Chapter_1.mp3;mais-por-favor.mp3;Mais, por favor
+184;184_Chapter_1.mp3;nao-obrigado.mp3;Não, obrigado
+185;185_Chapter_1.mp3;quero-ir-ao-banheiro.mp3;Quero ir ao banheiro
+186;186_Chapter_1.mp3;sim.mp3;Sim!
+187;187_Chapter_1.mp3;toque-no-que-e-grande.mp3;Toque no que é grande.
+188;188_Chapter_1.mp3;a-familia-saiu-de-casa.mp3;A família saiu de casa.
+189;189_Chapter_1.mp3;no-parque-tem-uma-arvore-bem-grande.mp3;No parque tem uma árvore bem grande.
+190;190_Chapter_1.mp3;vamos-jogar-bola-chuta.mp3;Vamos jogar bola? Chuta!
+191;191_Chapter_1.mp3;bom-dia.mp3;Bom dia!
+192;192_Chapter_1.mp3;dia-de-chuva.mp3;Dia de chuva
+193;193_Chapter_1.mp3;no-parque.mp3;No parque
+194;194_Chapter_1.mp3;a-chuva-parou-e-apareceu-o-arco-iris.mp3;A chuva parou e apareceu o arco-íris!
+195;195_Chapter_1.mp3;apareceu-uma-nuvem-no-ceu.mp3;Apareceu uma nuvem no céu.
+196;196_Chapter_1.mp3;bom-dia-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3;Bom dia! Toque nas figuras na ordem da história. O que aconteceu primeiro?
+197;197_Chapter_1.mp3;comecou-a-chover-plic-ploc.mp3;Começou a chover. Plic, ploc!
+198;198_Chapter_1.mp3;depois-comeu-uma-maca-hum-que-gostoso.mp3;Depois, comeu uma maçã. Hum, que gostoso!
+199;199_Chapter_1.mp3;dia-de-chuva-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3;Dia de chuva Toque nas figuras na ordem da história. O que aconteceu primeiro?
+200;200_Chapter_1.mp3;e-depois-pense-no-que-veio-em-seguida.mp3;E depois? Pense no que veio em seguida.
+201;201_Chapter_1.mp3;hum-o-que-aconteceu-primeiro.mp3;Hum, o que aconteceu primeiro?
+202;202_Chapter_1.mp3;no-parque-toque-nas-figuras-na-ordem-da-historia-o-que-aconteceu-primeiro.mp3;No parque Toque nas figuras na ordem da história. O que aconteceu primeiro?
+203;203_Chapter_1.mp3;o-sol-nasceu-bom-dia.mp3;O sol nasceu. Bom dia!
+204;204_Chapter_1.mp3;o-ursinho-acordou-e-foi-brincar.mp3;O ursinho acordou e foi brincar.
+205;205_Chapter_1.mp3;que-desenho-incrivel.mp3;Que desenho incrível!
+206;206_Chapter_1.mp3;vamos-desenhar-escolha-uma-cor.mp3;Vamos desenhar! Escolha uma cor.
+207;207_Chapter_1.mp3;onde-esta-a-boca.mp3;Onde está a boca?
+208;208_Chapter_1.mp3;onde-esta-a-cabeca.mp3;Onde está a cabeça?
+209;209_Chapter_1.mp3;onde-esta-a-mao.mp3;Onde está a mão?
+210;210_Chapter_1.mp3;onde-esta-o-nariz.mp3;Onde está o nariz?
+211;211_Chapter_1.mp3;onde-esta-o-olho.mp3;Onde está o olho?
+212;212_Chapter_1.mp3;onde-esta-o-pe.mp3;Onde está o pé?
+213;213_Chapter_1.mp3;de-tchau.mp3;👋Dê tchau
+214;214_Chapter_1.mp3;bata-palmas.mp3;👏Bata palmas
+215;215_Chapter_1.mp3;dance.mp3;💃Dance
+216;216_Chapter_1.mp3;pule.mp3;🦘Pule
+217;217_Chapter_1.mp3;levante-imite-e-brinque-junto.mp3;Levante, imite e brinque junto.
+218;218_Chapter_1.mp3;beber.mp3;Beber
+219;219_Chapter_1.mp3;brincar.mp3;Brincar
+220;220_Chapter_1.mp3;comer.mp3;Comer
+221;221_Chapter_1.mp3;eu.mp3;Eu
+222;222_Chapter_1.mp3;nao-quero.mp3;Não quero
+223;223_Chapter_1.mp3;obrigada.mp3;Obrigada
+224;224_Chapter_1.mp3;obrigado.mp3;Obrigado
+225;225_Chapter_1.mp3;por-favor.mp3;Por favor
+226;226_Chapter_1.mp3;quero.mp3;Quero
+227;227_Chapter_1.mp3;1-palma.mp3;1 palma
+228;228_Chapter_1.mp3;2-palmas.mp3;2 palmas
+229;229_Chapter_1.mp3;3-palmas.mp3;3 palmas
+230;230_Chapter_1.mp3;encontre-a-estrela.mp3;Encontre a estrela.
+231;231_Chapter_1.mp3;encontre-o-circulo.mp3;Encontre o círculo.
+232;232_Chapter_1.mp3;encontre-o-quadrado.mp3;Encontre o quadrado.
+233;233_Chapter_1.mp3;encontre-o-triangulo.mp3;Encontre o triângulo.
+234;234_Chapter_1.mp3;observe-a-quantidade-e-escolha-o-numero.mp3;Observe a quantidade e escolha o número.
+235;235_Chapter_1.mp3;dez-muito-bem.mp3;dez! Muito bem!
+236;236_Chapter_1.mp3;estoure-o-numero-5.mp3;Estoure o número 5
+237;237_Chapter_1.mp3;estoure-o-numero-6.mp3;Estoure o número 6
+238;238_Chapter_1.mp3;estoure-o-numero-7.mp3;Estoure o número 7
+239;239_Chapter_1.mp3;arvore.mp3;Árvore
+240;240_Chapter_1.mp3;boneca.mp3;Boneca
+241;241_Chapter_1.mp3;o-que-combina-com-camisa.mp3;O que combina com Camisa?
+242;242_Chapter_1.mp3;o-que-combina-com-casa.mp3;O que combina com Casa?
+243;243_Chapter_1.mp3;o-que-combina-com-colher.mp3;O que combina com Colher?
+244;244_Chapter_1.mp3;o-que-combina-com-copo.mp3;O que combina com Copo?
+245;245_Chapter_1.mp3;o-que-combina-com-escova.mp3;O que combina com Escova?
+246;246_Chapter_1.mp3;o-que-combina-com-livro.mp3;O que combina com Livro?
+247;247_Chapter_1.mp3;o-que-combina-com-sapato.mp3;O que combina com Sapato?
+248;248_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-arvore.mp3;O que pertence ao mesmo grupo de Árvore?
+249;249_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-aviao.mp3;O que pertence ao mesmo grupo de Avião?
+250;250_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-banana.mp3;O que pertence ao mesmo grupo de Banana?
+251;251_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-bola.mp3;O que pertence ao mesmo grupo de Bola?
+252;252_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-boneca.mp3;O que pertence ao mesmo grupo de Boneca?
+253;253_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-camisa.mp3;O que pertence ao mesmo grupo de Camisa?
+254;254_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-carro.mp3;O que pertence ao mesmo grupo de Carro?
+255;255_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-casa.mp3;O que pertence ao mesmo grupo de Casa?
+256;256_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-colher.mp3;O que pertence ao mesmo grupo de Colher?
+257;257_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-copo.mp3;O que pertence ao mesmo grupo de Copo?
+258;258_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-escova.mp3;O que pertence ao mesmo grupo de Escova?
+259;259_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-livro.mp3;O que pertence ao mesmo grupo de Livro?
+260;260_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-maca.mp3;O que pertence ao mesmo grupo de Maçã?
+261;261_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-sapato.mp3;O que pertence ao mesmo grupo de Sapato?
+262;262_Chapter_1.mp3;baixo.mp3;Baixo
+263;263_Chapter_1.mp3;pequeno.mp3;Pequeno
+264;264_Chapter_1.mp3;vazio.mp3;Vazio
+265;265_Chapter_1.mp3;qual-e-o-contrario-de-alto.mp3;Qual é o contrário de Alto?
+266;266_Chapter_1.mp3;qual-e-o-contrario-de-cheio.mp3;Qual é o contrário de Cheio?
+267;267_Chapter_1.mp3;qual-e-o-contrario-de-dia.mp3;Qual é o contrário de Dia?
+268;268_Chapter_1.mp3;qual-e-o-contrario-de-grande.mp3;Qual é o contrário de Grande?
+269;269_Chapter_1.mp3;qual-numero-vem-depois.mp3;Qual número vem depois?
+270;270_Chapter_1.mp3;vamos-observar-a-sequencia.mp3;Vamos observar a sequência.
+271;271_Chapter_1.mp3;onde-esta-a-agua.mp3;Onde está a água?
+272;272_Chapter_1.mp3;onde-esta-a-casa.mp3;Onde está a casa?
+273;273_Chapter_1.mp3;onde-esta-a-comida.mp3;Onde está a comida?
+274;274_Chapter_1.mp3;onde-esta-a-mamae.mp3;Onde está a mamãe?
+275;275_Chapter_1.mp3;onde-esta-o-gato.mp3;Onde está o gato?
+276;276_Chapter_1.mp3;onde-esta-o-papai.mp3;Onde está o papai?
+277;277_Chapter_1.mp3;onde-esta-o-parque.mp3;Onde está o parque?
+278;278_Chapter_1.mp3;comida.mp3;Comida
+279;279_Chapter_1.mp3;papai.mp3;Papai
+280;280_Chapter_1.mp3;toque-nos-animais-para-fazer-musica.mp3;Toque nos animais para fazer música!
+281;281_Chapter_1.mp3;qual-e-diferente.mp3;Qual é diferente?
+282;282_Chapter_1.mp3;muito-bem-cachorro.mp3;Muito bem! Cachorro
+283;283_Chapter_1.mp3;muito-bem-galinha.mp3;Muito bem! Galinha
+284;284_Chapter_1.mp3;muito-bem-gato.mp3;Muito bem! Gato
+285;285_Chapter_1.mp3;muito-bem-leao.mp3;Muito bem! Leão
+286;286_Chapter_1.mp3;muito-bem-pato.mp3;Muito bem! Pato
+287;287_Chapter_1.mp3;muito-bem-sapo.mp3;Muito bem! Sapo
+288;288_Chapter_1.mp3;muito-bem-vaca.mp3;Muito bem! Vaca
+289;289_Chapter_1.mp3;grrr.mp3;Grrr!
+290;290_Chapter_1.mp3;ouca-com-atencao-quem-fez-esse-som.mp3;Ouça com atenção. Quem fez esse som?
+291;291_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-animais.mp3;O que pertence ao mesmo grupo de Animais?
+292;292_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-brinquedos.mp3;O que pertence ao mesmo grupo de Brinquedos?
+293;293_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-frutas.mp3;O que pertence ao mesmo grupo de Frutas?
+294;294_Chapter_1.mp3;o-que-pertence-ao-mesmo-grupo-de-veiculos.mp3;O que pertence ao mesmo grupo de Veículos?
+295;295_Chapter_1.mp3;bolo-rima-com.mp3;Bolo rima com…?
+296;296_Chapter_1.mp3;bolo-rolo-rimou.mp3;Bolo, Rolo! Rimou!
+297;297_Chapter_1.mp3;escute-de-novo-abelha-rima-com.mp3;Escute de novo: Abelha rima com…?
+298;298_Chapter_1.mp3;escute-de-novo-bolo-rima-com.mp3;Escute de novo: Bolo rima com…?
+299;299_Chapter_1.mp3;escute-de-novo-leao-rima-com.mp3;Escute de novo: Leão rima com…?
+300;300_Chapter_1.mp3;escute-de-novo-queijo-rima-com.mp3;Escute de novo: Queijo rima com…?
+301;301_Chapter_1.mp3;leao-rima-com.mp3;Leão rima com…?
+302;302_Chapter_1.mp3;leao-aviao-rimou.mp3;Leão, Avião! Rimou!
+303;303_Chapter_1.mp3;abelha-rima-com.mp3;Abelha rima com…?
+304;304_Chapter_1.mp3;abelha-ovelha-rimou.mp3;Abelha, Ovelha! Rimou!
+305;305_Chapter_1.mp3;escute-de-novo-gato-rima-com.mp3;Escute de novo: Gato rima com…?
+306;306_Chapter_1.mp3;escute-de-novo-janela-rima-com.mp3;Escute de novo: Janela rima com…?
+307;307_Chapter_1.mp3;escute-de-novo-mao-rima-com.mp3;Escute de novo: Mão rima com…?
+308;308_Chapter_1.mp3;escute-de-novo-pato-rima-com.mp3;Escute de novo: Pato rima com…?
+309;309_Chapter_1.mp3;gato-rima-com.mp3;Gato rima com…?
+310;310_Chapter_1.mp3;gato-rato-rimou.mp3;Gato, Rato! Rimou!
+311;311_Chapter_1.mp3;janela-rima-com.mp3;Janela rima com…?
+312;312_Chapter_1.mp3;janela-panela-rimou.mp3;Janela, Panela! Rimou!
+313;313_Chapter_1.mp3;mao-rima-com.mp3;Mão rima com…?
+314;314_Chapter_1.mp3;mao-pao-rimou.mp3;Mão, Pão! Rimou!
+315;315_Chapter_1.mp3;pato-rima-com.mp3;Pato rima com…?
+316;316_Chapter_1.mp3;pato-sapato-rimou.mp3;Pato, Sapato! Rimou!
+317;317_Chapter_1.mp3;queijo-rima-com.mp3;Queijo rima com…?
+318;318_Chapter_1.mp3;queijo-beijo-rimou.mp3;Queijo, Beijo! Rimou!
+319;319_Chapter_1.mp3;duas-palmas.mp3;Duas palmas
+320;320_Chapter_1.mp3;observe-imite-e-brinque-com-o-ritmo.mp3;Observe, imite e brinque com o ritmo.
+321;321_Chapter_1.mp3;palma.mp3;Palma
+322;322_Chapter_1.mp3;palma-e-pausa.mp3;Palma e pausa
+323;323_Chapter_1.mp3;palma-palma-pausa.mp3;Palma, palma, pausa
+324;324_Chapter_1.mp3;onde-vai-a-baleia.mp3;Onde vai a baleia?
+325;325_Chapter_1.mp3;onde-vai-a-baleia-no-cesto-azul.mp3;Onde vai a baleia? No cesto azul!
+326;326_Chapter_1.mp3;onde-vai-a-banana.mp3;Onde vai a banana?
+327;327_Chapter_1.mp3;onde-vai-a-banana-no-cesto-amarelo.mp3;Onde vai a banana? No cesto amarelo!
+328;328_Chapter_1.mp3;onde-vai-a-maca.mp3;Onde vai a maçã?
+329;329_Chapter_1.mp3;onde-vai-a-maca-no-cesto-vermelho.mp3;Onde vai a maçã? No cesto vermelho!
+330;330_Chapter_1.mp3;onde-vai-o-bone.mp3;Onde vai o boné?
+331;331_Chapter_1.mp3;onde-vai-o-bone-no-cesto-azul.mp3;Onde vai o boné? No cesto azul!
+332;332_Chapter_1.mp3;onde-vai-o-brocolis.mp3;Onde vai o brócolis?
+333;333_Chapter_1.mp3;onde-vai-o-brocolis-no-cesto-verde.mp3;Onde vai o brócolis? No cesto verde!
+334;334_Chapter_1.mp3;onde-vai-o-caminhao.mp3;Onde vai o caminhão?
+335;335_Chapter_1.mp3;onde-vai-o-caminhao-no-cesto-vermelho.mp3;Onde vai o caminhão? No cesto vermelho!
+336;336_Chapter_1.mp3;onde-vai-o-girassol.mp3;Onde vai o girassol?
+337;337_Chapter_1.mp3;onde-vai-o-girassol-no-cesto-amarelo.mp3;Onde vai o girassol? No cesto amarelo!
+338;338_Chapter_1.mp3;onde-vai-o-mirtilo.mp3;Onde vai o mirtilo?
+339;339_Chapter_1.mp3;onde-vai-o-mirtilo-no-cesto-azul.mp3;Onde vai o mirtilo? No cesto azul!
+340;340_Chapter_1.mp3;onde-vai-o-morango.mp3;Onde vai o morango?
+341;341_Chapter_1.mp3;onde-vai-o-morango-no-cesto-vermelho.mp3;Onde vai o morango? No cesto vermelho!
+342;342_Chapter_1.mp3;onde-vai-o-pintinho.mp3;Onde vai o pintinho?
+343;343_Chapter_1.mp3;onde-vai-o-pintinho-no-cesto-amarelo.mp3;Onde vai o pintinho? No cesto amarelo!
+344;344_Chapter_1.mp3;onde-vai-o-sapo.mp3;Onde vai o sapo?
+345;345_Chapter_1.mp3;onde-vai-o-sapo-no-cesto-verde.mp3;Onde vai o sapo? No cesto verde!
+346;346_Chapter_1.mp3;onde-vai-o-trevo.mp3;Onde vai o trevo?
+347;347_Chapter_1.mp3;onde-vai-o-trevo-no-cesto-verde.mp3;Onde vai o trevo? No cesto verde!
+348;348_Chapter_1.mp3;vamos-ouvir-novamente.mp3;Vamos ouvir novamente.
+349;349_Chapter_1.mp3;conte-os-objetos-e-escolha-a-quantidade.mp3;Conte os objetos e escolha a quantidade.
+350;350_Chapter_1.mp3;vamos-contar-novamente.mp3;Vamos contar novamente!
+351;351_Chapter_1.mp3;onde-esta-a-letra-a.mp3;Onde está a letra A?
+352;352_Chapter_1.mp3;onde-esta-a-letra-aga.mp3;Onde está a letra Agá?
+353;353_Chapter_1.mp3;onde-esta-a-letra-be.mp3;Onde está a letra Bê?
+354;354_Chapter_1.mp3;onde-esta-a-letra-ca.mp3;Onde está a letra Cá?
+355;355_Chapter_1.mp3;onde-esta-a-letra-ce.mp3;Onde está a letra Cê?
+356;356_Chapter_1.mp3;onde-esta-a-letra-dablio.mp3;Onde está a letra Dáblio?
+357;357_Chapter_1.mp3;onde-esta-a-letra-de.mp3;Onde está a letra Dê?
+358;358_Chapter_1.mp3;onde-esta-a-letra-e.mp3;Onde está a letra É?
+359;359_Chapter_1.mp3;onde-esta-a-letra-efe.mp3;Onde está a letra Efe?
+360;360_Chapter_1.mp3;onde-esta-a-letra-ele.mp3;Onde está a letra Ele?
+361;361_Chapter_1.mp3;onde-esta-a-letra-eme.mp3;Onde está a letra Eme?
+362;362_Chapter_1.mp3;onde-esta-a-letra-ene.mp3;Onde está a letra Ene?
+363;363_Chapter_1.mp3;onde-esta-a-letra-erre.mp3;Onde está a letra Erre?
+364;364_Chapter_1.mp3;onde-esta-a-letra-esse.mp3;Onde está a letra Esse?
+365;365_Chapter_1.mp3;onde-esta-a-letra-ge.mp3;Onde está a letra Gê?
+366;366_Chapter_1.mp3;onde-esta-a-letra-i.mp3;Onde está a letra I?
+367;367_Chapter_1.mp3;onde-esta-a-letra-ipsilon.mp3;Onde está a letra Ípsilon?
+368;368_Chapter_1.mp3;onde-esta-a-letra-jota.mp3;Onde está a letra Jota?
+369;369_Chapter_1.mp3;onde-esta-a-letra-o.mp3;Onde está a letra Ó?
+370;370_Chapter_1.mp3;onde-esta-a-letra-pe.mp3;Onde está a letra Pê?
+371;371_Chapter_1.mp3;onde-esta-a-letra-que.mp3;Onde está a letra Quê?
+372;372_Chapter_1.mp3;onde-esta-a-letra-te.mp3;Onde está a letra Tê?
+373;373_Chapter_1.mp3;onde-esta-a-letra-u.mp3;Onde está a letra U?
+374;374_Chapter_1.mp3;onde-esta-a-letra-ve.mp3;Onde está a letra Vê?
+375;375_Chapter_1.mp3;onde-esta-a-letra-xis.mp3;Onde está a letra Xis?
+376;376_Chapter_1.mp3;onde-esta-a-letra-ze.mp3;Onde está a letra Zê?
+377;377_Chapter_1.mp3;a-abelha-faz-zzzz.mp3;A abelha faz zzzz!
+378;378_Chapter_1.mp3;a-baleia-faz-uuuuu.mp3;A baleia faz uuuuu!
+379;379_Chapter_1.mp3;a-cobra-faz-sssss.mp3;A cobra faz sssss!
+380;380_Chapter_1.mp3;a-coruja-faz-uhu-uhu.mp3;A coruja faz uhu uhu!
+381;381_Chapter_1.mp3;a-galinha-faz-co-co-co.mp3;A galinha faz có có có!
+382;382_Chapter_1.mp3;a-ovelha-faz-meeee.mp3;A ovelha faz méééé!
+383;383_Chapter_1.mp3;a-vaca-faz-muuu.mp3;A vaca faz muuu!
+384;384_Chapter_1.mp3;auuuuu.mp3;Auuuuu!
+385;385_Chapter_1.mp3;blub-blub.mp3;Blub blub!
+386;386_Chapter_1.mp3;cade-a-abelha.mp3;Cadê a abelha?
+387;387_Chapter_1.mp3;cade-a-baleia.mp3;Cadê a baleia?
+388;388_Chapter_1.mp3;cade-a-borboleta.mp3;Cadê a borboleta?
+389;389_Chapter_1.mp3;cade-a-cobra.mp3;Cadê a cobra?
+390;390_Chapter_1.mp3;cade-a-coruja.mp3;Cadê a coruja?
+391;391_Chapter_1.mp3;cade-a-formiga.mp3;Cadê a formiga?
+392;392_Chapter_1.mp3;cade-a-galinha.mp3;Cadê a galinha?
+393;393_Chapter_1.mp3;cade-a-girafa.mp3;Cadê a girafa?
+394;394_Chapter_1.mp3;cade-a-ovelha.mp3;Cadê a ovelha?
+395;395_Chapter_1.mp3;cade-a-tartaruga.mp3;Cadê a tartaruga?
+396;396_Chapter_1.mp3;cade-a-vaca.mp3;Cadê a vaca?
+397;397_Chapter_1.mp3;cade-a-zebra.mp3;Cadê a zebra?
+398;398_Chapter_1.mp3;cade-o-cachorro.mp3;Cadê o cachorro?
+399;399_Chapter_1.mp3;cade-o-cavalo.mp3;Cadê o cavalo?
+400;400_Chapter_1.mp3;cade-o-coelho.mp3;Cadê o coelho?
+401;401_Chapter_1.mp3;cade-o-elefante.mp3;Cadê o elefante?
+402;402_Chapter_1.mp3;cade-o-gato.mp3;Cadê o gato?
+403;403_Chapter_1.mp3;cade-o-jacare.mp3;Cadê o jacaré?
+404;404_Chapter_1.mp3;cade-o-leao.mp3;Cadê o leão?
+405;405_Chapter_1.mp3;cade-o-lobo.mp3;Cadê o lobo?
+406;406_Chapter_1.mp3;cade-o-macaco.mp3;Cadê o macaco?
+407;407_Chapter_1.mp3;cade-o-passarinho.mp3;Cadê o passarinho?
+408;408_Chapter_1.mp3;cade-o-pato.mp3;Cadê o pato?
+409;409_Chapter_1.mp3;cade-o-peixe.mp3;Cadê o peixe?
+410;410_Chapter_1.mp3;cade-o-pinguim.mp3;Cadê o pinguim?
+411;411_Chapter_1.mp3;cade-o-porco.mp3;Cadê o porco?
+412;412_Chapter_1.mp3;cade-o-rato.mp3;Cadê o rato?
+413;413_Chapter_1.mp3;cade-o-sapo.mp3;Cadê o sapo?
+414;414_Chapter_1.mp3;cade-o-tigre.mp3;Cadê o tigre?
+415;415_Chapter_1.mp3;cade-o-urso.mp3;Cadê o urso?
+416;416_Chapter_1.mp3;coruja.mp3;Coruja
+417;417_Chapter_1.mp3;formiga.mp3;Formiga
+418;418_Chapter_1.mp3;fuuuu.mp3;Fuuuu!
+419;419_Chapter_1.mp3;grrrr.mp3;Grrrr!
+420;420_Chapter_1.mp3;ic-ic.mp3;Ic ic!
+421;421_Chapter_1.mp3;iiiirri.mp3;Iiiirrí!
+422;422_Chapter_1.mp3;meeee.mp3;Méééé!
+423;423_Chapter_1.mp3;o-cachorro-faz-au-au.mp3;O cachorro faz au au!
+424;424_Chapter_1.mp3;o-cavalo-faz-iiiirri.mp3;O cavalo faz iiiirrí!
+425;425_Chapter_1.mp3;o-elefante-faz-fuuuu.mp3;O elefante faz fuuuu!
+426;426_Chapter_1.mp3;o-gato-faz-miau.mp3;O gato faz miau!
+427;427_Chapter_1.mp3;o-leao-faz-grrr.mp3;O leão faz grrr!
+428;428_Chapter_1.mp3;o-lobo-faz-auuuuu.mp3;O lobo faz auuuuu!
+429;429_Chapter_1.mp3;o-macaco-faz-uh-uh-ah-ah.mp3;O macaco faz uh uh ah ah!
+430;430_Chapter_1.mp3;o-passarinho-faz-piu-piu.mp3;O passarinho faz piu piu!
+431;431_Chapter_1.mp3;o-pato-faz-qua-qua.mp3;O pato faz quá quá!
+432;432_Chapter_1.mp3;o-peixe-faz-blub-blub.mp3;O peixe faz blub blub!
+433;433_Chapter_1.mp3;o-porco-faz-oinc-oinc.mp3;O porco faz óinc óinc!
+434;434_Chapter_1.mp3;o-rato-faz-ic-ic.mp3;O rato faz ic ic!
+435;435_Chapter_1.mp3;o-sapo-faz-croac.mp3;O sapo faz croac!
+436;436_Chapter_1.mp3;o-tigre-faz-grrr.mp3;O tigre faz grrr!
+437;437_Chapter_1.mp3;o-urso-faz-grrrr.mp3;O urso faz grrrr!
+438;438_Chapter_1.mp3;oinc-oinc.mp3;Óinc óinc!
+439;439_Chapter_1.mp3;onde-esta-a-abelha.mp3;Onde está a abelha?
+440;440_Chapter_1.mp3;onde-esta-a-baleia.mp3;Onde está a baleia?
+441;441_Chapter_1.mp3;onde-esta-a-borboleta.mp3;Onde está a borboleta?
+442;442_Chapter_1.mp3;onde-esta-a-cobra.mp3;Onde está a cobra?
+443;443_Chapter_1.mp3;onde-esta-a-coruja.mp3;Onde está a coruja?
+444;444_Chapter_1.mp3;onde-esta-a-formiga.mp3;Onde está a formiga?
+445;445_Chapter_1.mp3;onde-esta-a-girafa.mp3;Onde está a girafa?
+446;446_Chapter_1.mp3;onde-esta-a-ovelha.mp3;Onde está a ovelha?
+447;447_Chapter_1.mp3;onde-esta-a-tartaruga.mp3;Onde está a tartaruga?
+448;448_Chapter_1.mp3;onde-esta-a-zebra.mp3;Onde está a zebra?
+449;449_Chapter_1.mp3;onde-esta-o-cavalo.mp3;Onde está o cavalo?
+450;450_Chapter_1.mp3;onde-esta-o-coelho.mp3;Onde está o coelho?
+451;451_Chapter_1.mp3;onde-esta-o-elefante.mp3;Onde está o elefante?
+452;452_Chapter_1.mp3;onde-esta-o-jacare.mp3;Onde está o jacaré?
+453;453_Chapter_1.mp3;onde-esta-o-lobo.mp3;Onde está o lobo?
+454;454_Chapter_1.mp3;onde-esta-o-macaco.mp3;Onde está o macaco?
+455;455_Chapter_1.mp3;onde-esta-o-passarinho.mp3;Onde está o passarinho?
+456;456_Chapter_1.mp3;onde-esta-o-peixe.mp3;Onde está o peixe?
+457;457_Chapter_1.mp3;onde-esta-o-pinguim.mp3;Onde está o pinguim?
+458;458_Chapter_1.mp3;onde-esta-o-porco.mp3;Onde está o porco?
+459;459_Chapter_1.mp3;onde-esta-o-rato.mp3;Onde está o rato?
+460;460_Chapter_1.mp3;onde-esta-o-tigre.mp3;Onde está o tigre?
+461;461_Chapter_1.mp3;onde-esta-o-urso.mp3;Onde está o urso?
+462;462_Chapter_1.mp3;peixe.mp3;Peixe
+463;463_Chapter_1.mp3;pinguim.mp3;Pinguim
+464;464_Chapter_1.mp3;piu-piu.mp3;Piu piu!
+465;465_Chapter_1.mp3;rato.mp3;Rato
+466;466_Chapter_1.mp3;sssss.mp3;Sssss!
+467;467_Chapter_1.mp3;uh-uh-ah-ah.mp3;Uh uh ah ah!
+468;468_Chapter_1.mp3;uhu-uhu.mp3;Uhu uhu!
+469;469_Chapter_1.mp3;uuuuu.mp3;Uuuuu!
+470;470_Chapter_1.mp3;zzzz.mp3;Zzzz!
+471;471_Chapter_1.mp3;arco-iris.mp3;Arco-íris
+472;472_Chapter_1.mp3;esta-calor.mp3;Está calor!
+473;473_Chapter_1.mp3;esta-chovendo.mp3;Está chovendo!
+474;474_Chapter_1.mp3;esta-fazendo-sol.mp3;Está fazendo sol!
+475;475_Chapter_1.mp3;esta-frio.mp3;Está frio!
+476;476_Chapter_1.mp3;trovao.mp3;Trovão
+477;477_Chapter_1.mp3;arroz.mp3;Arroz
+478;478_Chapter_1.mp3;brocolis.mp3;Brócolis
+479;479_Chapter_1.mp3;feijao.mp3;Feijão
+480;480_Chapter_1.mp3;manga.mp3;Manga
+481;481_Chapter_1.mp3;onde-esta-a-banana.mp3;Onde está a banana?
+482;482_Chapter_1.mp3;onde-esta-a-batata.mp3;Onde está a batata?
+483;483_Chapter_1.mp3;onde-esta-a-cenoura.mp3;Onde está a cenoura?
+484;484_Chapter_1.mp3;onde-esta-a-laranja.mp3;Onde está a laranja?
+485;485_Chapter_1.mp3;onde-esta-a-maca.mp3;Onde está a maçã?
+486;486_Chapter_1.mp3;onde-esta-a-manga.mp3;Onde está a manga?
+487;487_Chapter_1.mp3;onde-esta-a-melancia.mp3;Onde está a melancia?
+488;488_Chapter_1.mp3;onde-esta-a-pera.mp3;Onde está a pera?
+489;489_Chapter_1.mp3;onde-esta-a-sopa.mp3;Onde está a sopa?
+490;490_Chapter_1.mp3;onde-esta-a-uva.mp3;Onde está a uva?
+491;491_Chapter_1.mp3;onde-esta-o-abacaxi.mp3;Onde está o abacaxi?
+492;492_Chapter_1.mp3;onde-esta-o-arroz.mp3;Onde está o arroz?
+493;493_Chapter_1.mp3;onde-esta-o-biscoito.mp3;Onde está o biscoito?
+494;494_Chapter_1.mp3;onde-esta-o-bolo.mp3;Onde está o bolo?
+495;495_Chapter_1.mp3;onde-esta-o-brocolis.mp3;Onde está o brócolis?
+496;496_Chapter_1.mp3;onde-esta-o-feijao.mp3;Onde está o feijão?
+497;497_Chapter_1.mp3;onde-esta-o-leite.mp3;Onde está o leite?
+498;498_Chapter_1.mp3;onde-esta-o-mamao.mp3;Onde está o mamão?
+499;499_Chapter_1.mp3;onde-esta-o-morango.mp3;Onde está o morango?
+500;500_Chapter_1.mp3;onde-esta-o-ovo.mp3;Onde está o ovo?
+501;501_Chapter_1.mp3;onde-esta-o-pao.mp3;Onde está o pão?
+502;502_Chapter_1.mp3;onde-esta-o-queijo.mp3;Onde está o queijo?
+503;503_Chapter_1.mp3;onde-esta-o-suco.mp3;Onde está o suco?
+504;504_Chapter_1.mp3;ovo.mp3;Ovo
+505;505_Chapter_1.mp3;sopa.mp3;Sopa
+506;506_Chapter_1.mp3;onde-esta-a-cor-cinza.mp3;Onde está a cor cinza?
+507;507_Chapter_1.mp3;onde-esta-a-cor-dourado.mp3;Onde está a cor dourado?
+508;508_Chapter_1.mp3;bochecha.mp3;Bochecha
+509;509_Chapter_1.mp3;braco.mp3;Braço
+510;510_Chapter_1.mp3;dedo.mp3;Dedo
+511;511_Chapter_1.mp3;dente.mp3;Dente
+512;512_Chapter_1.mp3;joelho.mp3;Joelho
+513;513_Chapter_1.mp3;mostre-a-barriga.mp3;Mostre a barriga!
+514;514_Chapter_1.mp3;mostre-a-boca.mp3;Mostre a boca!
+515;515_Chapter_1.mp3;mostre-a-bochecha.mp3;Mostre a bochecha!
+516;516_Chapter_1.mp3;mostre-a-cabeca.mp3;Mostre a cabeça!
+517;517_Chapter_1.mp3;mostre-a-lingua.mp3;Mostre a língua!
+518;518_Chapter_1.mp3;mostre-a-mao.mp3;Mostre a mão!
+519;519_Chapter_1.mp3;mostre-a-orelha.mp3;Mostre a orelha!
+520;520_Chapter_1.mp3;mostre-a-perna.mp3;Mostre a perna!
+521;521_Chapter_1.mp3;mostre-o-braco.mp3;Mostre o braço!
+522;522_Chapter_1.mp3;mostre-o-cabelo.mp3;Mostre o cabelo!
+523;523_Chapter_1.mp3;mostre-o-dedo.mp3;Mostre o dedo!
+524;524_Chapter_1.mp3;mostre-o-dente.mp3;Mostre o dente!
+525;525_Chapter_1.mp3;mostre-o-joelho.mp3;Mostre o joelho!
+526;526_Chapter_1.mp3;mostre-o-nariz.mp3;Mostre o nariz!
+527;527_Chapter_1.mp3;mostre-o-olho.mp3;Mostre o olho!
+528;528_Chapter_1.mp3;mostre-o-pe.mp3;Mostre o pé!
+529;529_Chapter_1.mp3;mostre-o-pescoco.mp3;Mostre o pescoço!
+530;530_Chapter_1.mp3;onde-esta-a-barriga.mp3;Onde está a barriga?
+531;531_Chapter_1.mp3;onde-esta-a-bochecha.mp3;Onde está a bochecha?
+532;532_Chapter_1.mp3;onde-esta-a-lingua.mp3;Onde está a língua?
+533;533_Chapter_1.mp3;onde-esta-a-orelha.mp3;Onde está a orelha?
+534;534_Chapter_1.mp3;onde-esta-a-perna.mp3;Onde está a perna?
+535;535_Chapter_1.mp3;onde-esta-o-braco.mp3;Onde está o braço?
+536;536_Chapter_1.mp3;onde-esta-o-cabelo.mp3;Onde está o cabelo?
+537;537_Chapter_1.mp3;onde-esta-o-dedo.mp3;Onde está o dedo?
+538;538_Chapter_1.mp3;onde-esta-o-dente.mp3;Onde está o dente?
+539;539_Chapter_1.mp3;onde-esta-o-joelho.mp3;Onde está o joelho?
+540;540_Chapter_1.mp3;onde-esta-o-pescoco.mp3;Onde está o pescoço?
+541;541_Chapter_1.mp3;orelha.mp3;Orelha
+542;542_Chapter_1.mp3;perna.mp3;Perna
+543;543_Chapter_1.mp3;pescoco.mp3;Pescoço
+544;544_Chapter_1.mp3;bravo.mp3;Bravo
+545;545_Chapter_1.mp3;cansado.mp3;Cansado
+546;546_Chapter_1.mp3;com-fome.mp3;Com fome
+547;547_Chapter_1.mp3;com-medo.mp3;Com medo
+548;548_Chapter_1.mp3;com-sono.mp3;Com sono
+549;549_Chapter_1.mp3;como-voce-esta-se-sentindo.mp3;Como você está se sentindo?
+550;550_Chapter_1.mp3;eu-estou-animado.mp3;Eu estou animado.
+551;551_Chapter_1.mp3;eu-estou-bravo.mp3;Eu estou bravo.
+552;552_Chapter_1.mp3;eu-estou-calmo.mp3;Eu estou calmo.
+553;553_Chapter_1.mp3;eu-estou-cansado.mp3;Eu estou cansado.
+554;554_Chapter_1.mp3;eu-estou-com-fome.mp3;Eu estou com fome.
+555;555_Chapter_1.mp3;eu-estou-com-medo.mp3;Eu estou com medo.
+556;556_Chapter_1.mp3;eu-estou-com-sono.mp3;Eu estou com sono.
+557;557_Chapter_1.mp3;eu-estou-feliz.mp3;Eu estou feliz.
+558;558_Chapter_1.mp3;eu-estou-surpreso.mp3;Eu estou surpreso.
+559;559_Chapter_1.mp3;eu-estou-triste.mp3;Eu estou triste.
+560;560_Chapter_1.mp3;tudo-bem-ficar-triste-as-vezes.mp3;Tudo bem ficar triste às vezes.
+561;561_Chapter_1.mp3;vamos-respirar-juntos.mp3;Vamos respirar juntos?
+562;562_Chapter_1.mp3;amiga.mp3;Amiga
+563;563_Chapter_1.mp3;amigo.mp3;Amigo
+564;564_Chapter_1.mp3;bebe.mp3;Bebê
+565;565_Chapter_1.mp3;irma.mp3;Irmã
+566;566_Chapter_1.mp3;irmao.mp3;Irmão
+567;567_Chapter_1.mp3;professor.mp3;Professor
+568;568_Chapter_1.mp3;professora.mp3;Professora
+569;569_Chapter_1.mp3;titia.mp3;Titia
+570;570_Chapter_1.mp3;titio.mp3;Titio
+571;571_Chapter_1.mp3;vovo.mp3;Vovó
+572;572_Chapter_1.mp3;onde-esta-a-estrela.mp3;Onde está a estrela?
+573;573_Chapter_1.mp3;onde-esta-o-circulo.mp3;Onde está o círculo?
+574;574_Chapter_1.mp3;onde-esta-o-coracao.mp3;Onde está o coração?
+575;575_Chapter_1.mp3;onde-esta-o-losango.mp3;Onde está o losango?
+576;576_Chapter_1.mp3;onde-esta-o-oval.mp3;Onde está o oval?
+577;577_Chapter_1.mp3;onde-esta-o-quadrado.mp3;Onde está o quadrado?
+578;578_Chapter_1.mp3;onde-esta-o-retangulo.mp3;Onde está o retângulo?
+579;579_Chapter_1.mp3;onde-esta-o-triangulo.mp3;Onde está o triângulo?
+580;580_Chapter_1.mp3;boa-tentativa.mp3;Boa tentativa!
+581;581_Chapter_1.mp3;continue-assim.mp3;Continue assim!
+582;582_Chapter_1.mp3;eu-sabia-que-voce-conseguia.mp3;Eu sabia que você conseguia!
+583;583_Chapter_1.mp3;mandou-bem.mp3;Mandou bem!
+584;584_Chapter_1.mp3;olha-so-o-que-voce-fez.mp3;Olha só o que você fez!
+585;585_Chapter_1.mp3;quase-la.mp3;Quase lá!
+586;586_Chapter_1.mp3;que-bonito.mp3;Que bonito!
+587;587_Chapter_1.mp3;que-orgulho.mp3;Que orgulho!
+588;588_Chapter_1.mp3;respira-fundo-e-tenta-de-novo.mp3;Respira fundo e tenta de novo.
+589;589_Chapter_1.mp3;sem-pressa.mp3;Sem pressa.
+590;590_Chapter_1.mp3;tente-outra-vez.mp3;Tente outra vez!
+591;591_Chapter_1.mp3;uau.mp3;Uau!
+592;592_Chapter_1.mp3;vamos-juntos.mp3;Vamos juntos?
+593;593_Chapter_1.mp3;voce-esta-aprendendo-muito.mp3;Você está aprendendo muito!
+594;594_Chapter_1.mp3;agora-e-a-sua-vez.mp3;Agora é a sua vez.
+595;595_Chapter_1.mp3;agora-outra.mp3;Agora outra!
+596;596_Chapter_1.mp3;arraste-ate-aqui.mp3;Arraste até aqui.
+597;597_Chapter_1.mp3;ate-amanha.mp3;Até amanhã!
+598;598_Chapter_1.mp3;escolha-um-mundo.mp3;Escolha um mundo.
+599;599_Chapter_1.mp3;escolha-um.mp3;Escolha um.
+600;600_Chapter_1.mp3;escolha-uma-brincadeira.mp3;Escolha uma brincadeira.
+601;601_Chapter_1.mp3;escute-com-atencao.mp3;Escute com atenção.
+602;602_Chapter_1.mp3;faca-silencio-shhh.mp3;Faça silêncio. Shhh!
+603;603_Chapter_1.mp3;fale-junto-comigo.mp3;Fale junto comigo.
+604;604_Chapter_1.mp3;mande-um-beijo.mp3;Mande um beijo!
+605;605_Chapter_1.mp3;o-que-rima.mp3;O que rima?
+606;606_Chapter_1.mp3;o-que-vem-depois.mp3;O que vem depois?
+607;607_Chapter_1.mp3;olhe-com-atencao.mp3;Olhe com atenção.
+608;608_Chapter_1.mp3;qual-comeca-igual.mp3;Qual começa igual?
+609;609_Chapter_1.mp3;qual-e-o-maior.mp3;Qual é o maior?
+610;610_Chapter_1.mp3;qual-e-o-menor.mp3;Qual é o menor?
+611;611_Chapter_1.mp3;quantos-tem.mp3;Quantos tem?
+612;612_Chapter_1.mp3;que-tal-outra-brincadeira.mp3;Que tal outra brincadeira?
+613;613_Chapter_1.mp3;quer-brincar-de-novo.mp3;Quer brincar de novo?
+614;614_Chapter_1.mp3;repita-comigo.mp3;Repita comigo.
+615;615_Chapter_1.mp3;tchau-tchau.mp3;Tchau, tchau!
+616;616_Chapter_1.mp3;toque-aqui.mp3;Toque aqui.
+617;617_Chapter_1.mp3;toque-na-cor.mp3;Toque na cor.
+618;618_Chapter_1.mp3;toque-na-figura.mp3;Toque na figura.
+619;619_Chapter_1.mp3;toque-no-animal.mp3;Toque no animal.
+620;620_Chapter_1.mp3;vamos-cantar.mp3;Vamos cantar?
+621;621_Chapter_1.mp3;vamos-dancar.mp3;Vamos dançar?
+622;622_Chapter_1.mp3;vamos-de-novo.mp3;Vamos de novo?
+623;623_Chapter_1.mp3;vamos-ouvir-a-historia.mp3;Vamos ouvir a história.
+624;624_Chapter_1.mp3;vamos-para-o-proximo.mp3;Vamos para o próximo.
+625;625_Chapter_1.mp3;vamos-ver-seus-adesivos.mp3;Vamos ver seus adesivos!
+626;626_Chapter_1.mp3;voce-ganhou-um-adesivo.mp3;Você ganhou um adesivo!
+627;627_Chapter_1.mp3;animais.mp3;Animais
+628;628_Chapter_1.mp3;baloes-dos-numeros.mp3;Balões dos Números
+629;629_Chapter_1.mp3;bolhas.mp3;Bolhas
+630;630_Chapter_1.mp3;brincar-com-silabas.mp3;Brincar com Sílabas
+631;631_Chapter_1.mp3;brinque-com-o-ritmo.mp3;Brinque com o Ritmo
+632;632_Chapter_1.mp3;caca-as-cores.mp3;Caça às Cores
+633;633_Chapter_1.mp3;com-que-som-comeca.mp3;Com Que Som Começa?
+634;634_Chapter_1.mp3;complete-a-sequencia.mp3;Complete a Sequência
+635;635_Chapter_1.mp3;contar-tocando.mp3;Contar Tocando
+636;636_Chapter_1.mp3;copie-o-ritmo.mp3;Copie o Ritmo
+637;637_Chapter_1.mp3;cores.mp3;Cores
+638;638_Chapter_1.mp3;cores-para-descobrir.mp3;Cores para Descobrir
+639;639_Chapter_1.mp3;desafio-do-movimento.mp3;Desafio do Movimento
+640;640_Chapter_1.mp3;descobrir-animais.mp3;Descobrir Animais
+641;641_Chapter_1.mp3;descobrir-com-as-maos.mp3;Descobrir com as Mãos
+642;642_Chapter_1.mp3;descobrir-cores.mp3;Descobrir Cores
+643;643_Chapter_1.mp3;descobrir-objetos.mp3;Descobrir Objetos
+644;644_Chapter_1.mp3;encaixe-as-formas.mp3;Encaixe as Formas
+645;645_Chapter_1.mp3;encaixe-e-quebra-cabeca.mp3;Encaixe e Quebra-Cabeça
+646;646_Chapter_1.mp3;encontre-o-animal.mp3;Encontre o Animal
+647;647_Chapter_1.mp3;encontre-o-par.mp3;Encontre o Par
+648;648_Chapter_1.mp3;esconde-esconde.mp3;Esconde-esconde
+649;649_Chapter_1.mp3;eu-quero.mp3;Eu Quero…
+650;650_Chapter_1.mp3;frases-em-acao.mp3;Frases em Ação
+651;651_Chapter_1.mp3;grande-e-pequeno.mp3;Grande e Pequeno
+652;652_Chapter_1.mp3;historia-interativa.mp3;História Interativa
+653;653_Chapter_1.mp3;hora-da-historia.mp3;Hora da História
+654;654_Chapter_1.mp3;lousa-magica.mp3;Lousa Mágica
+655;655_Chapter_1.mp3;memoria.mp3;Memória
+656;656_Chapter_1.mp3;meu-corpo.mp3;Meu Corpo
+657;657_Chapter_1.mp3;mexa-o-corpo.mp3;Mexa o Corpo!
+658;658_Chapter_1.mp3;montar-frases.mp3;Montar Frases
+659;659_Chapter_1.mp3;mundo-das-formas.mp3;Mundo das Formas
+660;660_Chapter_1.mp3;numero-e-quantidade.mp3;Número e Quantidade
+661;661_Chapter_1.mp3;opostos-divertidos.mp3;Opostos Divertidos
+662;662_Chapter_1.mp3;ordem-dos-numeros.mp3;Ordem dos Números
+663;663_Chapter_1.mp3;ouca-e-encontre.mp3;Ouça e Encontre
+664;664_Chapter_1.mp3;palavras-do-dia.mp3;Palavras do Dia
+665;665_Chapter_1.mp3;piano-dos-animais.mp3;Piano dos Animais
+666;666_Chapter_1.mp3;quem-fez-esse-som.mp3;Quem Fez Esse Som?
+667;667_Chapter_1.mp3;quem-pertence-ao-grupo.mp3;Quem Pertence ao Grupo?
+668;668_Chapter_1.mp3;rimas-divertidas.mp3;Rimas Divertidas
+669;669_Chapter_1.mp3;ritmo-musical.mp3;Ritmo Musical
+670;670_Chapter_1.mp3;separar-por-cor.mp3;Separar por Cor
+671;671_Chapter_1.mp3;sequencia-de-sons.mp3;Sequência de Sons
+672;672_Chapter_1.mp3;sons-e-descobertas.mp3;Sons e Descobertas
+673;673_Chapter_1.mp3;vamos-contar.mp3;Vamos Contar
+674;674_Chapter_1.mp3;onde-esta-o-numero-cinco.mp3;Onde está o número cinco?
+675;675_Chapter_1.mp3;onde-esta-o-numero-dez.mp3;Onde está o número dez?
+676;676_Chapter_1.mp3;onde-esta-o-numero-dois.mp3;Onde está o número dois?
+677;677_Chapter_1.mp3;onde-esta-o-numero-nove.mp3;Onde está o número nove?
+678;678_Chapter_1.mp3;onde-esta-o-numero-oito.mp3;Onde está o número oito?
+679;679_Chapter_1.mp3;onde-esta-o-numero-quatro.mp3;Onde está o número quatro?
+680;680_Chapter_1.mp3;onde-esta-o-numero-seis.mp3;Onde está o número seis?
+681;681_Chapter_1.mp3;onde-esta-o-numero-sete.mp3;Onde está o número sete?
+682;682_Chapter_1.mp3;onde-esta-o-numero-tres.mp3;Onde está o número três?
+683;683_Chapter_1.mp3;onde-esta-o-numero-um.mp3;Onde está o número um?
+684;684_Chapter_1.mp3;vamos-contar-ate-cinco.mp3;Vamos contar até cinco!
+685;685_Chapter_1.mp3;vamos-contar-ate-dez.mp3;Vamos contar até dez!
+686;686_Chapter_1.mp3;cadeira.mp3;Cadeira
+687;687_Chapter_1.mp3;cama.mp3;Cama
+688;688_Chapter_1.mp3;carrinho.mp3;Carrinho
+689;689_Chapter_1.mp3;chapeu.mp3;Chapéu
+690;690_Chapter_1.mp3;chave.mp3;Chave
+691;691_Chapter_1.mp3;escova-de-dentes.mp3;Escova de dentes
+692;692_Chapter_1.mp3;guarda-chuva.mp3;Guarda-chuva
+693;693_Chapter_1.mp3;janela.mp3;Janela
+694;694_Chapter_1.mp3;meia.mp3;Meia
+695;695_Chapter_1.mp3;mesa.mp3;Mesa
+696;696_Chapter_1.mp3;mochila.mp3;Mochila
+697;697_Chapter_1.mp3;oculos.mp3;Óculos
+698;698_Chapter_1.mp3;onde-esta-a-bola.mp3;Onde está a bola?
+699;699_Chapter_1.mp3;onde-esta-a-boneca.mp3;Onde está a boneca?
+700;700_Chapter_1.mp3;onde-esta-a-cadeira.mp3;Onde está a cadeira?
+701;701_Chapter_1.mp3;onde-esta-a-cama.mp3;Onde está a cama?
+702;702_Chapter_1.mp3;onde-esta-a-camisa.mp3;Onde está a camisa?
+703;703_Chapter_1.mp3;onde-esta-a-chave.mp3;Onde está a chave?
+704;704_Chapter_1.mp3;onde-esta-a-colher.mp3;Onde está a colher?
+705;705_Chapter_1.mp3;onde-esta-a-escova-de-dentes.mp3;Onde está a escova de dentes?
+706;706_Chapter_1.mp3;onde-esta-a-janela.mp3;Onde está a janela?
+707;707_Chapter_1.mp3;onde-esta-a-meia.mp3;Onde está a meia?
+708;708_Chapter_1.mp3;onde-esta-a-mesa.mp3;Onde está a mesa?
+709;709_Chapter_1.mp3;onde-esta-a-mochila.mp3;Onde está a mochila?
+710;710_Chapter_1.mp3;onde-esta-a-porta.mp3;Onde está a porta?
+711;711_Chapter_1.mp3;onde-esta-o-carrinho.mp3;Onde está o carrinho?
+712;712_Chapter_1.mp3;onde-esta-o-chapeu.mp3;Onde está o chapéu?
+713;713_Chapter_1.mp3;onde-esta-o-copo.mp3;Onde está o copo?
+714;714_Chapter_1.mp3;onde-esta-o-guarda-chuva.mp3;Onde está o guarda-chuva?
+715;715_Chapter_1.mp3;onde-esta-o-livro.mp3;Onde está o livro?
+716;716_Chapter_1.mp3;onde-esta-o-oculos.mp3;Onde está o óculos?
+717;717_Chapter_1.mp3;onde-esta-o-prato.mp3;Onde está o prato?
+718;718_Chapter_1.mp3;onde-esta-o-relogio.mp3;Onde está o relógio?
+719;719_Chapter_1.mp3;onde-esta-o-sapato.mp3;Onde está o sapato?
+720;720_Chapter_1.mp3;onde-esta-o-telefone.mp3;Onde está o telefone?
+721;721_Chapter_1.mp3;onde-esta-o-travesseiro.mp3;Onde está o travesseiro?
+722;722_Chapter_1.mp3;porta.mp3;Porta
+723;723_Chapter_1.mp3;prato.mp3;Prato
+724;724_Chapter_1.mp3;relogio.mp3;Relógio
+725;725_Chapter_1.mp3;telefone.mp3;Telefone
+726;726_Chapter_1.mp3;travesseiro.mp3;Travesseiro
+727;727_Chapter_1.mp3;aberto.mp3;Aberto
+728;728_Chapter_1.mp3;alto.mp3;Alto
+729;729_Chapter_1.mp3;cheio.mp3;Cheio
+730;730_Chapter_1.mp3;dentro.mp3;Dentro
+731;731_Chapter_1.mp3;devagar.mp3;Devagar
+732;732_Chapter_1.mp3;em-cima.mp3;Em cima
+733;733_Chapter_1.mp3;embaixo.mp3;Embaixo
+734;734_Chapter_1.mp3;fechado.mp3;Fechado
+735;735_Chapter_1.mp3;fora.mp3;Fora
+736;736_Chapter_1.mp3;grande.mp3;Grande
+737;737_Chapter_1.mp3;limpo.mp3;Limpo
+738;738_Chapter_1.mp3;longe.mp3;Longe
+739;739_Chapter_1.mp3;molhado.mp3;Molhado
+740;740_Chapter_1.mp3;perto.mp3;Perto
+741;741_Chapter_1.mp3;qual-e-o-contrario-de-aberto.mp3;Qual é o contrário de aberto?
+742;742_Chapter_1.mp3;qual-e-o-contrario-de-dentro.mp3;Qual é o contrário de dentro?
+743;743_Chapter_1.mp3;qual-e-o-contrario-de-em-cima.mp3;Qual é o contrário de em cima?
+744;744_Chapter_1.mp3;qual-e-o-contrario-de-limpo.mp3;Qual é o contrário de limpo?
+745;745_Chapter_1.mp3;qual-e-o-contrario-de-molhado.mp3;Qual é o contrário de molhado?
+746;746_Chapter_1.mp3;qual-e-o-contrario-de-perto.mp3;Qual é o contrário de perto?
+747;747_Chapter_1.mp3;qual-e-o-contrario-de-quente.mp3;Qual é o contrário de quente?
+748;748_Chapter_1.mp3;qual-e-o-contrario-de-rapido.mp3;Qual é o contrário de rápido?
+749;749_Chapter_1.mp3;quente.mp3;Quente
+750;750_Chapter_1.mp3;rapido.mp3;Rápido
+751;751_Chapter_1.mp3;seco.mp3;Seco
+752;752_Chapter_1.mp3;sujo.mp3;Sujo
+753;753_Chapter_1.mp3;hora-de-acordar.mp3;Hora de acordar!
+754;754_Chapter_1.mp3;hora-de-comer.mp3;Hora de comer!
+755;755_Chapter_1.mp3;hora-de-dormir.mp3;Hora de dormir!
+756;756_Chapter_1.mp3;hora-de-escovar-os-dentes.mp3;Hora de escovar os dentes!
+757;757_Chapter_1.mp3;hora-de-guardar-os-brinquedos.mp3;Hora de guardar os brinquedos!
+758;758_Chapter_1.mp3;hora-do-banho.mp3;Hora do banho!
+759;759_Chapter_1.mp3;hora-do-cafe-da-manha.mp3;Hora do café da manhã!
+760;760_Chapter_1.mp3;vamos-calcar-o-sapato.mp3;Vamos calçar o sapato?
+761;761_Chapter_1.mp3;vamos-lavar-as-maos.mp3;Vamos lavar as mãos?
+762;762_Chapter_1.mp3;vamos-passear.mp3;Vamos passear?
+763;763_Chapter_1.mp3;vamos-tomar-agua.mp3;Vamos tomar água?
+764;764_Chapter_1.mp3;vamos-vestir-a-roupa.mp3;Vamos vestir a roupa?
+765;765_Chapter_1.mp3;boa-noite.mp3;Boa noite!
+766;766_Chapter_1.mp3;boa-tarde.mp3;Boa tarde!
+767;767_Chapter_1.mp3;manha.mp3;Manhã
+768;768_Chapter_1.mp3;ontem.mp3;Ontem
+769;769_Chapter_1.mp3;tarde.mp3;Tarde
+770;770_Chapter_1.mp3;ambulancia.mp3;Ambulância
+771;771_Chapter_1.mp3;caminhao-de-bombeiro.mp3;Caminhão de bombeiro
+772;772_Chapter_1.mp3;helicoptero.mp3;Helicóptero
+773;773_Chapter_1.mp3;onde-esta-a-ambulancia.mp3;Onde está a ambulância?
+774;774_Chapter_1.mp3;onde-esta-a-bicicleta.mp3;Onde está a bicicleta?
+775;775_Chapter_1.mp3;onde-esta-a-moto.mp3;Onde está a moto?
+776;776_Chapter_1.mp3;onde-esta-o-aviao.mp3;Onde está o avião?
+777;777_Chapter_1.mp3;onde-esta-o-barco.mp3;Onde está o barco?
+778;778_Chapter_1.mp3;onde-esta-o-caminhao-de-bombeiro.mp3;Onde está o caminhão de bombeiro?
+779;779_Chapter_1.mp3;onde-esta-o-caminhao.mp3;Onde está o caminhão?
+780;780_Chapter_1.mp3;onde-esta-o-carro.mp3;Onde está o carro?
+781;781_Chapter_1.mp3;onde-esta-o-foguete.mp3;Onde está o foguete?
+782;782_Chapter_1.mp3;onde-esta-o-helicoptero.mp3;Onde está o helicóptero?
+783;783_Chapter_1.mp3;onde-esta-o-onibus.mp3;Onde está o ônibus?
+784;784_Chapter_1.mp3;onde-esta-o-trem.mp3;Onde está o trem?

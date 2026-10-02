@@ -37,3 +37,5 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: End-to-end
         run: node scripts/e2e-test.mjs
+      - name: Aparelhos antigos (iOS 9, Android 5)
+        run: node scripts/legacy-audit.mjs

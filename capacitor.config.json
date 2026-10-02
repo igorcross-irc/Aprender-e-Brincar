@@ -1,0 +1,16 @@
+{
+  "appId": "br.app.aprenderebrincar",
+  "appName": "Aprender & Brincar",
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorUpdater": {
+      "autoUpdate": false,
+      "resetWhenUpdate": true,
+      "appReadyTimeout": 15000,
+      "updateUrl": "",
+      "channelUrl": "",
+      "statsUrl": "",
+      "allowSetDefaultChannel": false
+    }
+  }
+}

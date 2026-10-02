@@ -101,6 +101,8 @@ async function run() {
   await waitForServer();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  // O Modo criança tem a própria seção no fim; aqui ele ficaria cobrindo os cliques do robô.
+  await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', (error) => pageErrors.push(error.message));
@@ -292,6 +294,44 @@ async function run() {
   pass('adulto libera mais 10 minutos pela Área da Família');
 
   await context.close();
+
+  console.log('Modo criança');
+  const lockContext = await browser.newContext({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  await lockContext.addInitScript(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
+  const lockPage = await lockContext.newPage();
+  const lockErrors = [];
+  lockPage.on('pageerror', (error) => lockErrors.push(error.message));
+  const isFullscreen = () => lockPage.evaluate(() => Boolean(document.fullscreenElement));
+  await lockPage.goto(BASE);
+  await lockPage.waitForSelector('[data-world]');
+  await lockPage.mouse.click(512, 700);
+  await lockPage.waitForTimeout(300);
+  if (await isFullscreen()) pass('primeiro toque abre em tela cheia');
+  else fail('primeiro toque não abriu a tela cheia');
+  await lockPage.evaluate(() => document.exitFullscreen());
+  await lockPage.waitForSelector('.kid-lock-return');
+  await lockPage.click('.kid-lock-button', { force: true });
+  await lockPage.waitForTimeout(300);
+  if (await isFullscreen() && !(await lockPage.$('.kid-lock-return'))) pass('saiu da tela cheia: botão ▶ volta');
+  else fail('o botão ▶ não voltou para a tela cheia');
+  const lockUrl = lockPage.url();
+  await lockPage.goBack().catch(() => {});
+  await lockPage.waitForTimeout(300);
+  if (lockPage.url() === lockUrl && await lockPage.$('[data-world]')) pass('botão Voltar não sai do app');
+  else fail('botão Voltar saiu do app');
+  await lockPage.click('#btn-settings');
+  const lockEquation = await lockPage.textContent('#gate-title ~ div');
+  const [l1, l2] = lockEquation.match(/\d+/g).map(Number);
+  await lockPage.fill('#gate-input', String(l1 * l2));
+  await lockPage.click('#btn-gate-confirm');
+  await lockPage.click('#btn-exit-fullscreen');
+  await lockPage.waitForTimeout(300);
+  await lockPage.mouse.click(512, 700);
+  await lockPage.waitForTimeout(300);
+  if (!(await isFullscreen()) && !(await lockPage.$('.kid-lock-return'))) pass('adulto sai da tela cheia pela Área da Família');
+  else fail('a saída pela Área da Família não liberou a tela cheia');
+  if (lockErrors.length) fail(`Modo criança gerou erro: ${lockErrors[0]}`);
+  await lockContext.close();
 
   console.log('Modo offline');
   const swContext = await browser.newContext();

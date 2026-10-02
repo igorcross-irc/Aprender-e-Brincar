@@ -16,7 +16,7 @@ if (missing.length) {
   throw new Error('AUDIO AUDIT FAIL — ' + missing.length + ' arquivos declarados no catálogo não existem: ' + missing.slice(0, 10).join(', '));
 }
 
-if (!audio.includes('fetch(AUDIO_BASE + encodeURIComponent(name)')) {
+if (!audio.includes('fetchArrayBuffer(AUDIO_BASE + encodeURIComponent(name))')) {
   throw new Error('AUDIO AUDIT FAIL — carregamento não usa caminho codificado');
 }
 if (!audio.includes('this.speech?.cancel()')) {

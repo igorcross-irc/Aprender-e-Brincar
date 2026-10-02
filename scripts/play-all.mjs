@@ -1,8 +1,9 @@
 // Joga todas as brincadeiras de todas as idades até o fim, como uma criança faria.
 // Detecta travamentos (rodada sem resposta possível), erros de JavaScript e registra o texto de cada rodada.
-// Uso: npm run build && node scripts/play-all.mjs [idade] [--shots pasta]
+// Uso: npm run build && node scripts/play-all.mjs [idade] [--shots pasta] [--legacy]
+// --legacy: roda só a versão para aparelhos antigos (ES5, sem Pointer Events, alternativas de CSS).
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const PORT = 4179;
@@ -14,6 +15,12 @@ const SHOTS = shotsIndex >= 0 ? args[shotsIndex + 1] : null;
 const AGES = args.filter((arg, index) => ALL_AGES.includes(arg) && index !== shotsIndex + 1);
 const onlyIndex = args.indexOf('--only');
 const ONLY = onlyIndex >= 0 ? args[onlyIndex + 1].split(',') : null;
+const speechIndex = args.indexOf('--speech');
+const SPEECH_OUT = speechIndex >= 0 ? args[speechIndex + 1] : null;
+const spoken = {};
+const LEGACY = args.includes('--legacy');
+// Na versão legada não existe PointerEvent: o toque chega pelo adaptador (mousedown → pointerdown).
+const POINTER = LEGACY ? 'mousedown' : 'pointerdown';
 const ages = AGES.length ? AGES : ALL_AGES;
 if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 
@@ -119,7 +126,7 @@ async function playSpecial(page) {
     const target = (await page.textContent('#target-num')).trim();
     const balloon = await page.$(`#sky-area button[aria-label="Balão número ${target}"]`);
     if (!balloon) return 'stuck';
-    await balloon.dispatchEvent('pointerdown');
+    await balloon.dispatchEvent(POINTER);
     await page.waitForTimeout(600);
     return true;
   }
@@ -134,7 +141,7 @@ async function playSpecial(page) {
   }
   if (await page.$('.bubble')) {
     const bubble = await page.$('.bubble:not(.popping)');
-    if (bubble) await bubble.dispatchEvent('pointerdown');
+    if (bubble) await bubble.dispatchEvent(POINTER);
     await page.waitForTimeout(250);
     return true;
   }
@@ -144,7 +151,7 @@ async function playSpecial(page) {
     return true;
   }
   if (await page.$('.piano-key')) {
-    for (let i = 0; i < 10; i += 1) await page.dispatchEvent(`[data-key="${i % 5}"]`, 'pointerdown');
+    for (let i = 0; i < 10; i += 1) await page.dispatchEvent(`[data-key="${i % 5}"]`, POINTER);
     await page.click('#music-done');
     return true;
   }
@@ -232,12 +239,27 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
+  if (LEGACY) {
+    const legacyHtml = readFileSync('dist/index.html', 'utf8')
+      .replace(/<script type="module"[^>]*>[\s\S]*?<\/script>/g, '')
+      .replace(/<link rel="modulepreload"[^>]*>/g, '')
+      .replace(/<script nomodule/g, '<script');
+    await context.route(`${BASE}/`, (route) => route.fulfill({ status: 200, contentType: 'text/html', body: legacyHtml }));
+    await context.addInitScript(() => { window.__AB_SIMULATE_LEGACY__ = true; delete window.PointerEvent; });
+  }
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   page.on('dialog', (dialog) => dialog.accept());
   await page.addInitScript(() => localStorage.setItem('aprender_brincar_child_name', 'Isadora'));
+  // Registra tudo que foi falado pela voz do navegador (= falas sem MP3 gravado).
+  await page.addInitScript(() => {
+    window.__spoken = [];
+    const synth = window.speechSynthesis;
+    if (synth) { const original = synth.speak.bind(synth); synth.speak = (utterance) => { window.__spoken.push(utterance.text); return original(utterance); }; }
+  });
   await page.goto(BASE);
   await page.evaluate(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
   await page.reload();
@@ -248,6 +270,9 @@ try {
       try { entry = await playGame(page, ageId, gameId, errors); }
       catch (error) { entry = { ageId, gameId, status: 'exceção', errors: [error.message.split('\n')[0]], rounds: [] }; }
       await page.waitForTimeout(700);
+      if (SPEECH_OUT) {
+        for (const text of await page.evaluate(() => window.__spoken.splice(0))) (spoken[text] ||= new Set()).add(gameId);
+      }
       report.push(entry);
       console.log(`${entry.status === 'ok' ? '✓' : '✗'} ${ageId} ${gameId} — ${entry.status} (${entry.rounds.length} telas)${entry.errors.length ? ' · ' + entry.errors[0].split('\n')[0] : ''}`);
     }
@@ -258,6 +283,7 @@ try {
 }
 
 writeFileSync('play-all-report.json', JSON.stringify(report, null, 2));
+if (SPEECH_OUT) writeFileSync(SPEECH_OUT, JSON.stringify(Object.fromEntries(Object.entries(spoken).map(([text, games]) => [text, [...games]])), null, 2));
 const bad = report.filter((entry) => entry.status !== 'ok');
 console.log(`\nPLAY-ALL — ${report.length - bad.length}/${report.length} brincadeiras jogadas até o fim.`);
 process.exit(bad.length ? 1 : 0);

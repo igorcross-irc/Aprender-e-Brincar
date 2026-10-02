@@ -4,3 +4,4 @@ dist/
 *.log
 .env*
 play-all-report.json
+public/native.json
