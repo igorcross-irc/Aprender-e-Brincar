@@ -47,8 +47,12 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Android SDK
+        # O computador do GitHub já traz o SDK; só garante licenças e a versão de compilação.
+        run: |
+          SDKMANAGER=$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
+          yes | "$SDKMANAGER" --licenses > /dev/null || true
+          "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
       - name: Chave de assinatura
         id: keystore
         env:
@@ -87,7 +91,18 @@ jobs:
             require("fs").writeFileSync("update.json", JSON.stringify(info, null, 2));
             console.log(info);
           '
+      - name: Guardar arquivos (teste fora da main)
+        if: github.ref != 'refs/heads/main' && github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ env.VERSION }}
+          path: |
+            update.json
+            web-${{ env.VERSION }}.zip
+            aprender-e-brincar.apk
+          if-no-files-found: warn
       - name: Publicar release
+        if: github.ref == 'refs/heads/main' || github.ref_type == 'tag'
         uses: softprops/action-gh-release@v2
         with:
           name: Aprender & Brincar ${{ env.VERSION }}
