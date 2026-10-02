@@ -1,11 +1,14 @@
 name: Release
 
 # Publica uma versão nova: site (zip para o app Android se atualizar sozinho),
-# APK assinado e update.json. Dispara com uma tag v<versão> igual ao package.json:
-#   git tag v0.6.0 && git push origin v0.6.0
+# APK assinado e update.json. Dois jeitos de disparar:
+#   - Actions → Release → "Run workflow" (usa a versão do package.json na branch escolhida;
+#     o release cria a tag v<versão> sozinho), ou
+#   - git tag v0.6.0 && git push origin v0.6.0 (a tag tem de ser igual ao package.json).
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -27,7 +30,9 @@ jobs:
       - name: Versão confere com a tag
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          test "v$VERSION" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME diferente do package.json ($VERSION)"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            test "v$VERSION" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME diferente do package.json ($VERSION)"; exit 1; }
+          fi
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
       - name: Build do site
         run: npm run build
@@ -86,6 +91,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Aprender & Brincar ${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
           files: |
             update.json
