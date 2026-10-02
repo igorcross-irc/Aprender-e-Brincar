@@ -3,7 +3,7 @@ import { rewardCatalog } from '../../content/reward-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
-import { canFullscreen, isStandalone } from '../../core/kid-lock.js';
+import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -105,7 +105,9 @@ export class FamilySettings {
     const weekMax = Math.max(15, ...week.map((day) => day.minutes));
     const { kidLock } = app;
     const isApple = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    const lockTip = isApple
+    const lockTip = isNativeApp()
+      ? 'No app, a trava fixa a tela: Início, Recentes e Voltar ficam bloqueados. Para mais segurança, ative em Configurações → Segurança → Fixar app a opção "Pedir PIN para liberar". Emergência: segure Voltar + Recentes.'
+      : isApple
       ? 'Para travar de vez no iPhone/iPad: adicione o app à Tela de Início (Compartilhar → Adicionar à Tela de Início) e ative o Acesso Guiado em Ajustes → Acessibilidade → Acesso Guiado. Depois, abra o app e aperte 3 vezes o botão lateral (ou Início).'
       : /Android/.test(navigator.userAgent)
         ? 'Para travar de vez no Android: ative Configurações → Segurança → Fixar app (ou "Fixação de tela") e fixe este app pelo botão de apps recentes. Para sair, segure Voltar + Recentes.'
@@ -145,8 +147,8 @@ export class FamilySettings {
         <section class="family-section">
           <h4>Modo criança</h4>
           <label class="family-toggle"><input type="checkbox" id="kid-lock-toggle" ${kidLock.enabled ? 'checked' : ''} /> Tela cheia e travas</label>
-          <p class="family-hint">${canFullscreen() || isStandalone() ? 'O app abre em tela cheia no primeiro toque e volta sozinho se a criança sair. Também bloqueia o botão Voltar, o toque longo e o zoom.' : 'Este navegador não permite tela cheia em sites. Bloqueamos o botão Voltar, o toque longo e o zoom.'}</p>
-          ${kidLock.active ? '<button id="btn-exit-fullscreen" class="family-button">Sair da tela cheia agora</button>' : ''}
+          <p class="family-hint">${isNativeApp() ? 'O app fica em tela cheia e se fixa na tela no primeiro toque.' : canFullscreen() || isStandalone() ? 'O app abre em tela cheia no primeiro toque e volta sozinho se a criança sair. Também bloqueia o botão Voltar, o toque longo e o zoom.' : 'Este navegador não permite tela cheia em sites. Bloqueamos o botão Voltar, o toque longo e o zoom.'}</p>
+          ${kidLock.active ? `<button id="btn-exit-fullscreen" class="family-button">${isNativeApp() ? 'Liberar o aparelho agora' : 'Sair da tela cheia agora'}</button>` : ''}
           <p class="family-hint">${esc(lockTip)}</p>
         </section>
 

@@ -14,9 +14,12 @@
     "test:e2e": "npm run build && node scripts/e2e-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
     "prebuild": "node scripts/audio-index.mjs",
-    "test:play-all": "npm run build && node scripts/play-all.mjs"
+    "test:play-all": "npm run build && node scripts/play-all.mjs",
+    "android:sync": "npm run build && npx cap sync android",
+    "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
     "autoprefixer": "^10.4.20",
     "playwright": "1.56.1",
     "postcss": "^8.4.49",
@@ -24,6 +27,8 @@
     "vite": "^6.4.3"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "@fontsource-variable/nunito": "^5.3.0"
   }
 }

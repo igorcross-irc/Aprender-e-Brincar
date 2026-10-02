@@ -4,7 +4,14 @@
 // Nada aqui substitui o bloqueio do sistema (Acesso Guiado no iOS, Fixar app no
 // Android), que é o único jeito de impedir o botão Início.
 
+import { Capacitor, registerPlugin } from '@capacitor/core';
+
 const STORAGE_KEY = 'ab_kid_lock';
+
+// App Android (Capacitor): a trava é nativa — fixa o app na tela, esconde as barras
+// e engole o botão Voltar (android/app/src/main/java/.../KidLockPlugin.java).
+const NativeKidLock = registerPlugin('KidLock');
+export const isNativeApp = () => Capacitor.isNativePlatform();
 
 const root = () => document.documentElement;
 
@@ -28,6 +35,7 @@ export class KidLock {
     this.paused = false; // adulto saiu da tela cheia pela Área da Família
     this.wakeLock = null;
     this.overlay = null;
+    this.pinned = false;
     this.enabled = this.readEnabled();
   }
 
@@ -38,8 +46,12 @@ export class KidLock {
   get active() { return this.enabled && !this.paused; }
 
   start() {
-    // Primeiro toque em qualquer lugar: entra em tela cheia.
-    const onGesture = () => { if (this.active && !fullscreenElement()) this.enterFullscreen(); };
+    // Primeiro toque em qualquer lugar: entra em tela cheia (ou fixa o app no Android).
+    const onGesture = () => {
+      if (!this.active) return;
+      if (isNativeApp()) { if (!this.pinned) this.pinApp(); return; }
+      if (!fullscreenElement()) this.enterFullscreen();
+    };
     document.addEventListener('pointerup', onGesture, true);
     document.addEventListener('touchend', onGesture, true);
     document.addEventListener('click', onGesture, true);
@@ -64,14 +76,31 @@ export class KidLock {
 
     // Fechar a aba no computador pede confirmação.
     window.addEventListener('beforeunload', (event) => {
-      if (!this.active) return;
+      if (!this.active || isNativeApp()) return;
       event.preventDefault();
       event.returnValue = '';
     });
 
+    // No app Android a fixação não depende de toque: trava já ao abrir.
+    if (isNativeApp() && this.active) this.pinApp();
+
     // Tela não apaga enquanto a criança brinca.
-    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') this.keepAwake(); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') return;
+      this.keepAwake();
+      if (isNativeApp()) this.refreshPinned();
+    });
     this.keepAwake();
+  }
+
+  async pinApp() {
+    this.pinned = true; // evita pedir de novo a cada toque enquanto o sistema responde
+    try { this.pinned = Boolean((await NativeKidLock.lock()).pinned); } catch { this.pinned = false; }
+  }
+
+  // Adulto pode ter soltado pelo sistema (Voltar + Recentes): o próximo toque fixa de novo.
+  async refreshPinned() {
+    try { this.pinned = Boolean((await NativeKidLock.getStatus()).pinned); } catch {}
   }
 
   trapHistory() {
@@ -133,6 +162,11 @@ export class KidLock {
 
   release() {
     this.hideReturn();
+    if (isNativeApp()) {
+      this.pinned = false;
+      NativeKidLock.unlock().catch(() => {});
+      return;
+    }
     try { navigator.keyboard?.unlock?.(); } catch {}
     try { this.wakeLock?.release?.(); } catch {}
     this.wakeLock = null;
