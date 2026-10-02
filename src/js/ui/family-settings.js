@@ -4,6 +4,7 @@ import { learningWorlds } from '../../content/world-catalog.js';
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
+import { APP_VERSION } from '../../core/app-update.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -182,6 +183,14 @@ export class FamilySettings {
 
         ${canInstall ? `<section class="family-section"><h4>Instalar</h4><p class="family-hint">Instale para abrir em tela cheia e brincar sem internet.</p><button id="btn-install" class="family-button">📲 Instalar aplicativo</button></section>` : ''}
 
+        ${app.updater?.supported ? `<section class="family-section">
+          <h4>Atualizações</h4>
+          <p class="family-hint">Versão ${esc(APP_VERSION)}. O conteúdo novo chega sozinho pela internet e entra na próxima vez que o app abrir.</p>
+          <p id="update-status" class="family-hint" aria-live="polite"></p>
+          <button id="btn-check-update" class="family-button">Procurar atualização</button>
+          <button id="btn-install-apk" class="family-button" hidden>Baixar e instalar o app novo</button>
+        </section>` : ''}
+
         <section class="family-section">
           <h4>Privacidade</h4>
           <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo.</p>
@@ -214,6 +223,30 @@ export class FamilySettings {
       app.renderHome();
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
+    const updateStatus = modal.querySelector('#update-status');
+    if (updateStatus) {
+      const texts = {
+        idle: '',
+        checking: 'Procurando…',
+        current: 'Tudo em dia.',
+        ready: 'Atualização baixada: entra na próxima vez que o app abrir.',
+        apk: 'Há uma versão nova do aplicativo. Ela precisa ser instalada.',
+        error: 'Não deu para verificar agora (sem internet?).'
+      };
+      const render = (state) => {
+        updateStatus.textContent = texts[state.status] ?? '';
+        modal.querySelector('#btn-install-apk').hidden = !state.apk;
+      };
+      render(app.updater.state);
+      const off = app.updater.onChange(render);
+      new MutationObserver(() => { if (!modal.isConnected) off(); }).observe(document.body, { childList: true });
+      modal.querySelector('#btn-check-update').addEventListener('click', () => app.updater.check());
+      modal.querySelector('#btn-install-apk').addEventListener('click', () => {
+        // Com o app fixado na tela o Android não abre o instalador: libera antes.
+        kidLock.pause();
+        setTimeout(() => app.updater.openApk(), 400);
+      });
+    }
     modal.querySelector('#btn-exit-fullscreen')?.addEventListener('click', () => { kidLock.pause(); modal.remove(); });
     modal.querySelector('#btn-install')?.addEventListener('click', async () => { await app.pwa.promptInstall(); modal.remove(); });
     modal.querySelector('#btn-reset-stars').addEventListener('click', () => {

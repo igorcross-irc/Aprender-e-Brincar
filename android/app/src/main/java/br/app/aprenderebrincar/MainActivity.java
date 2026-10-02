@@ -15,6 +15,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(KidLockPlugin.class);
+        registerPlugin(AppInfoPlugin.class);
         super.onCreate(savedInstanceState);
 
         // Tela não apaga enquanto a criança brinca.

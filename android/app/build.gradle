@@ -1,4 +1,15 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
+
+// Versão única do projeto: package.json ("1.2.3" → versionCode 10203).
+def appVersion = new JsonSlurper().parse(file('../../package.json')).version
+def (major, minor, patch) = appVersion.tokenize('.').collect { it.replaceAll(/\D.*/, '').toInteger() }
+def appVersionCode = major * 10000 + minor * 100 + patch
+
+// Assinatura de release: vem dos segredos do GitHub (ver docs/ANDROID.md).
+// Sem eles, o release sai assinado com a chave de depuração (só para teste local).
+def keystorePath = System.getenv('ANDROID_KEYSTORE_FILE')
 
 android {
     namespace = "br.app.aprenderebrincar"
@@ -7,8 +18,8 @@ android {
         applicationId "br.app.aprenderebrincar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +27,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (keystorePath) {
+            release {
+                storeFile file(keystorePath)
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
     buildTypes {
         release {
+            signingConfig keystorePath ? signingConfigs.release : signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

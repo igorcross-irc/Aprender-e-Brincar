@@ -1,7 +1,12 @@
 import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
+import { readFileSync } from 'node:fs';
+
+const { version } = JSON.parse(readFileSync('package.json', 'utf8'));
 
 export default defineConfig({
+  // Versão do conteúdo; o app Android compara com a do último release do GitHub.
+  define: { __APP_VERSION__: JSON.stringify(version) },
   plugins: [
     // Aparelhos antigos (ex.: iPad com iOS 9, Android 5) não rodam módulos modernos:
     // recebem uma segunda versão traduzida para ES5 com os complementos que faltam.
