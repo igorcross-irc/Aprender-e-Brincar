@@ -9,8 +9,7 @@
 // igual), o zip é baixado em segundo plano e aplicado na próxima vez que o app abrir.
 // Nativo: se mudou, o conteúdo novo não é aplicado (poderia quebrar) e a Área da Família
 // oferece o APK novo. Nenhum dado é enviado: só leituras públicas do GitHub.
-import { Capacitor, CapacitorHttp, registerPlugin } from '@capacitor/core';
-import { CapacitorUpdater } from '@capgo/capacitor-updater';
+import { capacitorCore, capacitorUpdater, isNativeApp, nativePlugin } from './native.js';
 
 export const REPO = 'igorcross-irc/Aprender-e-Brincar';
 const LATEST_RELEASE = `https://api.github.com/repos/${REPO}/releases/latest`;
@@ -19,8 +18,6 @@ const CHECK_EVERY_MS = 6 * 60 * 60 * 1000;
 
 // eslint-disable-next-line no-undef
 export const APP_VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : '0.0.0';
-
-const AppInfo = registerPlugin('AppInfo');
 
 export function compareVersions(a, b) {
   const pa = String(a).replace(/^v/, '').split('.').map((n) => parseInt(n, 10) || 0);
@@ -33,6 +30,7 @@ export function compareVersions(a, b) {
 
 async function getJson(url) {
   // Requisição nativa: sem CORS e seguindo os redirecionamentos dos arquivos do GitHub.
+  const { CapacitorHttp } = await capacitorCore();
   const response = await CapacitorHttp.get({ url, headers: { Accept: 'application/vnd.github+json, application/json, */*' } });
   if (response.status < 200 || response.status >= 300) throw new Error(`HTTP ${response.status}`);
   return typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
@@ -45,7 +43,7 @@ export class AppUpdater {
     this.listeners = new Set();
   }
 
-  get supported() { return Capacitor.isNativePlatform(); }
+  get supported() { return isNativeApp(); }
 
   onChange(fn) { this.listeners.add(fn); return () => this.listeners.delete(fn); }
 
@@ -57,7 +55,7 @@ export class AppUpdater {
   async start() {
     if (!this.supported) return;
     // Obrigatório: sem isto o plugin acha que a versão nova travou e volta para a anterior.
-    try { await CapacitorUpdater.notifyAppReady(); } catch {}
+    try { await (await capacitorUpdater()).plugin.notifyAppReady(); } catch {}
     let last = 0;
     try { last = Number(this.storage.getItem(CHECKED_KEY)) || 0; } catch {}
     if (Date.now() - last > CHECK_EVERY_MS) this.check().catch(() => {});
@@ -67,6 +65,8 @@ export class AppUpdater {
     if (!this.supported || this.state.status === 'checking') return this.state;
     this.set({ status: 'checking', error: null });
     try {
+      const { plugin: AppInfo } = await nativePlugin('AppInfo');
+      const { plugin: CapacitorUpdater } = await capacitorUpdater();
       const native = await AppInfo.getNative();
       const release = await getJson(LATEST_RELEASE);
       const asset = (release.assets || []).find((item) => item.name === 'update.json');
