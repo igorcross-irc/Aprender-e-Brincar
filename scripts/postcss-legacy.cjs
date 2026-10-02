@@ -84,7 +84,7 @@ function parseColumns(template) {
   return literal ? { count: Number(literal[1]) } : { single: true };
 }
 
-function columnRules(postcss, selectors, columns, gap) {
+function columnRules(postcss, selectors, columns, gap, keep = '') {
   const g = gap || '0px';
   const rules = [];
   // !important: nas grades, o espaçamento das colunas manda (as classes gap-N do Tailwind
@@ -101,7 +101,9 @@ function columnRules(postcss, selectors, columns, gap) {
     rule(children(selectors), { flex: `1 1 ${columns.auto}`, margin: `calc(${g} / 2)` });
   } else {
     const n = columns.count;
-    rule(children(selectors), { width: `calc((100% - ${n - 1} * ${g}) / ${n})`, 'margin-bottom': g });
+    // Itens com largura própria (w-28, .peek-spot…) mantêm a largura, como numa célula de grade.
+    rule(children(selectors, keep), { width: `calc((100% - ${n - 1} * ${g}) / ${n})` });
+    rule(children(selectors), { 'margin-bottom': g });
     // :nth-child(n) desfaz o zero de outra quantidade de colunas (regra de tela maior).
     rule(children(selectors, ':nth-child(n)'), { 'margin-left': g });
     rule(children(selectors, `:nth-child(${n}n+1)`), { 'margin-left': '0' });
@@ -112,6 +114,11 @@ function columnRules(postcss, selectors, columns, gap) {
 module.exports = () => ({
   postcssPlugin: 'aprender-legacy',
   OnceExit(root, { postcss }) {
+    const fixed = new Set();
+    root.walkRules(/^\.[\w-]+$/, (rule) => {
+      rule.walkDecls('width', (decl) => { if (!/%|auto/.test(decl.value)) fixed.add(rule.selector); });
+    });
+    const keep = `:not([class^="w-"]):not([class*=" w-"])${[...fixed].map((cls) => `:not(${cls})`).join('')}`;
     const gaps = new Map(); // seletor → gap (para as regras de mídia que só trocam as colunas)
     const after = [];       // [nó de referência, regras novas]
 
@@ -159,7 +166,7 @@ module.exports = () => ({
       if (decls['grid-template-columns']) {
         const sels = selectors.map((sel) => `.no-grid ${sel}`);
         if (!isGrid) extra.push(postcss.rule({ selector: sels.join(',\n') }).append({ prop: 'flex-wrap', value: 'wrap' }));
-        extra.push(...columnRules(postcss, sels, parseColumns(decls['grid-template-columns']), gap));
+        extra.push(...columnRules(postcss, sels, parseColumns(decls['grid-template-columns']), gap, keep));
       } else if (decls.gap && !isGrid && !/^\.gap-/.test(key)) {
         // (utilitários gap-N do Tailwind são tratados no fim, conforme flex-col/flex-wrap)
         // gap em flex: margem entre filhos na direção da linha.
@@ -182,9 +189,9 @@ module.exports = () => ({
     });
     const tail = [];
     GRID_COLS.forEach((n) => {
-      tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}`], { count: n }, '0px'));
+      tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}`], { count: n }, '0px', keep));
       gapUtils.forEach(([gapSel, value]) => {
-        tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}${gapSel}`], { count: n }, value));
+        tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}${gapSel}`], { count: n }, value, keep));
       });
     });
     tail.push(postcss.rule({ selector: '.no-grid .grid' }).append({ prop: 'display', value: 'flex' }, { prop: 'flex-wrap', value: 'wrap' }));
