@@ -425,3 +425,22 @@ img { -webkit-user-drag: none; }
 .kid-lock-button span { margin-left: 0.4rem; }
 @keyframes kid-lock-pulse { 50% { transform: scale(1.08); } }
 @media (prefers-reduced-motion: reduce) { .kid-lock-button { animation: none; } }
+
+/* ===== Aparelhos antigos ===== */
+/* Emoji novo trocado por imagem (src/legacy/emoji-fallback.js): acompanha o tamanho do texto. */
+.emoji-img { display: inline-block; width: 1em; height: 1em; vertical-align: -.12em; pointer-events: none; }
+
+/* .lite (ligado por src/legacy/compat.js): sombras por filtro custam caro em iPads antigos. */
+.lite .world-tile-icon.has-image img,
+.lite .activity-tile-icon.has-image img,
+.lite .result-star,
+.lite .memory-card .card-back,
+.lite .sort-basket,
+.lite .child-mascot { filter: none; }
+
+/* Tela de carregamento: aparece antes do JavaScript e some quando o app desenha a primeira tela. */
+.boot { display: flex; gap: .9rem; margin: 22vh auto 0; }
+.boot span { width: 1.1rem; height: 1.1rem; border-radius: 50%; background: #7c3aed; opacity: .25; animation: boot-dot 1.2s ease-in-out infinite; }
+.boot span:nth-child(2) { animation-delay: .2s; background: #0ea5e9; }
+.boot span:nth-child(3) { animation-delay: .4s; background: #f59e0b; }
+@keyframes boot-dot { 40% { opacity: 1; transform: translateY(-.5rem); } }

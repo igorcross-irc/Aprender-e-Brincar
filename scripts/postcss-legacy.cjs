@@ -9,8 +9,6 @@
 // - :is(a, b)      → seletores expandidos
 // - clamp/min/max  → valor simples antes, como reserva
 
-const GRID_COLS = [1, 2, 3, 4, 5, 6];
-
 function splitTop(value, sep = ',') {
   const parts = [];
   let depth = 0;
@@ -149,6 +147,23 @@ module.exports = () => ({
         }
       });
 
+      // Utilitários do Tailwind (.grid-cols-N, .md:grid-cols-N, .gap-N): o espaçamento vem da
+      // variável --ab-gap e a largura só depende do número de colunas, sem olhar a posição dos
+      // itens. Assim a troca de colunas por tamanho de tela (md:grid-cols-4) sempre vence.
+      const cols = rule.selector.match(/^\.(?:[a-z]+\\:)?grid-cols-(\d+)$/);
+      if (cols) {
+        const n = Number(cols[1]);
+        extra.push(postcss.rule({ selector: children([`.no-grid ${rule.selector}`], keep).join(',\n') })
+          .append({ prop: 'width', value: `calc((100% - ${n} * var(--ab-gap, 0px)) / ${n})`, important: true }));
+        after.push([rule, extra]);
+        return;
+      }
+      if (/^\.gap-/.test(rule.selector) && decls.gap) {
+        extra.push(postcss.rule({ selector: `.no-grid ${rule.selector}` }).append({ prop: '--ab-gap', value: decls.gap }));
+        after.push([rule, extra]);
+        return;
+      }
+
       const isGrid = decls.display === 'grid';
       if (decls.gap) gaps.set(key, decls.gap);
       const gap = decls.gap || gaps.get(key);
@@ -188,13 +203,10 @@ module.exports = () => ({
       rule.walkDecls('gap', (decl) => gapUtils.push([rule.selector, decl.value]));
     });
     const tail = [];
-    GRID_COLS.forEach((n) => {
-      tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}`], { count: n }, '0px', keep));
-      gapUtils.forEach(([gapSel, value]) => {
-        tail.push(...columnRules(postcss, [`.no-grid .grid.grid-cols-${n}${gapSel}`], { count: n }, value, keep));
-      });
-    });
     tail.push(postcss.rule({ selector: '.no-grid .grid' }).append({ prop: 'display', value: 'flex' }, { prop: 'flex-wrap', value: 'wrap' }));
+    // Cada item tem meia folga de cada lado (o espaço entre itens soma --ab-gap); sem posição, sem nth-child.
+    tail.push(postcss.rule({ selector: '.no-grid .grid > *' }).append({ prop: 'margin', value: 'calc(var(--ab-gap, 0px) / 2)' }));
+    tail.push(postcss.rule({ selector: '.no-grid .justify-items-center' }).append({ prop: 'justify-content', value: 'space-around' }));
     gapUtils.forEach(([gapSel, value]) => {
       tail.push(postcss.rule({ selector: `.no-flexgap ${gapSel}:not(.grid):not(.flex-col):not(.flex-wrap) > * + *` }).append({ prop: 'margin-left', value }));
       tail.push(postcss.rule({ selector: `.no-flexgap .flex-col${gapSel} > * + *` }).append({ prop: 'margin-top', value }));
