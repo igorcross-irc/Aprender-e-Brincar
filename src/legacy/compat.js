@@ -4,8 +4,11 @@
 //   .no-aspect             → altura = largura nos cartões quadrados (abaixo)
 //   .no-webp               → imagens .webp trocadas pelas cópias .png
 //   sem Pointer Events     → src/legacy/pointer-shim.js
+//   .lite                  → menos sombras e filtros (aparelhos lentos; ver styles.css)
+//   emojis novos           → imagens (src/legacy/emoji-fallback.js)
 // Em aparelhos novos tudo é detectado como presente e nada é ligado.
 import { installPointerShim } from './pointer-shim.js';
+import { installEmojiFallback } from './emoji-fallback.js';
 
 // Elementos com aspect-ratio: 1 em src/css/styles.css (o legacy-audit confere a lista).
 export const SQUARE_SELECTORS = ['.world-tile', '.peek-spot', '.story-slot', '.story-card', '.sticker', '.memory-card'];
@@ -53,9 +56,11 @@ function onDomChange(fn, attributes) {
 function squareFallback() {
   const selector = SQUARE_SELECTORS.join(',');
   onDomChange(() => {
-    forEach(document.querySelectorAll(selector), (el) => {
-      const width = el.offsetWidth;
-      if (width && el.style.height !== `${width}px`) el.style.height = `${width}px`;
+    // Lê tudo antes de escrever: ler e escrever alternados refazem o layout a cada elemento.
+    const items = Array.prototype.slice.call(document.querySelectorAll(selector));
+    const widths = items.map((el) => el.offsetWidth);
+    items.forEach((el, i) => {
+      if (widths[i] && el.style.height !== `${widths[i]}px`) el.style.height = `${widths[i]}px`;
     });
   });
 }
@@ -73,6 +78,8 @@ function webpFallback() {
 export function installCompat() {
   // scripts/legacy-audit.mjs simula um aparelho antigo no Chromium ligando tudo.
   const simulate = window.__AB_SIMULATE_LEGACY__ === true;
+  const oldDevice = simulate || !supports('display', 'grid'); // Safari < 10.1, Chrome < 57
+  if (oldDevice) { addClass('lite'); installEmojiFallback(); }
   if (simulate || !supports('display', 'grid')) addClass('no-grid');
   if (simulate || !supportsFlexGap()) addClass('no-flexgap');
   if (simulate || !supports('aspect-ratio', '1')) { addClass('no-aspect'); squareFallback(); }

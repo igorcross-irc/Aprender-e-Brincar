@@ -8,12 +8,13 @@
 //    (.no-grid, .no-flexgap, .no-aspect, .no-webp). Abre e joga brincadeiras.
 //
 // Uso: npm run build && node scripts/legacy-audit.mjs [--shots pasta]
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import * as acorn from 'acorn';
 import { chromium } from 'playwright';
 import { SQUARE_SELECTORS } from '../src/legacy/compat.js';
+import { EMOJI_IMAGES } from '../src/legacy/emoji-map.js';
 
 const PORT = 4792;
 const BASE = `http://localhost:${PORT}`;
@@ -42,6 +43,12 @@ const walk = (dir) => readdirSync(dir).flatMap((name) => {
 const missingPng = walk('public/assets/images').filter((path) => path.endsWith('.webp') && !existsSync(path.replace(/\.webp$/, '.png')));
 if (missingPng.length) fail(`imagens sem cópia .png (rode python3 scripts/webp-to-png.py): ${missingPng.join(', ')}`);
 else pass('toda imagem .webp tem cópia .png');
+try {
+  execFileSync('node', ['scripts/emoji-images.mjs', '--check'], { stdio: 'pipe' });
+  pass('todo emoji novo (que o iOS 9 não desenha) tem imagem');
+} catch (error) {
+  fail(String(error.stderr || error.message).trim().split('\n')[0]);
+}
 const css = readFileSync('src/css/styles.css', 'utf8');
 const squareInCss = [...css.matchAll(/([^{}]+)\{[^}]*aspect-ratio:\s*1[\s;/]/g)]
   .flatMap((match) => match[1].split(',').map((sel) => sel.trim().split('\n').pop()));
@@ -93,6 +100,21 @@ async function run() {
   page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
   const shot = async (name) => { if (SHOTS) await page.screenshot({ path: join(SHOTS, `${name}.png`) }); };
   if (SHOTS) mkdirSync(SHOTS, { recursive: true });
+  // Nenhum emoji novo pode sobrar como texto (viraria quadradinho vazio) e as imagens têm de carregar.
+  const emojiKeys = Object.keys(EMOJI_IMAGES);
+  const checkEmoji = async (where) => {
+    await page.waitForTimeout(300);
+    const result = await page.evaluate((keys) => {
+      const text = document.body.textContent || '';
+      const leftover = keys.filter((key) => text.indexOf(key) !== -1);
+      const imgs = Array.prototype.slice.call(document.querySelectorAll('img.emoji-img'));
+      const broken = imgs.filter((img) => img.complete && img.naturalWidth === 0).map((img) => img.getAttribute('src'));
+      return { leftover, broken, images: imgs.length };
+    }, emojiKeys);
+    if (result.leftover.length) fail(`${where}: emoji novo como texto: ${result.leftover.join(' ')}`);
+    else if (result.broken.length) fail(`${where}: imagem de emoji quebrada: ${result.broken.join(', ')}`);
+    else pass(`${where}: emojis novos como imagem (${result.images})`);
+  };
 
   console.log('Versão legada no "iPad antigo"');
   await page.goto(BASE);
@@ -119,6 +141,7 @@ async function run() {
   const rows = new Set(tiles.map((tile) => tile.y)).size;
   if (tiles.length >= 4 && rows < tiles.length && tiles.every((tile) => tile.w > 80 && Math.abs(tile.w - tile.h) < 4)) pass(`mapa de mundos em grade: ${tiles.length} cartões quadrados em ${rows} linhas`);
   else fail(`mapa de mundos desmontado: ${JSON.stringify(tiles.slice(0, 4))}`);
+  await checkEmoji('mapa de mundos');
   await shot('01-mundos');
 
   const openGame = async (age, gameId) => {
@@ -147,6 +170,7 @@ async function run() {
   const fill = await page.$eval('#bubble-fill', (el) => parseFloat(el.style.width) || 0).catch(() => 0);
   if (bubble && fill > 0) pass('toque estoura bolha (adaptador de toque)');
   else fail('toque não estourou bolha');
+  await checkEmoji('bolhas');
   await shot('03-bolhas');
 
   await openGame('2-3y', 'music-keys');
@@ -165,6 +189,7 @@ async function run() {
   await shot('05-memoria');
 
   await openGame('3-4y', 'puzzle');
+  await checkEmoji('quebra-cabeça');
   await shot('06-quebra-cabeca');
   await openGame('3-4y', 'canvas');
   const canvasBox = await page.$eval('canvas', (el) => { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });

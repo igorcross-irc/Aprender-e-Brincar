@@ -1,0 +1,38 @@
+// Gerado por scripts/emoji-images.mjs — não edite à mão.
+// Emoji (texto) → arquivo em public/assets/images/emoji/<código>.png
+// Só entram os emojis mais novos que o Emoji 2.0 (o que o iOS 9.3 sabe desenhar).
+export const EMOJI_IMAGES = {
+  '🟠': '1f7e0',
+  '🟡': '1f7e1',
+  '🟢': '1f7e2',
+  '🟣': '1f7e3',
+  '🟦': '1f7e6',
+  '🤡': '1f921',
+  '🤸': '1f938',
+  '🥁': '1f941',
+  '🥄': '1f944',
+  '🥛': '1f95b',
+  '🥣': '1f963',
+  '🥤': '1f964',
+  '🥦': '1f966',
+  '🦆': '1f986',
+  '🦋': '1f98b',
+  '🦘': '1f998',
+  '🦶': '1f9b6',
+  '🧍': '1f9cd',
+  '🧠': '1f9e0',
+  '🧢': '1f9e2',
+  '🧤': '1f9e4',
+  '🧦': '1f9e6',
+  '🧩': '1f9e9',
+  '🧸': '1f9f8',
+  '🧺': '1f9fa',
+  '🧻': '1f9fb',
+  '🧽': '1f9fd',
+  '🪆': '1fa86',
+  '🪟': '1fa9f',
+  '🪥': '1faa5',
+  '🪴': '1fab4',
+  '🫐': '1fad0',
+  '🫧': '1fae7'
+};
