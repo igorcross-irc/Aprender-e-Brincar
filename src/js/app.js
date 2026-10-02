@@ -1,3 +1,4 @@
+import { installCompat } from '../legacy/compat.js';
 import { ResilientAudioEngine } from './engine/audio-engine.js';
 import { StorageManager } from './storage.js';
 import { AppCore } from '../core/app-core.js';
@@ -101,4 +102,5 @@ class App {
   }
 }
 
+installCompat();
 new App();

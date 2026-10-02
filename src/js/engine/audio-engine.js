@@ -5,6 +5,36 @@
  */
 import { AUDIO_FILES } from '../../content/audio-files.js';
 
+// iOS 9 não tem String.normalize: tira os acentos do português na mão.
+const ACCENTS = { á: 'a', à: 'a', â: 'a', ã: 'a', ä: 'a', é: 'e', è: 'e', ê: 'e', ë: 'e', í: 'i', ì: 'i', î: 'i', ï: 'i', ó: 'o', ò: 'o', ô: 'o', õ: 'o', ö: 'o', ú: 'u', ù: 'u', û: 'u', ü: 'u', ç: 'c', ñ: 'n' };
+function stripAccents(text) {
+  if (text.normalize) return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  return text.replace(/[^\u0000-\u007f]/g, (char) => ACCENTS[char] || ACCENTS[char.toLowerCase()]?.toUpperCase() || char);
+}
+
+// MP3 como ArrayBuffer; sem fetch (iOS 9) usa XMLHttpRequest.
+function fetchArrayBuffer(url) {
+  const check = (status, type) => {
+    if (status < 200 || status >= 300 || String(type || '').includes('text/html')) throw new Error(`HTTP ${status}`);
+  };
+  if (typeof fetch === 'function') {
+    return fetch(url, { cache: 'force-cache' }).then((res) => {
+      check(res.status, res.headers.get('content-type'));
+      return res.arrayBuffer();
+    });
+  }
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = () => {
+      try { check(xhr.status, xhr.getResponseHeader('content-type')); resolve(xhr.response); } catch (error) { reject(error); }
+    };
+    xhr.onerror = () => reject(new Error('rede'));
+    xhr.send();
+  });
+}
+
 const AUDIO_BASE = '/assets/audio/';
 const AUDIO_INDEX_KEY = 'ab_audio_index_v2';
 const MISSING_KEY = 'ab_missing_audio';
@@ -92,7 +122,7 @@ export class ResilientAudioEngine {
   }
 
   slugify(text) {
-    return String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return stripAccents(String(text || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
   inferAudioName(text) {
@@ -109,12 +139,7 @@ export class ResilientAudioEngine {
     if (this.loading.has(name)) return this.loading.get(name);
     const ctx = this.getContext();
     if (!ctx) return null;
-    const job = fetch(AUDIO_BASE + encodeURIComponent(name), { cache: 'force-cache' })
-      .then((res) => {
-        const type = res.headers.get('content-type') || '';
-        if (!res.ok || type.includes('text/html')) throw new Error(`HTTP ${res.status}`);
-        return res.arrayBuffer();
-      })
+    const job = fetchArrayBuffer(AUDIO_BASE + encodeURIComponent(name))
       .then((data) => new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject)))
       .then((buffer) => { this.buffers.set(name, buffer); this.rememberAvailable(name); return buffer; })
       .catch((err) => { this.rememberMissing(name); console.warn(`[áudio] MP3 indisponível: ${name}`, err.message || err); return null; })

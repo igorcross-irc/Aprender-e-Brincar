@@ -62,6 +62,8 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 
 /* Seta de voltar ilustrada no lugar do emoji */
 .round-button[aria-label^="Voltar"], #game-container .game-back { font-size: 0 !important; background: var(--ab-surface) url('/assets/images/icons/back.webp') center / 72% no-repeat !important; }
+/* Aparelhos sem WebP (iOS < 14): mesma seta em PNG. */
+.no-webp .round-button[aria-label^="Voltar"], .no-webp #game-container .game-back { background-image: url('/assets/images/icons/back.png') !important; }
 .header-button:active { transform: scale(.92); }
 .header-button-quiet { width: 44px; height: 44px; opacity: .7; }
 .header-button-quiet img { width: 26px; height: 26px; }
