@@ -235,6 +235,7 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));

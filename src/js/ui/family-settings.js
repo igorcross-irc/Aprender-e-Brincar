@@ -3,6 +3,7 @@ import { rewardCatalog } from '../../content/reward-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
+import { canFullscreen, isStandalone } from '../../core/kid-lock.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -102,6 +103,13 @@ export class FamilySettings {
     const { screenTime } = app;
     const week = screenTime.lastDays(7);
     const weekMax = Math.max(15, ...week.map((day) => day.minutes));
+    const { kidLock } = app;
+    const isApple = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const lockTip = isApple
+      ? 'Para travar de vez no iPhone/iPad: adicione o app à Tela de Início (Compartilhar → Adicionar à Tela de Início) e ative o Acesso Guiado em Ajustes → Acessibilidade → Acesso Guiado. Depois, abra o app e aperte 3 vezes o botão lateral (ou Início).'
+      : /Android/.test(navigator.userAgent)
+        ? 'Para travar de vez no Android: ative Configurações → Segurança → Fixar app (ou "Fixação de tela") e fixe este app pelo botão de apps recentes. Para sair, segure Voltar + Recentes.'
+        : 'No computador, Esc não sai da tela cheia: é preciso segurar Esc por 2 segundos.';
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
@@ -132,6 +140,14 @@ export class FamilySettings {
           ${screenTime.isOverLimit() ? '<button id="btn-extra-time" class="family-button">+10 minutos hoje</button>' : ''}
           <p class="family-label">Últimos 7 dias</p>
           <div class="week-bars">${week.map((day) => `<div class="week-bar"><span style="height:${Math.round((day.minutes / weekMax) * 100)}%"></span><small>${esc(day.label)}</small><b>${day.minutes}</b></div>`).join('')}</div>
+        </section>
+
+        <section class="family-section">
+          <h4>Modo criança</h4>
+          <label class="family-toggle"><input type="checkbox" id="kid-lock-toggle" ${kidLock.enabled ? 'checked' : ''} /> Tela cheia e travas</label>
+          <p class="family-hint">${canFullscreen() || isStandalone() ? 'O app abre em tela cheia no primeiro toque e volta sozinho se a criança sair. Também bloqueia o botão Voltar, o toque longo e o zoom.' : 'Este navegador não permite tela cheia em sites. Bloqueamos o botão Voltar, o toque longo e o zoom.'}</p>
+          ${kidLock.active ? '<button id="btn-exit-fullscreen" class="family-button">Sair da tela cheia agora</button>' : ''}
+          <p class="family-hint">${esc(lockTip)}</p>
         </section>
 
         <section class="family-section">
@@ -196,6 +212,7 @@ export class FamilySettings {
       app.renderHome();
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
+    modal.querySelector('#btn-exit-fullscreen')?.addEventListener('click', () => { kidLock.pause(); modal.remove(); });
     modal.querySelector('#btn-install')?.addEventListener('click', async () => { await app.pwa.promptInstall(); modal.remove(); });
     modal.querySelector('#btn-reset-stars').addEventListener('click', () => {
       if (!confirm('Tem certeza que deseja apagar todo o progresso?')) return;
@@ -208,6 +225,8 @@ export class FamilySettings {
       app.storage.setChildName(modal.querySelector('#child-name-input').value);
       if (selectedAge) app.storage.setChildAge(selectedAge);
       screenTime.setLimit(selectedLimit);
+      const wantLock = modal.querySelector('#kid-lock-toggle').checked;
+      if (wantLock !== kidLock.enabled) kidLock.setEnabled(wantLock);
       const wantSound = modal.querySelector('#sound-toggle').checked;
       if (wantSound === app.audio.isMuted) app.audio.toggleMute();
       modal.remove();

@@ -11,6 +11,7 @@ import { initPwaExperience } from '../core/pwa-status.js';
 import { setSfxEngine, installTapSounds } from './engine/sfx.js';
 import '@fontsource-variable/nunito';
 import { ScreenTime } from '../core/screen-time.js';
+import { KidLock } from '../core/kid-lock.js';
 
 const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest'];
 
@@ -20,6 +21,7 @@ class App {
     this.storage = new StorageManager();
     this.core = new AppCore(this.audio, this.storage);
     this.screenTime = new ScreenTime();
+    this.kidLock = new KidLock();
     this.core.activities.registerMany(activityCatalog);
     this.gameRegistry = createGameRegistry({ containerId: 'game-container', audio: this.audio, storage: this.storage });
     this.container = document.getElementById('game-container');
@@ -39,6 +41,7 @@ class App {
     installTapSounds(document);
     this.pwa = initPwaExperience();
     this.screenTime.start();
+    this.kidLock.start();
     // Ao atingir o limite, espera a brincadeira atual terminar antes de pedir descanso.
     this.screenTime.onLimit(() => { if (!this.experience.active && !this.container.querySelector('.rest-card')) this.renderRest(); });
     this.updateScoreUI();
