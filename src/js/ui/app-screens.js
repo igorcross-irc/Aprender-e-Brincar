@@ -6,6 +6,7 @@ import { childVisualMarkup } from '../../core/child-visual-system.js';
 import { childMascotMarkup } from '../../core/child-mascot.js';
 import { defaultLimitFor } from '../../core/screen-time.js';
 import { seasonFor } from '../../core/seasons.js';
+import { ageBandFromBirth } from '../../core/age.js';
 
 export const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨', 'attention-auditory': '👂',
@@ -302,6 +303,11 @@ export class AppScreens {
           <div class="setup-ages" role="radiogroup" aria-label="Idade da criança">
             ${AGE_BANDS.map((age) => `<button data-setup-age="${age.id}" role="radio" aria-checked="${age.id === currentAge}" class="setup-age ${age.id === currentAge ? 'selected' : ''}">${this.escape(age.label)}</button>`).join('')}
           </div>
+          <p class="setup-label">Ou o mês de nascimento <span>(opcional; a faixa avança sozinha)</span></p>
+          <div class="birth-row">
+            <select id="setup-birth-month" aria-label="Mês de nascimento"><option value="">Mês</option>${['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'].map((m, i) => `<option value="${String(i + 1).padStart(2, '0')}">${m}</option>`).join('')}</select>
+            <select id="setup-birth-year" aria-label="Ano de nascimento"><option value="">Ano</option>${Array.from({ length: 8 }, (_, i) => new Date().getFullYear() - i).map((y) => `<option value="${y}">${y}</option>`).join('')}</select>
+          </div>
           <p id="setup-screen-note" class="setup-note" aria-live="polite">Recomendação de pediatras: evitar telas antes dos 2 anos e, dos 2 aos 5, no máximo 1 hora por dia, com um adulto por perto. O app já vem com um limite diário pela idade; você pode mudar na Área da Família.</p>
           <p class="setup-privacy">🔒 Tudo fica guardado só neste aparelho. Sem anúncios, sem cadastro e sem envio de dados.</p>
           <button id="setup-start" class="setup-start" ${currentAge ? '' : 'disabled'}>Começar</button>
@@ -320,9 +326,29 @@ export class AppScreens {
       const note = this.container.querySelector('#setup-screen-note');
       if (note) note.textContent = `Pediatras recomendam evitar telas antes dos 2 anos e, dos 2 aos 5, no máximo 1 hora por dia, com um adulto por perto. Para esta idade o app já vem com limite de ${defaultLimitFor(selectedAge)} minutos por dia, sem você configurar nada; dá para mudar na Área da Família.`;
     }));
+    const birthMonth = this.container.querySelector('#setup-birth-month');
+    const birthYear = this.container.querySelector('#setup-birth-year');
+    const currentBirth = () => (birthMonth.value && birthYear.value ? `${birthYear.value}-${birthMonth.value}` : '');
+    const onBirth = () => {
+      const band = ageBandFromBirth(currentBirth());
+      if (!band) return;
+      selectedAge = band;
+      this.container.querySelectorAll('[data-setup-age]').forEach((item) => {
+        const active = item.dataset.setupAge === band;
+        item.classList.toggle('selected', active);
+        item.setAttribute('aria-checked', String(active));
+      });
+      start.disabled = false;
+      const note = this.container.querySelector('#setup-screen-note');
+      if (note) note.textContent = `Pediatras recomendam evitar telas antes dos 2 anos e, dos 2 aos 5, no máximo 1 hora por dia, com um adulto por perto. Para esta idade o app já vem com limite de ${defaultLimitFor(band)} minutos por dia, sem você configurar nada; dá para mudar na Área da Família.`;
+    };
+    birthMonth.addEventListener('change', onBirth);
+    birthYear.addEventListener('change', onBirth);
+    this.container.querySelectorAll('[data-setup-age]').forEach((button) => button.addEventListener('click', () => { birthMonth.value = ''; birthYear.value = ''; }));
     start.addEventListener('click', () => {
       if (!selectedAge) return;
       this.storage.setChildName(this.container.querySelector('#setup-name').value);
+      this.storage.setChildBirth(currentBirth());
       this.storage.setChildAge(selectedAge);
       if (onDone) onDone();
       else this.renderHome();

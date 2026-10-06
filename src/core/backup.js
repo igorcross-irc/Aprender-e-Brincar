@@ -11,6 +11,7 @@ export const BACKUP_KEYS = Object.freeze([
   'aprender_brincar_stars',
   'aprender_brincar_child_name',
   'aprender_brincar_child_age',
+  'aprender_brincar_child_birth',
   'aprender_brincar_screen_time_v1',
   'learning_recent_v1',
   'ab_kid_lock',

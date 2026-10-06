@@ -4,6 +4,7 @@
  * O índice local reduz probes repetidos e mantém o fallback resiliente.
  */
 import { AUDIO_FILES } from '../../content/audio-files.js';
+import { VoiceStore } from '../../core/voice-store.js';
 
 // iOS 9 não tem String.normalize: tira os acentos do português na mão.
 const ACCENTS = { á: 'a', à: 'a', â: 'a', ã: 'a', ä: 'a', é: 'e', è: 'e', ê: 'e', ë: 'e', í: 'i', ì: 'i', î: 'i', ï: 'i', ó: 'o', ò: 'o', ô: 'o', õ: 'o', ö: 'o', ú: 'u', ù: 'u', û: 'u', ü: 'u', ç: 'c', ñ: 'n' };
@@ -51,7 +52,36 @@ export class ResilientAudioEngine {
     this.available = new Set(this.readAudioIndex().filter((name) => !this.missing.has(name)));
     this.current = null;
     this.playToken = 0;
+    // Gravações da família (opcional): têm prioridade sobre o MP3 do app e sobre a voz do aparelho.
+    this.voiceStore = new VoiceStore();
+    this.customNames = new Set();
+    this.refreshCustom();
     this.installUnlock();
+  }
+
+  refreshCustom() {
+    return this.voiceStore.names().then((names) => { this.customNames = new Set(names); }).catch(() => {});
+  }
+
+  // Chamado depois de gravar ou apagar uma fala: descarta a versão antiga já decodificada.
+  async customChanged(name) {
+    this.buffers.delete(name);
+    this.missing.delete(name);
+    await this.refreshCustom();
+  }
+
+  async loadCustom(name) {
+    const clip = await this.voiceStore.get(name);
+    if (!clip || !clip.blob) return null;
+    const ctx = this.getContext();
+    if (!ctx) return null;
+    const data = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsArrayBuffer(clip.blob);
+    });
+    return new Promise((resolve) => ctx.decodeAudioData(data, resolve, () => resolve(null)));
   }
 
   readJson(key, fallback = []) {
@@ -136,6 +166,10 @@ export class ResilientAudioEngine {
 
   async load(name) {
     if (this.buffers.has(name)) return this.buffers.get(name);
+    if (this.customNames.has(name)) {
+      const custom = await this.loadCustom(name).catch(() => null);
+      if (custom) { this.buffers.set(name, custom); return custom; }
+    }
     if (this.missing.has(name)) return null;
     if (this.loading.has(name)) return this.loading.get(name);
     const ctx = this.getContext();

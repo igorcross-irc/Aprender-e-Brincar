@@ -11,6 +11,9 @@ import { packStatus, downloadPack, storageEstimate } from '../../core/offline-pa
 import { campoTotals, CAMPOS } from '../../core/bncc.js';
 import { buildPrintableHtml } from '../../core/printables.js';
 import { defaultLimitFor } from '../../core/screen-time.js';
+import { describeAge } from '../../core/age.js';
+import { VOICE_PRIORITY } from '../../content/voice-priority.js';
+import { recordingSupported, startRecording } from '../../core/voice-store.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -124,6 +127,7 @@ export class FamilySettings {
     const esc = (value) => app.escape(value);
     const report = this.buildReport();
     const currentAge = app.storage.getChildAge();
+    const currentBirth = app.storage.getChildBirth();
     const canInstall = app.pwa?.canInstall?.();
     const { screenTime } = app;
     const week = screenTime.lastDays(7);
@@ -155,6 +159,12 @@ export class FamilySettings {
             ${AGE_BANDS.map((age) => `<button data-family-age="${age.id}" class="setup-age ${age.id === currentAge ? 'selected' : ''}" aria-pressed="${age.id === currentAge}">${esc(age.label)}</button>`).join('')}
           </div>
           <p class="family-hint">A idade define quais brincadeiras aparecem e o nível de ajuda.</p>
+          <p class="family-label">Ou informe o mês de nascimento (opcional)</p>
+          <div class="birth-row">
+            <select id="birth-month" aria-label="Mês de nascimento"><option value="">Mês</option>${['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'].map((m, i) => `<option value="${String(i + 1).padStart(2, '0')}" ${currentBirth.slice(5) === String(i + 1).padStart(2, '0') ? 'selected' : ''}>${m}</option>`).join('')}</select>
+            <select id="birth-year" aria-label="Ano de nascimento"><option value="">Ano</option>${Array.from({ length: 8 }, (_, i) => new Date().getFullYear() - i).map((y) => `<option value="${y}" ${currentBirth.slice(0, 4) === String(y) ? 'selected' : ''}>${y}</option>`).join('')}</select>
+          </div>
+          <p class="family-hint" id="birth-hint">${currentBirth ? `Hoje: ${esc(describeAge(currentBirth))}. A faixa muda sozinha quando ela cresce. Guardado só neste aparelho.` : 'Assim a faixa de idade avança sozinha, sem você precisar lembrar. Fica só neste aparelho.'}</p>
         </section>
 
         <section class="family-section">
@@ -183,6 +193,13 @@ export class FamilySettings {
           <label class="family-toggle"><input type="checkbox" id="sound-toggle" ${app.audio.isMuted ? '' : 'checked'} /> Sons e voz ligados</label>
           <p class="family-hint">${app.audio.hasPortugueseVoice?.() ? 'Falas que ainda não foram gravadas usam a voz do aparelho.' : 'Este aparelho não tem voz em português: falas ainda não gravadas aparecem escritas na tela para você ler em voz alta. Em Ajustes do aparelho, instale uma voz em português para melhorar.'}</p>
         </section>
+
+        ${recordingSupported() && app.audio.voiceStore?.supported && !isNativeApp() ? `<section class="family-section" id="voice-section">
+          <h4>Grave a sua voz 🎙️</h4>
+          <p class="family-hint">A voz de quem ela ama é a melhor! Grave as falas mais ouvidas e elas passam na frente das vozes do app. O microfone só liga enquanto você grava (até 6 segundos), e a gravação fica só neste aparelho. Ela não entra no backup.</p>
+          <ul class="voice-list">${VOICE_PRIORITY.map((item) => `<li data-voice="${esc(item.file)}"><span class="voice-text">${esc(item.text)}</span><span class="voice-badge" hidden>✓ sua voz</span><span class="voice-actions"><button type="button" class="voice-btn" data-act="play" aria-label="Ouvir: ${esc(item.text)}">▶</button><button type="button" class="voice-btn" data-act="rec" aria-label="Gravar: ${esc(item.text)}">⏺</button><button type="button" class="voice-btn" data-act="del" aria-label="Apagar gravação: ${esc(item.text)}" hidden>🗑</button></span></li>`).join('')}</ul>
+          <p id="voice-msg" class="family-hint" aria-live="polite"></p>
+        </section>` : ''}
 
         <section class="family-section">
           <h4>Resumo</h4>
@@ -257,8 +274,13 @@ export class FamilySettings {
     document.body.appendChild(modal);
 
     let selectedAge = currentAge;
+    const birthMonth = modal.querySelector('#birth-month');
+    const birthYear = modal.querySelector('#birth-year');
+    let manualAge = false;
     modal.querySelectorAll('[data-family-age]').forEach((button) => button.addEventListener('click', () => {
       selectedAge = button.dataset.familyAge;
+      manualAge = true; // escolher a faixa na mão vale mais do que a data de nascimento
+      birthMonth.value = ''; birthYear.value = '';
       modal.querySelectorAll('[data-family-age]').forEach((item) => {
         item.classList.toggle('selected', item === button);
         item.setAttribute('aria-pressed', String(item === button));
@@ -305,6 +327,64 @@ export class FamilySettings {
     }
     modal.querySelector('#btn-exit-fullscreen')?.addEventListener('click', () => { kidLock.pause(); modal.remove(); });
     modal.querySelector('#btn-install')?.addEventListener('click', async () => { await app.pwa.promptInstall(); modal.remove(); });
+    // Grave a sua voz
+    const voiceSection = modal.querySelector('#voice-section');
+    if (voiceSection) {
+      const voiceMsg = voiceSection.querySelector('#voice-msg');
+      const rowFor = (file) => voiceSection.querySelector(`[data-voice="${file}"]`);
+      const paint = () => VOICE_PRIORITY.forEach((item) => {
+        const row = rowFor(item.file);
+        const has = app.audio.customNames.has(item.file);
+        row.querySelector('.voice-badge').hidden = !has;
+        row.querySelector('[data-act="del"]').hidden = !has;
+      });
+      app.audio.refreshCustom().then(paint);
+      let recording = null;
+      const resetRec = (button) => { button.textContent = '⏺'; button.classList.remove('recording'); };
+      voiceSection.addEventListener('click', async (event) => {
+        const button = event.target.closest('.voice-btn');
+        if (!button) return;
+        const row = button.closest('[data-voice]');
+        const file = row.dataset.voice;
+        const item = VOICE_PRIORITY.find((entry) => entry.file === file);
+        const act = button.dataset.act;
+        if (act === 'play') { app.audio.play(file, item.text); return; }
+        if (act === 'del') {
+          if (!confirm('Apagar sua gravação? Volta a voz do app.')) return;
+          await app.audio.voiceStore.remove(file);
+          await app.audio.customChanged(file);
+          paint(); voiceMsg.textContent = 'Gravação apagada.';
+          return;
+        }
+        if (act === 'rec') {
+          if (recording) {
+            // Segundo toque: para e guarda.
+            const active = recording; recording = null;
+            resetRec(active.button);
+            const blob = await active.session.stop();
+            if (await app.audio.voiceStore.put(active.file, blob)) { await app.audio.customChanged(active.file); paint(); voiceMsg.textContent = 'Gravado! Toque em ▶ para ouvir.'; }
+            else voiceMsg.textContent = 'Não consegui guardar a gravação neste aparelho.';
+            return;
+          }
+          try {
+            app.audio.stop();
+            const session = await startRecording();
+            recording = { session, button, file };
+            button.textContent = '⏹'; button.classList.add('recording');
+            voiceMsg.textContent = `Gravando… fale: “${item.text}”. Toque em ⏹ para parar.`;
+            session.finished.then(async (blob) => {
+              if (!recording || recording.session !== session) return; // já parou pelo toque
+              recording = null; resetRec(button);
+              if (await app.audio.voiceStore.put(file, blob)) { await app.audio.customChanged(file); paint(); voiceMsg.textContent = 'Gravado (parou sozinho aos 6 s). Toque em ▶ para ouvir.'; }
+            });
+          } catch (error) {
+            voiceMsg.textContent = /denied|NotAllowed|Permission/i.test(String(error && (error.name || error.message))) ? 'O navegador não deixou usar o microfone. Permita o microfone para este site e tente de novo.' : 'Não consegui ligar o microfone neste aparelho.';
+          }
+        }
+      });
+      new MutationObserver(() => { if (!modal.isConnected && recording) { recording.session.cancel(); recording = null; } }).observe(document.body, { childList: true });
+    }
+
     modal.querySelector('#btn-print')?.addEventListener('click', () => {
       const sheet = window.open('', '_blank');
       if (!sheet) { alert('Seu navegador bloqueou a janela. Permita pop-ups para imprimir.'); return; }
@@ -374,7 +454,10 @@ export class FamilySettings {
     });
     modal.querySelector('#btn-save-settings').addEventListener('click', () => {
       app.storage.setChildName(modal.querySelector('#child-name-input').value);
-      if (selectedAge) app.storage.setChildAge(selectedAge);
+      const birth = birthMonth.value && birthYear.value ? `${birthYear.value}-${birthMonth.value}` : '';
+      if (birth && !manualAge) app.storage.setChildBirth(birth);
+      else if (manualAge || (!birth && currentBirth)) app.storage.setChildBirth('');
+      if (selectedAge && !app.storage.getChildBirth()) app.storage.setChildAge(selectedAge);
       if (selectedLimit != null) screenTime.setLimit(selectedLimit);
       const wantLock = modal.querySelector('#kid-lock-toggle').checked;
       if (wantLock !== kidLock.enabled) kidLock.setEnabled(wantLock);

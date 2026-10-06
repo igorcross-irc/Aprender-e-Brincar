@@ -27,7 +27,7 @@ Perfil (nome/idade), tempo de tela com limite diário (padrão por idade), som, 
 - CI: `.github/workflows/build.yml`.
 
 ## Próximos passos sugeridos
-- Gerar as 141 falas que faltam com a voz Dora (≈ 1.500 caracteres; ver `docs/VOZ.md`) e, depois, "Grave a sua voz" na Área da Família.
+- Trocar as 141 falas provisórias (Piper) pela Dora ou pela voz da família (`docs/VOZ.md`).
 - Ligar a assinatura do pacote de atualização (`docs/SEGURANCA.md`).
 - Músicas, livrinhos ilustrados e jogos da memória temáticos (`docs/INSPIRACAO_ESCOLA_GAMES.md`).
 - Ilustrações próprias no lugar dos emojis (mesmos caminhos de `public/assets/images/visual-library/`).

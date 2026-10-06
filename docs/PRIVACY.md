@@ -3,7 +3,8 @@
 O Aprender & Brincar é uma aplicação pública para crianças de 6 meses a 5 anos. Por isso, foi desenhado para coletar o mínimo possível, seguindo o princípio do melhor interesse da criança (LGPD, art. 14).
 
 ## O que é guardado
-- Nome ou apelido da criança (opcional) e faixa etária, informados pelo responsável.
+- Nome ou apelido da criança (opcional), faixa etária e, se o responsável quiser, **mês e ano de nascimento** (para a faixa avançar sozinha), informados pelo responsável.
+- Se o responsável usar **Grave a sua voz**: gravações curtas (até 6 s) da voz dele, no IndexedDB do aparelho. O microfone só liga enquanto ele grava, a gravação nunca sai do aparelho e não entra no backup. Dá para apagar uma a uma.
 - Progresso das brincadeiras (estrelas, brincadeiras concluídas, tempo aproximado).
 
 Tudo fica **apenas no armazenamento local do navegador do aparelho** (`localStorage`/`sessionStorage`). Nada é enviado a servidores.

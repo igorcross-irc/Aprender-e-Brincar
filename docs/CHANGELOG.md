@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-06 (2) — Voz sem créditos, idade automática e voz da família
+- **244/244 falas com MP3.** As 141 que faltavam foram geradas com o **Piper** (voz `pt_BR-faber-medium`, dados CC0) por `scripts/generate-voice-piper.py`: normalizadas para ≈ -17 LUFS, mono 64 kbps, só as pontas sem silêncio. Marcadas como provisórias em `docs/voz-provisoria.json`. Bug achado no caminho: o corte de silêncio truncava frases na primeira pausa; corrigido e regerado.
+- **Grave a sua voz** (Área da Família): 25 falas prioritárias, gravação de até 6 s, guardada no IndexedDB do aparelho e com prioridade sobre os MP3 do app. Oculto no app Android (falta decidir a permissão de microfone).
+- **Idade que avança sozinha:** mês e ano de nascimento opcionais (guardados só no aparelho); a faixa de brincadeiras, o nível e o limite de tempo acompanham. Escolher a faixa na mão vale mais.
+- **`audit:audio` de verdade:** valida cada MP3 (cabeçalho, ≤ 96 kbps, ≤ 8 MB no total) e se o índice do build está em dia. Antes só procurava palavras no código.
+- Testes: 31 unitários e E2E com microfone falso (gravar, guardar, ouvir, apagar, prioridade sobre o MP3).
+
 ## 2026-10-06 — Revisão crítica e correções (v0.7.0)
 Resposta à auditoria de 06/10: o que estava frágil foi corrigido e testado.
 - **Voz:** quando não há MP3 nem voz em português no aparelho, a fala aparece escrita em destaque (nunca fica mudo). Plano para completar as 141 falas em `docs/VOZ.md` (≈ 1.500 caracteres no total).

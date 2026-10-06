@@ -15,12 +15,13 @@ Aplicativo de brincadeiras educativas para crianças de **6 meses a 5 anos**, fe
 | Botão **Brincar agora** com sugestão do dia (motor adaptativo) | Ideias para brincar junto, longe da tela, e **fichas para imprimir** |
 | ❤️ **Favoritos** e álbum de adesivos | **Backup** do progresso por código/arquivo e proteção contra o navegador apagar os dados |
 | Datas especiais (Mês da Criança, Festa Junina, Natal) | **Baixar para usar sem internet** (≈ 4 MB) |
-| Estrelas, confete e comemoração sem competição | Modo criança (tela cheia, travas), instalação, atualizações |
+| Estrelas, confete e comemoração sem competição | **Grave a sua voz** (a voz da família passa na frente das do app), **idade que avança sozinha** pelo mês de nascimento |
+| Voz em **todas** as 244 falas (88 Dora + 141 provisórias, ver `docs/VOZ.md`) | Modo criança (tela cheia, travas), instalação, atualizações |
 
 ### Como o app protege a criança e ajuda a família
 - **Tempo de tela:** padrão por idade (10 min até 18 meses, 15 min até 2 anos, 30 min aos 2–3, 40 min aos 3–4, 45 min aos 4–5), baseado na recomendação da Sociedade Brasileira de Pediatria e da OMS. O responsável é avisado já na primeira abertura e pode mudar ou desligar (com confirmação).
 - **Portão para adultos:** multiplicação de números altos; 3 erros seguidos bloqueiam por 30 s, depois 1 min, 2 min… até 10 min.
-- **Sem voz em português no aparelho?** A fala aparece escrita em destaque, para o adulto ler junto.
+- **Voz:** todas as falas têm MP3. Se algum dia faltar um e o aparelho não tiver voz em português, a fala aparece escrita em destaque.
 - **Não é avaliação.** O resumo conta quantas vezes a criança brincou em cada campo; não mede nem diagnostica. Dúvidas sobre desenvolvimento são com o pediatra.
 
 ## Como rodar
@@ -40,7 +41,8 @@ npm run preview          # serve o build
 | `npm run test:e2e` | Abre **todas** as brincadeiras em todas as idades no Chromium, joga os fluxos e testa Área da Família, backup, modo criança e **uso sem internet de verdade** |
 | `npm run audit:legacy` | Simula iPad com iOS 9 / Android 5 (sem Pointer Events, sem grid, sem WebP) |
 | `npm run test:play-all` | Robô que joga tudo até o fim (≈ 25 min). Rode antes de uma versão grande |
-| `npm run audio:coverage` | Lista as falas que ainda não têm MP3 gravado ([`docs/AUDIO_COVERAGE.md`](docs/AUDIO_COVERAGE.md)) |
+| `npm run audio:coverage` | Lista as falas que ainda não têm MP3 ([`docs/AUDIO_COVERAGE.md`](docs/AUDIO_COVERAGE.md)) |
+| `npm run audit:audio` | Confere que todo MP3 é válido, leve (≤ 96 kbps, ≤ 8 MB no total) e que o índice do build está em dia |
 | `npm run audio:compress` | Recodifica MP3 para mono 64 kbps (voz; 9,3 MB → 3,1 MB) |
 
 O CI ([`build.yml`](.github/workflows/build.yml)) roda tudo isso a cada push. O release ([`release.yml`](.github/workflows/release.yml)) **só publica se os testes passarem**.
@@ -70,7 +72,7 @@ O app Android é o mesmo site empacotado com o Capacitor ([`docs/ANDROID.md`](do
 | [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) | Estado atual e arquitetura |
 | [`docs/CHANGELOG.md`](docs/CHANGELOG.md) | Tudo que já foi feito, por data |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Fases e próximos passos |
-| [`docs/VOZ.md`](docs/VOZ.md) | Como completar as falas gravadas (ElevenLabs e alternativas) |
+| [`docs/VOZ.md`](docs/VOZ.md) | Vozes do app: Dora, provisória (Piper), voz da família e alternativas |
 | [`docs/SEGURANCA.md`](docs/SEGURANCA.md) | Atualizações assinadas, release, repositório |
 | [`docs/INSPIRACAO_ESCOLA_GAMES.md`](docs/INSPIRACAO_ESCOLA_GAMES.md) | Análise do Escola Games e o que aproveitamos |
 | [`docs/PRIVACY.md`](docs/PRIVACY.md) | Privacidade (LGPD, art. 14) |
@@ -83,6 +85,7 @@ O app Android é o mesmo site empacotado com o Capacitor ([`docs/ANDROID.md`](do
 3. **Brincadeiras profundas** (fase 3): bolhas, contar tocando, piano, prancha "Eu quero…", álbum de adesivos, esconde-esconde, separar por cor, rimas, som inicial, história em sequência.
 4. **Família e qualidade** (fase 4): tempo de tela, relatório, robô `play-all`, E2E, cobertura de áudio.
 5. **Modo criança, aparelhos antigos, Android e atualização automática.**
-6. **Revisão crítica de 06/10/2026** e correções: limite padrão por idade, portão com bloqueio, relatório honesto pela BNCC, backup, uso offline de verdade, áudio 3× mais leve, release com testes, conteúdo ampliado, favoritos, fichas para imprimir, datas especiais e este README.
+6. **Voz sem créditos, idade automática e gravação da voz da família** (mesmo dia).
+7. **Revisão crítica de 06/10/2026** e correções: limite padrão por idade, portão com bloqueio, relatório honesto pela BNCC, backup, uso offline de verdade, áudio 3× mais leve, release com testes, conteúdo ampliado, favoritos, fichas para imprimir, datas especiais e este README.
 
 Limite clínico: as experiências são educativas e lúdicas. Não fazem diagnóstico, triagem ou promessa de tratamento.

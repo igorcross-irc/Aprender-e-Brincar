@@ -99,8 +99,8 @@ async function playMemory(page) {
 
 async function run() {
   await waitForServer();
-  const browser = await chromium.launch();
-  const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
+  const browser = await chromium.launch({ args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'] });
+  const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', serviceWorkers: 'block', permissions: ['microphone'] });
   // O Modo criança tem a própria seção no fim; aqui ele ficaria cobrindo os cliques do robô.
   await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
   const page = await context.newPage();
@@ -348,6 +348,60 @@ async function run() {
   await page.waitForSelector('[data-game="memory"]');
   pass('favoritos aparecem na tela inicial e abrem a lista');
   await page.click('#btn-back-worlds');
+
+  // Idade que avança sozinha pelo mês de nascimento.
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  const year = new Date().getFullYear() - 3;
+  await page.selectOption('#birth-month', '01');
+  await page.selectOption('#birth-year', String(year));
+  await page.click('#btn-save-settings');
+  await page.waitForSelector('[data-world]');
+  const birth = await page.evaluate(() => localStorage.getItem('aprender_brincar_child_birth'));
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  const bandLabel = await page.textContent('.family-ages .selected');
+  if (birth === `${year}-01` && /3 a 4 anos/.test(bandLabel)) pass('mês de nascimento define a faixa sozinha (3 a 4 anos)');
+  else fail(`nascimento não aplicado (birth=${birth}, faixa="${bandLabel}")`);
+
+  // Grave a sua voz: microfone falso do Chromium; grava, guarda, mostra e apaga.
+  await page.click('[data-voice] [data-act="rec"]');
+  await page.waitForTimeout(1200);
+  await page.click('[data-voice] [data-act="rec"]');
+  try {
+    await page.waitForSelector('[data-voice] .voice-badge:not([hidden])', { timeout: 5000 });
+    const stored = await page.evaluate(() => new Promise((resolve) => {
+      const req = indexedDB.open('ab_voice', 1);
+      req.onsuccess = () => { const all = req.result.transaction('clips').objectStore('clips').getAll(); all.onsuccess = () => resolve(all.result.map((c) => c.blob.size)); };
+      req.onerror = () => resolve([]);
+    }));
+    if (stored.length === 1 && stored[0] > 500) pass(`gravação da voz guardada no aparelho (${stored[0]} bytes)`);
+    else fail(`gravação não ficou no IndexedDB: ${JSON.stringify(stored)}`);
+  } catch { fail(`gravação não concluiu: ${await page.textContent('#voice-msg')}`); }
+  await page.click('[data-voice] [data-act="play"]');
+  await page.click('[data-voice] [data-act="del"]');
+  await page.waitForSelector('[data-voice] .voice-badge[hidden]', { state: 'attached' });
+  pass('gravação da voz pode ser ouvida e apagada');
+  // A gravação passa na frente do MP3 do app: ao ouvir, o arquivo "nao.mp3" nem é pedido à rede.
+  const requested = [];
+  page.on('request', (request) => { if (request.url().includes('/assets/audio/nao.mp3')) requested.push(request.url()); });
+  await page.click('[data-voice="nao.mp3"] [data-act="rec"]');
+  await page.waitForTimeout(1000);
+  await page.click('[data-voice="nao.mp3"] [data-act="rec"]');
+  await page.waitForSelector('[data-voice="nao.mp3"] .voice-badge:not([hidden])', { timeout: 5000 });
+  await page.click('[data-voice="nao.mp3"] [data-act="play"]');
+  await page.waitForTimeout(800);
+  if (requested.length === 0) pass('a voz gravada tem prioridade sobre o MP3 do app');
+  else fail(`o MP3 do app foi pedido mesmo com gravação (${requested.length}x)`);
+  await page.click('[data-voice="nao.mp3"] [data-act="del"]');
+  await page.click('[data-family-age="2-3y"]');
+  await page.click('#btn-save-settings');
+  await page.waitForSelector('[data-world]');
+  const birthAfter = await page.evaluate(() => localStorage.getItem('aprender_brincar_child_birth'));
+  if (!birthAfter) pass('escolher a faixa na mão vale mais que o nascimento');
+  else fail('nascimento continuou valendo após escolha manual');
 
   // Portão: 3 erros seguidos travam a entrada.
   await page.click('#btn-settings');

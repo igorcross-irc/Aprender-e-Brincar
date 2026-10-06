@@ -1,0 +1,713 @@
+{
+  "voice": "pt_BR-faber-medium",
+  "engine": "piper (dataset CC0)",
+  "generatedAt": "2026-10-06",
+  "note": "Voz provisória. Troque por voz humana/Dora e apague o item daqui (docs/VOZ.md).",
+  "files": [
+    {
+      "file": "1-palma.mp3",
+      "text": "1 palma",
+      "seconds": 0.6
+    },
+    {
+      "file": "12-a-18-meses.mp3",
+      "text": "12 a 18 meses",
+      "seconds": 1.38
+    },
+    {
+      "file": "18-a-24-meses.mp3",
+      "text": "18 a 24 meses",
+      "seconds": 1.93
+    },
+    {
+      "file": "2-a-3-anos.mp3",
+      "text": "2 a 3 anos",
+      "seconds": 1.23
+    },
+    {
+      "file": "2-palmas.mp3",
+      "text": "2 palmas",
+      "seconds": 0.76
+    },
+    {
+      "file": "3-a-4-anos.mp3",
+      "text": "3 a 4 anos",
+      "seconds": 1.31
+    },
+    {
+      "file": "3-palmas.mp3",
+      "text": "3 palmas",
+      "seconds": 0.71
+    },
+    {
+      "file": "4-a-5-anos.mp3",
+      "text": "4 a 5 anos",
+      "seconds": 1.36
+    },
+    {
+      "file": "6-a-12-meses.mp3",
+      "text": "6 a 12 meses",
+      "seconds": 1.31
+    },
+    {
+      "file": "alto.mp3",
+      "text": "Alto",
+      "seconds": 0.44
+    },
+    {
+      "file": "animais.mp3",
+      "text": "Animais",
+      "seconds": 0.63
+    },
+    {
+      "file": "arvore.mp3",
+      "text": "árvore",
+      "seconds": 0.5
+    },
+    {
+      "file": "avancando.mp3",
+      "text": "Avançando",
+      "seconds": 0.84
+    },
+    {
+      "file": "balao.mp3",
+      "text": "Balão",
+      "seconds": 0.44
+    },
+    {
+      "file": "banheiro.mp3",
+      "text": "Banheiro",
+      "seconds": 0.5
+    },
+    {
+      "file": "banho.mp3",
+      "text": "Banho",
+      "seconds": 0.42
+    },
+    {
+      "file": "bata-palmas.mp3",
+      "text": "Bata palmas",
+      "seconds": 0.78
+    },
+    {
+      "file": "beber.mp3",
+      "text": "Beber",
+      "seconds": 0.5
+    },
+    {
+      "file": "beijo.mp3",
+      "text": "Beijo",
+      "seconds": 0.52
+    },
+    {
+      "file": "bichinhos.mp3",
+      "text": "Bichinhos",
+      "seconds": 0.65
+    },
+    {
+      "file": "bola.mp3",
+      "text": "bola",
+      "seconds": 0.39
+    },
+    {
+      "file": "bone.mp3",
+      "text": "Boné",
+      "seconds": 0.5
+    },
+    {
+      "file": "boneca.mp3",
+      "text": "Boneca",
+      "seconds": 0.47
+    },
+    {
+      "file": "braco.mp3",
+      "text": "Braço",
+      "seconds": 0.52
+    },
+    {
+      "file": "brincar.mp3",
+      "text": "Brincar",
+      "seconds": 0.52
+    },
+    {
+      "file": "brinquedos.mp3",
+      "text": "Brinquedos",
+      "seconds": 0.71
+    },
+    {
+      "file": "brocolis.mp3",
+      "text": "Brócolis",
+      "seconds": 0.63
+    },
+    {
+      "file": "cama.mp3",
+      "text": "cama",
+      "seconds": 0.44
+    },
+    {
+      "file": "camisa.mp3",
+      "text": "Camisa",
+      "seconds": 0.57
+    },
+    {
+      "file": "chapeu.mp3",
+      "text": "Chapéu",
+      "seconds": 0.52
+    },
+    {
+      "file": "chave.mp3",
+      "text": "Chave",
+      "seconds": 0.52
+    },
+    {
+      "file": "cheio.mp3",
+      "text": "Cheio",
+      "seconds": 0.47
+    },
+    {
+      "file": "colher.mp3",
+      "text": "colher",
+      "seconds": 0.5
+    },
+    {
+      "file": "colo.mp3",
+      "text": "Colo",
+      "seconds": 0.47
+    },
+    {
+      "file": "comer.mp3",
+      "text": "Comer",
+      "seconds": 0.47
+    },
+    {
+      "file": "comida.mp3",
+      "text": "Comida",
+      "seconds": 0.65
+    },
+    {
+      "file": "copo.mp3",
+      "text": "copo",
+      "seconds": 0.47
+    },
+    {
+      "file": "cores-alternadas.mp3",
+      "text": "Cores alternadas",
+      "seconds": 1.07
+    },
+    {
+      "file": "dance.mp3",
+      "text": "Dance",
+      "seconds": 0.5
+    },
+    {
+      "file": "de-tchau.mp3",
+      "text": "Dê tchau",
+      "seconds": 0.6
+    },
+    {
+      "file": "de-um-abraco.mp3",
+      "text": "Dê um abraço",
+      "seconds": 0.84
+    },
+    {
+      "file": "dedo.mp3",
+      "text": "DEDO",
+      "seconds": 0.42
+    },
+    {
+      "file": "desafio-e-descoberta.mp3",
+      "text": "Desafio e descoberta",
+      "seconds": 1.52
+    },
+    {
+      "file": "desafio-em-construcao.mp3",
+      "text": "Desafio em construção",
+      "seconds": 1.33
+    },
+    {
+      "file": "descoberta-e-escolha.mp3",
+      "text": "Descoberta e escolha",
+      "seconds": 1.44
+    },
+    {
+      "file": "descoberta-guiada.mp3",
+      "text": "Descoberta guiada",
+      "seconds": 1.1
+    },
+    {
+      "file": "descoberta-inicial.mp3",
+      "text": "Descoberta inicial",
+      "seconds": 1.2
+    },
+    {
+      "file": "dia-e-noite.mp3",
+      "text": "Dia e noite",
+      "seconds": 0.78
+    },
+    {
+      "file": "doi.mp3",
+      "text": "Dói",
+      "seconds": 0.39
+    },
+    {
+      "file": "dois-e-um.mp3",
+      "text": "Dois e um",
+      "seconds": 0.73
+    },
+    {
+      "file": "dormindo.mp3",
+      "text": "Dormindo",
+      "seconds": 0.55
+    },
+    {
+      "file": "duas-palmas.mp3",
+      "text": "Duas palmas",
+      "seconds": 0.78
+    },
+    {
+      "file": "escolha-algumas-palavras-primeiro.mp3",
+      "text": "Escolha algumas palavras primeiro!",
+      "seconds": 1.72
+    },
+    {
+      "file": "escova.mp3",
+      "text": "Escova",
+      "seconds": 0.63
+    },
+    {
+      "file": "esta-doendo.mp3",
+      "text": "Está doendo",
+      "seconds": 0.78
+    },
+    {
+      "file": "estique-os-bracos.mp3",
+      "text": "Estique os braços",
+      "seconds": 1.2
+    },
+    {
+      "file": "estou-com-sono.mp3",
+      "text": "Estou com sono",
+      "seconds": 1.02
+    },
+    {
+      "file": "estou-feliz.mp3",
+      "text": "Estou feliz",
+      "seconds": 0.81
+    },
+    {
+      "file": "estou-triste.mp3",
+      "text": "Estou triste",
+      "seconds": 0.73
+    },
+    {
+      "file": "estoure-as-bolhas.mp3",
+      "text": "Estoure as bolhas!",
+      "seconds": 1.2
+    },
+    {
+      "file": "estrelas-e-formas.mp3",
+      "text": "Estrelas e formas",
+      "seconds": 1.07
+    },
+    {
+      "file": "eu.mp3",
+      "text": "Eu",
+      "seconds": 0.37
+    },
+    {
+      "file": "eu-quero-agua.mp3",
+      "text": "Eu quero água",
+      "seconds": 0.76
+    },
+    {
+      "file": "eu-quero-brincar.mp3",
+      "text": "Eu quero brincar",
+      "seconds": 0.84
+    },
+    {
+      "file": "eu-quero-colo.mp3",
+      "text": "Eu quero colo",
+      "seconds": 0.76
+    },
+    {
+      "file": "eu-quero-comer.mp3",
+      "text": "Eu quero comer",
+      "seconds": 0.76
+    },
+    {
+      "file": "exploracao.mp3",
+      "text": "Exploração",
+      "seconds": 0.91
+    },
+    {
+      "file": "exploracao-ativa.mp3",
+      "text": "Exploração ativa",
+      "seconds": 1.25
+    },
+    {
+      "file": "faca-de-conta-que-dorme.mp3",
+      "text": "Faça de conta que dorme",
+      "seconds": 1.25
+    },
+    {
+      "file": "flor.mp3",
+      "text": "flor",
+      "seconds": 0.39
+    },
+    {
+      "file": "formas.mp3",
+      "text": "Formas",
+      "seconds": 0.5
+    },
+    {
+      "file": "frutas.mp3",
+      "text": "Frutas",
+      "seconds": 0.52
+    },
+    {
+      "file": "girassol.mp3",
+      "text": "Girassol",
+      "seconds": 0.65
+    },
+    {
+      "file": "gire.mp3",
+      "text": "Gire",
+      "seconds": 0.42
+    },
+    {
+      "file": "grande.mp3",
+      "text": "Grande",
+      "seconds": 0.47
+    },
+    {
+      "file": "janela.mp3",
+      "text": "Janela",
+      "seconds": 0.55
+    },
+    {
+      "file": "livro.mp3",
+      "text": "livro",
+      "seconds": 0.47
+    },
+    {
+      "file": "lua.mp3",
+      "text": "lua",
+      "seconds": 0.44
+    },
+    {
+      "file": "luva.mp3",
+      "text": "Luva",
+      "seconds": 0.55
+    },
+    {
+      "file": "luz.mp3",
+      "text": "Luz",
+      "seconds": 0.39
+    },
+    {
+      "file": "mais.mp3",
+      "text": "Mais",
+      "seconds": 0.5
+    },
+    {
+      "file": "mais-por-favor.mp3",
+      "text": "Mais, por favor",
+      "seconds": 1.02
+    },
+    {
+      "file": "mamae.mp3",
+      "text": "Mamãe",
+      "seconds": 0.52
+    },
+    {
+      "file": "mande-um-beijo.mp3",
+      "text": "Mande um beijo",
+      "seconds": 0.86
+    },
+    {
+      "file": "mao.mp3",
+      "text": "mão",
+      "seconds": 0.44
+    },
+    {
+      "file": "mirtilo.mp3",
+      "text": "Mirtilo",
+      "seconds": 0.57
+    },
+    {
+      "file": "muito-bem-vamos-para-o-proximo.mp3",
+      "text": "Muito bem! Vamos para o próximo.",
+      "seconds": 1.99
+    },
+    {
+      "file": "muito-bem-voce-acertou.mp3",
+      "text": "Muito bem! Você acertou!",
+      "seconds": 1.91
+    },
+    {
+      "file": "musica.mp3",
+      "text": "Música",
+      "seconds": 0.57
+    },
+    {
+      "file": "nao.mp3",
+      "text": "Não",
+      "seconds": 0.39
+    },
+    {
+      "file": "nao-quero.mp3",
+      "text": "Não quero",
+      "seconds": 0.65
+    },
+    {
+      "file": "nao-obrigado.mp3",
+      "text": "Não, obrigado",
+      "seconds": 1.15
+    },
+    {
+      "file": "o-que-voce-quer-dizer-toque-num-cartao.mp3",
+      "text": "O que você quer dizer? Toque num cartão.",
+      "seconds": 2.12
+    },
+    {
+      "file": "obrigada.mp3",
+      "text": "Obrigada",
+      "seconds": 0.71
+    },
+    {
+      "file": "obrigado.mp3",
+      "text": "Obrigado",
+      "seconds": 0.68
+    },
+    {
+      "file": "olho.mp3",
+      "text": "Olho",
+      "seconds": 0.39
+    },
+    {
+      "file": "orelha.mp3",
+      "text": "Orelha",
+      "seconds": 0.52
+    },
+    {
+      "file": "palhaco.mp3",
+      "text": "Palhaço",
+      "seconds": 0.65
+    },
+    {
+      "file": "palma.mp3",
+      "text": "Palma",
+      "seconds": 0.34
+    },
+    {
+      "file": "palma-e-pausa.mp3",
+      "text": "Palma e pausa",
+      "seconds": 0.89
+    },
+    {
+      "file": "palma-palma-pausa.mp3",
+      "text": "Palma, palma, pausa",
+      "seconds": 1.18
+    },
+    {
+      "file": "palma-pausa-palma-palma.mp3",
+      "text": "Palma, pausa, palma, palma",
+      "seconds": 1.38
+    },
+    {
+      "file": "palmas.mp3",
+      "text": "Palmas",
+      "seconds": 0.44
+    },
+    {
+      "file": "panela.mp3",
+      "text": "Panela",
+      "seconds": 0.52
+    },
+    {
+      "file": "papai.mp3",
+      "text": "Papai",
+      "seconds": 0.52
+    },
+    {
+      "file": "parabens-voce-acertou-as-cores.mp3",
+      "text": "Parabéns! Você acertou as cores!",
+      "seconds": 2.25
+    },
+    {
+      "file": "parabens-voce-completou-o-quebra-cabeca.mp3",
+      "text": "Parabéns! Você completou o quebra-cabeça!",
+      "seconds": 2.77
+    },
+    {
+      "file": "passaro.mp3",
+      "text": "pássaro",
+      "seconds": 0.5
+    },
+    {
+      "file": "pausa-e-palma.mp3",
+      "text": "Pausa e palma",
+      "seconds": 0.81
+    },
+    {
+      "file": "pausa-palma-palma.mp3",
+      "text": "Pausa, palma, palma",
+      "seconds": 1.15
+    },
+    {
+      "file": "pe.mp3",
+      "text": "pé",
+      "seconds": 0.37
+    },
+    {
+      "file": "peixe.mp3",
+      "text": "peixe",
+      "seconds": 0.55
+    },
+    {
+      "file": "pintinho.mp3",
+      "text": "Pintinho",
+      "seconds": 0.63
+    },
+    {
+      "file": "por-favor.mp3",
+      "text": "Por favor",
+      "seconds": 0.6
+    },
+    {
+      "file": "praticar.mp3",
+      "text": "Praticar",
+      "seconds": 0.6
+    },
+    {
+      "file": "presente.mp3",
+      "text": "Presente",
+      "seconds": 0.47
+    },
+    {
+      "file": "pule.mp3",
+      "text": "Pule",
+      "seconds": 0.47
+    },
+    {
+      "file": "qual-e-diferente.mp3",
+      "text": "Qual é diferente?",
+      "seconds": 0.91
+    },
+    {
+      "file": "qual-numero-vem-depois.mp3",
+      "text": "Qual número vem depois?",
+      "seconds": 1.25
+    },
+    {
+      "file": "que-desenho-incrivel.mp3",
+      "text": "Que desenho incrível!",
+      "seconds": 1.1
+    },
+    {
+      "file": "quente.mp3",
+      "text": "Quente",
+      "seconds": 0.44
+    },
+    {
+      "file": "quero.mp3",
+      "text": "Quero",
+      "seconds": 0.44
+    },
+    {
+      "file": "quero-ir-ao-banheiro.mp3",
+      "text": "Quero ir ao banheiro",
+      "seconds": 0.97
+    },
+    {
+      "file": "rapido.mp3",
+      "text": "Rápido",
+      "seconds": 0.52
+    },
+    {
+      "file": "rato.mp3",
+      "text": "Rato",
+      "seconds": 0.44
+    },
+    {
+      "file": "reforcar.mp3",
+      "text": "Reforçar",
+      "seconds": 0.68
+    },
+    {
+      "file": "relogio.mp3",
+      "text": "Relógio",
+      "seconds": 0.63
+    },
+    {
+      "file": "rolo.mp3",
+      "text": "Rolo",
+      "seconds": 0.47
+    },
+    {
+      "file": "sapato.mp3",
+      "text": "sapato",
+      "seconds": 0.55
+    },
+    {
+      "file": "sim.mp3",
+      "text": "Sim",
+      "seconds": 0.44
+    },
+    {
+      "file": "sono.mp3",
+      "text": "Sono",
+      "seconds": 0.52
+    },
+    {
+      "file": "sorvete.mp3",
+      "text": "Sorvete",
+      "seconds": 0.55
+    },
+    {
+      "file": "tamanhos.mp3",
+      "text": "Tamanhos",
+      "seconds": 0.55
+    },
+    {
+      "file": "toque-nos-animais-para-fazer-musica.mp3",
+      "text": "Toque nos animais para fazer música!",
+      "seconds": 1.91
+    },
+    {
+      "file": "tres-palmas.mp3",
+      "text": "Três palmas",
+      "seconds": 0.73
+    },
+    {
+      "file": "trevo.mp3",
+      "text": "Trevo",
+      "seconds": 0.5
+    },
+    {
+      "file": "tulipa.mp3",
+      "text": "tulipa",
+      "seconds": 0.52
+    },
+    {
+      "file": "vamos-desenhar-escolha-uma-cor.mp3",
+      "text": "Vamos desenhar! Escolha uma cor.",
+      "seconds": 1.99
+    },
+    {
+      "file": "vamos-observar-a-sequencia.mp3",
+      "text": "Vamos observar a sequência.",
+      "seconds": 1.49
+    },
+    {
+      "file": "vamos-ouvir-novamente.mp3",
+      "text": "Vamos ouvir novamente.",
+      "seconds": 1.23
+    },
+    {
+      "file": "veiculos.mp3",
+      "text": "Veículos",
+      "seconds": 0.73
+    }
+  ]
+}
