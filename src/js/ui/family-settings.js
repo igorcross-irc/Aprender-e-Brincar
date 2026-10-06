@@ -4,7 +4,7 @@ import { learningWorlds } from '../../content/world-catalog.js';
 import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
-import { APP_VERSION } from '../../core/app-update.js';
+import { APP_VERSION, APK_URL } from '../../core/app-update.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
@@ -180,6 +180,13 @@ export class FamilySettings {
           <div class="reward-grid">${this.getRewards().map((reward) => `<div class="reward-chip ${reward.earned ? 'earned' : 'locked'}"><span>${reward.earned ? reward.icon : '🔒'}</span><div><strong>${esc(reward.title)}</strong><small>${esc(reward.description)}</small></div></div>`).join('')}</div>
           <p class="family-hint">Um retrato das brincadeiras, não uma avaliação. Não substitui acompanhamento profissional.</p>
         </section>
+
+        ${isNativeApp() ? '' : `<section class="family-section">
+          <h4>Aplicativo para Android</h4>
+          <p class="family-hint">Para celular ou tablet Android: o aplicativo abre em tela cheia, trava a tela para a criança não sair e se atualiza sozinho.</p>
+          <a id="link-apk" class="family-button" href="${APK_URL}" download>⬇️ Baixar o aplicativo (APK)</a>
+          <p class="family-hint">Depois de baixar, toque no arquivo e permita instalar de "esta fonte" quando o Android pedir. <a href="/instalar.html">Passo a passo</a></p>
+        </section>`}
 
         ${canInstall ? `<section class="family-section"><h4>Instalar</h4><p class="family-hint">Instale para abrir em tela cheia e brincar sem internet.</p><button id="btn-install" class="family-button">📲 Instalar aplicativo</button></section>` : ''}
 

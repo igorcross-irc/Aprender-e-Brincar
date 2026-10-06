@@ -324,6 +324,9 @@ async function run() {
   const [l1, l2] = lockEquation.match(/\d+/g).map(Number);
   await lockPage.fill('#gate-input', String(l1 * l2));
   await lockPage.click('#btn-gate-confirm');
+  const apkHref = await lockPage.getAttribute('#link-apk', 'href');
+  if (apkHref && /releases\/latest\/download\/aprender-e-brincar\.apk$/.test(apkHref)) pass('Área da Família tem o link para baixar o app Android');
+  else fail(`link do APK ausente ou errado na Área da Família (${apkHref})`);
   await lockPage.click('#btn-exit-fullscreen');
   await lockPage.waitForTimeout(300);
   await lockPage.mouse.click(512, 700);
