@@ -12,6 +12,8 @@
 import { capacitorCore, capacitorUpdater, isNativeApp, nativePlugin } from './native.js';
 
 export const REPO = 'igorcross-irc/Aprender-e-Brincar';
+// Endereço fixo: o GitHub redireciona para o APK do lançamento mais recente.
+export const APK_URL = `https://github.com/${REPO}/releases/latest/download/aprender-e-brincar.apk`;
 const LATEST_RELEASE = `https://api.github.com/repos/${REPO}/releases/latest`;
 const CHECKED_KEY = 'ab_update_checked_at';
 const CHECK_EVERY_MS = 6 * 60 * 60 * 1000;

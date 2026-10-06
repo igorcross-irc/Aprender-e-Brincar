@@ -356,6 +356,8 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--ab-focus); 
 .family-history li { display: flex; justify-content: space-between; gap: .5rem; background: #fff; border-radius: .8rem; padding: .5rem .75rem; font-size: .85rem; font-weight: 700; }
 .family-history small { color: #94a3b8; font-weight: 600; }
 .family-button { padding: .8rem; border-radius: 1rem; background: var(--ab-primary); color: #fff; font-weight: 900; }
+a.family-button { display: block; text-align: center; text-decoration: none; }
+.family-hint a { color: var(--ab-primary); font-weight: 800; }
 .family-danger { padding: .8rem; border-radius: 1rem; background: #ffe4e6; color: #be123c; font-weight: 800; }
 .family-save { padding: .9rem; border-radius: 1rem; background: var(--ab-success); color: #fff; font-weight: 900; box-shadow: var(--ab-shadow); }
 
