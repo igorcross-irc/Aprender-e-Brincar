@@ -14,17 +14,20 @@ import '@fontsource-variable/nunito';
 import { ScreenTime } from '../core/screen-time.js';
 import { KidLock } from '../core/kid-lock.js';
 import { AppUpdater } from '../core/app-update.js';
+import { requestPersistence } from '../core/backup.js';
+import { Favorites } from '../core/favorites.js';
 
-const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest'];
+const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest', 'renderFavorites'];
 
 class App {
   constructor() {
     this.audio = new ResilientAudioEngine();
     this.storage = new StorageManager();
     this.core = new AppCore(this.audio, this.storage);
-    this.screenTime = new ScreenTime();
+    this.screenTime = new ScreenTime({ ageProvider: () => this.storage.getChildAge() });
     this.kidLock = new KidLock();
     this.updater = new AppUpdater();
+    this.favorites = new Favorites({ isValid: (id) => activityCatalog.some((activity) => activity.id === id) });
     this.core.activities.registerMany(activityCatalog);
     this.gameRegistry = createGameRegistry({ containerId: 'game-container', audio: this.audio, storage: this.storage });
     this.container = document.getElementById('game-container');
@@ -48,6 +51,7 @@ class App {
     this.updater.start();
     // Ao atingir o limite, espera a brincadeira atual terminar antes de pedir descanso.
     this.screenTime.onLimit(() => { if (!this.experience.active && !this.container.querySelector('.rest-card')) this.renderRest(); });
+    requestPersistence();
     this.updateScoreUI();
     this.setupHeaderEvents();
     this.renderHome();

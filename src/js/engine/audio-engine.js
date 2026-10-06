@@ -43,6 +43,7 @@ export class ResilientAudioEngine {
   constructor() {
     this.isMuted = this.getSafeMuteState();
     this.speech = window.speechSynthesis || null;
+    this.createdAt = Date.now();
     this.ctx = null;
     this.buffers = new Map();
     this.loading = new Map();
@@ -184,7 +185,41 @@ export class ResilientAudioEngine {
     }
     if (token !== this.playToken) return false;
     this.speak(fallbackText);
+    // Sem MP3 e sem voz do aparelho a criança ficaria no silêncio: mostra a fala escrita e em destaque.
+    if (!this.hasPortugueseVoice()) this.showCaption(fallbackText);
     return false;
+  }
+
+  // Há voz em português no aparelho? Em WebView Android e iOS antigo costuma não haver.
+  hasPortugueseVoice() {
+    if (!this.speech) return false;
+    try {
+      const voices = this.speech.getVoices() || [];
+      if (voices.length === 0) return Date.now() - this.createdAt > 3000; // as vozes carregam aos poucos
+      return voices.some((voice) => (voice.lang || '').toLowerCase().indexOf('pt') === 0);
+    } catch (e) { return false; }
+  }
+
+  voiceStatus() {
+    return this.hasPortugueseVoice() ? 'device' : 'none';
+  }
+
+  // Legenda grande no rodapé: o adulto lê em voz alta e a criança vê a imagem em destaque.
+  showCaption(text) {
+    const value = String(text || '').trim();
+    if (!value || typeof document === 'undefined') return;
+    let box = document.getElementById('voice-caption');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'voice-caption';
+      box.className = 'voice-caption';
+      box.setAttribute('role', 'status');
+      document.body.appendChild(box);
+    }
+    box.textContent = '🔊 ' + value;
+    box.classList.add('show');
+    window.clearTimeout(this.captionTimer);
+    this.captionTimer = window.setTimeout(() => box.classList.remove('show'), 3500);
   }
 
   // Instruções ficam guardadas para o botão "ouvir de novo".
@@ -208,6 +243,7 @@ export class ResilientAudioEngine {
       knownAvailable: this.available.size,
       knownMissing: this.missing.size,
       speechAvailable: Boolean(this.speech),
+      portugueseVoice: this.hasPortugueseVoice(),
       audioContextAvailable: Boolean(window.AudioContext || window.webkitAudioContext)
     };
   }

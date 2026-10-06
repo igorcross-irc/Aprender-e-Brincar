@@ -12,7 +12,11 @@ Tudo fica **apenas no armazenamento local do navegador do aparelho** (`localStor
 - Cadastro, login ou e-mail.
 - Anúncios, rastreadores, analytics ou cookies de terceiros.
 - Recursos de rede social, chat ou compras.
-- Chamadas a serviços externos: fontes, áudios e imagens são servidos pelo próprio app.
+- Chamadas a serviços externos no site/PWA: nenhuma. Fontes, áudios e imagens são servidos pelo próprio app.
+- **Exceção, só no aplicativo Android:** a cada 6 horas ele consulta a lista pública de versões no GitHub (`api.github.com`) para saber se há atualização. Nenhum dado da criança ou do aparelho é enviado; como em qualquer acesso à internet, o GitHub vê o endereço IP e o tipo de aplicativo. Para evitar, use o aparelho sem internet ou o site (PWA).
+
+## Backup
+O backup é um código de texto gerado na Área da Família. Ele só sai do aparelho se o responsável copiar ou baixar; o app não envia nada sozinho.
 
 ## Controle do responsável
 - A Área da Família fica protegida por uma verificação para adultos.

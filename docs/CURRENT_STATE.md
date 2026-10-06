@@ -1,4 +1,4 @@
-# Estado Atual — 30/09/2026
+# Estado Atual — 06/10/2026
 
 Aplicação pública (PWA) de brincadeiras educativas para crianças de 6 meses a 5 anos. Referência de uso: criança de 2 anos (faixa 2–3 anos). Detalhes de cada mudança em `docs/CHANGELOG.md`.
 
@@ -9,7 +9,7 @@ Aplicação pública (PWA) de brincadeiras educativas para crianças de 6 meses 
 4. Toda brincadeira termina numa única tela de comemoração: de novo, outra, voltar.
 
 ## Área da Família (verificação para adultos)
-Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico, gráfico de 7 dias, conquistas, instalação do app, privacidade e "zerar progresso".
+Perfil (nome/idade), tempo de tela com limite diário (padrão por idade), som, resumo e histórico, "onde mais brincou" pelos campos de experiência da BNCC, ideias para brincar junto e fichas para imprimir, baixar para usar sem internet, backup/restauração, conquistas, instalação do app, privacidade e "zerar progresso". O portão tem bloqueio crescente após erros.
 
 ## Arquitetura
 - Vite + Tailwind; fonte Nunito empacotada; sem chamadas externas.
@@ -27,7 +27,9 @@ Perfil (nome/idade), tempo de tela com limite diário, som, resumo e histórico,
 - CI: `.github/workflows/build.yml`.
 
 ## Próximos passos sugeridos
-- Gravar as falas listadas em `docs/AUDIO_COVERAGE.md` (voz humana é bem mais agradável que a do navegador).
+- Gerar as 141 falas que faltam com a voz Dora (≈ 1.500 caracteres; ver `docs/VOZ.md`) e, depois, "Grave a sua voz" na Área da Família.
+- Ligar a assinatura do pacote de atualização (`docs/SEGURANCA.md`).
+- Músicas, livrinhos ilustrados e jogos da memória temáticos (`docs/INSPIRACAO_ESCOLA_GAMES.md`).
 - Ilustrações próprias no lugar dos emojis (mesmos caminhos de `public/assets/images/visual-library/`).
 - Refatorar os jogos antigos (`learning-world.js`, `cards.js`, etc.) para a moldura `game-shell.js`.
 

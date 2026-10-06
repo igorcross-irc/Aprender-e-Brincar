@@ -278,7 +278,7 @@ async function run() {
   await page.evaluate(() => {
     const d = new Date();
     const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    localStorage.setItem('aprender_brincar_screen_time_v1', JSON.stringify({ limitMinutes: 15, days: { [day]: 20 * 60000 }, extraMinutes: {} }));
+    localStorage.setItem('aprender_brincar_screen_time_v1', JSON.stringify({ limitMinutes: 15, explicit: true, days: { [day]: 20 * 60000 }, extraMinutes: {} }));
   });
   await page.reload();
   await page.waitForSelector('.rest-card');
@@ -292,6 +292,71 @@ async function run() {
   await page.click('#btn-extra-time');
   await page.waitForSelector('[data-world]');
   pass('adulto libera mais 10 minutos pela Área da Família');
+
+  console.log('Novidades: limite padrão, portão, backup, favoritos');
+  const solveGate = async () => {
+    const text = await page.textContent('#gate-title ~ div');
+    const [a, b] = text.match(/\d+/g).map(Number);
+    await page.fill('#gate-input', String(a * b));
+    await page.click('#btn-gate-confirm');
+  };
+  // Limite padrão por idade: sem o responsável escolher nada, já há um limite.
+  await page.evaluate(() => { localStorage.removeItem('aprender_brincar_screen_time_v1'); localStorage.removeItem('ab_gate_guard'); });
+  await page.reload();
+  await page.waitForSelector('[data-world]');
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  const limitLabel = await page.textContent('.family-limits .selected');
+  if (/padrão/.test(limitLabel)) pass(`limite padrão por idade já vem ligado (${limitLabel.trim()})`);
+  else fail(`sem limite padrão (selecionado: ${limitLabel})`);
+
+  // Backup: baixa o arquivo, bagunça os dados e restaura.
+  await page.evaluate(() => localStorage.setItem('aprender_brincar_child_name', 'Isa'));
+  const [download] = await Promise.all([page.waitForEvent('download'), page.click('#btn-backup-file')]);
+  const { readFile } = await import('node:fs/promises');
+  const code = (await readFile(await download.path(), 'utf8')).trim();
+  await page.evaluate(() => localStorage.setItem('aprender_brincar_child_name', 'Outra'));
+  await page.fill('#backup-input', code);
+  await Promise.all([page.waitForNavigation(), page.click('#btn-backup-restore')]);
+  await page.waitForSelector('[data-world]');
+  const restored = await page.evaluate(() => localStorage.getItem('aprender_brincar_child_name'));
+  if (code.startsWith('AEB1.') && restored === 'Isa') pass('backup baixado e restaurado devolve os dados');
+  else fail(`backup não restaurou (nome=${restored})`);
+
+  // Código adulterado é recusado.
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  await page.fill('#backup-input', `${code.slice(0, 40)}XXXX${code.slice(44)}`);
+  await page.click('#btn-backup-restore');
+  const msg = await page.textContent('#backup-msg');
+  if (/incompleto|inválido|ler/.test(msg)) pass('código de backup adulterado é recusado');
+  else fail(`código adulterado aceito? "${msg}"`);
+  await page.click('#btn-close-settings');
+
+  // Favoritos e "Brincar agora" na tela inicial.
+  await page.evaluate(() => localStorage.setItem('ab_favorites', JSON.stringify(['memory'])));
+  await page.click('#btn-home-logo');
+  await page.waitForSelector('#btn-today');
+  const todayGame = await page.getAttribute('#btn-today', 'data-game');
+  if (todayGame) pass(`"Brincar agora" sugere uma brincadeira (${todayGame})`);
+  else fail('home sem sugestão do dia');
+  await page.reload();
+  await page.waitForSelector('#btn-favorites');
+  await page.click('#btn-favorites');
+  await page.waitForSelector('[data-game="memory"]');
+  pass('favoritos aparecem na tela inicial e abrem a lista');
+  await page.click('#btn-back-worlds');
+
+  // Portão: 3 erros seguidos travam a entrada.
+  await page.click('#btn-settings');
+  for (let i = 0; i < 3; i += 1) { await page.fill('#gate-input', '1'); await page.click('#btn-gate-confirm'); }
+  const locked = await page.$eval('#gate-input', (el) => el.disabled);
+  const lockMsg = await page.textContent('#gate-error');
+  if (locked && /Muitas tentativas/.test(lockMsg)) pass('3 erros no portão bloqueiam por um tempo');
+  else fail(`portão não bloqueou (disabled=${locked}, msg="${lockMsg}")`);
+  await page.evaluate(() => localStorage.removeItem('ab_gate_guard'));
 
   await context.close();
 
@@ -345,6 +410,36 @@ async function run() {
   });
   if (cached) pass('service worker instalado com o manifest em cache');
   else fail('service worker não guardou o shell');
+
+  // De verdade sem internet: baixa o pacote pela Área da Família, corta a rede e brinca.
+  await swPage.evaluate(() => localStorage.setItem('aprender_brincar_child_age', '2-3y'));
+  await swPage.reload();
+  await swPage.waitForSelector('[data-world]');
+  await swPage.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await swPage.reload(); // agora a página já é controlada pelo service worker
+  await swPage.waitForSelector('[data-world]');
+  await swPage.click('#btn-settings');
+  const eq = (await swPage.textContent('#gate-title ~ div')).match(/\d+/g).map(Number);
+  await swPage.fill('#gate-input', String(eq[0] * eq[1]));
+  await swPage.click('#btn-gate-confirm');
+  await swPage.waitForSelector('#btn-download-pack');
+  await swPage.click('#btn-download-pack');
+  try {
+    await swPage.waitForFunction(() => /Tudo guardado/.test(document.querySelector('#pack-status')?.textContent || ''), null, { timeout: 90000 });
+    pass('"Baixar para usar sem internet" guardou falas e imagens');
+  } catch { fail(`pacote offline não concluiu: ${await swPage.textContent('#pack-status')}`); }
+  await swPage.click('#btn-close-settings');
+  await swContext.setOffline(true);
+  const offline = await swPage.evaluate(async () => {
+    const audio = await fetch('/assets/audio/agua.mp3').then((r) => r.ok).catch(() => false);
+    const image = await fetch('/assets/images/figures/gato.webp').then((r) => r.ok).catch(() => false);
+    return { audio, image };
+  });
+  if (offline.audio && offline.image) pass('sem internet: fala e imagem vêm do aparelho');
+  else fail(`sem internet faltou arquivo (${JSON.stringify(offline)})`);
+  await swPage.reload();
+  try { await swPage.waitForSelector('[data-world]', { timeout: 8000 }); pass('sem internet: o app abre e mostra os mundos'); }
+  catch { fail('sem internet o app não abriu'); }
   await browser.close();
 }
 

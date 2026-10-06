@@ -1,7 +1,8 @@
 {
   "name": "aprender-e-brincar",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -17,7 +18,10 @@
     "test:play-all": "npm run build && node scripts/play-all.mjs",
     "android:sync": "npm run build && npx cap sync android",
     "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug",
-    "audit:legacy": "npm run build && node scripts/legacy-audit.mjs"
+    "audit:legacy": "npm run build && node scripts/legacy-audit.mjs",
+    "postbuild": "node scripts/stamp-sw.mjs",
+    "audio:compress": "node scripts/compress-audio.mjs",
+    "test:unit": "node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.2",

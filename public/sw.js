@@ -1,5 +1,5 @@
 // Troque VERSION a cada publicação que altere o shell para limpar caches antigos.
-const VERSION = 'ab-0.6.0';
+const VERSION = 'ab-0.7.0';
 const SHELL = [
   '/',
   '/manifest.json',

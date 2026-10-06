@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-10-06 — Revisão crítica e correções (v0.7.0)
+Resposta à auditoria de 06/10: o que estava frágil foi corrigido e testado.
+- **Voz:** quando não há MP3 nem voz em português no aparelho, a fala aparece escrita em destaque (nunca fica mudo). Plano para completar as 141 falas em `docs/VOZ.md` (≈ 1.500 caracteres no total).
+- **Áudio 3× mais leve:** MP3 recodificados para mono 64 kbps (9,3 MB → 3,1 MB, mesma duração). `npm run audio:compress`.
+- **Conteúdo ampliado:** 8 → 18 objetos, 5 → 11 sílabas, 3 → 8 sequências, 4 → 8 opostos, 3 → 8 histórias, mais formas, partes do corpo, movimentos, ritmos, vocabulário e descobertas para bebês. Testes de integridade do conteúdo (`tests/content.test.mjs`).
+- **Relatório honesto:** saíram os "domínios" técnicos; entrou "onde mais brincou" pelos **campos de experiência da BNCC**, com a ressalva de que não é avaliação.
+- **Tempo de tela:** limite **padrão por idade** (10/10/15/30/40/45 min), aviso das recomendações da SBP/OMS na primeira abertura e na Área da Família, "Sem limite" pede confirmação. Quem tinha "sem limite" gravado sem ter escolhido volta ao padrão.
+- **Portão para adultos:** conta com números mais altos e **bloqueio crescente** após 3 erros (30 s → 10 min), que sobrevive a recarregar a página.
+- **Dados:** pedido de armazenamento persistente ao navegador, **backup por código ou arquivo** (com soma de verificação e lista de chaves permitidas) e restauração.
+- **Sem internet de verdade:** botão "Baixar para usar sem internet" na Área da Família; E2E agora baixa o pacote, corta a rede e confere que a fala, a imagem e o app abrem. Versão do cache do service worker carimbada automaticamente no build.
+- **Segurança:** release só publica com testes verdes; app recusa release sem sha256; `allowBackup=false` e HTTPS obrigatório no Android; passo opcional de assinatura do pacote (ver `docs/SEGURANCA.md`); Dependabot e CODEOWNERS; `PRIVACY.md` documenta a consulta ao GitHub.
+- **Inspirado no Escola Games** (`docs/INSPIRACAO_ESCOLA_GAMES.md`): favoritos ❤️, "Brincar agora", datas especiais (Mês da Criança), fichas para imprimir e ideias para brincar junto.
+- **Engenharia:** `"type": "module"`, testes unitários com `node --test` (25), E2E ampliado, README.
+
 ## 2026-10-01 — Novas brincadeiras e jogos antigos padronizados
 - **Esconde-esconde** (6 meses a 4 anos): um animal se esconde atrás de 1 a 5 esconderijos (conforme a idade); a criança toca para achar. Trabalha permanência do objeto.
 - **Separar por Cor** (18 meses+) e **Encaixe as Formas** (12 meses+): um objeto aparece e a criança toca no cesto/buraco certo — sem arrastar. Até 3 anos a voz dá a pista ("No cesto vermelho!").

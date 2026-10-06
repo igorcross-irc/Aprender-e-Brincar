@@ -91,9 +91,11 @@ export class AppUpdater {
       }
       const zipUrl = info.web && fileUrl(info.web.file);
       if (!zipUrl) throw new Error('release sem o pacote do site');
+      // Sem soma de verificação o pacote não é baixado: nunca rodar código sem conferir.
+      if (!info.web.sha256 || String(info.web.sha256).length < 32) throw new Error('release sem soma de verificação');
       const { bundles = [] } = await CapacitorUpdater.list();
       let bundle = bundles.find((item) => item.version === info.version && item.status === 'success');
-      if (!bundle) bundle = await CapacitorUpdater.download({ url: zipUrl, version: info.version, checksum: info.web.sha256 });
+      if (!bundle) bundle = await CapacitorUpdater.download({ url: zipUrl, version: info.version, checksum: info.web.sha256, ...(info.web.sessionKey ? { sessionKey: info.web.sessionKey } : {}) });
       await CapacitorUpdater.next({ id: bundle.id });
       this.set({ status: 'ready', latest: info.version, native, apk });
     } catch (error) {

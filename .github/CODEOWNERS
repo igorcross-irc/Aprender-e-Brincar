@@ -1,0 +1,6 @@
+# Mudanças que mexem em publicação, atualização ou parte nativa precisam do dono.
+/.github/ @igorcross-irc
+/android/ @igorcross-irc
+/src/core/app-update.js @igorcross-irc
+/capacitor.config.json @igorcross-irc
+/docs/SEGURANCA.md @igorcross-irc

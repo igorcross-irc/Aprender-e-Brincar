@@ -17,6 +17,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      CAPGO_PRIVATE_KEY: ${{ secrets.CAPGO_PRIVATE_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,13 +36,36 @@ jobs:
             test "v$VERSION" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME diferente do package.json ($VERSION)"; exit 1; }
           fi
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Testes (nada é publicado se algum falhar)
+        run: |
+          npm run test:unit
+          npm run test:core
+          npm run smoke
+          npm run audit:games
+          npm run audit:child-interface
+          npm run audit:audio
       - name: Build do site
         run: npm run build
+      - name: Testes no navegador
+        run: |
+          npx playwright install --with-deps chromium
+          node scripts/e2e-test.mjs
+          node scripts/legacy-audit.mjs
       - name: Pacote do conteúdo
         run: |
           (cd dist && zip -qr "../web-$VERSION.zip" .)
           echo "WEB_SHA=$(sha256sum web-$VERSION.zip | cut -d' ' -f1)" >> "$GITHUB_ENV"
           echo "FINGERPRINT=$(node -p "require('./dist/native.json').fingerprint")" >> "$GITHUB_ENV"
+      - name: Assinar o pacote (criptografia de ponta a ponta)
+        # Só roda se o segredo CAPGO_PRIVATE_KEY existir. Ver docs/SEGURANCA.md antes de ligar:
+        # com a chave pública no app, pacotes sem assinatura passam a ser recusados.
+        if: env.CAPGO_PRIVATE_KEY != ''
+        run: |
+          echo "$CAPGO_PRIVATE_KEY" > "$RUNNER_TEMP/capgo_private.pem"
+          npx --yes @capgo/cli@latest bundle encrypt "web-$VERSION.zip" "$WEB_SHA" --key-data-v2 "$(cat "$RUNNER_TEMP/capgo_private.pem")" | tee "$RUNNER_TEMP/encrypt.out"
+          echo "SIGNED=true" >> "$GITHUB_ENV"
+          echo "WEB_SESSION_KEY=$(grep -i 'ivSessionKey' "$RUNNER_TEMP/encrypt.out" | sed 's/.*: *//')" >> "$GITHUB_ENV"
+          echo "WEB_SHA=$(grep -i 'checksum' "$RUNNER_TEMP/encrypt.out" | tail -1 | sed 's/.*: *//')" >> "$GITHUB_ENV"
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -85,7 +110,7 @@ jobs:
             const info = {
               version: process.env.VERSION,
               fingerprint: process.env.FINGERPRINT,
-              web: { file: `web-${process.env.VERSION}.zip`, sha256: process.env.WEB_SHA },
+              web: { file: `web-${process.env.VERSION}.zip`, sha256: process.env.WEB_SHA, sessionKey: process.env.WEB_SESSION_KEY || null, signed: process.env.SIGNED === "true" },
               android: process.env.HAS_APK === "true" ? { file: "aprender-e-brincar.apk", versionCode: major * 10000 + minor * 100 + patch } : null
             };
             require("fs").writeFileSync("update.json", JSON.stringify(info, null, 2));

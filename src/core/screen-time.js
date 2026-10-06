@@ -11,16 +11,29 @@ function today(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
+// Limite padrão por idade, para o responsável não precisar configurar nada.
+// A Sociedade Brasileira de Pediatria e a OMS desaconselham telas antes dos 2 anos e
+// sugerem até 1 hora por dia dos 2 aos 5; o app fica bem abaixo disso por padrão.
+export const DEFAULT_LIMITS = Object.freeze({ '6-12m': 10, '12-18m': 10, '18-24m': 15, '2-3y': 30, '3-4y': 40, '4-5y': 45 });
+
+export function defaultLimitFor(ageId) { return DEFAULT_LIMITS[ageId] || 30; }
+
 function read() {
   try {
     const value = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (value && typeof value === 'object') return { limitMinutes: 0, days: {}, extraMinutes: {}, ...value };
+    if (value && typeof value === 'object') {
+      const state = { days: {}, extraMinutes: {}, ...value };
+      // Versões antigas guardavam 0 ("sem limite") sem o responsável ter escolhido: volta ao padrão por idade.
+      if (!state.explicit) state.limitMinutes = null;
+      return state;
+    }
   } catch {}
-  return { limitMinutes: 0, days: {}, extraMinutes: {} };
+  return { limitMinutes: null, explicit: false, days: {}, extraMinutes: {} };
 }
 
 export class ScreenTime {
-  constructor() {
+  constructor({ ageProvider = () => '' } = {}) {
+    this.ageProvider = ageProvider;
     this.state = read();
     this.timer = null;
     this.listeners = new Set();
@@ -46,10 +59,23 @@ export class ScreenTime {
 
   onLimit(listener) { this.listeners.add(listener); }
 
-  get limitMinutes() { return Number(this.state.limitMinutes) || 0; }
+  // True quando o responsável escolheu um valor; senão vale o padrão da idade.
+  get isCustom() { return Boolean(this.state.explicit) && this.state.limitMinutes != null; }
+
+  get limitMinutes() {
+    if (this.isCustom) return Number(this.state.limitMinutes) || 0;
+    return defaultLimitFor(this.ageProvider());
+  }
 
   setLimit(minutes) {
-    this.state.limitMinutes = SCREEN_TIME_OPTIONS.includes(Number(minutes)) ? Number(minutes) : 0;
+    this.state.limitMinutes = SCREEN_TIME_OPTIONS.includes(Number(minutes)) ? Number(minutes) : defaultLimitFor(this.ageProvider());
+    this.state.explicit = true;
+    this.persist();
+  }
+
+  useDefaultLimit() {
+    this.state.limitMinutes = null;
+    this.state.explicit = false;
     this.persist();
   }
 

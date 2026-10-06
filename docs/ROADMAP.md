@@ -177,3 +177,14 @@ Implementados na staging e validados pelo build de produção do Vercel.
 - Estado offline não bloqueia a experiência local-first já existente.
 - Revisão crítica: a biblioteca de objetos ainda usa emojis como fallback; as ilustrações próprias dos objetos continuam pendentes e devem substituir o fallback sem alterar os contratos dos motores.
 - CI do GitHub Actions está falhando antes da primeira etapa em execuções recentes (jobs encerrados em ~2s com zero steps); isso foi separado dos testes de aplicação porque o Vercel concluiu o build da staging como READY.
+
+
+## Revisão de 06/10/2026 (v0.7.0)
+Concluído: limite por idade, portão com bloqueio, relatório pela BNCC, backup, offline testado, áudio leve, release com testes, favoritos, fichas, datas especiais, mais conteúdo.
+Próximo, nesta ordem:
+1. Gerar as falas que faltam (`docs/VOZ.md`) e "Grave a sua voz".
+2. Ligar a assinatura do pacote de atualização (`docs/SEGURANCA.md`).
+3. Músicas e livrinhos ilustrados narrados; jogos da memória temáticos.
+4. Perfis para irmãos; idade que avança sozinha (mês/ano de nascimento guardado no aparelho).
+5. Dividir `learning-world.js` em um arquivo por modo; ESLint/Prettier.
+6. Teste em aparelho real (iPad antigo, Android 5).

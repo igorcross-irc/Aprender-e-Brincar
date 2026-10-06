@@ -4,6 +4,8 @@ import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
 import { childMascotMarkup } from '../../core/child-mascot.js';
+import { defaultLimitFor } from '../../core/screen-time.js';
+import { seasonFor } from '../../core/seasons.js';
 
 export const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨', 'attention-auditory': '👂',
@@ -59,6 +61,9 @@ export class AppScreens {
     this.audio.clearPrompt?.();
     const name = this.storage.getChildName();
     const greeting = name ? `Oi, ${name}! Vamos brincar?` : 'Oi! Vamos brincar?';
+    const season = seasonFor();
+    const today = this.core.learning.recommend(ageId, null, 1)[0]?.activity || null;
+    const favoriteIds = this.favorites?.list().filter((id) => { const a = activityCatalog.find((item) => item.id === id); return a && a.ages.includes(ageId); }) || [];
     const worlds = learningWorlds
       .map((world) => ({ ...world, activities: worldActivities(world, ageId) }))
       .filter((world) => world.activities.length);
@@ -67,7 +72,9 @@ export class AppScreens {
       <div class="screen page-enter">
         <section class="home-hero">
           ${childMascotMarkup({ size: 'medium', mood: 'happy' })}
+          ${season ? `<p class="season-badge"><span aria-hidden="true">${season.emoji}</span> ${this.escape(season.title)}</p>` : ''}
           <h2 class="home-greeting">${this.escape(greeting)}</h2>
+          ${today ? `<button id="btn-today" data-game="${today.id}" class="today-button" aria-label="Brincar agora: ${this.escape(today.title)}"><span class="today-icon" aria-hidden="true">${gameIconMarkup(today.id)}</span><span class="today-text"><small>Brincar agora</small><b>${this.escape(today.title)}</b></span><span class="today-play" aria-hidden="true">▶</span></button>` : ''}
         </section>
         <div class="world-grid">
           ${worlds.map((world) => `
@@ -76,6 +83,7 @@ export class AppScreens {
               <span class="world-tile-icon ${WORLD_IMAGES[world.id] ? 'has-image' : ''}" aria-hidden="true">${WORLD_IMAGES[world.id] ? imageTag(WORLD_IMAGES[world.id]) : world.icon}</span>
               <span class="world-tile-title">${this.escape(world.title)}</span>
             </button>`).join('')}
+          ${favoriteIds.length ? `<button id="btn-favorites" class="world-tile favorites-tile" aria-label="Meus favoritos"><span class="world-tile-deco" aria-hidden="true">❤️</span><span class="world-tile-icon" aria-hidden="true">❤️</span><span class="world-tile-title">Favoritos</span></button>` : ''}
           <button id="btn-album" class="world-tile album-tile" aria-label="Meus adesivos">
             <span class="world-tile-deco" aria-hidden="true">⭐</span>
             <span class="world-tile-icon has-image" aria-hidden="true">${imageTag('trophy')}</span>
@@ -85,7 +93,9 @@ export class AppScreens {
       </div>`;
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
     this.container.querySelector('#btn-album').addEventListener('click', () => this.renderAlbum());
-    this.audio.prompt?.(null, greeting);
+    this.container.querySelector('#btn-favorites')?.addEventListener('click', () => this.renderFavorites());
+    this.container.querySelector('#btn-today')?.addEventListener('click', (event) => this.launchGame(event.currentTarget.dataset.game, ageId));
+    this.audio.prompt?.(null, season ? `${greeting} ${season.voice}` : greeting);
   }
 
   // Mantido para compatibilidade com chamadas antigas: a idade vem do perfil.
@@ -200,11 +210,19 @@ export class AppScreens {
             ${next ? `<button id="session-next" data-next="${next.id}" class="big-action action-next"><span aria-hidden="true">${GAME_ICONS[next.id] || '▶️'}</span><small>Outra</small></button>` : ''}
             <button id="session-world" class="big-action action-home"><span aria-hidden="true">🏠</span><small>Voltar</small></button>
           </div>
+          <button id="session-fav" class="fav-button ${this.favorites?.has(result.activityId) ? 'on' : ''}" aria-pressed="${Boolean(this.favorites?.has(result.activityId))}" aria-label="Gostei! Guardar nos favoritos"><span aria-hidden="true">${this.favorites?.has(result.activityId) ? '❤️' : '♡'}</span></button>
         </section>
       </div>`;
     this.container.querySelector('#session-again').addEventListener('click', () => this.launchGame(result.activityId, this.currentAge));
     this.container.querySelector('#session-next')?.addEventListener('click', () => this.launchGame(next.id, this.currentAge));
     this.container.querySelector('#session-world').addEventListener('click', () => this.currentWorld ? this.renderWorld(this.currentWorld) : this.renderHome());
+    this.container.querySelector('#session-fav')?.addEventListener('click', (event) => {
+      const on = this.favorites.toggle(result.activityId);
+      const button = event.currentTarget;
+      button.classList.toggle('on', on);
+      button.setAttribute('aria-pressed', String(on));
+      button.firstElementChild.textContent = on ? '❤️' : '♡';
+    });
     playSfx('celebrate');
     this.audio.prompt?.(null, message);
     if (result.starAwarded) this.flyStarToCounter?.();
@@ -212,6 +230,30 @@ export class AppScreens {
       const resultCard = this.container.querySelector('.result-card');
       window.setTimeout(() => { if (resultCard?.isConnected) this.renderRest(); }, 3500);
     }
+  }
+
+  renderFavorites() {
+    this.container.scrollTop = 0;
+    this.currentWorld = null;
+    const ageId = this.childAge();
+    const activities = (this.favorites?.list() || []).map((id) => activityCatalog.find((a) => a.id === id)).filter((a) => a && a.ages.includes(ageId));
+    if (!activities.length) return this.renderHome();
+    this.container.innerHTML = `
+      <div class="screen page-enter">
+        <div class="screen-bar">
+          <button id="btn-back-worlds" class="round-button" aria-label="Voltar">⬅️</button>
+          <h2 class="screen-title"><span class="title-icon" aria-hidden="true">❤️</span> Favoritos</h2>
+        </div>
+        <div class="activity-grid world-rose">
+          ${activities.map((activity) => `
+            <button data-game="${activity.id}" class="activity-tile" aria-label="${this.escape(activity.title)}">
+              <span class="activity-tile-icon ${GAME_IMAGES[activity.id] ? 'has-image' : ''}" aria-hidden="true">${gameIconMarkup(activity.id)}</span>
+              <span class="activity-tile-title">${this.escape(activity.title)}</span>
+            </button>`).join('')}
+        </div>
+      </div>`;
+    this.container.querySelector('#btn-back-worlds').addEventListener('click', () => this.renderHome());
+    this.container.querySelectorAll('[data-game]').forEach((button) => button.addEventListener('click', () => this.launchGame(button.dataset.game, ageId)));
   }
 
   renderGuidedExperience(gameId, onWin, onBack, age = {}) {
@@ -260,6 +302,7 @@ export class AppScreens {
           <div class="setup-ages" role="radiogroup" aria-label="Idade da criança">
             ${AGE_BANDS.map((age) => `<button data-setup-age="${age.id}" role="radio" aria-checked="${age.id === currentAge}" class="setup-age ${age.id === currentAge ? 'selected' : ''}">${this.escape(age.label)}</button>`).join('')}
           </div>
+          <p id="setup-screen-note" class="setup-note" aria-live="polite">Recomendação de pediatras: evitar telas antes dos 2 anos e, dos 2 aos 5, no máximo 1 hora por dia, com um adulto por perto. O app já vem com um limite diário pela idade; você pode mudar na Área da Família.</p>
           <p class="setup-privacy">🔒 Tudo fica guardado só neste aparelho. Sem anúncios, sem cadastro e sem envio de dados.</p>
           <button id="setup-start" class="setup-start" ${currentAge ? '' : 'disabled'}>Começar</button>
         </section>
@@ -274,6 +317,8 @@ export class AppScreens {
         item.setAttribute('aria-checked', String(active));
       });
       start.disabled = false;
+      const note = this.container.querySelector('#setup-screen-note');
+      if (note) note.textContent = `Pediatras recomendam evitar telas antes dos 2 anos e, dos 2 aos 5, no máximo 1 hora por dia, com um adulto por perto. Para esta idade o app já vem com limite de ${defaultLimitFor(selectedAge)} minutos por dia, sem você configurar nada; dá para mudar na Área da Família.`;
     }));
     start.addEventListener('click', () => {
       if (!selectedAge) return;
