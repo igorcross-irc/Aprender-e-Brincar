@@ -1,6 +1,7 @@
 // Favoritos da criança (inspirado nos "Favoritos" do Escola Games): ela toca no ❤️ no fim da
 // brincadeira e a brincadeira ganha um atalho na tela inicial. Guardado só no aparelho.
-const KEY = 'ab_favorites';
+import { scoped } from './profiles.js';
+const KEY = scoped('ab_favorites');
 const MAX = 12;
 
 export class Favorites {

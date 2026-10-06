@@ -13,6 +13,8 @@ import { buildPrintableHtml } from '../../core/printables.js';
 import { defaultLimitFor } from '../../core/screen-time.js';
 import { describeAge } from '../../core/age.js';
 import { VOICE_PRIORITY } from '../../content/voice-priority.js';
+import { registry, markWhoChosen, keyFor, MAX_PROFILES } from '../../core/profiles.js';
+import { parseBirth, ageBandFromBirth } from '../../core/age.js';
 import { recordingSupported, startRecording } from '../../core/voice-store.js';
 
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
@@ -151,7 +153,25 @@ export class FamilySettings {
         </div>
 
         <section class="family-section">
-          <h4>Perfil</h4>
+          <h4>Crianças</h4>
+          <p class="family-hint">Cada criança tem as próprias estrelas, progresso, idade, favoritos e tempo de tela. A voz gravada, o som e o modo criança valem para todas.</p>
+          <ul class="kids-list">
+            ${registry().summaries().map((kid, index) => `<li data-kid="${kid.id}"><span class="profile-avatar" aria-hidden="true">${kid.avatar}</span><span class="kid-info">${esc(kid.name || `Criança ${index + 1}`)}${kid.id === registry().activeId ? ' · brincando agora' : ''}<small>⭐ ${kid.stars}${(ageBandFromBirth(kid.birth) || kid.age) ? ` · ${esc((AGE_BANDS.find((a) => a.id === (ageBandFromBirth(kid.birth) || kid.age)) || {}).label || '')}` : ''}</small></span>${kid.id === registry().activeId ? '' : '<button type="button" class="kid-btn" data-kid-act="use">Usar</button>'}${registry().count > 1 ? '<button type="button" class="kid-btn danger" data-kid-act="del">Apagar</button>' : ''}</li>`).join('')}
+          </ul>
+          ${registry().canAdd() ? `<button type="button" id="btn-add-kid" class="family-button">➕ Adicionar criança</button>
+          <div id="kid-form" class="kid-form" hidden>
+            <label for="kid-name">Nome ou apelido <span>(opcional)</span></label>
+            <input id="kid-name" type="text" maxlength="15" autocomplete="off" />
+            <label for="kid-age">Idade</label>
+            <select id="kid-age">${AGE_BANDS.map((age) => `<option value="${age.id}">${esc(age.label)}</option>`).join('')}</select>
+            <label>Ou o mês de nascimento <span>(opcional)</span></label>
+            <div class="birth-row"><select id="kid-birth-month" aria-label="Mês de nascimento"><option value="">Mês</option>${['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'].map((m, i) => `<option value="${String(i + 1).padStart(2, '0')}">${m}</option>`).join('')}</select><select id="kid-birth-year" aria-label="Ano de nascimento"><option value="">Ano</option>${Array.from({ length: 8 }, (_, i) => new Date().getFullYear() - i).map((y) => `<option value="${y}">${y}</option>`).join('')}</select></div>
+            <button type="button" id="btn-create-kid" class="family-save">Criar e brincar com ela</button>
+          </div>` : `<p class="family-hint">Limite de ${MAX_PROFILES} crianças.</p>`}
+        </section>
+
+        <section class="family-section">
+          <h4>Perfil da criança que está brincando</h4>
           <label for="child-name-input">Nome ou apelido</label>
           <input type="text" id="child-name-input" value="${esc(app.storage.getChildName())}" maxlength="15" autocomplete="off" />
           <p class="family-label">Idade</p>
@@ -194,9 +214,9 @@ export class FamilySettings {
           <p class="family-hint">${app.audio.hasPortugueseVoice?.() ? 'Falas que ainda não foram gravadas usam a voz do aparelho.' : 'Este aparelho não tem voz em português: falas ainda não gravadas aparecem escritas na tela para você ler em voz alta. Em Ajustes do aparelho, instale uma voz em português para melhorar.'}</p>
         </section>
 
-        ${recordingSupported() && app.audio.voiceStore?.supported && !isNativeApp() ? `<section class="family-section" id="voice-section">
+        ${recordingSupported() && app.audio.voiceStore?.supported ? `<section class="family-section" id="voice-section">
           <h4>Grave a sua voz 🎙️</h4>
-          <p class="family-hint">A voz de quem ela ama é a melhor! Grave as falas mais ouvidas e elas passam na frente das vozes do app. O microfone só liga enquanto você grava (até 6 segundos), e a gravação fica só neste aparelho. Ela não entra no backup.</p>
+          <p class="family-hint">A voz de quem ela ama é a melhor! Grave as falas mais ouvidas e elas passam na frente das vozes do app. O microfone só liga enquanto você grava (até 6 segundos), e a gravação fica só neste aparelho. Ela não entra no backup.${isNativeApp() ? ' No app, o Android vai pedir a permissão de microfone na primeira vez; a tela fica solta enquanto você grava e prende de novo ao sair daqui.' : ''}</p>
           <ul class="voice-list">${VOICE_PRIORITY.map((item) => `<li data-voice="${esc(item.file)}"><span class="voice-text">${esc(item.text)}</span><span class="voice-badge" hidden>✓ sua voz</span><span class="voice-actions"><button type="button" class="voice-btn" data-act="play" aria-label="Ouvir: ${esc(item.text)}">▶</button><button type="button" class="voice-btn" data-act="rec" aria-label="Gravar: ${esc(item.text)}">⏺</button><button type="button" class="voice-btn" data-act="del" aria-label="Apagar gravação: ${esc(item.text)}" hidden>🗑</button></span></li>`).join('')}</ul>
           <p id="voice-msg" class="family-hint" aria-live="polite"></p>
         </section>` : ''}
@@ -268,7 +288,7 @@ export class FamilySettings {
           <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo.</p>
         </section>
 
-        <button id="btn-reset-stars" class="family-danger">Zerar progresso</button>
+        <button id="btn-reset-stars" class="family-danger">Zerar progresso desta criança</button>
         <button id="btn-save-settings" class="family-save">Salvar e voltar</button>
       </div>`;
     document.body.appendChild(modal);
@@ -340,6 +360,7 @@ export class FamilySettings {
       });
       app.audio.refreshCustom().then(paint);
       let recording = null;
+      let pausedForVoice = false;
       const resetRec = (button) => { button.textContent = '⏺'; button.classList.remove('recording'); };
       voiceSection.addEventListener('click', async (event) => {
         const button = event.target.closest('.voice-btn');
@@ -368,6 +389,9 @@ export class FamilySettings {
           }
           try {
             app.audio.stop();
+            // No app Android a fixação de tela pode esconder o aviso de permissão do microfone:
+            // solta enquanto o adulto grava e prende de novo ao fechar a Área da Família.
+            if (isNativeApp() && kidLock.active) { kidLock.pause(); pausedForVoice = true; }
             const session = await startRecording();
             recording = { session, button, file };
             button.textContent = '⏹'; button.classList.add('recording');
@@ -382,8 +406,36 @@ export class FamilySettings {
           }
         }
       });
-      new MutationObserver(() => { if (!modal.isConnected && recording) { recording.session.cancel(); recording = null; } }).observe(document.body, { childList: true });
+      new MutationObserver(() => { if (modal.isConnected) return; if (recording) { recording.session.cancel(); recording = null; } if (pausedForVoice) { pausedForVoice = false; kidLock.resume(); } }).observe(document.body, { childList: true });
     }
+
+    // Crianças (irmãos)
+    modal.querySelectorAll('[data-kid-act="use"]').forEach((button) => button.addEventListener('click', () => {
+      registry().setActive(button.closest('[data-kid]').dataset.kid);
+      markWhoChosen();
+      window.location.reload();
+    }));
+    modal.querySelectorAll('[data-kid-act="del"]').forEach((button) => button.addEventListener('click', () => {
+      const id = button.closest('[data-kid]').dataset.kid;
+      if (!confirm('Apagar esta criança e TODO o progresso dela? Isso não pode ser desfeito.')) return;
+      registry().remove(id);
+      markWhoChosen();
+      window.location.reload();
+    }));
+    modal.querySelector('#btn-add-kid')?.addEventListener('click', () => { modal.querySelector('#kid-form').hidden = false; modal.querySelector('#btn-add-kid').hidden = true; modal.querySelector('#kid-name').focus(); });
+    modal.querySelector('#btn-create-kid')?.addEventListener('click', () => {
+      const profile = registry().add();
+      if (!profile) return;
+      const put = (base, value) => { try { if (value) localStorage.setItem(keyFor(base, profile.id), value); } catch {} };
+      put('aprender_brincar_child_name', modal.querySelector('#kid-name').value.trim().slice(0, 15));
+      put('aprender_brincar_child_age', modal.querySelector('#kid-age').value);
+      const month = modal.querySelector('#kid-birth-month').value; const year = modal.querySelector('#kid-birth-year').value;
+      const birth = month && year ? `${year}-${month}` : '';
+      if (parseBirth(birth)) put('aprender_brincar_child_birth', birth);
+      registry().setActive(profile.id);
+      markWhoChosen();
+      window.location.reload();
+    });
 
     modal.querySelector('#btn-print')?.addEventListener('click', () => {
       const sheet = window.open('', '_blank');

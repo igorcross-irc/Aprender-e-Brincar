@@ -4,7 +4,7 @@ O Aprender & Brincar é uma aplicação pública para crianças de 6 meses a 5 a
 
 ## O que é guardado
 - Nome ou apelido da criança (opcional), faixa etária e, se o responsável quiser, **mês e ano de nascimento** (para a faixa avançar sozinha), informados pelo responsável.
-- Se o responsável usar **Grave a sua voz**: gravações curtas (até 6 s) da voz dele, no IndexedDB do aparelho. O microfone só liga enquanto ele grava, a gravação nunca sai do aparelho e não entra no backup. Dá para apagar uma a uma.
+- Se o responsável usar **Grave a sua voz** (no app Android o sistema pede a permissão de microfone só nessa hora): gravações curtas (até 6 s) da voz dele, no IndexedDB do aparelho. O microfone só liga enquanto ele grava, a gravação nunca sai do aparelho e não entra no backup. Dá para apagar uma a uma.
 - Progresso das brincadeiras (estrelas, brincadeiras concluídas, tempo aproximado).
 
 Tudo fica **apenas no armazenamento local do navegador do aparelho** (`localStorage`/`sessionStorage`). Nada é enviado a servidores.
@@ -15,6 +15,9 @@ Tudo fica **apenas no armazenamento local do navegador do aparelho** (`localStor
 - Recursos de rede social, chat ou compras.
 - Chamadas a serviços externos no site/PWA: nenhuma. Fontes, áudios e imagens são servidos pelo próprio app.
 - **Exceção, só no aplicativo Android:** a cada 6 horas ele consulta a lista pública de versões no GitHub (`api.github.com`) para saber se há atualização. Nenhum dado da criança ou do aparelho é enviado; como em qualquer acesso à internet, o GitHub vê o endereço IP e o tipo de aplicativo. Para evitar, use o aparelho sem internet ou o site (PWA).
+
+## Mais de uma criança
+Os perfis de irmãos (nome ou apelido, idade, progresso) ficam no mesmo aparelho, separados por criança. Apagar uma criança na Área da Família remove todos os dados dela.
 
 ## Backup
 O backup é um código de texto gerado na Área da Família. Ele só sai do aparelho se o responsável copiar ou baixar; o app não envia nada sozinho.

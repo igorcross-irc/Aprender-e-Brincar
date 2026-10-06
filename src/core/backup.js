@@ -4,20 +4,24 @@
 const APP_ID = 'aprender-e-brincar';
 const VERSION = 1;
 
-// Só estas chaves entram: dados da criança e preferências. Nada de cache técnico.
-export const BACKUP_KEYS = Object.freeze([
-  'aprender_brincar_progress_v1',
-  'aprender_brincar_progress_v1_backup',
-  'aprender_brincar_stars',
-  'aprender_brincar_child_name',
-  'aprender_brincar_child_age',
-  'aprender_brincar_child_birth',
-  'aprender_brincar_screen_time_v1',
-  'learning_recent_v1',
-  'ab_kid_lock',
-  'ab_muted',
-  'ab_favorites'
-]);
+// Só entram dados das crianças e preferências. Nada de cache técnico nem sessão em andamento.
+// Cada criança (perfil) tem as mesmas chaves com o sufixo do perfil (ver profiles.js).
+import { PER_CHILD_KEYS, GLOBAL_KEYS, ProfileRegistry, keyFor, splitKey } from './profiles.js';
+const TRANSIENT = new Set(['aprender_brincar_learning_session_v1']);
+const PER_CHILD_BACKUP = PER_CHILD_KEYS.filter((key) => !TRANSIENT.has(key));
+export const BACKUP_KEYS = Object.freeze([...PER_CHILD_BACKUP, ...GLOBAL_KEYS]);
+
+export function isAllowedKey(key) {
+  if (GLOBAL_KEYS.includes(key)) return true;
+  const parts = splitKey(key);
+  return Boolean(parts && !TRANSIENT.has(parts.base));
+}
+
+// Todas as chaves que existem agora para as crianças cadastradas.
+function currentKeys(storage) {
+  const ids = new ProfileRegistry(storage).list().map((profile) => profile.id);
+  return [...GLOBAL_KEYS, ...ids.flatMap((id) => PER_CHILD_BACKUP.map((base) => keyFor(base, id)))];
+}
 
 // Soma de verificação simples (FNV-1a) para pegar código copiado pela metade.
 export function checksum(text) {
@@ -34,7 +38,7 @@ const b64ToUtf8 = (b64) => decodeURIComponent(escape(atob(b64)));
 
 export function createBackup(storage = window.localStorage, now = () => new Date()) {
   const data = {};
-  BACKUP_KEYS.forEach((key) => {
+  currentKeys(storage).forEach((key) => {
     try { const value = storage.getItem(key); if (value != null) data[key] = value; } catch {}
   });
   const body = JSON.stringify({ app: APP_ID, version: VERSION, createdAt: now().toISOString(), data });
@@ -51,7 +55,7 @@ export function parseBackup(code) {
     const parsed = JSON.parse(body);
     if (!parsed || parsed.app !== APP_ID || typeof parsed.data !== 'object' || !parsed.data) return { ok: false, error: 'Este código não é do Aprender & Brincar.' };
     const data = {};
-    BACKUP_KEYS.forEach((key) => { if (typeof parsed.data[key] === 'string') data[key] = parsed.data[key]; });
+    Object.keys(parsed.data).forEach((key) => { if (isAllowedKey(key) && typeof parsed.data[key] === 'string') data[key] = parsed.data[key]; });
     return { ok: true, data, createdAt: parsed.createdAt || null };
   } catch {
     return { ok: false, error: 'Não consegui ler o código.' };
@@ -61,7 +65,7 @@ export function parseBackup(code) {
 export function restoreBackup(code, storage = window.localStorage) {
   const result = parseBackup(code);
   if (!result.ok) return result;
-  BACKUP_KEYS.forEach((key) => { try { storage.removeItem(key); } catch {} });
+  currentKeys(storage).forEach((key) => { try { storage.removeItem(key); } catch {} });
   Object.keys(result.data).forEach((key) => { try { storage.setItem(key, result.data[key]); } catch {} });
   return { ok: true, restored: Object.keys(result.data).length, createdAt: result.createdAt };
 }

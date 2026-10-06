@@ -403,6 +403,48 @@ async function run() {
   if (!birthAfter) pass('escolher a faixa na mão vale mais que o nascimento');
   else fail('nascimento continuou valendo após escolha manual');
 
+  // Irmãos: cada criança com os próprios dados.
+  await page.evaluate(() => localStorage.removeItem('ab_gate_guard'));
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  const firstName = await page.evaluate(() => localStorage.getItem('aprender_brincar_child_name') || '');
+  await page.click('#btn-add-kid');
+  await page.fill('#kid-name', 'Léo');
+  await page.selectOption('#kid-age', '3-4y');
+  await Promise.all([page.waitForNavigation(), page.click('#btn-create-kid')]);
+  await page.waitForSelector('[data-world]');
+  const kidGreeting = await page.textContent('.home-greeting');
+  const keys = await page.evaluate(() => ({ second: localStorage.getItem('aprender_brincar_child_name:p2'), first: localStorage.getItem('aprender_brincar_child_name') || '', active: JSON.parse(localStorage.getItem('ab_profiles_v1')).active }));
+  if (/Léo/.test(kidGreeting) && keys.second === 'Léo' && keys.first === firstName && keys.active === 'p2') pass('segunda criança criada, com dados separados da primeira');
+  else fail(`irmão não separado (saudação="${kidGreeting}", chaves=${JSON.stringify(keys)})`);
+  if (await page.isVisible('#btn-profile')) pass('rosto da criança aparece no cabeçalho com 2 perfis');
+  else fail('botão de trocar de criança não apareceu');
+  // Abrir o app de novo (aba nova) pergunta quem vai brincar.
+  const fresh = await context.newPage();
+  await fresh.goto(BASE);
+  try { await fresh.waitForSelector('.who-grid [data-profile]', { timeout: 6000 }); pass('abrir o app com 2 crianças mostra "Quem vai brincar?"'); }
+  catch { fail('tela "Quem vai brincar?" não apareceu'); }
+  await fresh.click('[data-profile="p1"]');
+  await fresh.waitForSelector('[data-world]');
+  const back = await fresh.textContent('.home-greeting');
+  if (firstName ? back.includes(firstName) : !/Léo/.test(back)) pass('escolher a primeira criança volta aos dados dela');
+  else fail(`escolha de perfil não trocou (saudação="${back}")`);
+  await fresh.close();
+  // Apagar a segunda criança.
+  await page.click('#btn-profile');
+  await page.waitForSelector('.who-grid');
+  await Promise.all([page.waitForNavigation(), page.click('[data-profile="p1"]')]);
+  await page.waitForSelector('[data-world]');
+  await page.click('#btn-settings');
+  await solveGate();
+  await page.waitForSelector('.family-panel');
+  await Promise.all([page.waitForNavigation(), page.click('[data-kid="p2"] [data-kid-act="del"]')]);
+  await page.waitForSelector('[data-world]');
+  const afterDelete = await page.evaluate(() => ({ second: localStorage.getItem('aprender_brincar_child_name:p2'), count: JSON.parse(localStorage.getItem('ab_profiles_v1')).profiles.length }));
+  if (afterDelete.second === null && afterDelete.count === 1 && !(await page.isVisible('#btn-profile'))) pass('apagar a criança remove os dados dela e o seletor some');
+  else fail(`apagar criança falhou ${JSON.stringify(afterDelete)}`);
+
   // Portão: 3 erros seguidos travam a entrada.
   await page.click('#btn-settings');
   for (let i = 0; i < 3; i += 1) { await page.fill('#gate-input', '1'); await page.click('#btn-gate-confirm'); }

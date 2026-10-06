@@ -9,7 +9,7 @@ Aplicação pública (PWA) de brincadeiras educativas para crianças de 6 meses 
 4. Toda brincadeira termina numa única tela de comemoração: de novo, outra, voltar.
 
 ## Área da Família (verificação para adultos)
-Perfil (nome/idade), tempo de tela com limite diário (padrão por idade), som, resumo e histórico, "onde mais brincou" pelos campos de experiência da BNCC, ideias para brincar junto e fichas para imprimir, baixar para usar sem internet, backup/restauração, conquistas, instalação do app, privacidade e "zerar progresso". O portão tem bloqueio crescente após erros.
+Crianças (perfis para irmãos), perfil (nome/idade/nascimento), tempo de tela com limite diário (padrão por idade), som, resumo e histórico, "onde mais brincou" pelos campos de experiência da BNCC, ideias para brincar junto e fichas para imprimir, baixar para usar sem internet, backup/restauração, conquistas, instalação do app, privacidade e "zerar progresso". O portão tem bloqueio crescente após erros.
 
 ## Arquitetura
 - Vite + Tailwind; fonte Nunito empacotada; sem chamadas externas.
@@ -27,7 +27,7 @@ Perfil (nome/idade), tempo de tela com limite diário (padrão por idade), som, 
 - CI: `.github/workflows/build.yml`.
 
 ## Próximos passos sugeridos
-- Trocar as 141 falas provisórias (Piper) pela Dora ou pela voz da família (`docs/VOZ.md`).
+- Trocar as 141 falas provisórias (Kokoro, feminina) pela Dora ou pela voz da família (`docs/VOZ.md`).
 - Ligar a assinatura do pacote de atualização (`docs/SEGURANCA.md`).
 - Músicas, livrinhos ilustrados e jogos da memória temáticos (`docs/INSPIRACAO_ESCOLA_GAMES.md`).
 - Ilustrações próprias no lugar dos emojis (mesmos caminhos de `public/assets/images/visual-library/`).

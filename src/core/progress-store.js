@@ -1,8 +1,9 @@
-const KEY = 'aprender_brincar_progress_v1';
-const BACKUP_KEY = KEY + '_backup';
+import { scoped } from './profiles.js';
+const KEY = scoped('aprender_brincar_progress_v1');
+const BACKUP_KEY = scoped('aprender_brincar_progress_v1_backup');
 const DAY_MS = 86400000;
 const HISTORY_LIMIT = 30;
-const LEGACY_SCORE_KEY = 'aprender_brincar_stars';
+const LEGACY_SCORE_KEY = scoped('aprender_brincar_stars');
 import { normalizeExperienceResult, getAccuracy } from './experience-result.js';
 import { sanitizeProgressState } from './experience-health.js';
 const DEFAULT = { version: 8, stars: 0, activities: {}, worlds: {}, rewards: {}, history: [], sessions: { total: 0, streak: 0, lastDay: null, activities: 0, explorations: 0, evaluations: 0, totalDurationMs: 0, lastDurationMs: 0, lastSessionAt: null }, updatedAt: null };

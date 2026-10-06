@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-06 (3) — Voz feminina provisória e perfis para irmãos
+- **Sem voz masculina:** as 141 falas provisórias foram refeitas com o **Kokoro** (voz feminina pt-BR `pf_dora`, Apache-2.0); as geradas com o Piper (masculino) foram apagadas. O gerador virou `scripts/generate-voice.py`.
+- **Grave a sua voz também no app Android:** permissão `RECORD_AUDIO` declarada (o Android pede só no primeiro toque em gravar); a fixação de tela é solta enquanto o adulto grava e volta ao sair (`KidLock.resume`). **Sem teste em aparelho real.**
+- **Perfis para irmãos (até 6):** cada criança tem as próprias estrelas, progresso, nome, idade/nascimento, favoritos, tempo de tela e sessão. O perfil 1 usa as chaves de sempre (quem já usava o app não perde nada). Tela "Quem vai brincar?" ao abrir o app com 2+ crianças, rosto da criança no cabeçalho, adicionar/trocar/apagar na Área da Família. O backup leva todas as crianças. Voz gravada, som e modo criança são da família.
+- Bugs achados pelos testes: o CSS sobrescrevia o atributo `hidden` (botão de trocar de criança e formulário apareciam sempre); regra global `[hidden]` corrigida.
+
 ## 2026-10-06 (2) — Voz sem créditos, idade automática e voz da família
 - **244/244 falas com MP3.** As 141 que faltavam foram geradas com o **Piper** (voz `pt_BR-faber-medium`, dados CC0) por `scripts/generate-voice-piper.py`: normalizadas para ≈ -17 LUFS, mono 64 kbps, só as pontas sem silêncio. Marcadas como provisórias em `docs/voz-provisoria.json`. Bug achado no caminho: o corte de silêncio truncava frases na primeira pausa; corrigido e regerado.
 - **Grave a sua voz** (Área da Família): 25 falas prioritárias, gravação de até 6 s, guardada no IndexedDB do aparelho e com prioridade sobre os MP3 do app. Oculto no app Android (falta decidir a permissão de microfone).

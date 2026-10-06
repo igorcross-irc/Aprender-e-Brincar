@@ -1,4 +1,5 @@
 import { activityCatalog } from '../content/activity-catalog.js';
+import { scoped } from './profiles.js';
 import { getAgeExperienceConfig, getAgeExperienceLevel } from './age-experience-policy.js';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -6,7 +7,7 @@ const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 export class LearningEngine {
   constructor(progressStore) {
     this.progress = progressStore;
-    this.historyKey = 'learning_recent_v1';
+    this.historyKey = scoped('learning_recent_v1');
     this.skills = null;
   }
 

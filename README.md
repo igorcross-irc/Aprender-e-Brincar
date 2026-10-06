@@ -15,8 +15,9 @@ Aplicativo de brincadeiras educativas para crianças de **6 meses a 5 anos**, fe
 | Botão **Brincar agora** com sugestão do dia (motor adaptativo) | Ideias para brincar junto, longe da tela, e **fichas para imprimir** |
 | ❤️ **Favoritos** e álbum de adesivos | **Backup** do progresso por código/arquivo e proteção contra o navegador apagar os dados |
 | Datas especiais (Mês da Criança, Festa Junina, Natal) | **Baixar para usar sem internet** (≈ 4 MB) |
+| **Perfis para irmãos:** cada criança com as próprias estrelas, progresso, idade, favoritos e tempo de tela; "Quem vai brincar?" ao abrir o app | **Crianças** na Área da Família: adicionar, trocar e apagar (até 6) |
 | Estrelas, confete e comemoração sem competição | **Grave a sua voz** (a voz da família passa na frente das do app), **idade que avança sozinha** pelo mês de nascimento |
-| Voz em **todas** as 244 falas (88 Dora + 141 provisórias, ver `docs/VOZ.md`) | Modo criança (tela cheia, travas), instalação, atualizações |
+| Voz em **todas** as 244 falas (88 Dora + 141 provisórias femininas, ver `docs/VOZ.md`) | Modo criança (tela cheia, travas), instalação, atualizações |
 
 ### Como o app protege a criança e ajuda a família
 - **Tempo de tela:** padrão por idade (10 min até 18 meses, 15 min até 2 anos, 30 min aos 2–3, 40 min aos 3–4, 45 min aos 4–5), baseado na recomendação da Sociedade Brasileira de Pediatria e da OMS. O responsável é avisado já na primeira abertura e pode mudar ou desligar (com confirmação).
@@ -72,7 +73,7 @@ O app Android é o mesmo site empacotado com o Capacitor ([`docs/ANDROID.md`](do
 | [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) | Estado atual e arquitetura |
 | [`docs/CHANGELOG.md`](docs/CHANGELOG.md) | Tudo que já foi feito, por data |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Fases e próximos passos |
-| [`docs/VOZ.md`](docs/VOZ.md) | Vozes do app: Dora, provisória (Piper), voz da família e alternativas |
+| [`docs/VOZ.md`](docs/VOZ.md) | Vozes do app: Dora, provisória feminina (Kokoro), voz da família e alternativas |
 | [`docs/SEGURANCA.md`](docs/SEGURANCA.md) | Atualizações assinadas, release, repositório |
 | [`docs/INSPIRACAO_ESCOLA_GAMES.md`](docs/INSPIRACAO_ESCOLA_GAMES.md) | Análise do Escola Games e o que aproveitamos |
 | [`docs/PRIVACY.md`](docs/PRIVACY.md) | Privacidade (LGPD, art. 14) |
@@ -86,6 +87,7 @@ O app Android é o mesmo site empacotado com o Capacitor ([`docs/ANDROID.md`](do
 4. **Família e qualidade** (fase 4): tempo de tela, relatório, robô `play-all`, E2E, cobertura de áudio.
 5. **Modo criança, aparelhos antigos, Android e atualização automática.**
 6. **Voz sem créditos, idade automática e gravação da voz da família** (mesmo dia).
-7. **Revisão crítica de 06/10/2026** e correções: limite padrão por idade, portão com bloqueio, relatório honesto pela BNCC, backup, uso offline de verdade, áudio 3× mais leve, release com testes, conteúdo ampliado, favoritos, fichas para imprimir, datas especiais e este README.
+7. **Voz feminina provisória, gravação da voz da família no Android e perfis para irmãos.**
+8. **Revisão crítica de 06/10/2026** e correções: limite padrão por idade, portão com bloqueio, relatório honesto pela BNCC, backup, uso offline de verdade, áudio 3× mais leve, release com testes, conteúdo ampliado, favoritos, fichas para imprimir, datas especiais e este README.
 
 Limite clínico: as experiências são educativas e lúdicas. Não fazem diagnóstico, triagem ou promessa de tratamento.

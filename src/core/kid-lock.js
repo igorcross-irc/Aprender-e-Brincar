@@ -154,6 +154,13 @@ export class KidLock {
     if (!this.enabled) this.release();
   }
 
+  // Terminou o que o adulto fazia na Área da Família (ex.: gravar a voz): volta a travar já.
+  resume() {
+    if (!this.enabled || !this.paused) return;
+    this.paused = false;
+    if (isNativeApp()) this.pinApp();
+  }
+
   // Área da Família: sai da tela cheia agora; volta a travar ao recarregar o app.
   pause() {
     this.paused = true;

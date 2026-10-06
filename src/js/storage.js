@@ -1,11 +1,12 @@
 import { ageBandFromBirth, parseBirth } from '../core/age.js';
+import { scoped } from '../core/profiles.js';
 
 export class StorageManager {
   constructor() {
-    this.SCORE_KEY = 'aprender_brincar_stars';
-    this.CHILD_NAME_KEY = 'aprender_brincar_child_name';
-    this.CHILD_AGE_KEY = 'aprender_brincar_child_age';
-    this.CHILD_BIRTH_KEY = 'aprender_brincar_child_birth';
+    this.SCORE_KEY = scoped('aprender_brincar_stars');
+    this.CHILD_NAME_KEY = scoped('aprender_brincar_child_name');
+    this.CHILD_AGE_KEY = scoped('aprender_brincar_child_age');
+    this.CHILD_BIRTH_KEY = scoped('aprender_brincar_child_birth');
     this.AGE_IDS = ['6-12m', '12-18m', '18-24m', '2-3y', '3-4y', '4-5y'];
   }
 

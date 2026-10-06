@@ -16,8 +16,9 @@ import { KidLock } from '../core/kid-lock.js';
 import { AppUpdater } from '../core/app-update.js';
 import { requestPersistence } from '../core/backup.js';
 import { Favorites } from '../core/favorites.js';
+import { registry, needsWhoPlays } from '../core/profiles.js';
 
-const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest', 'renderFavorites'];
+const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest', 'renderFavorites', 'renderWhoPlays'];
 
 class App {
   constructor() {
@@ -54,7 +55,19 @@ class App {
     requestPersistence();
     this.updateScoreUI();
     this.setupHeaderEvents();
-    this.renderHome();
+    this.updateProfileButton();
+    if (needsWhoPlays()) this.renderWhoPlays(); else this.renderHome();
+  }
+
+  // Com mais de uma criança, o rosto dela aparece no cabeçalho e leva à tela "Quem vai brincar?".
+  updateProfileButton() {
+    const button = document.getElementById('btn-profile');
+    if (!button) return;
+    const profiles = registry().list();
+    button.hidden = profiles.length < 2;
+    const active = profiles.find((profile) => profile.id === registry().activeId);
+    const avatar = document.getElementById('profile-avatar');
+    if (avatar && active) avatar.textContent = active.avatar;
   }
 
   updateScoreUI() {
@@ -103,6 +116,11 @@ class App {
       this.experience.stopActive();
       this.audio.stop();
       this.renderHome();
+    });
+    document.getElementById('btn-profile')?.addEventListener('click', () => {
+      this.experience.stopActive();
+      this.audio.stop();
+      this.renderWhoPlays();
     });
     document.getElementById('btn-replay')?.addEventListener('click', () => this.audio.replayPrompt());
     document.getElementById('btn-settings')?.addEventListener('click', () => this.openParentalGate());

@@ -7,6 +7,7 @@ import { childMascotMarkup } from '../../core/child-mascot.js';
 import { defaultLimitFor } from '../../core/screen-time.js';
 import { seasonFor } from '../../core/seasons.js';
 import { ageBandFromBirth } from '../../core/age.js';
+import { registry, markWhoChosen } from '../../core/profiles.js';
 
 export const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨', 'attention-auditory': '👂',
@@ -231,6 +232,31 @@ export class AppScreens {
       const resultCard = this.container.querySelector('.result-card');
       window.setTimeout(() => { if (resultCard?.isConnected) this.renderRest(); }, 3500);
     }
+  }
+
+  // "Quem vai brincar?": uma carinha grande por criança; trocar recarrega o app com os dados dela.
+  renderWhoPlays() {
+    this.container.scrollTop = 0;
+    const reg = registry();
+    const kids = reg.summaries();
+    this.container.innerHTML = `
+      <div class="screen page-enter">
+        <section class="who-card">
+          ${childMascotMarkup({ size: 'medium', mood: 'curious' })}
+          <h2 class="setup-title">Quem vai brincar?</h2>
+          <div class="who-grid">
+            ${kids.map((kid, index) => `<button type="button" class="who-tile ${kid.id === reg.activeId ? 'active' : ''}" data-profile="${kid.id}" aria-label="${this.escape(kid.name || `Criança ${index + 1}`)}"><span class="who-avatar" aria-hidden="true">${kid.avatar}</span><span class="who-name">${this.escape(kid.name || `Criança ${index + 1}`)}</span><span class="who-stars" aria-hidden="true">⭐ ${kid.stars}</span></button>`).join('')}
+          </div>
+        </section>
+      </div>`;
+    this.container.querySelectorAll('[data-profile]').forEach((button) => button.addEventListener('click', () => {
+      const id = button.dataset.profile;
+      markWhoChosen();
+      if (id === reg.activeId) { this.renderHome(); return; }
+      reg.setActive(id);
+      window.location.reload();
+    }));
+    this.audio.prompt?.(null, 'Quem vai brincar?');
   }
 
   renderFavorites() {

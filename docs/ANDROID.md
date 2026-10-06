@@ -53,3 +53,7 @@ O APK de teste gerado antes desta configuração usa outra chave: desinstale-o u
 
 ## Publicar na Play Store (futuro)
 Falta: ícones finais, política de privacidade, gerar `.aab` (`./gradlew bundleRelease`) e a ficha "Família" da Play Store (app para crianças).
+
+## Microfone (Grave a sua voz)
+O app declara `RECORD_AUDIO` só para a gravação da voz da família na Área da Família. O Android pede a permissão na primeira vez que o adulto toca em ⏺; o microfone só liga durante a gravação (até 6 s) e nada sai do aparelho. Enquanto o adulto grava, a fixação de tela é solta e volta ao fechar a Área da Família.
+⚠️ Adicionado sem teste em aparelho real: confirme num Android que (1) o aviso de permissão aparece, (2) a gravação é guardada e tocada e (3) a fixação volta depois. A permissão muda a parte nativa: é preciso instalar um APK novo.

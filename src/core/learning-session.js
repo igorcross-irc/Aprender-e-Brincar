@@ -1,6 +1,7 @@
 import { normalizeExperienceResult } from './experience-result.js';
 
-const SESSION_KEY = 'aprender_brincar_learning_session_v1';
+import { scoped } from './profiles.js';
+const SESSION_KEY = scoped('aprender_brincar_learning_session_v1');
 const MAX_SESSION_AGE = 12 * 60 * 60 * 1000;
 
 function safeParse(value) {

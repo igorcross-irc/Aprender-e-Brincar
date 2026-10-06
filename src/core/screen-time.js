@@ -1,5 +1,6 @@
 // Tempo de tela diário: conta só enquanto o app está visível e guarda os últimos 14 dias no aparelho.
-const KEY = 'aprender_brincar_screen_time_v1';
+import { scoped } from './profiles.js';
+const KEY = scoped('aprender_brincar_screen_time_v1');
 const TICK_MS = 15000;
 const KEEP_DAYS = 14;
 export const SCREEN_TIME_OPTIONS = [0, 15, 20, 30, 45, 60];
