@@ -150,6 +150,11 @@ async function playSpecial(page) {
     if (item) await item.click(); else await page.waitForTimeout(500);
     return true;
   }
+  if (await page.$('#farm-lite')) {
+    for (const food of await page.$$('[data-food]:not([disabled])')) { await food.click(); await page.waitForTimeout(500); }
+    await page.waitForTimeout(6000);
+    return true;
+  }
   if (await page.$('.piano-key')) {
     for (let i = 0; i < 10; i += 1) await page.dispatchEvent(`[data-key="${i % 5}"]`, POINTER);
     await page.click('#music-done');
@@ -239,7 +244,7 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
-  await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
+  await context.addInitScript(() => { localStorage.setItem('ab_kid_lock', 'off'); localStorage.setItem('ab_lite_graphics', '1'); });
   if (LEGACY) {
     const legacyHtml = readFileSync('dist/index.html', 'utf8')
       .replace(/<script type="module"[^>]*>[\s\S]*?<\/script>/g, '')

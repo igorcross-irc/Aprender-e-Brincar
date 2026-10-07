@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-07 (2) — Fazendinha Viva: novo visual, horta, desbloqueios e modo lite
+- **Novo visual** (estilo chapado e vibrante, inspirado em animação infantil brasileira): sol e lua com carinha, listras e bolinhas nos morros, celeiro com telhado de escamas, bandeirinhas, cerca colorida, textura leve de guache. Bichos redesenhados com acessórios (lenço, gravata-borboleta, coleira com sino), padrões e olhos grandes.
+- **Horta**: depois de alimentar os bichos, a criança rega (arrastando o regador ou tocando na terra), vê o brotinho crescer e colhe cenoura, tomate ou abóbora. A colheita e os ovos vão para a mesma cesta e são contados em voz alta (até 6).
+- **Dia inteiro**: manhã (bichos), tarde (horta), noite (todos dormem com cantiga, lua com carinha, vaga-lumes).
+- **A fazenda cresce a cada visita** (guardado só no aparelho): 2ª visita borboletas, 3ª moinho, 4ª balão, 5ª arco-íris, 6ª pintinho que segue a galinha. Aparece "Olha só! Uma novidade na fazenda!".
+- **Modo lite de verdade** (`farm-lite.js`, HTML/CSS): aparelhos antigos, sem WebGL, com pouca memória ou escolhido em Área da Família → Gráficos. Mesma ideia: tocar na comida de cada bicho até a noite chegar.
+- Correção: camadas decorativas interceptavam os toques e os bichos/camas não respondiam; agora só o que é interativo recebe toque.
+- Em telas estreitas a fazenda mostra no máximo 4 bichos, em fila, para não amontoar.
+- Documentos novos: `docs/MONETIZACAO_E_ANUNCIOS.md` (marco para reabrir anúncios) e decisões em `docs/PLANO_JOGOS_PROFISSIONAIS.md`.
+
 ## 2026-10-07 — Novo motor gráfico e primeiro jogo-âncora: Fazendinha Viva
 - **Motor 2D novo** (`src/engine/`): PixiJS (WebGL), animações com suavização (`tween.js`) e partículas (`particles.js`). Carrega só quando o jogo abre; aparelhos sem WebGL ou muito antigos caem automaticamente para as Bolhas.
 - **Fazendinha Viva** (12 meses+, mundo Descobrir): cenário em camadas com sol, nuvens, celeiro, árvores e grama balançando; 5 bichos desenhados em vetor com respiração, piscadas, rabo e orelhas; arrastar a comida certa para cada bicho (balão mostra o que ele quer); erro nunca pune (o bicho balança a cabeça e a comida volta); dica automática após alguns segundos parado.

@@ -39,3 +39,5 @@ jobs:
         run: node scripts/e2e-test.mjs
       - name: Aparelhos antigos (iOS 9, Android 5)
         run: node scripts/legacy-audit.mjs
+      - name: Fazendinha (WebGL e modo lite)
+        run: node scripts/farm-test.mjs

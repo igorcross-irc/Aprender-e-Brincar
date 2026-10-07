@@ -449,3 +449,27 @@ img { -webkit-user-drag: none; }
 
 /* Fazendinha Viva (motor PixiJS) */
 .farm-stage { position: relative; width: 100%; height: min(74vh, 700px); min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: #bfe9ff; box-shadow: 0 8px 24px rgba(0, 0, 0, .12); touch-action: none; -webkit-user-select: none; user-select: none; }
+
+/* Fazendinha lite (HTML/CSS) para aparelhos antigos */
+.farm-lite { position: relative; display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: min(74vh, 700px); min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: linear-gradient(180deg, #27b9f0, #bff3ff 55%, #3dc15d 55%, #2fae52); transition: background 2s; }
+.farm-lite.night { background: linear-gradient(180deg, #10154f, #4a3f9a 55%, #1e7a3c 55%, #145a2c); }
+.farm-lite-sky { position: absolute; top: 0; left: 0; right: 0; height: 40%; font-size: 3.4rem; }
+.farm-lite-sun { position: absolute; top: 14%; left: 10%; transition: opacity 2s, transform 2s; }
+.farm-lite-moon { position: absolute; top: 14%; right: 12%; opacity: 0; transition: opacity 2s; }
+.farm-lite.night .farm-lite-sun { opacity: 0; transform: translateY(60px); }
+.farm-lite.night .farm-lite-moon { opacity: 1; }
+.farm-lite-field { display: flex; justify-content: space-around; align-items: flex-end; padding: 0 .5rem 1rem; }
+.farm-lite-animal { position: relative; text-align: center; cursor: pointer; }
+.farm-lite-body { display: block; font-size: 5.2rem; line-height: 1; transition: filter 2s; }
+.farm-lite.night .farm-lite-body { filter: brightness(.6); }
+.farm-lite-want { position: absolute; left: 50%; top: -3.4rem; margin-left: -2rem; width: 4rem; height: 4rem; line-height: 4rem; font-size: 2.2rem; border-radius: 50%; background: #fff; border: 4px solid #ffcf1f; box-shadow: 0 4px 10px rgba(0, 0, 0, .15); animation: farm-lite-float 1.6s ease-in-out infinite; }
+.farm-lite-animal.fed .farm-lite-want { animation: none; border-color: #ff6fa5; }
+.farm-lite-animal.bounce .farm-lite-body { animation: farm-lite-bounce .5s ease-out; }
+.farm-lite-shelf { display: flex; justify-content: space-around; align-items: center; padding: .7rem .5rem; background: #c9854a; border-top: 8px solid #e3a566; }
+.farm-lite-food { width: 5rem; height: 5rem; font-size: 2.8rem; line-height: 1; border: 0; border-radius: 50%; background: #fff4dc; box-shadow: 0 4px 0 rgba(0, 0, 0, .15); transition: transform .45s ease-in, opacity .45s; }
+@keyframes farm-lite-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes farm-lite-bounce { 0% { transform: scale(1); } 40% { transform: scale(1.18, .85); } 70% { transform: scale(.94, 1.1); } 100% { transform: scale(1); } }
+.farm-lite-cloud { position: absolute; font-size: 3rem; opacity: .95; transition: opacity 2s; }
+.farm-lite-cloud.c1 { top: 8%; left: 48%; }
+.farm-lite-cloud.c2 { top: 26%; left: 24%; font-size: 2.2rem; }
+.farm-lite.night .farm-lite-cloud { opacity: .25; }

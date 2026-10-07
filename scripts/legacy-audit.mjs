@@ -163,6 +163,13 @@ async function run() {
     throw new Error(`${gameId} não está disponível para ${age}`);
   };
 
+  // Fazendinha: aparelho antigo recebe a versão lite (HTML/CSS), não a de WebGL.
+  await openGame('2-3y', 'farm');
+  if (await page.$('#farm-lite')) pass('fazendinha usa o modo lite no aparelho antigo');
+  else fail('fazendinha não entrou no modo lite');
+  const foods = await page.$$('[data-food]');
+  if (foods.length) { await foods[0].tap(); await page.waitForTimeout(700); if (await page.$('.farm-lite-animal.fed')) pass('fazendinha lite: tocar na comida alimenta o bicho'); else fail('fazendinha lite não alimentou o bicho'); }
+  await shot('02b-fazendinha-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

@@ -6,6 +6,8 @@ import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
 import { APP_VERSION, APK_URL } from '../../core/app-update.js';
 
+function liteGraphics() { try { return localStorage.getItem('ab_lite_graphics') === '1'; } catch (e) { return false; } }
+
 // Área da Família: tudo que é para adultos fica aqui, atrás da verificação.
 export class FamilySettings {
   constructor(app) { this.app = app; }
@@ -159,6 +161,12 @@ export class FamilySettings {
         </section>
 
         <section class="family-section">
+          <h4>Gráficos</h4>
+          <label class="family-toggle"><input type="checkbox" id="lite-toggle" ${liteGraphics() ? 'checked' : ''} /> Modo lite (gráficos simples, para aparelhos antigos ou lentos)</label>
+          <p class="family-hint">Ligue se a Fazendinha ficar lenta. O jogo continua o mesmo, só com desenhos mais simples.</p>
+        </section>
+
+        <section class="family-section">
           <h4>Resumo</h4>
           <div class="family-stats">
             <div><strong>${report.stars}</strong><small>estrelas</small></div>
@@ -271,6 +279,7 @@ export class FamilySettings {
       if (wantLock !== kidLock.enabled) kidLock.setEnabled(wantLock);
       const wantSound = modal.querySelector('#sound-toggle').checked;
       if (wantSound === app.audio.isMuted) app.audio.toggleMute();
+      try { if (modal.querySelector('#lite-toggle').checked) localStorage.setItem('ab_lite_graphics', '1'); else localStorage.removeItem('ab_lite_graphics'); } catch (e) { /* sem armazenamento */ }
       modal.remove();
       app.renderHome();
     });

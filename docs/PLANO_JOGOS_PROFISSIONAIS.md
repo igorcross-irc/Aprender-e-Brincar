@@ -155,7 +155,24 @@ Os prazos assumem arte entregue em paralelo; sem artista dedicado, a Fase 1 dobr
 - [ ] Testes e2e e robô `play-all` cobrem o novo jogo
 - [ ] Descrição para a família do que ele desenvolve, sem promessa clínica
 
-## 9. Decisões que preciso de você
+## 9. Decisões tomadas (07/10/2026)
+1. **Arte:** feita por nós dois (você e eu) e por ferramentas de IA. Pipeline escolhido: vetor desenhado no código (pequeno, consistente e animável) para personagens e cenários, em estilo chapado e vibrante inspirado em animação infantil brasileira (formas geométricas, bolinhas, listras, acessórios coloridos). IA entra para referências, texturas, ícones e capas, sempre com curadoria; gerações que gastam créditos só com aval.
+2. **Idade:** foco em 6 meses a 5 anos. A linha de 6 a 8 anos **sai do plano** (já existem apps escolares que atendem bem). Máximo de **5, no limite 6 jogos-âncora**.
+3. **Aparelhos antigos:** **modo lite mantido.** Cada jogo-âncora terá uma versão lite em HTML/CSS (iOS 9, Android 5, sem WebGL, pouca memória ou escolha da família em Área da Família → Gráficos).
+4. **Modelo:** sem anúncios por enquanto; ver `docs/MONETIZACAO_E_ANUNCIOS.md` para o marco que reabre a discussão.
+5. **Primeiro jogo:** Fazendinha Viva (feita; ver `docs/CHANGELOG.md`).
+
+### Lista fechada de jogos-âncora (máximo 6)
+1. Fazendinha Viva — em andamento
+2. Mundo das Cenas
+3. Estúdio dos Bichos
+4. Ateliê Mágico
+5. Cozinha Maluca
+6. (opcional) Histórias Vivas
+
+Trem das Letras e Números e o app de 6 a 8 anos saíram: pertencem ao território escolar.
+
+## 10. Perguntas originais (histórico)
 
 1. **Quem faz a arte?** Contrato com ilustrador, IA com curadoria, ou vetor no código (seção 6)?
 2. **Foco de idade**: continuar até 5 anos, ou já planejar a linha 6–8?
