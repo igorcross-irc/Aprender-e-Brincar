@@ -33,7 +33,7 @@ export const learningWorlds = [
     id: 'memory-attention', title: 'Memória & Atenção', icon: '🧠', color: 'rose',
     description: 'Brincadeiras para observar, lembrar, associar e encontrar.',
     ages: ['18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['memory','match-pairs','attention-auditory','sound-sequence','odd-one-out','memory-objects','attention-path']
+    activityIds: ['memory','memory-fruits','memory-transport','memory-toys','memory-party','match-pairs','attention-auditory','sound-sequence','odd-one-out','memory-objects','attention-path']
   },
   {
     id: 'create-move', title: 'Criar & Mexer', icon: '✨', color: 'orange',

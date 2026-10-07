@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-07 (2) — Correções e melhorias não ligadas a áudio
+- **Segurança (CSP):** política de segurança de conteúdo no `index.html` do build (`scripts/add-csp.mjs`): só roda código e carrega mídia do próprio app; os 4 scripts embutidos do Vite entram por hash, com `'unsafe-inline'` ao lado para o iOS 9, que não entende hash. O E2E falha se houver violação; teste negativo confirmou que script embutido e imagem externa são barrados.
+- **Fichas para imprimir:** ficha "Pinte" tinha emoji colorido (não dava para pintar); agora são desenhos só de contorno (SVG). A impressão não usa mais script dentro da página (a CSP não deixa): imprime a partir da janela do app. Conferido em PDF A4 (1 a 2 páginas).
+- **Memória temática:** 4 jogos novos no mesmo motor, com figuras próprias: Frutas, Transportes, Brinquedos e Festa (2 a 5 anos).
+- **Relatório:** mostra a faixa da BNCC da idade (Bebês EI01, Crianças bem pequenas EI02, Crianças pequenas EI03).
+- **Perfis:** escolha do bichinho de cada criança na Área da Família.
+- **ESLint** (`npm run lint`, no CI e no release) sem erros nem avisos; `.editorconfig`; `package-lock.json` com a versão certa.
+- **`learning-world.js` dividido:** de 512 para 249 linhas; os 22 modos foram para `src/js/games/learning-modes/` (descobrir, escolha, números e linguagem, ritmo) como métodos da mesma classe, sem mudar comportamento.
+- **Voz:** 7 falas novas (nomes dos brinquedos e transportes novos e "Quem vai brincar?") geradas na provisória; `docs/PLAYBOOK_VOZ_ELEVENLABS.md` e `CLAUDE.md` guardam o processo da Dora para sessões futuras.
+
 ## 2026-10-07 — Troca gradual da voz provisória pela Dora
 - `npm run voice:status`: situação das falas provisórias, fila por prioridade (mais ouvidas por crédito) em `docs/FILA_PROVISORIAS.md`, lista para gerar em `docs/falas-para-elevenlabs.csv`, lote por saldo (`-- --credits N`) e brincadeiras que terminam primeiro.
 - `npm run voice:import -- <pasta>`: padroniza (silêncio, volume, mono 64 kbps) e coloca os MP3 da Dora no lugar das provisórias, atualizando o manifesto (que agora guarda o hash de cada arquivo gerado).

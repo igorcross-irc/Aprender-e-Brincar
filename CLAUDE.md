@@ -12,7 +12,7 @@ App infantil (6 meses a 5 anos) em PWA + Android (Capacitor). Feito para a Isado
 **Quando o usuário disser que há créditos (ou pedir para gerar falas): siga `docs/PLAYBOOK_VOZ_ELEVENLABS.md`.** Comandos: `npm run voice:status`, `npm run voice:import`, `npm run audio:coverage`, `npm run audit:audio`. Detalhes de vozes em `docs/VOZ.md`.
 
 ## Antes de entregar
-`npm run test:unit && npm run test:core && npm run smoke && npm run audit:games && npm run audit:child-interface && npm run audit:audio && npm run build && node scripts/e2e-test.mjs && node scripts/legacy-audit.mjs`. Emoji novo exige `node scripts/emoji-images.mjs` (para iOS 9).
+`npm run lint && npm run test:unit && npm run test:core && npm run smoke && npm run audit:games && npm run audit:child-interface && npm run audit:audio && npm run build && node scripts/e2e-test.mjs && node scripts/legacy-audit.mjs`. Emoji novo exige `node scripts/emoji-images.mjs` (para iOS 9).
 `npm run test:play-all` (≈ 25 min) antes de uma versão grande.
 
 ## Onde está o quê

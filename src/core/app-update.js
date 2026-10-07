@@ -16,7 +16,6 @@ const LATEST_RELEASE = `https://api.github.com/repos/${REPO}/releases/latest`;
 const CHECKED_KEY = 'ab_update_checked_at';
 const CHECK_EVERY_MS = 6 * 60 * 60 * 1000;
 
-// eslint-disable-next-line no-undef
 export const APP_VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : '0.0.0';
 
 export function compareVersions(a, b) {

@@ -154,6 +154,30 @@ export const developmentContent = {
   ]
 };
 
+// Pares para os jogos da memória temáticos (cada tema = um conjunto de figuras que combinam entre si).
+export const memoryThemes = {
+  fruits: [
+    { id: 'maca', label: 'Maçã', icon: '🍎' }, { id: 'banana', label: 'Banana', icon: '🍌' }, { id: 'uva', label: 'Uva', icon: '🍇' },
+    { id: 'laranja', label: 'Laranja', icon: '🍊' }, { id: 'morango', label: 'Morango', icon: '🍓' }, { id: 'melancia', label: 'Melancia', icon: '🍉' },
+    { id: 'abacaxi', label: 'Abacaxi', icon: '🍍' }, { id: 'pera', label: 'Pera', icon: '🍐' }
+  ],
+  transport: [
+    { id: 'carro', label: 'Carro', icon: '🚗' }, { id: 'aviao', label: 'Avião', icon: '✈️' }, { id: 'onibus', label: 'Ônibus', icon: '🚌' },
+    { id: 'bicicleta', label: 'Bicicleta', icon: '🚲' }, { id: 'trem', label: 'Trem', icon: '🚂' }, { id: 'barco', label: 'Barco', icon: '⛵' },
+    { id: 'foguete', label: 'Foguete', icon: '🚀' }, { id: 'helicoptero', label: 'Helicóptero', icon: '🚁' }
+  ],
+  toys: [
+    { id: 'bola', label: 'Bola', icon: '⚽' }, { id: 'ursinho', label: 'Ursinho', icon: '🧸' }, { id: 'balao', label: 'Balão', icon: '🎈' },
+    { id: 'tambor', label: 'Tambor', icon: '🥁' }, { id: 'dado', label: 'Dado', icon: '🎲' }, { id: 'violao', label: 'Violão', icon: '🎸' },
+    { id: 'palhaco', label: 'Palhaço', icon: '🤡' }, { id: 'cavalinho', label: 'Cavalinho', icon: '🐴' }
+  ],
+  party: [
+    { id: 'bolo', label: 'Bolo', icon: '🎂' }, { id: 'presente', label: 'Presente', icon: '🎁' }, { id: 'balao-festa', label: 'Balão', icon: '🎈' },
+    { id: 'chapeu', label: 'Chapéu', icon: '🎩' }, { id: 'sorvete', label: 'Sorvete', icon: '🍦' }, { id: 'musica', label: 'Música', icon: '🎵' },
+    { id: 'estrela', label: 'Estrela', icon: '⭐' }, { id: 'coracao', label: 'Coração', icon: '❤️' }
+  ]
+};
+
 export const developmentAudioQueue = [
   { id: 'boas-vindas', text: 'Vamos brincar e aprender!', priority: 'base' },
   { id: 'muito-bem', text: 'Muito bem!', priority: 'base' },

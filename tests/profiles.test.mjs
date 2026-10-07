@@ -94,3 +94,12 @@ test('backup leva todas as crianças e restaura tudo', () => {
 test('toda chave por criança listada existe em PER_CHILD_KEYS sem duplicar', () => {
   assert.equal(new Set(PER_CHILD_KEYS).size, PER_CHILD_KEYS.length);
 });
+
+test('escolher o bichinho de uma criança', () => {
+  const storage = memoryStorage();
+  const reg = new ProfileRegistry(storage);
+  assert.equal(reg.setAvatar('p1', '🐼'), true);
+  assert.equal(new ProfileRegistry(storage).list()[0].avatar, '🐼');
+  assert.equal(reg.setAvatar('p1', '💩'), false);
+  assert.equal(reg.setAvatar('p9', '🐼'), false);
+});

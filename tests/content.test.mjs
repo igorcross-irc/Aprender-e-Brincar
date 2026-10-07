@@ -42,3 +42,13 @@ test('o app tem conteúdo suficiente para repetir pouco', () => {
   assert.ok(c.sequences.length >= 8);
   assert.ok(c.opposites.length >= 8);
 });
+
+test('jogos da memória temáticos: figuras únicas, com rótulo e ícone, e pares suficientes', async () => {
+  const { memoryThemes } = await import('../src/content/development-content.js');
+  for (const [theme, items] of Object.entries(memoryThemes)) {
+    assert.ok(items.length >= 6, `${theme}: poucas figuras`);
+    assert.equal(new Set(items.map((i) => i.id)).size, items.length, `${theme}: ids repetidos`);
+    assert.equal(new Set(items.map((i) => i.icon)).size, items.length, `${theme}: ícones repetidos (cartas iguais confundem)`);
+    items.forEach((i) => { assert.ok(i.label && i.icon, `${theme}/${i.id}`); });
+  }
+});

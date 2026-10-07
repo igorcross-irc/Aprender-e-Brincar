@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { AUDIO_DIR, classify, readManifest, sha1, slugify, writeManifest } from './lib/voice-common.mjs';
+import { AUDIO_DIR, classify, readManifest, slugify, writeManifest } from './lib/voice-common.mjs';
 
 const args = process.argv.slice(2);
 const dir = args.find((arg) => !arg.startsWith('--'));

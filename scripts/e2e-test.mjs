@@ -103,6 +103,7 @@ async function run() {
   const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, reducedMotion: 'reduce', serviceWorkers: 'block', permissions: ['microphone'] });
   // O Modo criança tem a própria seção no fim; aqui ele ficaria cobrindo os cliques do robô.
   await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
+  await context.addInitScript(() => { document.addEventListener('securitypolicyviolation', (event) => { window.__csp = (window.__csp || []).concat(`${event.violatedDirective} ${event.blockedURI}`); }); });
   const page = await context.newPage();
   const pageErrors = [];
   page.on('pageerror', (error) => pageErrors.push(error.message));
@@ -453,6 +454,11 @@ async function run() {
   if (locked && /Muitas tentativas/.test(lockMsg)) pass('3 erros no portão bloqueiam por um tempo');
   else fail(`portão não bloqueou (disabled=${locked}, msg="${lockMsg}")`);
   await page.evaluate(() => localStorage.removeItem('ab_gate_guard'));
+
+  // A política de segurança do app (CSP) não pode ter sido violada em nenhuma tela até aqui.
+  const violations = await page.evaluate(() => window.__csp || []);
+  if (violations.length === 0) pass('nenhuma violação da política de segurança (CSP)');
+  else fail(`violações de CSP: ${violations.slice(0, 3).join(' | ')}`);
 
   await context.close();
 

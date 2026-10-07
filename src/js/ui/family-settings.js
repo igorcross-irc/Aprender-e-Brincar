@@ -8,12 +8,12 @@ import { APP_VERSION } from '../../core/app-update.js';
 import { createChallenge, GateGuard } from '../../core/parental-gate.js';
 import { createBackup, restoreBackup, requestPersistence } from '../../core/backup.js';
 import { packStatus, downloadPack, storageEstimate } from '../../core/offline-pack.js';
-import { campoTotals, CAMPOS } from '../../core/bncc.js';
+import { campoTotals, CAMPOS, faixaBncc } from '../../core/bncc.js';
 import { buildPrintableHtml } from '../../core/printables.js';
 import { defaultLimitFor } from '../../core/screen-time.js';
 import { describeAge } from '../../core/age.js';
 import { VOICE_PRIORITY } from '../../content/voice-priority.js';
-import { registry, markWhoChosen, keyFor, MAX_PROFILES } from '../../core/profiles.js';
+import { registry, markWhoChosen, keyFor, MAX_PROFILES, AVATARS } from '../../core/profiles.js';
 import { parseBirth, ageBandFromBirth } from '../../core/age.js';
 import { recordingSupported, startRecording } from '../../core/voice-store.js';
 
@@ -172,6 +172,8 @@ export class FamilySettings {
 
         <section class="family-section">
           <h4>Perfil da criança que está brincando</h4>
+          <p class="family-label">Bichinho</p>
+          <div class="avatar-row" role="radiogroup" aria-label="Bichinho da criança">${AVATARS.map((a) => `<button type="button" class="avatar-pick ${a === (registry().list().find((p) => p.id === registry().activeId) || {}).avatar ? 'selected' : ''}" data-avatar="${a}" role="radio" aria-checked="${a === (registry().list().find((p) => p.id === registry().activeId) || {}).avatar}" aria-label="Escolher ${a}">${a}</button>`).join('')}</div>
           <label for="child-name-input">Nome ou apelido</label>
           <input type="text" id="child-name-input" value="${esc(app.storage.getChildName())}" maxlength="15" autocomplete="off" />
           <p class="family-label">Idade</p>
@@ -231,6 +233,7 @@ export class FamilySettings {
             <div><strong>${report.streak}</strong><small>dias seguidos</small></div>
           </div>
           <p class="family-label">Onde mais brincou (campos de experiência da BNCC)</p>
+          <p class="family-hint">Faixa da BNCC desta idade: <b>${esc(faixaBncc(currentAge).title)} (${faixaBncc(currentAge).code})</b>, de ${esc(faixaBncc(currentAge).range)}.</p>
           ${(() => { const max = Math.max(1, ...report.campos.map((campo) => campo.plays)); return `<ul class="campo-list">${report.campos.map((campo) => `<li><span class="campo-name"><span aria-hidden="true">${campo.icon}</span> ${esc(campo.title)}</span><span class="campo-bar" aria-hidden="true"><i style="width:${Math.round((campo.plays / max) * 100)}%"></i></span><b>${campo.plays}×</b></li>`).join('')}</ul>`; })()}
           <p class="family-hint">É só a contagem de quantas vezes brincou em cada campo da Base Nacional Comum Curricular da Educação Infantil. Serve para variar as brincadeiras, não para medir a criança.</p>
           <p class="family-label">Últimas brincadeiras</p>
@@ -410,6 +413,13 @@ export class FamilySettings {
     }
 
     // Crianças (irmãos)
+    modal.querySelectorAll('[data-avatar]').forEach((button) => button.addEventListener('click', () => {
+      registry().setAvatar(registry().activeId, button.dataset.avatar);
+      modal.querySelectorAll('[data-avatar]').forEach((item) => { item.classList.toggle('selected', item === button); item.setAttribute('aria-checked', String(item === button)); });
+      const kid = modal.querySelector(`[data-kid="${registry().activeId}"] .profile-avatar`);
+      if (kid) kid.textContent = button.dataset.avatar;
+      app.updateProfileButton?.();
+    }));
     modal.querySelectorAll('[data-kid-act="use"]').forEach((button) => button.addEventListener('click', () => {
       registry().setActive(button.closest('[data-kid]').dataset.kid);
       markWhoChosen();
@@ -442,6 +452,8 @@ export class FamilySettings {
       if (!sheet) { alert('Seu navegador bloqueou a janela. Permita pop-ups para imprimir.'); return; }
       sheet.document.write(buildPrintableHtml(currentAge, Math.random, app.storage.getChildName()));
       sheet.document.close();
+      // Sem script dentro da página (a política de segurança do app não deixa): imprime daqui.
+      window.setTimeout(() => { try { sheet.focus(); sheet.print(); } catch {} }, 400);
     });
     // Sem internet
     const packText = modal.querySelector('#pack-status');

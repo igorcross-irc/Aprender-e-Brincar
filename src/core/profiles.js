@@ -84,6 +84,14 @@ export class ProfileRegistry {
     return { ...profile };
   }
 
+  setAvatar(id, avatar) {
+    const profile = this.state.profiles.find((p) => p.id === id);
+    if (!profile || !AVATARS.includes(avatar)) return false;
+    profile.avatar = avatar;
+    this.save();
+    return true;
+  }
+
   setActive(id) {
     if (!this.state.profiles.some((p) => p.id === id)) return false;
     this.state.active = id;

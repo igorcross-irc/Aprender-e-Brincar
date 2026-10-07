@@ -18,7 +18,7 @@ import { SortIntoGame } from './games/toddler/sort-into.js';
 import { WordSoundsGame } from './games/language/word-sounds.js';
 import { StorySequenceGame } from './games/language/story-sequence.js';
 import { vocabularyData } from '../data/vocabulary.js';
-import { developmentContent } from '../content/development-content.js';
+import { developmentContent, memoryThemes } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
@@ -77,6 +77,9 @@ export function createGameRegistry({ containerId, audio, storage }) {
 
   definitions.set('canvas', { id:'canvas', kind:'canvas', Game:CanvasGame, exploration:true });
   definitions.set('memory', { id:'memory', kind:'memory', Game:MemoryGame });
+  // Memória temática: o mesmo motor com outras figuras.
+  Object.entries({ 'memory-fruits': 'fruits', 'memory-transport': 'transport', 'memory-toys': 'toys', 'memory-party': 'party' })
+    .forEach(([id, theme]) => definitions.set(id, { id, kind:'memory', Game:MemoryGame, items: memoryThemes[theme] }));
   definitions.set('puzzle', { id:'puzzle', kind:'puzzle', Game:PuzzleGame });
   definitions.set('balloons', { id:'balloons', kind:'balloons', Game:BalloonPopGame });
 
@@ -103,7 +106,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
         return game;
       }
       if (['canvas', 'balloons'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(level, { ageId, age }); return game; }
-      if (['memory', 'puzzle'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(vocabularyData.animals, level, { ageId, age }); return game; }
+      if (['memory', 'puzzle'].includes(def.kind)) { const game = new def.Game(containerId, audio, onWin, onBack); game.start(def.items || vocabularyData.animals, level, { ageId, age }); return game; }
       if (def.kind === 'phrases') { const game = new CardsGame(containerId, audio, storage, onWin, onBack); game.renderPhraseBuilder(vocabularyData.phrases, { ageId, level: id === 'phrase-builder-2' ? level + 1 : level }); return game; }
       if (def.kind === 'guided') return { guided: true };
       throw new Error(`Tipo de execução desconhecido para ${id}: ${def.kind}`);

@@ -34,4 +34,4 @@ Passos (uma vez):
 ## Outras camadas (futuras)
 - Publicar na **Google Play** (Play App Signing + política "Families") dá revisão, assinatura gerenciada e atualização pela loja.
 - `npm audit` no CI e fixar versões das ações por hash.
-- Política de Content-Security-Policy no `index.html` do site.
+- ~~Política de Content-Security-Policy~~: feita (`scripts/add-csp.mjs`). Falta endurecer: tirar `'unsafe-inline'` dos estilos (há `style=` espalhado nas telas) e, quando o iOS 9 sair de cena, dos scripts.

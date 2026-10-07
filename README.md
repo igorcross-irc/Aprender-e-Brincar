@@ -11,7 +11,7 @@ Aplicativo de brincadeiras educativas para crianças de **6 meses a 5 anos**, fe
 | Para a criança | Para os pais (Área da Família, atrás de uma conta de multiplicar) |
 | --- | --- |
 | 7 mundos: Descobrir, Falar & Comunicar, Cores & Formas, Animais & Sons, Números & Lógica, Memória & Atenção, Criar & Mexer | Perfil (nome e idade) e limite de tempo por dia (padrão por idade) |
-| 49 brincadeiras (ver [catálogo](src/content/activity-catalog.js)) nas 6 faixas: 6–12 m, 12–18 m, 18–24 m, 2–3, 3–4, 4–5 anos | Resumo e histórico; "onde mais brincou" por **campo de experiência da BNCC** |
+| 53 brincadeiras (ver [catálogo](src/content/activity-catalog.js)) nas 6 faixas: 6–12 m, 12–18 m, 18–24 m, 2–3, 3–4, 4–5 anos | Resumo e histórico; "onde mais brincou" por **campo de experiência da BNCC** |
 | Botão **Brincar agora** com sugestão do dia (motor adaptativo) | Ideias para brincar junto, longe da tela, e **fichas para imprimir** |
 | ❤️ **Favoritos** e álbum de adesivos | **Backup** do progresso por código/arquivo e proteção contra o navegador apagar os dados |
 | Datas especiais (Mês da Criança, Festa Junina, Natal) | **Baixar para usar sem internet** (≈ 4 MB) |
@@ -37,6 +37,7 @@ npm run preview          # serve o build
 ### Testes (rode antes de publicar)
 | Comando | O que faz |
 | --- | --- |
+| `npm run lint` | ESLint (erros reais: variável não definida, import sem uso) |
 | `npm run test:unit` | Testes unitários do núcleo (`tests/`, `node --test`): portão, backup, limite de tempo, BNCC, favoritos, fichas, integridade do conteúdo |
 | `npm run test:core` / `smoke` / `audit:*` | Contratos de núcleo, fundação, jogos, interface infantil e áudio |
 | `npm run test:e2e` | Abre **todas** as brincadeiras em todas as idades no Chromium, joga os fluxos e testa Área da Família, backup, modo criança e **uso sem internet de verdade** |

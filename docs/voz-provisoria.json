@@ -1,7 +1,7 @@
 {
   "voice": "pf_dora",
   "engine": "kokoro-82m (Apache-2.0), voz feminina pt-BR",
-  "generatedAt": "2026-10-06",
+  "generatedAt": "2026-10-07",
   "note": "Voz provisória. Troque por voz humana/Dora e apague o item daqui (docs/VOZ.md).",
   "files": [
     {
@@ -849,6 +849,48 @@
       "text": "Veículos",
       "seconds": 0.84,
       "sha1": "f61485e4218eacfd9913209194e9b47ebb42b35b"
+    },
+    {
+      "file": "cavalinho.mp3",
+      "text": "Cavalinho",
+      "seconds": 0.81,
+      "sha1": "c09c1140a94221c6e93088c246087f93ad7997e8"
+    },
+    {
+      "file": "dado.mp3",
+      "text": "Dado",
+      "seconds": 0.63,
+      "sha1": "8894ed258de2b8e416292a01cc60240ee9080f80"
+    },
+    {
+      "file": "helicoptero.mp3",
+      "text": "Helicóptero",
+      "seconds": 1.04,
+      "sha1": "f22722b3afc86d6061698b9321235cb70576a533"
+    },
+    {
+      "file": "quem-vai-brincar.mp3",
+      "text": "Quem vai brincar?",
+      "seconds": 1.36,
+      "sha1": "f317619d2e6e93a0fd4c36a310f2e23398469b72"
+    },
+    {
+      "file": "tambor.mp3",
+      "text": "Tambor",
+      "seconds": 0.78,
+      "sha1": "519bf18c7220d69e65aac5982497a7b294f37245"
+    },
+    {
+      "file": "ursinho.mp3",
+      "text": "Ursinho",
+      "seconds": 0.91,
+      "sha1": "69e9ea382561cb7871dffa3985dd4f80a4f7abc1"
+    },
+    {
+      "file": "violao.mp3",
+      "text": "Violão",
+      "seconds": 0.89,
+      "sha1": "1dd8f68ff037457a683de1faf9af7e4f00ad69c4"
     }
   ]
 }

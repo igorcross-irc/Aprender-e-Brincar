@@ -44,3 +44,18 @@ export function campoTotals(activities, progressById = {}) {
   });
   return Object.keys(CAMPOS).map((id) => ({ ...CAMPOS[id], plays: totals[id] }));
 }
+
+// Faixas da BNCC da Educação Infantil: bebês (0 a 1 ano e 6 meses), crianças bem pequenas
+// (1 ano e 7 meses a 3 anos e 11 meses) e crianças pequenas (4 a 5 anos e 11 meses).
+export const FAIXAS_BNCC = Object.freeze({
+  EI01: { code: 'EI01', title: 'Bebês', range: '0 a 1 ano e 6 meses' },
+  EI02: { code: 'EI02', title: 'Crianças bem pequenas', range: '1 ano e 7 meses a 3 anos e 11 meses' },
+  EI03: { code: 'EI03', title: 'Crianças pequenas', range: '4 anos a 5 anos e 11 meses' }
+});
+
+// Faixa do app → faixa da BNCC (a de 18 a 24 meses atravessa a divisa: vale a mais próxima de cada metade).
+export function faixaBncc(ageBandId) {
+  if (ageBandId === '6-12m' || ageBandId === '12-18m') return FAIXAS_BNCC.EI01;
+  if (ageBandId === '4-5y') return FAIXAS_BNCC.EI03;
+  return FAIXAS_BNCC.EI02;
+}

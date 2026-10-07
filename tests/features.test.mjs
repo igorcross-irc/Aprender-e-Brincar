@@ -36,7 +36,7 @@ test('fichas para imprimir: 4 atividades, nome escapado e quantidade por idade',
     assert.equal((html.match(/<section>/g) || []).length, 4, age);
     assert.ok(!html.includes('<b>Isa</b>'));
     assert.ok(html.includes('&lt;b&gt;Isa'));
-    assert.ok(html.includes('window.print'));
+    assert.ok(!html.includes('<script'), 'ficha sem script embutido (CSP)');
   }
   const small = buildPrintableHtml('18-24m', () => 0.1);
   const big = buildPrintableHtml('4-5y', () => 0.1);

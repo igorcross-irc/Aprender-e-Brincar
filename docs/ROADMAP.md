@@ -186,5 +186,5 @@ Próximo, nesta ordem:
 2. Ligar a assinatura do pacote de atualização (`docs/SEGURANCA.md`).
 3. Músicas e livrinhos ilustrados narrados; jogos da memória temáticos.
 4. (feito) Perfis para irmãos. Falta: foto/desenho como avatar e limite de tempo compartilhado opcional.
-5. Dividir `learning-world.js` em um arquivo por modo; ESLint/Prettier.
+5. (feito) `learning-world.js` dividido e ESLint. Falta: Prettier (reformataria o repositório inteiro) e dividir o `cards.js`/`app-screens.js`.
 6. Teste em aparelho real (iPad antigo, Android 5).

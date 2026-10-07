@@ -1,5 +1,5 @@
 import { playSfx } from '../../engine/sfx.js';
-import { resolveGameDifficulty, getGameChoiceCount } from '../../../core/game-difficulty-policy.js';
+import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 export class SoundSequenceGame {
   constructor(containerId,audio,onComplete,onBack){this.container=document.getElementById(containerId);this.audio=audio;this.onComplete=onComplete;this.onBack=onBack;}
   start(items=[],level=1,options={}){this.items=items;this.ageId=options.ageId||'2-3y';this.difficulty=resolveGameDifficulty(this.ageId,level,options);this.level=this.difficulty.level;this.round=0;this.correct=0;this.attempts=0;this.finished=false;this.render();}

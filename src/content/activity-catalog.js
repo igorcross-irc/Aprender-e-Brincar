@@ -60,6 +60,10 @@ const allActivities = [
   { id: 'attention-path', title: 'Caminho da Atenção', type: 'game', ages: ['3-4y','4-5y'], category: 'atenção', difficulty: 3, skills: ['atenção','controle inibitório'], developmentDomains: ['atenção','funções executivas'], world: 'memory-attention' },
   { id: 'music-rhythm', title: 'Ritmo Musical', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'musica', difficulty: 2, skills: ['ritmo','imitação'], developmentDomains: ['audição','motricidade'], world: 'create-move' },
   { id: 'rhythm-copy', title: 'Copie o Ritmo', type: 'activity', ages: ['3-4y','4-5y'], category: 'musica', difficulty: 3, skills: ['ritmo','memória auditiva'], developmentDomains: ['audição','funções executivas'], world: 'create-move' },
+  { id: 'memory-fruits', title: 'Memória das Frutas', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'memory-attention' },
+  { id: 'memory-transport', title: 'Memória dos Transportes', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'memory-attention' },
+  { id: 'memory-toys', title: 'Memória dos Brinquedos', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'memory-attention' },
+  { id: 'memory-party', title: 'Memória da Festa', type: 'game', ages: ['2-3y','3-4y','4-5y'], category: 'memoria', difficulty: 2, skills: ['memória','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'memory-attention' },
   { id: 'movement-copy', title: 'Copie o Movimento', type: 'activity', ages: ['2-3y','3-4y','4-5y'], category: 'movimento', difficulty: 2, skills: ['imitação','coordenação'], developmentDomains: ['motricidade ampla','atenção'], world: 'create-move' }
 ];
 
