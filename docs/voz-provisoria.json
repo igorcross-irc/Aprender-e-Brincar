@@ -7,707 +7,848 @@
     {
       "file": "1-palma.mp3",
       "text": "1 palma",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "4c8d4f8597d2324ff4aea27fd11e5b79e139916d"
     },
     {
       "file": "12-a-18-meses.mp3",
       "text": "12 a 18 meses",
-      "seconds": 1.62
+      "seconds": 1.62,
+      "sha1": "824763f8eb737e6b68959413571a5429eceb65e2"
     },
     {
       "file": "18-a-24-meses.mp3",
       "text": "18 a 24 meses",
-      "seconds": 2.09
+      "seconds": 2.09,
+      "sha1": "4c1d1287f10545005acf6e6cc494d390cd2afc4c"
     },
     {
       "file": "2-a-3-anos.mp3",
       "text": "2 a 3 anos",
-      "seconds": 1.36
+      "seconds": 1.36,
+      "sha1": "3d93ceb3f49ece56472a300fb78868525a8f3601"
     },
     {
       "file": "2-palmas.mp3",
       "text": "2 palmas",
-      "seconds": 0.99
+      "seconds": 0.99,
+      "sha1": "544dbed1c6b9b2edd1ed5072ac90d3bcb68da284"
     },
     {
       "file": "3-a-4-anos.mp3",
       "text": "3 a 4 anos",
-      "seconds": 1.36
+      "seconds": 1.36,
+      "sha1": "7cb6924ff709d92e01848bca4d6ddff6d8cae9f9"
     },
     {
       "file": "3-palmas.mp3",
       "text": "3 palmas",
-      "seconds": 0.99
+      "seconds": 0.99,
+      "sha1": "e67f5ff97d54297d5cfa7b7b8fabf3e98c171ef0"
     },
     {
       "file": "4-a-5-anos.mp3",
       "text": "4 a 5 anos",
-      "seconds": 1.38
+      "seconds": 1.38,
+      "sha1": "0970190a50ac65ca7994af560f9f90f1e781df9e"
     },
     {
       "file": "6-a-12-meses.mp3",
       "text": "6 a 12 meses",
-      "seconds": 1.46
+      "seconds": 1.46,
+      "sha1": "78d15bfa59bd748a8e28a85995b477fe07eeccd7"
     },
     {
       "file": "alto.mp3",
       "text": "Alto",
-      "seconds": 0.65
+      "seconds": 0.65,
+      "sha1": "c59fc571ab51bd66c6d62374512435033008681f"
     },
     {
       "file": "animais.mp3",
       "text": "Animais",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "f99f353aa46247ac281df60a7236401d85332e4e"
     },
     {
       "file": "arvore.mp3",
       "text": "árvore",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "bd34908a333f97d51c9e4709f27f19ee30b14cbb"
     },
     {
       "file": "avancando.mp3",
       "text": "Avançando",
-      "seconds": 0.99
+      "seconds": 0.99,
+      "sha1": "bd431467d71cf30ef2f1f7ea0183c04a72a64eaf"
     },
     {
       "file": "balao.mp3",
       "text": "Balão",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "0bdab384ed463a31e1aac0b64ff5d4b525e59b6c"
     },
     {
       "file": "banheiro.mp3",
       "text": "Banheiro",
-      "seconds": 0.89
+      "seconds": 0.89,
+      "sha1": "2df829475c4845502626a020a98ce64dccb30bbe"
     },
     {
       "file": "banho.mp3",
       "text": "Banho",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "a014260ac97a1d62dfcbf3bcd078f7f9d724a90b"
     },
     {
       "file": "bata-palmas.mp3",
       "text": "Bata palmas",
-      "seconds": 1.1
+      "seconds": 1.1,
+      "sha1": "7382aabe3daa98bc0acfc2dfc2d4c6e15c06e28b"
     },
     {
       "file": "beber.mp3",
       "text": "Beber",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "7f3271d01b456014df7813af866af36b9fbb48a9"
     },
     {
       "file": "beijo.mp3",
       "text": "Beijo",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "3fc3e4e5d66800d5c5bc5119a72c79958858d477"
     },
     {
       "file": "bichinhos.mp3",
       "text": "Bichinhos",
-      "seconds": 0.94
+      "seconds": 0.94,
+      "sha1": "5bcd0fba7e77330ff5e73bd3113652824968ec9d"
     },
     {
       "file": "bola.mp3",
       "text": "bola",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "d9e6aa8cde91034e3c1b891cae154f5a300c3121"
     },
     {
       "file": "bone.mp3",
       "text": "Boné",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "b8cb8f597d2c2b4c4e6c4e28d31a22e8df3c1b60"
     },
     {
       "file": "boneca.mp3",
       "text": "Boneca",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "2012d66e643f40d4a236664f0b6fae4338b21bdb"
     },
     {
       "file": "braco.mp3",
       "text": "Braço",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "e84af2a0b4fa9bc4886107e119ea82c4a6f3a7ae"
     },
     {
       "file": "brincar.mp3",
       "text": "Brincar",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "c5b5b262c3343020a7017b83329a24451cd9d186"
     },
     {
       "file": "brinquedos.mp3",
       "text": "Brinquedos",
-      "seconds": 0.91
+      "seconds": 0.91,
+      "sha1": "6ba63a2e20abd062dec4c244b37b970a836b5bbb"
     },
     {
       "file": "brocolis.mp3",
       "text": "Brócolis",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "0c8a99e3803790669db0a1d29a73288afbefbe27"
     },
     {
       "file": "cama.mp3",
       "text": "cama",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "ba1f32c749e5fa10a366ee90452ff7dd6c81019c"
     },
     {
       "file": "camisa.mp3",
       "text": "Camisa",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "197565b4c735f5b335c66166e32bdb40968392e3"
     },
     {
       "file": "chapeu.mp3",
       "text": "Chapéu",
-      "seconds": 0.65
+      "seconds": 0.65,
+      "sha1": "bd0b222173ce7e762b90fa3d331305fd3a08cb11"
     },
     {
       "file": "chave.mp3",
       "text": "Chave",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "dd23d41223606a483274759418883f3b43450951"
     },
     {
       "file": "cheio.mp3",
       "text": "Cheio",
-      "seconds": 0.55
+      "seconds": 0.55,
+      "sha1": "240dd4536e3dabb85f645f3294d7427f82edaa9d"
     },
     {
       "file": "colher.mp3",
       "text": "colher",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "19aced0640e58affd6f8c544140dcda012aa02ab"
     },
     {
       "file": "colo.mp3",
       "text": "Colo",
-      "seconds": 0.65
+      "seconds": 0.65,
+      "sha1": "c92286b045ca6c7863573af86377f40199600556"
     },
     {
       "file": "comer.mp3",
       "text": "Comer",
-      "seconds": 0.65
+      "seconds": 0.65,
+      "sha1": "9c7e44716d2610951f878c834625986bda08ac32"
     },
     {
       "file": "comida.mp3",
       "text": "Comida",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "4b9b28b0b6356c21b5fbf6c171f1f5c9406c8007"
     },
     {
       "file": "copo.mp3",
       "text": "copo",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "8a2a4157ab894af2788c61c2a46f9f0fb7c7a848"
     },
     {
       "file": "cores-alternadas.mp3",
       "text": "Cores alternadas",
-      "seconds": 1.38
+      "seconds": 1.38,
+      "sha1": "198a33726a7c6bff683a7907335501970f99497d"
     },
     {
       "file": "dance.mp3",
       "text": "Dance",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "e5913d4f56dcd88d17ab05d056c1319607e45282"
     },
     {
       "file": "de-tchau.mp3",
       "text": "Dê tchau",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "9af01d7b6d37ae2038c8c74e1e6a74b06f7713e1"
     },
     {
       "file": "de-um-abraco.mp3",
       "text": "Dê um abraço",
-      "seconds": 1.04
+      "seconds": 1.04,
+      "sha1": "c400bcaed425e40f3079f14f858a79cf75d8097c"
     },
     {
       "file": "dedo.mp3",
       "text": "DEDO",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "a9ad0b5a7b5508f747c3838f0096bcdc29fa7c89"
     },
     {
       "file": "desafio-e-descoberta.mp3",
       "text": "Desafio e descoberta",
-      "seconds": 1.67
+      "seconds": 1.67,
+      "sha1": "8f721b049a705b361373ae77b5cfa26725aeecaf"
     },
     {
       "file": "desafio-em-construcao.mp3",
       "text": "Desafio em construção",
-      "seconds": 1.62
+      "seconds": 1.62,
+      "sha1": "3b06747c79f0df6735e4b3a096a36338c125babd"
     },
     {
       "file": "descoberta-e-escolha.mp3",
       "text": "Descoberta e escolha",
-      "seconds": 1.49
+      "seconds": 1.49,
+      "sha1": "ecd8619ec5eb829ba6e163502096361f36ea7aab"
     },
     {
       "file": "descoberta-guiada.mp3",
       "text": "Descoberta guiada",
-      "seconds": 1.41
+      "seconds": 1.41,
+      "sha1": "f97250bd3cf2e2c3acf434d96c3cbab530ba9aaa"
     },
     {
       "file": "descoberta-inicial.mp3",
       "text": "Descoberta inicial",
-      "seconds": 1.49
+      "seconds": 1.49,
+      "sha1": "739bd481c386d1eac3313d2644a7d745f792b330"
     },
     {
       "file": "dia-e-noite.mp3",
       "text": "Dia e noite",
-      "seconds": 1.18
+      "seconds": 1.18,
+      "sha1": "e40d1f3aa8b0d0066b8633bb2f6c2ba7170f56ce"
     },
     {
       "file": "doi.mp3",
       "text": "Dói",
-      "seconds": 0.55
+      "seconds": 0.55,
+      "sha1": "74ed51198d10653c815144a98ffb48f7789c5158"
     },
     {
       "file": "dois-e-um.mp3",
       "text": "Dois e um",
-      "seconds": 0.89
+      "seconds": 0.89,
+      "sha1": "522232ef2791e45360f6504f20d36d543cfd9e0f"
     },
     {
       "file": "dormindo.mp3",
       "text": "Dormindo",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "18d85e0e66b23fa031a6b55733e6d587d8ee4113"
     },
     {
       "file": "duas-palmas.mp3",
       "text": "Duas palmas",
-      "seconds": 0.97
+      "seconds": 0.97,
+      "sha1": "d0bf6647926ed20f03cfdee06f15b14c7ba97e3a"
     },
     {
       "file": "escolha-algumas-palavras-primeiro.mp3",
       "text": "Escolha algumas palavras primeiro!",
-      "seconds": 2.09
+      "seconds": 2.09,
+      "sha1": "cb27a6c1e9e7e5d46948fa0dc7df399ae64f9233"
     },
     {
       "file": "escova.mp3",
       "text": "Escova",
-      "seconds": 0.81
+      "seconds": 0.81,
+      "sha1": "a05a331ca88b8da8f54f5fca68ac76a21b9ca13d"
     },
     {
       "file": "esta-doendo.mp3",
       "text": "Está doendo",
-      "seconds": 1.1
+      "seconds": 1.1,
+      "sha1": "a4515832cb7f03fce943e32b39543c5a42575d90"
     },
     {
       "file": "estique-os-bracos.mp3",
       "text": "Estique os braços",
-      "seconds": 1.36
+      "seconds": 1.36,
+      "sha1": "90c7099f4639b8cf336e64cc45173bff0da4c8d2"
     },
     {
       "file": "estou-com-sono.mp3",
       "text": "Estou com sono",
-      "seconds": 1.2
+      "seconds": 1.2,
+      "sha1": "8a8c1deccea41a7283eedd1341e3dd90f1a0b430"
     },
     {
       "file": "estou-feliz.mp3",
       "text": "Estou feliz",
-      "seconds": 1.04
+      "seconds": 1.04,
+      "sha1": "71c797fb8bd0f140079ee95226d27d76ee572435"
     },
     {
       "file": "estou-triste.mp3",
       "text": "Estou triste",
-      "seconds": 1.15
+      "seconds": 1.15,
+      "sha1": "69f4122fcc94a1007bbb13ff6e6eab4001b7f4d7"
     },
     {
       "file": "estoure-as-bolhas.mp3",
       "text": "Estoure as bolhas!",
-      "seconds": 1.38
+      "seconds": 1.38,
+      "sha1": "07393dfa5d658b63e5f2637c224860fd1e444ef3"
     },
     {
       "file": "estrelas-e-formas.mp3",
       "text": "Estrelas e formas",
-      "seconds": 1.41
+      "seconds": 1.41,
+      "sha1": "f56dd06eee41f3c965f38355695032d57f2635ae"
     },
     {
       "file": "eu.mp3",
       "text": "Eu",
-      "seconds": 0.52
+      "seconds": 0.52,
+      "sha1": "73cceb81d64e3ca1271e470b344c78d31fffc297"
     },
     {
       "file": "eu-quero-agua.mp3",
       "text": "Eu quero água",
-      "seconds": 1.12
+      "seconds": 1.12,
+      "sha1": "611287803235cd21d9b3f8cfc1b9657eef283f1f"
     },
     {
       "file": "eu-quero-brincar.mp3",
       "text": "Eu quero brincar",
-      "seconds": 1.23
+      "seconds": 1.23,
+      "sha1": "298cda5f7b99955d507c63940693765805b892bf"
     },
     {
       "file": "eu-quero-colo.mp3",
       "text": "Eu quero colo",
-      "seconds": 1.04
+      "seconds": 1.04,
+      "sha1": "c9035d5e503daf37e59fd7495b2068d981261f2e"
     },
     {
       "file": "eu-quero-comer.mp3",
       "text": "Eu quero comer",
-      "seconds": 1.04
+      "seconds": 1.04,
+      "sha1": "e5f89b049a7b6baf366f724b00b1c06299693ea5"
     },
     {
       "file": "exploracao.mp3",
       "text": "Exploração",
-      "seconds": 0.99
+      "seconds": 0.99,
+      "sha1": "62cfb41287b4f6fe79757e55ecbe3842916e6582"
     },
     {
       "file": "exploracao-ativa.mp3",
       "text": "Exploração ativa",
-      "seconds": 1.44
+      "seconds": 1.44,
+      "sha1": "fff425b4d1c70094813242e8d1f30b1147fa328b"
     },
     {
       "file": "faca-de-conta-que-dorme.mp3",
       "text": "Faça de conta que dorme",
-      "seconds": 1.7
+      "seconds": 1.7,
+      "sha1": "d0c7e16188991efe9b8f2a583aa13ef08a6891e4"
     },
     {
       "file": "flor.mp3",
       "text": "flor",
-      "seconds": 0.57
+      "seconds": 0.57,
+      "sha1": "19a378d345c2a2f1cf631ad05f0e1e515d9e64c6"
     },
     {
       "file": "formas.mp3",
       "text": "Formas",
-      "seconds": 0.68
+      "seconds": 0.68,
+      "sha1": "51d68c956bc66a07d4282f6bf4998c696cfe5613"
     },
     {
       "file": "frutas.mp3",
       "text": "Frutas",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "84ccadbdc5901d96ac02ec87a0fe73bd48887dfe"
     },
     {
       "file": "girassol.mp3",
       "text": "Girassol",
-      "seconds": 0.81
+      "seconds": 0.81,
+      "sha1": "255e1845dcb8ea283485a460cab3706fcc457bed"
     },
     {
       "file": "gire.mp3",
       "text": "Gire",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "f96de5954264303615dd9226c32a15878ff99fa9"
     },
     {
       "file": "grande.mp3",
       "text": "Grande",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "7738a825de9d459928420bef9a4d83e628d045fd"
     },
     {
       "file": "janela.mp3",
       "text": "Janela",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "80d66f20eff0634b38941faaf12ea937e194634c"
     },
     {
       "file": "livro.mp3",
       "text": "livro",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "c1519eb1909cc24a8a7cab80f43ebd490ae2199b"
     },
     {
       "file": "lua.mp3",
       "text": "lua",
-      "seconds": 0.55
+      "seconds": 0.55,
+      "sha1": "82fef50fc05e5406c4f3b03638f421e6310d6110"
     },
     {
       "file": "luva.mp3",
       "text": "Luva",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "71bc0b8ef3d316382ff576338e3021c6af47b48f"
     },
     {
       "file": "luz.mp3",
       "text": "Luz",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "3ed68d05ea3dc5b67485e78d064e99372183408e"
     },
     {
       "file": "mais.mp3",
       "text": "Mais",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "7d0b6386a67138dae0df48efa69b06214b2232ac"
     },
     {
       "file": "mais-por-favor.mp3",
       "text": "Mais, por favor",
-      "seconds": 1.18
+      "seconds": 1.18,
+      "sha1": "d013ae197cb9a294fc636e2509883f9969fdd921"
     },
     {
       "file": "mamae.mp3",
       "text": "Mamãe",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "957ec14dab0546265ea7ab3aeb93e76aaa117eb1"
     },
     {
       "file": "mande-um-beijo.mp3",
       "text": "Mande um beijo",
-      "seconds": 1.12
+      "seconds": 1.12,
+      "sha1": "ce1e5540a28673180ee44dd9382cab33c1799152"
     },
     {
       "file": "mao.mp3",
       "text": "mão",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "f1d56ce301b3fcc7404568a4e83fa79dd0f950c7"
     },
     {
       "file": "mirtilo.mp3",
       "text": "Mirtilo",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "14b6615e179759bf1731ac157d2c8b1ae528ed82"
     },
     {
       "file": "muito-bem-vamos-para-o-proximo.mp3",
       "text": "Muito bem! Vamos para o próximo.",
-      "seconds": 1.93
+      "seconds": 1.93,
+      "sha1": "6ea7f152b2625eb0610f6ec0bbe738d7db7ab3eb"
     },
     {
       "file": "muito-bem-voce-acertou.mp3",
       "text": "Muito bem! Você acertou!",
-      "seconds": 1.7
+      "seconds": 1.7,
+      "sha1": "869b96caacf053a7d5b4e22f236962408307b4db"
     },
     {
       "file": "musica.mp3",
       "text": "Música",
-      "seconds": 0.86
+      "seconds": 0.86,
+      "sha1": "cf5ad6367143481a088995d8ff9094db12f0a656"
     },
     {
       "file": "nao.mp3",
       "text": "Não",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "501664f9c1ee4ab6a70a3ebe6050bf52d089cd2c"
     },
     {
       "file": "nao-quero.mp3",
       "text": "Não quero",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "7ad264fdafa5f67c2ba08869c5f3c413407c6f6c"
     },
     {
       "file": "nao-obrigado.mp3",
       "text": "Não, obrigado",
-      "seconds": 1.04
+      "seconds": 1.04,
+      "sha1": "25dceaaa93dbb2f6df992e011095030b2fc33bae"
     },
     {
       "file": "o-que-voce-quer-dizer-toque-num-cartao.mp3",
       "text": "O que você quer dizer? Toque num cartão.",
-      "seconds": 2.43
+      "seconds": 2.43,
+      "sha1": "62702dc29fea49ba85ed2558d4d83959ec5d7b0a"
     },
     {
       "file": "obrigada.mp3",
       "text": "Obrigada",
-      "seconds": 0.97
+      "seconds": 0.97,
+      "sha1": "44da1f13cf6e4a4b3aa8e585ab9d2e082aec3205"
     },
     {
       "file": "obrigado.mp3",
       "text": "Obrigado",
-      "seconds": 0.91
+      "seconds": 0.91,
+      "sha1": "731540957aa69e2e92307c54ae94a5b07789dff9"
     },
     {
       "file": "olho.mp3",
       "text": "Olho",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "496e1c3baf534559009f15ee913c427c39045e8f"
     },
     {
       "file": "orelha.mp3",
       "text": "Orelha",
-      "seconds": 0.78
+      "seconds": 0.78,
+      "sha1": "5b60b5142414c42889633fcc1ea91baa9464978c"
     },
     {
       "file": "palhaco.mp3",
       "text": "Palhaço",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "91602326c79a63c01ba2d69ffc3880f47dafa65d"
     },
     {
       "file": "palma.mp3",
       "text": "Palma",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "df87ce6a016ba2784a6bdbab65dac8da4caada1b"
     },
     {
       "file": "palma-e-pausa.mp3",
       "text": "Palma e pausa",
-      "seconds": 1.2
+      "seconds": 1.2,
+      "sha1": "f48c77788833423dcb15be73e99ec52190fd20db"
     },
     {
       "file": "palma-palma-pausa.mp3",
       "text": "Palma, palma, pausa",
-      "seconds": 1.41
+      "seconds": 1.41,
+      "sha1": "0487770a3de48c06306895cebac2964bb1e05480"
     },
     {
       "file": "palma-pausa-palma-palma.mp3",
       "text": "Palma, pausa, palma, palma",
-      "seconds": 1.72
+      "seconds": 1.72,
+      "sha1": "f91351b918c7426e0767891e2738a70bb1753714"
     },
     {
       "file": "palmas.mp3",
       "text": "Palmas",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "48adc27f4e529e4189c4cb5e990309d2168a9277"
     },
     {
       "file": "panela.mp3",
       "text": "Panela",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "baa3986c11af5fc0522bbd56026745f5324fc5e2"
     },
     {
       "file": "papai.mp3",
       "text": "Papai",
-      "seconds": 0.68
+      "seconds": 0.68,
+      "sha1": "daa1a448693f7055c66af2d740a395fbe624beaf"
     },
     {
       "file": "parabens-voce-acertou-as-cores.mp3",
       "text": "Parabéns! Você acertou as cores!",
-      "seconds": 2.14
+      "seconds": 2.14,
+      "sha1": "fe6d29b7cf4277f29a1d609a55c7bbb83ebd309c"
     },
     {
       "file": "parabens-voce-completou-o-quebra-cabeca.mp3",
       "text": "Parabéns! Você completou o quebra-cabeça!",
-      "seconds": 2.59
+      "seconds": 2.59,
+      "sha1": "c31e08c254485522f42cf202b168d96b33d06a3e"
     },
     {
       "file": "passaro.mp3",
       "text": "pássaro",
-      "seconds": 0.76
+      "seconds": 0.76,
+      "sha1": "1e746e3185430cbe1394201957d7698d8ecd92ab"
     },
     {
       "file": "pausa-e-palma.mp3",
       "text": "Pausa e palma",
-      "seconds": 1.12
+      "seconds": 1.12,
+      "sha1": "8f19833f5d1d7fb5494fe2744fab551655f982b9"
     },
     {
       "file": "pausa-palma-palma.mp3",
       "text": "Pausa, palma, palma",
-      "seconds": 1.38
+      "seconds": 1.38,
+      "sha1": "461f9bd0075e99333b61b50ba9fce604386e7c37"
     },
     {
       "file": "pe.mp3",
       "text": "pé",
-      "seconds": 0.5
+      "seconds": 0.5,
+      "sha1": "71d87185c0fbc38397a0f109cb607edcaf72b3a4"
     },
     {
       "file": "peixe.mp3",
       "text": "peixe",
-      "seconds": 0.71
+      "seconds": 0.71,
+      "sha1": "1b6e85dd7c7c529f50661f8c00c35c5c900a6138"
     },
     {
       "file": "pintinho.mp3",
       "text": "Pintinho",
-      "seconds": 0.91
+      "seconds": 0.91,
+      "sha1": "3dd738ecc49fd38a7fed482a9815d54aed831cab"
     },
     {
       "file": "por-favor.mp3",
       "text": "Por favor",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "3121c551e2db71a44d90ab9fee79ae870d6280ec"
     },
     {
       "file": "praticar.mp3",
       "text": "Praticar",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "acf9e59c23d2905720777ee503ad3b000784b218"
     },
     {
       "file": "presente.mp3",
       "text": "Presente",
-      "seconds": 0.97
+      "seconds": 0.97,
+      "sha1": "9283fd6d76186e34b7900ec381714863438025b5"
     },
     {
       "file": "pule.mp3",
       "text": "Pule",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "310378f574e9785a74b37c38fc64624ccd8bee08"
     },
     {
       "file": "qual-e-diferente.mp3",
       "text": "Qual é diferente?",
-      "seconds": 1.44
+      "seconds": 1.44,
+      "sha1": "1704ed72dc88a7c26eb1b81d7c0e53cbda0b2df9"
     },
     {
       "file": "qual-numero-vem-depois.mp3",
       "text": "Qual número vem depois?",
-      "seconds": 1.67
+      "seconds": 1.67,
+      "sha1": "dead9cbb024ac6519aea05c8d6134d6c8c039ac0"
     },
     {
       "file": "que-desenho-incrivel.mp3",
       "text": "Que desenho incrível!",
-      "seconds": 1.41
+      "seconds": 1.41,
+      "sha1": "4c8f9cf6c4580889a894bf8bf5491cf98ec29e39"
     },
     {
       "file": "quente.mp3",
       "text": "Quente",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "a1264b63dcc2652c861cd3b43a0e4d71bc8e72bf"
     },
     {
       "file": "quero.mp3",
       "text": "Quero",
-      "seconds": 0.63
+      "seconds": 0.63,
+      "sha1": "5b5d28964b2f5ba5aa9ca331541ea8eb21212d7b"
     },
     {
       "file": "quero-ir-ao-banheiro.mp3",
       "text": "Quero ir ao banheiro",
-      "seconds": 1.38
+      "seconds": 1.38,
+      "sha1": "06b31db3af960f6c93af34f08017fdb648b0d320"
     },
     {
       "file": "rapido.mp3",
       "text": "Rápido",
-      "seconds": 0.73
+      "seconds": 0.73,
+      "sha1": "3edd443595050a98d3280b62a3ee709c2aece5b0"
     },
     {
       "file": "rato.mp3",
       "text": "Rato",
-      "seconds": 0.68
+      "seconds": 0.68,
+      "sha1": "ec968437ef34dbaab953ecd63890fdcfb6a042eb"
     },
     {
       "file": "reforcar.mp3",
       "text": "Reforçar",
-      "seconds": 0.91
+      "seconds": 0.91,
+      "sha1": "062ef2c154bebc0fcdc566b20b488aa4020b125f"
     },
     {
       "file": "relogio.mp3",
       "text": "Relógio",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "15ca555e3ff19655fd8259ed32628428059dfb82"
     },
     {
       "file": "rolo.mp3",
       "text": "Rolo",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "90382ae6c368a8ccf568f96a4edf86f22a2e266f"
     },
     {
       "file": "sapato.mp3",
       "text": "sapato",
-      "seconds": 0.81
+      "seconds": 0.81,
+      "sha1": "51506637ed42ddc31c0b08bda17ad184fec93098"
     },
     {
       "file": "sim.mp3",
       "text": "Sim",
-      "seconds": 0.57
+      "seconds": 0.57,
+      "sha1": "89ccdabf5737f30800cee21361f00c230800e067"
     },
     {
       "file": "sono.mp3",
       "text": "Sono",
-      "seconds": 0.6
+      "seconds": 0.6,
+      "sha1": "bd98c9029a85fa74273fb64fe2de34632ea89879"
     },
     {
       "file": "sorvete.mp3",
       "text": "Sorvete",
-      "seconds": 0.89
+      "seconds": 0.89,
+      "sha1": "bbe16ba756d1a2f63a8b56f5d8fc488a35ce5360"
     },
     {
       "file": "tamanhos.mp3",
       "text": "Tamanhos",
-      "seconds": 0.97
+      "seconds": 0.97,
+      "sha1": "a636fb60f2f841078f505a0b06e4096dc8303c90"
     },
     {
       "file": "toque-nos-animais-para-fazer-musica.mp3",
       "text": "Toque nos animais para fazer música!",
-      "seconds": 2.32
+      "seconds": 2.32,
+      "sha1": "0b4117bac9b56a3306d7a90f45b489b417a27cbb"
     },
     {
       "file": "tres-palmas.mp3",
       "text": "Três palmas",
-      "seconds": 0.99
+      "seconds": 0.99,
+      "sha1": "e67f5ff97d54297d5cfa7b7b8fabf3e98c171ef0"
     },
     {
       "file": "trevo.mp3",
       "text": "Trevo",
-      "seconds": 0.68
+      "seconds": 0.68,
+      "sha1": "3882461f670cf03f3b523867e165d9e96b90d8dc"
     },
     {
       "file": "tulipa.mp3",
       "text": "tulipa",
-      "seconds": 0.81
+      "seconds": 0.81,
+      "sha1": "e0912796035772f855b1b738fe495db167751b05"
     },
     {
       "file": "vamos-desenhar-escolha-uma-cor.mp3",
       "text": "Vamos desenhar! Escolha uma cor.",
-      "seconds": 1.99
+      "seconds": 1.99,
+      "sha1": "37bdefccb4b837bffe95aa27f5bfc864e71ddac4"
     },
     {
       "file": "vamos-observar-a-sequencia.mp3",
       "text": "Vamos observar a sequência.",
-      "seconds": 1.91
+      "seconds": 1.91,
+      "sha1": "9b91b3bbbf3e9b7abe82710e7f20ce94d3eb037f"
     },
     {
       "file": "vamos-ouvir-novamente.mp3",
       "text": "Vamos ouvir novamente.",
-      "seconds": 1.72
+      "seconds": 1.72,
+      "sha1": "796c3601eaee30071a8de35e584f50572a575266"
     },
     {
       "file": "veiculos.mp3",
       "text": "Veículos",
-      "seconds": 0.84
+      "seconds": 0.84,
+      "sha1": "f61485e4218eacfd9913209194e9b47ebb42b35b"
     }
   ]
 }

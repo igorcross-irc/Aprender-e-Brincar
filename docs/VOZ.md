@@ -8,6 +8,22 @@
 - ⚠️ **Eu não consigo ouvir áudio.** Conferi só o que dá para medir: arquivo válido, duração coerente com o texto, volume ≈ -17 LUFS como as da Dora e tom de voz (≈ 170–190 Hz, faixa feminina; a Dora do ElevenLabs é mais aguda, ≈ 270 Hz). **Ouça uma amostra antes de publicar.** Sugestões: `parabens-voce-completou-o-quebra-cabeca.mp3`, `escolha-algumas-palavras-primeiro.mp3`, `2-palmas.mp3`, `banho.mp3`.
 - Ainda assim, a Dora e a provisória são vozes diferentes: numa mesma brincadeira podem tocar as duas. Os caminhos abaixo resolvem isso.
 
+## Troca gradual: provisória agora, Dora aos poucos (paliativo)
+As falas provisórias ficam no app **só até** você ter a Dora. Quando tiver créditos (mesmo poucos), troque por lotes, sem mexer em código:
+```bash
+npm run voice:status -- --credits 300   # mostra o próximo lote que cabe em 300 créditos (1 por caractere)
+# gere essas falas na Dora (a lista completa está em docs/falas-para-elevenlabs.csv)
+# salve os MP3 numa pasta e importe:
+npm run voice:import -- ~/Downloads/dora-lote-1 --dry   # confere o que seria trocado
+npm run voice:import -- ~/Downloads/dora-lote-1         # troca de verdade
+npm run audit:audio && npm run build
+```
+- O importador **padroniza** cada MP3 (corta silêncio das pontas, volume igual ao do resto, mono 64 kbps) e coloca no lugar da provisória.
+- Aceita o nome exato da fala (`muito-bem.mp3`) ou um nome que contenha o texto (ex.: `ElevenLabs_..._mamae.mp3`). Se mais de uma fala combinar, pula e avisa.
+- O manifesto `voz-provisoria.json` guarda o hash de cada arquivo gerado: se você copiar um MP3 por cima na mão, `npm run voice:status -- --prune` percebe e tira da lista.
+- `docs/FILA_PROVISORIAS.md` ordena por **mais ouvidas por crédito** e mostra quais **brincadeiras ficam 100% com a Dora** depois de poucas falas. Vale terminar uma brincadeira por vez para a criança não ouvir duas vozes no mesmo jogo.
+- Custo total para trocar tudo hoje: **1.485 créditos** (≈ um mês do plano gratuito do ElevenLabs, conforme o plano vigente).
+
 ## Três caminhos (pode combinar)
 1. **Voz da família (já implementado, grátis, a melhor):** Área da Família → **Grave a sua voz**. Grave as 25 falas mais ouvidas (Oi, Muito bem, Parabéns, cores, animais, mamãe, papai…). A gravação passa na frente do MP3 do app, fica só no aparelho e não entra no backup. Funciona no navegador e **no aplicativo Android** (o app pede a permissão de microfone só quando você toca em gravar; **não testado em aparelho real**, ver `docs/ANDROID.md`).
 2. **Voltar a uma voz só quando houver créditos:** gerar as 141 com a Dora (≈ 1.500 caracteres no total, uma fração do plano gratuito mensal), copiar por cima dos arquivos listados em `voz-provisoria.json`, rodar `npm run audio:compress` e esvaziar o manifesto.

@@ -21,7 +21,9 @@
     "audit:legacy": "npm run build && node scripts/legacy-audit.mjs",
     "postbuild": "node scripts/stamp-sw.mjs",
     "audio:compress": "node scripts/compress-audio.mjs",
-    "test:unit": "node --test tests/*.test.mjs"
+    "test:unit": "node --test tests/*.test.mjs",
+    "voice:status": "node scripts/voice-status.mjs",
+    "voice:import": "node scripts/voice-import.mjs"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.2",

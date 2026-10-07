@@ -69,4 +69,11 @@ const indexed = readFileSync(resolve(root, 'src/content/audio-files.js'), 'utf8'
 const stale = names.filter((n) => !indexed.includes(`"${n}"`));
 if (stale.length) throw new Error('AUDIO AUDIT FAIL — índice do build desatualizado (rode npm run build): ' + stale.slice(0, 5).join(', '));
 
+let provisionalLeft = 0;
+try {
+  const manifest = JSON.parse(readFileSync(resolve(root, 'docs/voz-provisoria.json'), 'utf8'));
+  provisionalLeft = manifest.files.filter((item) => names.includes(item.file)).length;
+} catch {}
+if (provisionalLeft) console.log(`(informativo) ${provisionalLeft} falas ainda são da voz provisória: veja npm run voice:status`);
+
 console.log(`AUDIO AUDIT OK — ${names.length} MP3 válidos (≤ ${MAX_KBPS} kbps, ${(totalBytes / 1048576).toFixed(1)} MB), índice em dia, ${explicitPaths.length} referências explícitas verificadas.`);

@@ -43,6 +43,7 @@ npm run preview          # serve o build
 | `npm run audit:legacy` | Simula iPad com iOS 9 / Android 5 (sem Pointer Events, sem grid, sem WebP) |
 | `npm run test:play-all` | Robô que joga tudo até o fim (≈ 25 min). Rode antes de uma versão grande |
 | `npm run audio:coverage` | Lista as falas que ainda não têm MP3 ([`docs/AUDIO_COVERAGE.md`](docs/AUDIO_COVERAGE.md)) |
+| `npm run voice:status` / `voice:import` | Troca gradual da voz provisória pela Dora: fila por prioridade e importação padronizada dos MP3 novos |
 | `npm run audit:audio` | Confere que todo MP3 é válido, leve (≤ 96 kbps, ≤ 8 MB no total) e que o índice do build está em dia |
 | `npm run audio:compress` | Recodifica MP3 para mono 64 kbps (voz; 9,3 MB → 3,1 MB) |
 

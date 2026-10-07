@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-07 — Troca gradual da voz provisória pela Dora
+- `npm run voice:status`: situação das falas provisórias, fila por prioridade (mais ouvidas por crédito) em `docs/FILA_PROVISORIAS.md`, lista para gerar em `docs/falas-para-elevenlabs.csv`, lote por saldo (`-- --credits N`) e brincadeiras que terminam primeiro.
+- `npm run voice:import -- <pasta>`: padroniza (silêncio, volume, mono 64 kbps) e coloca os MP3 da Dora no lugar das provisórias, atualizando o manifesto (que agora guarda o hash de cada arquivo gerado).
+- `audit:audio` informa quantas provisórias restam.
+- Página de escuta no celular (artefato) com as vozes e 👍/👎.
+
 ## 2026-10-06 (3) — Voz feminina provisória e perfis para irmãos
 - **Sem voz masculina:** as 141 falas provisórias foram refeitas com o **Kokoro** (voz feminina pt-BR `pf_dora`, Apache-2.0); as geradas com o Piper (masculino) foram apagadas. O gerador virou `scripts/generate-voice.py`.
 - **Grave a sua voz também no app Android:** permissão `RECORD_AUDIO` declarada (o Android pede só no primeiro toque em gravar); a fixação de tela é solta enquanto o adulto grava e volta ao sair (`KidLock.resume`). **Sem teste em aparelho real.**

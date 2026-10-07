@@ -15,7 +15,7 @@ Uso (kokoro):
   .venv-tts/bin/python scripts/generate-voice-piper.py --kokoro-model kokoro-v1.0.onnx --kokoro-voices voices-v1.0.bin [--dry] [--only a.mp3,b.mp3] [--replace-provisional]
 Requer ffmpeg.
 """
-import argparse, json, os, re, subprocess, sys, tempfile, datetime
+import argparse, hashlib, json, os, re, subprocess, sys, tempfile, datetime
 
 COVERAGE = 'docs/AUDIO_COVERAGE.md'
 OUT_DIR = 'public/assets/audio'
@@ -113,7 +113,7 @@ def main():
                 os.remove(out)
                 print(f'  ✗ {name}: duração estranha ({seconds:.2f}s), descartado')
                 continue
-            done.append({'file': name, 'text': text, 'seconds': round(seconds, 2)})
+            done.append({'file': name, 'text': text, 'seconds': round(seconds, 2), 'sha1': hashlib.sha1(open(out, 'rb').read()).hexdigest()})
     old = json.load(open(MANIFEST, encoding='utf8')) if os.path.exists(MANIFEST) else {'files': []}
     known = {item['file'] for item in done}
     manifest = {
