@@ -494,3 +494,34 @@ img { -webkit-user-drag: none; }
 @keyframes scene-walk { from { transform: translate(-130%, -50%); } to { transform: translate(110%, -50%); } }
 @keyframes scene-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
 @keyframes scene-hit { 0% { transform: translate(-50%, -50%) scale(1); } 35% { transform: translate(-50%, -50%) scale(1.25, .85); } 70% { transform: translate(-50%, -50%) scale(.92, 1.1); } 100% { transform: translate(-50%, -50%) scale(1); } }
+
+/* Hora da Historinha */
+.story-shelf { display: grid; grid-template-columns: repeat(2, 1fr); grid-gap: 14px; gap: 14px; width: 100%; max-width: 40rem; margin: 0 auto; }
+.story-cover { position: relative; padding: 0; border: 0; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 8px 0 rgba(0, 0, 0, .12), 0 10px 22px rgba(0, 0, 0, .12); transition: transform .15s; }
+.story-cover:active { transform: scale(.96); }
+.story-cover img { display: block; width: 100%; height: auto; }
+.story-cover-title { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 6px 8px; border-radius: 14px; background: rgba(255, 255, 255, .92); color: #3b2a6b; font-weight: 800; font-size: .95rem; line-height: 1.15; text-align: center; }
+.story-cover-star { position: absolute; top: 8px; right: 8px; font-size: 1.6rem; }
+.storybook { width: 100%; max-width: 34rem; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+.sb-page { width: 100%; border-radius: 26px; overflow: hidden; background: #fff; box-shadow: 0 8px 0 rgba(0, 0, 0, .12), 0 14px 28px rgba(0, 0, 0, .14); }
+.sb-img { display: block; width: 100%; height: auto; max-height: 52vh; object-fit: contain; background: #fff; }
+.sb-img.turn { animation: sb-turn .45s ease-out; }
+.sb-text { min-height: 4.6rem; margin: 14px 6px 6px; text-align: center; font-weight: 800; font-size: 1.4rem; line-height: 1.3; color: #3b2a6b; }
+.sb-text.sb-credit { font-size: 1rem; font-weight: 700; opacity: .8; }
+.sb-nav { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 8px; }
+.sb-arrow { width: 76px; height: 76px; border: 0; border-radius: 50%; background: #ffcf1f; box-shadow: 0 6px 0 #d9a800; position: relative; }
+.sb-arrow:active { transform: translateY(3px); box-shadow: 0 3px 0 #d9a800; }
+.sb-arrow span { position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-top: 14px solid transparent; border-bottom: 14px solid transparent; }
+.sb-next span { margin: -14px 0 0 -8px; border-left: 24px solid #3b2a6b; }
+.sb-prev span { margin: -14px 0 0 -16px; border-right: 24px solid #3b2a6b; }
+.sb-arrow.pulse { animation: sb-pulse 1s ease-in-out infinite; }
+.sb-dots { display: flex; }
+.sb-dots i { width: 12px; height: 12px; margin: 0 4px; border-radius: 50%; background: #d8d0ee; }
+.sb-dots i.done { background: #8e7bd6; }
+.sb-dots i.current { background: #ff6fa5; transform: scale(1.4); }
+.sb-tools { display: flex; margin-top: 12px; }
+.sb-tool { min-width: 56px; height: 48px; margin: 0 6px; padding: 0 14px; border: 0; border-radius: 24px; background: #fff; color: #3b2a6b; font-weight: 800; font-size: 1.05rem; box-shadow: 0 4px 0 rgba(0, 0, 0, .12); }
+.sb-tool.on { background: #b6f0c4; }
+@keyframes sb-turn { from { opacity: .2; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@keyframes sb-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+@media (prefers-reduced-motion: reduce) { .sb-img.turn, .sb-arrow.pulse { animation: none; } }

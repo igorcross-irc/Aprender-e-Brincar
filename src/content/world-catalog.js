@@ -3,13 +3,13 @@ export const learningWorlds = [
     id: 'discover', title: 'Descobrir', icon: '🌱', color: 'emerald',
     description: 'Experiências livres para observar, tocar, ouvir e descobrir.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['farm','scene-sea','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
+    activityIds: ['storybook','farm','scene-sea','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
   },
   {
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',
     description: 'Palavras, comunicação, sílabas, rimas e histórias.',
     ages: ['2-3y','3-4y','4-5y'],
-    activityIds: ['communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
+    activityIds: ['storybook','communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
   },
   {
     id: 'colors-shapes', title: 'Cores & Formas', icon: '🎨', color: 'sky',

@@ -17,7 +17,7 @@ export const GAME_ICONS = {
   'action-words': '🏃', 'story-choices': '📚', 'phrase-builder-2': '💬', 'color-hunt-2': '🌈', 'shape-sequence': '🔷',
   'compare-sizes': '📏', 'animal-sound-memory': '🔊', 'animal-homes': '🏠', 'count-more': '🔢', 'number-order': '🔢',
   'memory-objects': '🧠', 'attention-path': '👀', 'rhythm-copy': '👏', 'movement-copy': '🙆',
-  farm: '🚜', 'scene-sea': '🐠', bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
+  storybook: '📖', farm: '🚜', 'scene-sea': '🐠', bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
 };
 
 // Ilustrações próprias (public/assets/images/icons); o que não estiver aqui usa o emoji de GAME_ICONS.

@@ -17,6 +17,7 @@ import { PeekabooGame } from './games/toddler/peekaboo.js';
 import { SortIntoGame } from './games/toddler/sort-into.js';
 import { WordSoundsGame } from './games/language/word-sounds.js';
 import { StorySequenceGame } from './games/language/story-sequence.js';
+import { StorybookGame } from './games/language/storybook.js';
 import { FarmGame } from './games/farm/farm-game.js';
 import { SeaSceneGame } from './games/scenes/scene-game.js';
 import { vocabularyData } from '../data/vocabulary.js';
@@ -24,7 +25,7 @@ import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['scene-sea','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['storybook','scene-sea','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -65,6 +66,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['sound-sequence'], SoundSequenceGame, vocabularyData.animals);
   addIndependent(['farm'], FarmGame, vocabularyData.animals);
   addIndependent(['scene-sea'], SeaSceneGame);
+  addIndependent(['storybook'], StorybookGame);
   addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
   addIndependent(['count-tap'], CountTapGame, developmentContent.objects);
   addIndependent(['music-keys'], MusicKeysGame);

@@ -170,6 +170,18 @@ async function run() {
   const foods = await page.$$('[data-food]');
   if (foods.length) { await foods[0].tap(); await page.waitForTimeout(700); if (await page.$('.farm-lite-animal.fed')) pass('fazendinha lite: tocar na comida alimenta o bicho'); else fail('fazendinha lite não alimentou o bicho'); }
   await shot('02b-fazendinha-lite');
+  // Hora da Historinha: estante e livro no aparelho antigo.
+  await openGame('6-12m', 'storybook');
+  const covers = await page.$$('.story-cover');
+  if (covers.length) pass(`historinhas: ${covers.length} capas na estante`); else fail('historinhas: estante vazia');
+  if (covers.length) {
+    await covers[0].tap(); await page.waitForTimeout(400);
+    if (await page.$('#storybook')) pass('historinhas: livro abre'); else fail('historinhas: livro não abriu');
+    await page.tap('#sb-next'); await page.waitForTimeout(300);
+    const page2 = await page.$eval('.sb-dots i.current', (el) => Array.prototype.indexOf.call(el.parentNode.children, el));
+    if (page2 === 1) pass('historinhas: avançar a página funciona'); else fail('historinhas: não avançou');
+  }
+  await shot('02d-historinhas');
   // Cena do fundo do mar: aparelho antigo recebe a versão lite (HTML/CSS).
   await openGame('2-3y', 'scene-sea');
   if (await page.$('#scene-lite')) pass('fundo do mar usa o modo lite no aparelho antigo');

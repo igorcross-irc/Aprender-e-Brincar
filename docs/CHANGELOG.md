@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-07 (4) — Hora da Historinha: 31 histórias de domínio público (9 já ilustradas)
+- **Catálogo de 31 histórias** em domínio público ou tradição popular, 5 a 6 por faixa de idade (6–12 m a 4–5 anos): cantigas de roda para os bebês, fábulas de Esopo, contos de Perrault, Grimm, Andersen, Jacobs, Southey, Kipling, Beatrix Potter, Monteiro Lobato e folclore brasileiro (A Festa no Céu, O Curupira). Textos recontados por nós; direitos e créditos em `docs/HISTORIAS.md`.
+- **Leitor** (`storybook.js`, HTML/CSS, funciona em aparelho antigo): estante de capas, páginas ilustradas, botão grande de avançar que pulsa ao fim da fala, deslizar o dedo, "Aa" (mostrar texto), "Auto" (vira sozinho), estrela nas já lidas e crédito do autor na última página.
+- **9 histórias já ilustradas** (6–12 m completa, 12–18 m com 4 de 5); as outras 22 têm texto e cenas prontos e esperam créditos de imagem.
+- **Narração**: o leitor usa MP3 por página quando existir e, enquanto isso, a voz do navegador. Fluxo pronto: `narration-plan.mjs`, `split-narration.py`. **Pendente**: a conta do ElevenLabs está sem créditos e sem acesso às vozes brasileiras (plano grátis).
+- Novos scripts: `story-prompts.mjs`, `slice-panels.py`, `stories-index.mjs` (no prebuild), `stories-audit.mjs` (`npm run audit:stories`, também na integração contínua).
+
 ## 2026-10-07 (3) — Mundo das Cenas: Fundo do Mar (2º jogo-âncora)
 - **Cena ilustrada de verdade**: fundo de recife em estilo chapado e vibrante, 15 bichos e objetos (peixe-palhaço, tartaruga, golfinho, caranguejo, estrela-do-mar, baleia, baiacu, água-viva, polvo, baú do tesouro, concha, cavalo-marinho, tubarão amigo, peixe-anjo e um cardume), feitos com IA (Figma) e recortados por `scripts/slice-sheet.py`. Originais sem perda em `design/scenes/originais/`.
 - **Motor de cenas** (`src/js/games/scenes/`): uma cena nova é só um arquivo de dados (`sea-scene.js`) mais a arte. Raios de luz, bolhas que a criança estoura, plâncton brilhante, peixes que atravessam a tela, tubarão que espanta o cardume, golfinho que salta, baleia que solta jato e canta.

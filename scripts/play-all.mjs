@@ -150,6 +150,11 @@ async function playSpecial(page) {
     if (item) await item.click(); else await page.waitForTimeout(500);
     return true;
   }
+  if (await page.$('.story-cover')) { await page.click('.story-cover'); await page.waitForTimeout(500); return true; }
+  if (await page.$('#storybook')) {
+    for (let i = 0; i < 8 && !(await page.$('#session-again')); i += 1) { await page.click('#sb-next'); await page.waitForTimeout(300); }
+    return true;
+  }
   if (await page.$('#scene-lite')) {
     for (const creature of await page.$$('.scene-lite-c')) { await creature.dispatchEvent('click'); await page.waitForTimeout(250); }
     await page.waitForTimeout(5000);

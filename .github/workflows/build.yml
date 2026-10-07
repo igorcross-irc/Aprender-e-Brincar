@@ -31,6 +31,8 @@ jobs:
         run: npm run audit:child-interface
       - name: Audio audit
         run: npm run audit:audio
+      - name: Histórias (catálogo, ilustrações e narração)
+        run: npm run audit:stories
       - name: Build
         run: npm run build
       - name: Install Chromium
