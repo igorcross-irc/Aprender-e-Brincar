@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-07 — Novo motor gráfico e primeiro jogo-âncora: Fazendinha Viva
+- **Motor 2D novo** (`src/engine/`): PixiJS (WebGL), animações com suavização (`tween.js`) e partículas (`particles.js`). Carrega só quando o jogo abre; aparelhos sem WebGL ou muito antigos caem automaticamente para as Bolhas.
+- **Fazendinha Viva** (12 meses+, mundo Descobrir): cenário em camadas com sol, nuvens, celeiro, árvores e grama balançando; 5 bichos desenhados em vetor com respiração, piscadas, rabo e orelhas; arrastar a comida certa para cada bicho (balão mostra o que ele quer); erro nunca pune (o bicho balança a cabeça e a comida volta); dica automática após alguns segundos parado.
+- O dia passa conforme os bichos comem (amanhecer → dia → pôr do sol → noite com lua, estrelas e vaga-lumes) e no fim todos dormem ao som de uma cantiga. A galinha põe ovos que a criança coleta e conta em voz alta (até 5).
+- Até 18 meses basta tocar na comida; 2 bichos aos 12–24 m, até 5 aos 4–5 anos.
+- Plano completo dos próximos jogos: `docs/PLANO_JOGOS_PROFISSIONAIS.md`.
+
 ## 2026-10-01 — Novas brincadeiras e jogos antigos padronizados
 - **Esconde-esconde** (6 meses a 4 anos): um animal se esconde atrás de 1 a 5 esconderijos (conforme a idade); a criança toca para achar. Trabalha permanência do objeto.
 - **Separar por Cor** (18 meses+) e **Encaixe as Formas** (12 meses+): um objeto aparece e a criança toca no cesto/buraco certo — sem arrastar. Até 3 anos a voz dá a pista ("No cesto vermelho!").

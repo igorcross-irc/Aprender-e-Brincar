@@ -17,6 +17,7 @@ import { PeekabooGame } from './games/toddler/peekaboo.js';
 import { SortIntoGame } from './games/toddler/sort-into.js';
 import { WordSoundsGame } from './games/language/word-sounds.js';
 import { StorySequenceGame } from './games/language/story-sequence.js';
+import { FarmGame } from './games/farm/farm-game.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
@@ -61,6 +62,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['color-hunt-2'], ColorHuntGame, vocabularyData.colors);
   addIndependent(['rhythm-copy'], RhythmCopyGame, developmentContent.musicPatterns);
   addIndependent(['sound-sequence'], SoundSequenceGame, vocabularyData.animals);
+  addIndependent(['farm'], FarmGame, vocabularyData.animals);
   addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
   addIndependent(['count-tap'], CountTapGame, developmentContent.objects);
   addIndependent(['music-keys'], MusicKeysGame);

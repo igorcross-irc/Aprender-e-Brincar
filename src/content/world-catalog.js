@@ -3,7 +3,7 @@ export const learningWorlds = [
     id: 'discover', title: 'Descobrir', icon: '🌱', color: 'emerald',
     description: 'Experiências livres para observar, tocar, ouvir e descobrir.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
+    activityIds: ['farm','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
   },
   {
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',

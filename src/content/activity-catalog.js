@@ -1,4 +1,5 @@
 const allActivities = [
+  { id: 'farm', title: 'Fazendinha Viva', type: 'game', ages: ['12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'animais', difficulty: 1, skills: ['vocabulário','associação','contagem','causa e efeito'], developmentDomains: ['linguagem','cognição','audição'], world: 'discover' },
   { id: 'peekaboo', title: 'Esconde-esconde', type: 'activity', ages: ['6-12m','12-18m','18-24m','2-3y','3-4y'], category: 'descoberta', difficulty: 1, skills: ['permanência do objeto','atenção','vocabulário'], developmentDomains: ['cognição','linguagem'], world: 'discover' },
   { id: 'color-sort', title: 'Separar por Cor', type: 'game', ages: ['18-24m','2-3y','3-4y','4-5y'], category: 'cores', difficulty: 1, skills: ['classificação','cores'], developmentDomains: ['cognição','percepção'], world: 'colors-shapes' },
   { id: 'shape-sort', title: 'Encaixe as Formas', type: 'game', ages: ['12-18m','18-24m','2-3y','3-4y','4-5y'], category: 'formas', difficulty: 1, skills: ['formas','associação','coordenação'], developmentDomains: ['cognição','percepção'], world: 'colors-shapes' },
