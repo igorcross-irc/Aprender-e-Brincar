@@ -1,5 +1,7 @@
 # Plano — Jogos e aplicativos de nível profissional
 
+> Como as melhorias chegam ao app (versões, testes, piloto, bloqueios): `docs/PLANO_DE_INTEGRACAO.md`.
+
 Data: 07/10/2026 · Status: proposta para decisão (nenhum código alterado)
 
 ## 1. Diagnóstico honesto do que existe hoje
