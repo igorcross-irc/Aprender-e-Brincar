@@ -163,8 +163,8 @@ Os prazos assumem arte entregue em paralelo; sem artista dedicado, a Fase 1 dobr
 5. **Primeiro jogo:** Fazendinha Viva (feita; ver `docs/CHANGELOG.md`).
 
 ### Lista fechada de jogos-âncora (máximo 6)
-1. Fazendinha Viva — em andamento
-2. Mundo das Cenas
+1. Fazendinha Viva — feita
+2. Mundo das Cenas — Fundo do Mar feito (mais cenas: floresta, quintal, noite e espaço)
 3. Estúdio dos Bichos
 4. Ateliê Mágico
 5. Cozinha Maluca

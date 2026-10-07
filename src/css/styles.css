@@ -473,3 +473,24 @@ img { -webkit-user-drag: none; }
 .farm-lite-cloud.c1 { top: 8%; left: 48%; }
 .farm-lite-cloud.c2 { top: 26%; left: 24%; font-size: 2.2rem; }
 .farm-lite.night .farm-lite-cloud { opacity: .25; }
+
+/* Mundo das Cenas (motor PixiJS) e modo lite */
+.scene-stage { position: relative; width: 100%; height: min(74vh, 700px); min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: #1fb6d8; box-shadow: 0 8px 24px rgba(0, 0, 0, .14); touch-action: none; -webkit-user-select: none; user-select: none; }
+.scene-lite { position: relative; width: 100%; height: min(74vh, 700px); min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: #1fb6d8; }
+.scene-lite-plate { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: cover; object-position: bottom; pointer-events: none; }
+.scene-lite-mood { position: absolute; left: 0; top: 0; right: 0; bottom: 0; pointer-events: none; }
+.scene-lite-c { position: absolute; padding: 0; border: 0; background: transparent; transform: translate(-50%, -50%); animation: scene-bob 3s ease-in-out infinite; }
+.scene-lite-c img { display: block; width: 100%; height: auto; pointer-events: none; }
+.scene-lite-c.swim { animation-name: scene-swim; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+.scene-lite-c.walk { animation-name: scene-walk; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+.scene-lite-c.still { animation: none; }
+.scene-lite-c.s2, .scene-lite-c img.s2 { position: absolute; left: 60%; top: 40%; width: 80%; }
+.scene-lite-c img.s3 { position: absolute; left: 20%; top: 80%; width: 70%; }
+.scene-lite-c.hit { animation: scene-hit .55s ease-out; }
+.scene-lite-dots { position: absolute; left: 10px; top: 10px; display: flex; padding: 8px 12px; border-radius: 999px; background: rgba(11, 59, 102, .3); }
+.scene-lite-dot { width: 26px; height: 26px; margin-right: 8px; border-radius: 50%; border: 3px solid #ffe14d; background: rgba(255, 255, 255, .3); }
+.scene-lite-dot.on { background: #ffe14d; }
+@keyframes scene-swim { from { transform: translate(-180%, -50%); } to { transform: translate(80%, -50%); } }
+@keyframes scene-walk { from { transform: translate(-130%, -50%); } to { transform: translate(110%, -50%); } }
+@keyframes scene-bob { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -58%); } }
+@keyframes scene-hit { 0% { transform: translate(-50%, -50%) scale(1); } 35% { transform: translate(-50%, -50%) scale(1.25, .85); } 70% { transform: translate(-50%, -50%) scale(.92, 1.1); } 100% { transform: translate(-50%, -50%) scale(1); } }

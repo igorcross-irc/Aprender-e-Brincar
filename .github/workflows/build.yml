@@ -41,3 +41,5 @@ jobs:
         run: node scripts/legacy-audit.mjs
       - name: Fazendinha (WebGL e modo lite)
         run: node scripts/farm-test.mjs
+      - name: Mundo das Cenas (WebGL e modo lite)
+        run: node scripts/scene-test.mjs

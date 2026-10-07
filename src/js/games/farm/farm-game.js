@@ -1,7 +1,7 @@
 import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 import { playSfx, playNote } from '../../engine/sfx.js';
 import { gameShellMarkup, prefersReducedMotion } from '../game-shell.js';
-import { canRunPixi, createStage } from '../../../engine/stage.js';
+import { createStage, shouldUseLite } from '../../../engine/stage.js';
 import { Tweens, ease } from '../../../engine/tween.js';
 import { Particles } from '../../../engine/particles.js';
 import { FarmLiteGame } from './farm-lite.js';
@@ -52,16 +52,6 @@ function loadProgress() {
   return { visits: 0, eggs: 0, harvest: 0 };
 }
 function saveProgress(progress) { try { localStorage.setItem(STORE_KEY, JSON.stringify(progress)); } catch (error) { /* sem armazenamento */ } }
-
-// Modo lite: aparelhos antigos, sem WebGL, com pouca memória ou escolhido pela família.
-export function shouldUseLite() {
-  try {
-    if (localStorage.getItem('ab_lite_graphics') === '1') return true;
-    if (document.documentElement.classList.contains('lite')) return true;
-    if (navigator.deviceMemory && navigator.deviceMemory < 2) return true;
-  } catch (error) { /* ignora */ }
-  return !canRunPixi();
-}
 
 export class FarmGame {
   constructor(containerId, audio, onComplete, onBack) {

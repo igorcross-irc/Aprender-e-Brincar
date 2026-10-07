@@ -19,7 +19,7 @@ Fontes consultadas em 07/10/2026: Machado Meyer (ECA Digital em vigor em 17/03/2
 
 ## 3. Pré-requisitos antes de reabrir a discussão de anúncios
 Todos precisam estar cumpridos:
-- [ ] Pelo menos **3 jogos-âncora** lançados e estáveis (hoje: 1 em andamento).
+- [ ] Pelo menos **3 jogos-âncora** lançados e estáveis (hoje: 2 — Fazendinha Viva e Fundo do Mar).
 - [ ] **Base de usuários real**: mínimo de 1.000 famílias ativas por mês, medido sem rastrear crianças (contagem agregada de instalações/atualizações).
 - [ ] **Retenção comprovada**: meta de 30% das famílias voltando em 7 dias. Hoje não há como medir, pois o app não coleta nada.
 - [ ] **Parecer jurídico** (LGPD + ECA Digital) sobre o formato exato de qualquer publicidade.
@@ -36,3 +36,4 @@ Local-first significa que **não existe painel automático**. O monitoramento é
 
 ### Histórico
 - 07/10/2026 — documento criado. Jogos-âncora lançados: 0 de 3 (Fazendinha Viva em andamento). Pré-requisitos cumpridos: nenhum.
+- 07/10/2026 (2) — Jogos-âncora lançados: 2 de 3 (Fazendinha Viva, Mundo das Cenas: Fundo do Mar). Falta 1 para a revisão do marco. Demais pré-requisitos: nenhum cumprido.

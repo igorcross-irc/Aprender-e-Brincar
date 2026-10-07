@@ -170,6 +170,14 @@ async function run() {
   const foods = await page.$$('[data-food]');
   if (foods.length) { await foods[0].tap(); await page.waitForTimeout(700); if (await page.$('.farm-lite-animal.fed')) pass('fazendinha lite: tocar na comida alimenta o bicho'); else fail('fazendinha lite não alimentou o bicho'); }
   await shot('02b-fazendinha-lite');
+  // Cena do fundo do mar: aparelho antigo recebe a versão lite (HTML/CSS).
+  await openGame('2-3y', 'scene-sea');
+  if (await page.$('#scene-lite')) pass('fundo do mar usa o modo lite no aparelho antigo');
+  else fail('fundo do mar não entrou no modo lite');
+  const creature = await page.$('.scene-lite-c');
+  if (creature) { await creature.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.scene-lite-dot.on')) pass('fundo do mar lite: tocar no bicho conta uma descoberta'); else fail('fundo do mar lite não contou a descoberta'); }
+  await checkEmoji('fundo do mar');
+  await shot('02c-fundo-do-mar-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

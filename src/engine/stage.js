@@ -9,6 +9,16 @@ export function canRunPixi() {
   }
 }
 
+// Modo lite: aparelhos antigos, sem WebGL, com pouca memória ou escolhido pela família (Área da Família → Gráficos).
+export function shouldUseLite() {
+  try {
+    if (localStorage.getItem('ab_lite_graphics') === '1') return true;
+    if (document.documentElement.classList.contains('lite')) return true;
+    if (navigator.deviceMemory && navigator.deviceMemory < 2) return true;
+  } catch (error) { /* ignora */ }
+  return !canRunPixi();
+}
+
 export async function createStage(host) {
   const PIXI = await import('pixi.js');
   const app = new PIXI.Application();

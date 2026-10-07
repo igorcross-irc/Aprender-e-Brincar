@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-07 (3) — Mundo das Cenas: Fundo do Mar (2º jogo-âncora)
+- **Cena ilustrada de verdade**: fundo de recife em estilo chapado e vibrante, 15 bichos e objetos (peixe-palhaço, tartaruga, golfinho, caranguejo, estrela-do-mar, baleia, baiacu, água-viva, polvo, baú do tesouro, concha, cavalo-marinho, tubarão amigo, peixe-anjo e um cardume), feitos com IA (Figma) e recortados por `scripts/slice-sheet.py`. Originais sem perda em `design/scenes/originais/`.
+- **Motor de cenas** (`src/js/games/scenes/`): uma cena nova é só um arquivo de dados (`sea-scene.js`) mais a arte. Raios de luz, bolhas que a criança estoura, plâncton brilhante, peixes que atravessam a tela, tubarão que espanta o cardume, golfinho que salta, baleia que solta jato e canta.
+- **Cada bicho reage do seu jeito**: baiacu infla, polvo muda de cor, baú e concha abrem com brilho, estrela gira, cavalo-marinho faz looping, água-viva pula, caranguejo corre de lado.
+- **Descobertas, sem pressa e sem derrota**: cada bicho tocado pela primeira vez entra numa fileira de medalhas no topo. Ao juntar 3 a 7 (conforme a idade) a cena comemora. O **peixinho guia** aparece se a criança parar e aponta um bicho que ela ainda não achou.
+- **A cena muda a cada visita**: dia, entardecer e noite (com plâncton e água-viva brilhando). Descobertas ficam guardadas só no aparelho.
+- **Modo lite** (`scene-lite.js`): mesma ilustração com figuras em HTML/CSS para aparelhos antigos.
+- Novo `npm run test:scenes` (jogo completo em 3 idades, reação de cada bicho, modo lite) e etapa na integração contínua; `legacy-audit` e `play-all` conhecem a cena.
+- `shouldUseLite()` passou para `src/engine/stage.js` (compartilhado pelos dois jogos).
+- Documentos: `docs/FERRAMENTAS_DE_ARTE_IA.md` (o que testamos e como gerar mais arte) e fila de locuções atualizada.
+
 ## 2026-10-07 (2) — Fazendinha Viva: novo visual, horta, desbloqueios e modo lite
 - **Novo visual** (estilo chapado e vibrante, inspirado em animação infantil brasileira): sol e lua com carinha, listras e bolinhas nos morros, celeiro com telhado de escamas, bandeirinhas, cerca colorida, textura leve de guache. Bichos redesenhados com acessórios (lenço, gravata-borboleta, coleira com sino), padrões e olhos grandes.
 - **Horta**: depois de alimentar os bichos, a criança rega (arrastando o regador ou tocando na terra), vê o brotinho crescer e colhe cenoura, tomate ou abóbora. A colheita e os ovos vão para a mesma cesta e são contados em voz alta (até 6).

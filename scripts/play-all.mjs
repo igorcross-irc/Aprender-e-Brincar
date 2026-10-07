@@ -150,6 +150,11 @@ async function playSpecial(page) {
     if (item) await item.click(); else await page.waitForTimeout(500);
     return true;
   }
+  if (await page.$('#scene-lite')) {
+    for (const creature of await page.$$('.scene-lite-c')) { await creature.dispatchEvent('click'); await page.waitForTimeout(250); }
+    await page.waitForTimeout(5000);
+    return true;
+  }
   if (await page.$('#farm-lite')) {
     for (const food of await page.$$('[data-food]:not([disabled])')) { await food.click(); await page.waitForTimeout(500); }
     await page.waitForTimeout(6000);

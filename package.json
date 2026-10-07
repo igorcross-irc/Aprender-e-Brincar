@@ -13,6 +13,7 @@
     "audit:audio": "node scripts/audio-audit.mjs",
     "test:e2e": "npm run build && node scripts/e2e-test.mjs",
     "test:farm": "npm run build && node scripts/farm-test.mjs",
+    "test:scenes": "npm run build && node scripts/scene-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
     "prebuild": "node scripts/audio-index.mjs && node scripts/native-fingerprint.mjs",
     "test:play-all": "npm run build && node scripts/play-all.mjs",
