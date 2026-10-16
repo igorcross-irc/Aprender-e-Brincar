@@ -64,9 +64,16 @@ async function playWebgl(context, age, visits) {
   await wait(1200);
   const beds = await page.evaluate(() => window.__farm.beds.map((b) => ({ x: b.root.x, y: b.root.y - 28 })));
   for (const bed of beds) { await page.mouse.click(box.x + bed.x, box.y + bed.y); await wait(250); }
-  await wait(1800);
-  for (const bed of beds) { await page.mouse.click(box.x + bed.x, box.y + bed.y); await wait(700); }
-  if (await page.evaluate(() => window.__farm.harvested) === beds.length) pass(`${age}: regou e colheu ${beds.length} canteiros`); else fail(`${age}: colheita incompleta`);
+  // Espera os legumes crescerem (o tempo varia com a carga da máquina) antes de colher.
+  await page.waitForFunction(() => window.__farm.beds.every((b) => b.ready), null, { timeout: 10000 }).catch(() => {});
+  await wait(400);
+  // Um enfeite que passa na frente (balão, borboleta) pode engolir um toque: repete nos canteiros que faltam.
+  for (let round = 0; round < 5; round += 1) {
+    const missing = await page.evaluate(() => window.__farm.beds.map((b, i) => ({ i, x: b.root.x, y: b.root.y - 28, ok: b.harvested })).filter((b) => !b.ok));
+    if (!missing.length) break;
+    for (const bed of missing) { await page.mouse.click(box.x + bed.x, box.y + bed.y); await wait(700); }
+  }
+  if (await page.evaluate(() => window.__farm.harvested) === beds.length) pass(`${age}: regou e colheu ${beds.length} canteiros`); else { fail(`${age}: colheita incompleta`); console.error(JSON.stringify(await page.evaluate(() => window.__farm.beds.map((b) => ({ x: Math.round(b.root.x), y: Math.round(b.root.y), w: b.watered, r: b.ready, h: b.harvested }))))); }
   await page.waitForSelector('#session-again', { timeout: 15000 }).then(() => pass(`${age}: noite chega e a comemoração abre`), () => fail(`${age}: a comemoração não abriu`));
   if (errors.length) fail(`${age}: erros de JavaScript: ${errors.slice(0, 2).join(' | ')}`); else pass(`${age}: sem erros de JavaScript`);
   await page.close();
