@@ -14,6 +14,7 @@ Tudo o que foi feito está na branch `claude/plano-jogos-profissionais`. **Nada 
 | Histórias | **9 de 31 ilustradas, 0 narradas** | texto das 31 pronto; faltam créditos de imagem e de voz |
 | Testes automáticos | prontos | núcleo, auditorias, aparelho antigo, ponta a ponta, Fazendinha, Cenas, Histórias |
 | Estúdio dos Bichos | pronto, com modo lite | até 3 anos toca nos bichos; de 3 a 5 anos monta e guarda uma música (4 trilhas) |
+| Ateliê Mágico (branch `claude/atelie-magico`) | pronto, com modo lite | 5 desenhos para pintar; ao pintar bastante o desenho ganha vida e toca uma música |
 | Anúncios | **não** implementados, de propósito | critérios em `docs/MONETIZACAO_E_ANUNCIOS.md` |
 
 ## 2. Regras de entrega
