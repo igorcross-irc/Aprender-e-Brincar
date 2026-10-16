@@ -190,6 +190,14 @@ async function run() {
   if (creature) { await creature.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.scene-lite-dot.on')) pass('fundo do mar lite: tocar no bicho conta uma descoberta'); else fail('fundo do mar lite não contou a descoberta'); }
   await checkEmoji('fundo do mar');
   await shot('02c-fundo-do-mar-lite');
+  // Estúdio dos Bichos: aparelho antigo recebe a versão lite (HTML/CSS) e os bichos respondem ao toque.
+  await openGame('2-3y', 'studio');
+  if (await page.$('#studio-lite')) pass('estúdio dos bichos usa o modo lite no aparelho antigo');
+  else fail('estúdio dos bichos não entrou no modo lite');
+  const band = await page.$('.studio-lite-animal');
+  if (band) { await band.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.studio-lite-animal.hit')) pass('estúdio lite: tocar no bicho faz ele tocar'); else fail('estúdio lite: o bicho não reagiu'); }
+  await checkEmoji('estúdio dos bichos');
+  await shot('02e-estudio-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

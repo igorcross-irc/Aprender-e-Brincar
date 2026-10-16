@@ -525,3 +525,21 @@ img { -webkit-user-drag: none; }
 @keyframes sb-turn { from { opacity: .2; transform: translateX(24px); } to { opacity: 1; transform: none; } }
 @keyframes sb-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 @media (prefers-reduced-motion: reduce) { .sb-img.turn, .sb-arrow.pulse { animation: none; } }
+
+/* Estúdio dos Bichos */
+.studio-stage { position: relative; width: 100%; height: min(74vh, 700px); min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: #7a3fd0; box-shadow: 0 8px 24px rgba(0, 0, 0, .14); touch-action: none; -webkit-user-select: none; user-select: none; }
+.studio-lite { position: relative; width: 100%; min-height: 360px; border-radius: var(--ab-radius-lg); overflow: hidden; background: linear-gradient(#7a3fd0, #ff9a4d); padding: 12px; box-sizing: border-box; }
+.studio-lite-band { display: flex; justify-content: space-around; align-items: flex-end; gap: 8px; padding-bottom: 8px; border-bottom: 6px solid #ffcf1f; }
+.studio-lite-animal { flex: 1; max-width: 160px; aspect-ratio: 1; border: 0; border-radius: 50%; background: #fff4dc; box-shadow: inset 0 0 0 6px var(--c); font-size: 54px; line-height: 1; padding: 0; }
+.studio-lite-band.free .studio-lite-animal { max-width: 200px; font-size: 72px; }
+.studio-lite-animal.hit { animation: studio-pop .4s ease-out; }
+.studio-lite-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; position: relative; padding-right: 76px; }
+.studio-lite-row { display: flex; gap: 8px; }
+.studio-lite-cell { flex: 1; aspect-ratio: 1; max-height: 56px; border-radius: 14px; border: 3px solid var(--c); background: rgba(255, 255, 255, .78); padding: 0; }
+.studio-lite-cell.on { background: var(--c); }
+.studio-lite-cell.now { outline: 4px solid #fff; }
+.studio-lite-tools { position: absolute; right: 0; top: 0; display: flex; flex-direction: column; gap: 14px; }
+.studio-lite-play, .studio-lite-clear { width: 64px; height: 64px; border-radius: 50%; border: 4px solid #fff; color: #fff; font-size: 26px; padding: 0; }
+.studio-lite-play { background: #3dc15d; }
+.studio-lite-clear { background: #2f7de1; width: 52px; height: 52px; margin-left: 6px; }
+@keyframes studio-pop { 0% { transform: scale(1); } 40% { transform: scale(1.18, .86); } 100% { transform: scale(1); } }

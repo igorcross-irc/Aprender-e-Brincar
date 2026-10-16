@@ -160,6 +160,19 @@ async function playSpecial(page) {
     await page.waitForTimeout(5000);
     return true;
   }
+  if (await page.$('#studio-lite')) {
+    const cells = await page.$$('.studio-lite-cell');
+    if (cells.length) {
+      for (let i = 0; i < cells.length && i < 20; i += 5) { await cells[i].dispatchEvent('click'); await page.waitForTimeout(150); }
+      const play = await page.$('#studio-lite-play');
+      if (play) await play.dispatchEvent('click');
+      await page.waitForTimeout(9000);
+    } else {
+      for (let i = 0; i < 14; i += 1) { const animals = await page.$$('.studio-lite-animal'); await animals[i % animals.length].dispatchEvent('click'); await page.waitForTimeout(150); }
+      await page.waitForTimeout(3500);
+    }
+    return true;
+  }
   if (await page.$('#farm-lite')) {
     for (const food of await page.$$('[data-food]:not([disabled])')) { await food.click(); await page.waitForTimeout(500); }
     await page.waitForTimeout(6000);

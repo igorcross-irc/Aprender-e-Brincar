@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-16 — Estúdio dos Bichos (3º jogo-âncora) e histórias narradas
+- **Estúdio dos Bichos:** banda de bichos (vaca, galinha, cachorro, gato) com instrumentos sintetizados no aparelho (bumbo, xilofone, tambor, sininho). Até 3 anos: tocar nos bichos (2 a 4 bichos, sem objetivo). A partir de 3 anos: sequenciador de quadradinhos com 4 trilhas (4 ou 8 passos), a música fica guardada no aparelho. Modo lite em HTML/CSS. Teste: `npm run test:studio`.
+- **Narração provisória:** as 31 histórias narradas com a voz Kokoro `pf_dora` (grátis, offline). `scripts/narrate-kokoro.py`, `docs/NARRACAO.md`.
+- **Ilustrações:** Patinho Feio e Sapo-Cururu (Canva). 11 de 31 ilustradas; o resto espera créditos de imagem.
+
 ## 2026-10-07 (4) — Hora da Historinha: 31 histórias de domínio público (9 já ilustradas)
 - **Catálogo de 31 histórias** em domínio público ou tradição popular, 5 a 6 por faixa de idade (6–12 m a 4–5 anos): cantigas de roda para os bebês, fábulas de Esopo, contos de Perrault, Grimm, Andersen, Jacobs, Southey, Kipling, Beatrix Potter, Monteiro Lobato e folclore brasileiro (A Festa no Céu, O Curupira). Textos recontados por nós; direitos e créditos em `docs/HISTORIAS.md`.
 - **Leitor** (`storybook.js`, HTML/CSS, funciona em aparelho antigo): estante de capas, páginas ilustradas, botão grande de avançar que pulsa ao fim da fala, deslizar o dedo, "Aa" (mostrar texto), "Auto" (vira sozinho), estrela nas já lidas e crédito do autor na última página.

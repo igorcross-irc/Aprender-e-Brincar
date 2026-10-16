@@ -167,7 +167,7 @@ Os prazos assumem arte entregue em paralelo; sem artista dedicado, a Fase 1 dobr
 ### Lista fechada de jogos-âncora (máximo 6)
 1. Fazendinha Viva — feita
 2. Mundo das Cenas — Fundo do Mar feito (mais cenas: floresta, quintal, noite e espaço)
-3. Estúdio dos Bichos
+3. Estúdio dos Bichos — feito (tocar nos bichos até 3 anos; sequenciador de 4 trilhas a partir de 3 anos; modo lite)
 4. Ateliê Mágico
 5. Cozinha Maluca
 6. (opcional) Histórias Vivas

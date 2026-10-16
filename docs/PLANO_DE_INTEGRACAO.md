@@ -13,6 +13,7 @@ Tudo o que foi feito está na branch `claude/plano-jogos-profissionais`. **Nada 
 | Hora da Historinha (leitor) | pronto | funciona em HTML/CSS, inclusive em aparelho antigo |
 | Histórias | **9 de 31 ilustradas, 0 narradas** | texto das 31 pronto; faltam créditos de imagem e de voz |
 | Testes automáticos | prontos | núcleo, auditorias, aparelho antigo, ponta a ponta, Fazendinha, Cenas, Histórias |
+| Estúdio dos Bichos | pronto, com modo lite | até 3 anos toca nos bichos; de 3 a 5 anos monta e guarda uma música (4 trilhas) |
 | Anúncios | **não** implementados, de propósito | critérios em `docs/MONETIZACAO_E_ANUNCIOS.md` |
 
 ## 2. Regras de entrega
@@ -40,8 +41,8 @@ O que entra: as 22 histórias que faltam ilustradas e as 31 narradas.
 4. `npm run audit:stories` precisa mostrar 5 ou mais por faixa, com arte e narração.
 5. **Tamanho:** a narração acrescenta cerca de 15 MB e as ilustrações cerca de 8 MB (hoje o site tem ≈ 21 MB). Como cada atualização de conteúdo baixa o zip inteiro, a proposta é publicar a narração como **pacote separado** ("Baixar histórias narradas", na Área da Família, com a família no Wi-Fi) e manter só as ilustrações no zip principal. Decidir isso antes de gerar as 31 narrações.
 
-### Etapa C — "Estúdio dos Bichos" (versão 0.9.0)
-Terceiro jogo-âncora (música reativa com bichos). Ao entregá-lo, **revisar o marco de anúncios** (3 jogos lançados).
+### Etapa C — "Estúdio dos Bichos" (versão 0.9.0, ou junto da 0.7.0)
+Terceiro jogo-âncora, **já pronto no código** (`npm run test:studio`). Ele pode entrar na 0.7.0 junto dos outros. O marco de anúncios foi revisado em 16/10/2026 (`docs/MONETIZACAO_E_ANUNCIOS.md`): recomendação de não abrir anúncios ainda.
 
 ### Etapa D — Faxina do catálogo antigo
 Depois que o piloto mostrar que os jogos-âncora seguram a atenção, esconder o que ficou redundante, **nunca apagar**:
@@ -66,7 +67,7 @@ Floresta, quintal e espaço (só dados e arte, receita em `design/scenes/README.
 | Aparelho antigo | continua abrindo tudo (iOS 9, Android 5) | `audit:legacy` |
 
 ## 5. Bateria antes de cada release
-Automática (já no CI): `test:core`, `smoke`, `audit:games`, `audit:child-interface`, `audit:audio`, `audit:stories`, build, `test:e2e`, `audit:legacy`, `test:farm`, `test:scenes`. Antes de uma versão grande, rodar também `test:play-all`.
+Automática (já no CI): `test:core`, `smoke`, `audit:games`, `audit:child-interface`, `audit:audio`, `audit:stories`, build, `test:e2e`, `audit:legacy`, `test:farm`, `test:scenes`, `test:studio`. Antes de uma versão grande, rodar também `test:play-all`.
 
 Manual, em aparelho real (o que o robô não vê):
 - Android moderno (celular e tablet), Android de entrada, iPad/iPhone antigo e um recente.
