@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-10-16 (3) — Cozinha Maluca (5º jogo-âncora)
+- **Torre de Blocos (12 meses a 5 anos):** peças coloridas que caem, quicam e encaixam na grade. Até 2 anos: empilhar e derrubar tocando no sino. Aos 2–3 anos: contar as peças (voz dos números). Aos 3–5 anos: copiar construções (torre, casinha, ponte, castelo): aos 3–4 anos toca na peça e ela vai ao lugar certo, a próxima peça pisca; aos 4–5 anos arrasta a peça até o contorno. Peça no lugar errado só volta para a bandeja. Construções prontas ficam guardadas em `ab_blocos_v1`. Modo lite em blocos de CSS. Teste: `npm run test:blocos`.
 - **Cozinha Maluca (3–5 anos):** um bichinho chega e pede um prato **por figura**; a criança prepara em etapas visuais: juntar ingredientes (na ordem das figurinhas), **contar colheres** (voz diz um, dois, três), **mexer** (tocando ou girando o dedo), **assar** (forno com contagem em anel e sininho) e **servir**. Dez receitas (sanduíche, suco de laranja, suco de morango, salada, salada de frutas, peixe assado, omelete, bolo de morango, bolo de cenoura, sopa), 2 pedidos aos 3–4 anos e 3 aos 4–5. Ingrediente errado só balança e volta; nada de derrota. O livro de receitas feitas fica guardado no aparelho. Teste: `npm run test:cozinha`.
 - Fallback de emojis (iOS antigo) atualizado para os novos ingredientes.
 - Teste da Fazendinha ficou mais robusto: espera os legumes crescerem e repete o toque quando um enfeite passa na frente do canteiro.

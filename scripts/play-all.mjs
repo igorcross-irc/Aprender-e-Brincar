@@ -172,6 +172,18 @@ async function playSpecial(page) {
     }
     return true;
   }
+  if (await page.$('#blocos-lite')) {
+    for (let i = 0; i < 20; i += 1) {
+      const bell = await page.$('#blocos-lite-bell');
+      const hint = await page.$('.blocos-lite-btn.hint');
+      if (bell) await bell.dispatchEvent('click');
+      else if (hint) await hint.dispatchEvent('click');
+      else { const any = await page.$('.blocos-lite-btn'); if (any) await any.dispatchEvent('click'); }
+      await page.waitForTimeout(260);
+      if (await page.$('#session-again')) break;
+    }
+    return true;
+  }
   if (await page.$('#atelie-lite')) {
     const parts = await page.$$('.atelie-lite-region');
     for (const part of parts.slice(0, 12)) { await part.dispatchEvent('click'); await page.waitForTimeout(120); }

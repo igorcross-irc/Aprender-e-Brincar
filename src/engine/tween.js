@@ -5,6 +5,7 @@ export const ease = {
   outQuad: (k) => 1 - (1 - k) * (1 - k),
   outCubic: (k) => 1 - Math.pow(1 - k, 3),
   outBack: (k) => { const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); },
+  outBounce: (k) => { const n = 7.5625; const d = 2.75; if (k < 1 / d) return n * k * k; if (k < 2 / d) { const t = k - 1.5 / d; return n * t * t + 0.75; } if (k < 2.5 / d) { const t = k - 2.25 / d; return n * t * t + 0.9375; } const t = k - 2.625 / d; return n * t * t + 0.984375; },
   outElastic: (k) => (k === 0 ? 0 : k === 1 ? 1 : Math.pow(2, -10 * k) * Math.sin((k * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1)
 };
 

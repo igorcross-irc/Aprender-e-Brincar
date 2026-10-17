@@ -51,3 +51,5 @@ jobs:
         run: node scripts/atelie-test.mjs
       - name: Cozinha Maluca (WebGL e modo lite)
         run: node scripts/cozinha-test.mjs
+      - name: Torre de Blocos (WebGL e modo lite)
+        run: node scripts/blocos-test.mjs

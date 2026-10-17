@@ -213,6 +213,13 @@ async function run() {
   if (ingredient) { await ingredient.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.cozinha-lite-step.done')) pass('cozinha lite: o ingrediente certo cumpre a etapa'); else fail('cozinha lite: a etapa não foi cumprida'); }
   await checkEmoji('cozinha maluca');
   await shot('02g-cozinha-lite');
+  // Torre de Blocos: blocos de CSS empilhados no aparelho antigo.
+  await openGame('3-4y', 'blocos');
+  if (await page.$('#blocos-lite .blocos-lite-btn')) pass('torre de blocos usa o modo lite no aparelho antigo');
+  else fail('torre de blocos não entrou no modo lite');
+  const blockBtn = await page.$('.blocos-lite-btn.hint');
+  if (blockBtn) { await blockBtn.dispatchEvent('click'); await page.waitForTimeout(300); if ((await page.$$('#blocos-lite-mine .blocos-lite-piece')).length >= 1) pass('blocos lite: a peça certa entra na torre'); else fail('blocos lite: a peça não entrou na torre'); }
+  await shot('02h-blocos-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');
