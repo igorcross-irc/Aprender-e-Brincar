@@ -42,7 +42,7 @@ def pieces(audio, pages):
     for noise in (-40, -35, -45, -30, -50):
         for min_silence in (1.4, 1.0, 1.8, 0.8):
             starts, ends = detect(audio, noise, min_silence)
-            # Silêncio inicial/final não separa páginas.
+            # Silêncio inicial/final não separa páginas. (O corte das pontas aparece no ffmpeg abaixo: só as pontas, para não comer as pausas da fala.)
             cuts = [(s, e) for s, e in zip(starts, ends) if s > 0.4 and e < total - 0.4]
             if len(cuts) == pages - 1:
                 bounds = [0.0] + [(s + e) / 2 for s, e in cuts] + [total]
@@ -62,7 +62,7 @@ def main(audio, story_id):
     for i, (a, b) in enumerate(found, start=1):
         target = out_dir / f'p{i}.mp3'
         subprocess.run(['ffmpeg', '-y', '-hide_banner', '-loglevel', 'error', '-ss', f'{a:.3f}', '-to', f'{b:.3f}', '-i', str(audio),
-                        '-af', 'silenceremove=start_periods=1:start_threshold=-45dB:stop_periods=1:stop_threshold=-45dB:stop_silence=0.3,adelay=250|250,apad=pad_dur=0.25',
+                        '-af', 'silenceremove=start_periods=1:start_threshold=-45dB,areverse,silenceremove=start_periods=1:start_threshold=-45dB,areverse,adelay=250|250,apad=pad_dur=0.25',
                         '-ac', '1', '-ar', '44100', '-b:a', '64k', str(target)], check=True)
     print(f'{story_id}: {len(found)} páginas narradas em {out_dir.relative_to(ROOT)}')
 
