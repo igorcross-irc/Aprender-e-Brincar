@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2026-10-16 (3) — Cozinha Maluca (5º jogo-âncora)
-- **Cozinha Maluca (3–5 anos):** um bichinho chega e pede um prato **por figura**; a criança prepara em etapas visuais: juntar ingredientes (na ordem das figurinhas), **contar colheres** (voz diz um, dois, três), **mexer** (tocando ou girando o dedo), **assar** (forno com contagem em anel e sininho) e **servir**. Seis receitas (sanduíche, suco, salada, peixe assado, bolo de morango, sopa), 2 pedidos aos 3–4 anos e 3 aos 4–5. Ingrediente errado só balança e volta; nada de derrota. O livro de receitas feitas fica guardado no aparelho. Teste: `npm run test:cozinha`.
+- **Cozinha Maluca (3–5 anos):** um bichinho chega e pede um prato **por figura**; a criança prepara em etapas visuais: juntar ingredientes (na ordem das figurinhas), **contar colheres** (voz diz um, dois, três), **mexer** (tocando ou girando o dedo), **assar** (forno com contagem em anel e sininho) e **servir**. Dez receitas (sanduíche, suco de laranja, suco de morango, salada, salada de frutas, peixe assado, omelete, bolo de morango, bolo de cenoura, sopa), 2 pedidos aos 3–4 anos e 3 aos 4–5. Ingrediente errado só balança e volta; nada de derrota. O livro de receitas feitas fica guardado no aparelho. Teste: `npm run test:cozinha`.
 - Fallback de emojis (iOS antigo) atualizado para os novos ingredientes.
 - Teste da Fazendinha ficou mais robusto: espera os legumes crescerem e repete o toque quando um enfeite passa na frente do canteiro.
 

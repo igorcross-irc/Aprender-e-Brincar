@@ -7,7 +7,7 @@ import { Particles } from '../../../engine/particles.js';
 import * as farm from '../farm/art.js';
 import * as art from './cozinha-art.js';
 import { CozinhaLiteGame } from './cozinha-lite.js';
-import { INGREDIENTS, PLAN_BY_AGE, NUMBER_WORDS, pickOrders, shelfFor } from './cozinha-data.js';
+import { INGREDIENTS, RECIPES, PLAN_BY_AGE, NUMBER_WORDS, pickOrders, shelfFor } from './cozinha-data.js';
 
 // Cozinha Maluca — a criança atende bichinhos que pedem um prato POR FIGURA e prepara a receita em etapas:
 // juntar os ingredientes, contar colheres, mexer, assar e servir. Nenhuma derrota: ingrediente errado só balança e volta.
@@ -138,7 +138,7 @@ export class CozinhaGame {
     this.bubble = b;
     b.bg = new PIXI.Graphics();
     b.addChild(b.bg);
-    const dish = art.buildDish(PIXI, recipe.id);
+    const dish = art.buildDish(PIXI, recipe.id, RECIPES);
     b.dish = dish; b.addChild(dish);
     b.steps = recipe.steps.map((step, i) => {
       const c = new PIXI.Container();
@@ -439,7 +439,7 @@ export class CozinhaGame {
     this.dishReady = true;
     const { PIXI, recipe, vessel } = this;
     vessel.contents.removeChildren().forEach((ch) => ch.destroy({ children: true }));
-    const dish = art.buildDish(PIXI, recipe.id);
+    const dish = art.buildDish(PIXI, recipe.id, RECIPES);
     dish.y = -6; vessel.contents.addChild(dish);
     if (vessel.isBowl) vessel.base.visible = false;
     if (vessel.isBowl) { const plate = art.buildPlate(PIXI, 170); vessel.addChildAt(plate, 0); vessel.plate = plate; }

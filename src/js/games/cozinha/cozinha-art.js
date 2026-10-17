@@ -150,7 +150,9 @@ export function buildLayer(PIXI, id, index) {
 }
 
 // Prato final de cada receita (substitui a montagem quando está pronto).
-export function buildDish(PIXI, recipeId) {
+export function buildDish(PIXI, recipeIdIn, recipes = {}) {
+  const def = recipes[recipeIdIn] || {};
+  const recipeId = def.dish || recipeIdIn;
   const g = new PIXI.Container();
   const add = (gr) => { g.addChild(gr); return gr; };
   if (recipeId === 'sanduiche') {
@@ -161,7 +163,7 @@ export function buildDish(PIXI, recipeId) {
     [[-24, -38], [0, -42], [24, -38]].forEach(([x, y]) => disc(PIXI, g, x, y, 2.6, 0xfff0cc));
   } else if (recipeId === 'suco') {
     ink(add(new PIXI.Graphics().moveTo(-28, -50).lineTo(28, -50).lineTo(22, 22).quadraticCurveTo(0, 30, -22, 22).closePath().fill(0xe6f6ff)), 4);
-    add(new PIXI.Graphics().moveTo(-25, -30).lineTo(25, -30).lineTo(20, 20).quadraticCurveTo(0, 27, -20, 20).closePath().fill(P.orange));
+    add(new PIXI.Graphics().moveTo(-25, -30).lineTo(25, -30).lineTo(20, 20).quadraticCurveTo(0, 27, -20, 20).closePath().fill(def.liquid || P.orange));
     add(new PIXI.Graphics().roundRect(-18, -26, 6, 36, 3).fill({ color: 0xffffff, alpha: 0.5 }));
     add(new PIXI.Graphics().roundRect(10, -66, 8, 44, 4).fill(P.pink)).rotation = 0.25;
     ink(add(new PIXI.Graphics().ellipse(26, -52, 12, 12).fill(P.sun)), 3);
@@ -177,6 +179,21 @@ export function buildDish(PIXI, recipeId) {
     [-36, -12, 14, 38].forEach((x) => add(new PIXI.Graphics().roundRect(x - 6, -6, 12, 18, 6).fill(P.pink)));
     ink(add(new PIXI.Graphics().roundRect(-52, -16, 104, 44, 10).fill({ color: 0xffffff, alpha: 0 })), 4);
     [-30, 0, 30].forEach((x) => { add(new PIXI.Graphics().circle(x, -26, 12).fill(P.red)); add(new PIXI.Graphics().rect(x - 1, -42, 3, 8).fill(P.green)); disc(PIXI, g, x - 3, -29, 2, 0xffe8a3); });
+  } else if (recipeId === 'omelete') {
+    ink(add(new PIXI.Graphics().ellipse(0, 6, 62, 30).fill(0xffffff)), 4);
+    ink(add(new PIXI.Graphics().moveTo(-48, 8).bezierCurveTo(-44, -26, 44, -26, 48, 8).bezierCurveTo(30, 22, -30, 22, -48, 8).closePath().fill(0xffd84a)), 4);
+    [[-22, -2], [4, -8], [26, 0]].forEach(([x, y]) => disc(PIXI, g, x, y, 5, P.sun));
+    add(new PIXI.Graphics().poly([-8, 4, 10, 4, 2, 14]).fill(0xfff2a0));
+    [[-30, 6, P.red], [30, 8, P.green]].forEach(([x, y, c]) => disc(PIXI, g, x, y, 4, c));
+  } else if (recipeId === 'frutas') {
+    ink(add(new PIXI.Graphics().moveTo(-58, -14).bezierCurveTo(-56, 30, -26, 34, 0, 34).bezierCurveTo(26, 34, 56, 30, 58, -14).closePath().fill(0xffffff)), 4);
+    [[-34, -22, P.red], [-12, -30, P.orange], [14, -26, P.red], [34, -18, P.orange], [-2, -14, P.sun], [22, -8, P.red], [-26, -8, P.orange]].forEach(([x, y, c]) => { disc(PIXI, g, x, y, 11, c); disc(PIXI, g, x - 3, y - 3, 2.4, 0xffffff, 0.7); });
+    add(new PIXI.Graphics().ellipse(0, -36, 6, 3).fill(P.green));
+  } else if (recipeId === 'bolocenoura') {
+    ink(add(new PIXI.Graphics().roundRect(-52, -16, 104, 44, 10).fill(0xf0a04a)), 4);
+    add(new PIXI.Graphics().roundRect(-52, -16, 104, 18, 10).fill(0x7a4a2b));
+    [-36, -12, 14, 38].forEach((x) => add(new PIXI.Graphics().roundRect(x - 6, -6, 12, 16, 6).fill(0x7a4a2b)));
+    [-24, 22].forEach((x) => { add(new PIXI.Graphics().poly([x - 8, -34, x + 8, -34, x, -8]).fill(P.orange)); add(new PIXI.Graphics().ellipse(x, -38, 9, 5).fill(P.green)); });
   } else if (recipeId === 'peixe') {
     ink(add(new PIXI.Graphics().poly([34, 0, 66, -24, 66, 24]).fill(0xd98a4a)), 4);
     ink(add(new PIXI.Graphics().ellipse(-6, 0, 46, 28).fill(0xe6a866)), 4);

@@ -57,6 +57,7 @@ async function playWebgl(context, age, visits) {
     if (state.finished) break;
     if (!state.action) { await wait(250); continue; }
     if (SHOTS && state.step === 2 && shot < 3) { shot += 1; await page.screenshot({ path: `${SHOTS}/${age}-${visits}-${state.id}.png` }); }
+    if (SHOTS && state.action.type === 'serve') await page.screenshot({ path: `${SHOTS}/dish-${age}-${visits}-${state.id}.png` });
     if (state.action.type === 'mix') { for (let k = 0; k < 4; k += 1) { await page.mouse.click(box.x + state.action.x, box.y + state.action.y); await wait(160); } }
     else await page.mouse.click(box.x + state.action.x, box.y + state.action.y);
     if (state.action.type === 'bake') await wait(3600);
@@ -108,8 +109,8 @@ try {
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   const context = await browser.newContext({ viewport: { width: 420, height: 860 }, serviceWorkers: 'block' });
   if (process.env.ONLY) { await playWebgl(context, '3-4y', 1); } else {
-  console.log('3–4 anos'); await playWebgl(context, '3-4y', 1); await playWebgl(context, '3-4y', 2);
-  console.log('4–5 anos'); await playWebgl(context, '4-5y', 1); await playWebgl(context, '4-5y', 2);
+  console.log('3–4 anos'); for (const v of [1, 2, 3]) await playWebgl(context, '3-4y', v);
+  console.log('4–5 anos'); for (const v of [1, 2, 3, 4]) await playWebgl(context, '4-5y', v);
   console.log('Erro gentil'); await wrongIngredient(context);
   console.log('Modo lite'); await playLite(context, '3-4y', 2); await playLite(context, '4-5y', 2); }
   await browser.close();
