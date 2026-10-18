@@ -137,6 +137,45 @@ async function voice(context) {
   await page.close();
 }
 
+async function galleryAndBook(context) {
+  console.log('Galeria e Meu Livro');
+  const { page, errors } = await setup(context, '18-24m');
+  await page.click('[data-world="create-move"]');
+  await page.click('[data-game="blocos"]');
+  await page.waitForFunction(() => window.__blocos && window.__blocos.trayNodes && Object.keys(window.__blocos.trayNodes).length, null, { timeout: 20000 });
+  await wait(400);
+  const box = await (await page.$('#blocos-stage')).boundingBox();
+  for (let guard = 0; guard < 60; guard += 1) {
+    const st = await page.evaluate(() => { const b = window.__blocos; return { done: b.finished, a: b.nextAction() }; });
+    if (st.done) break;
+    if (!st.a) { await wait(250); continue; }
+    if (st.a.type === 'tap') { await page.mouse.click(box.x + st.a.x, box.y + st.a.y); await wait(800); }
+    else { await page.mouse.move(box.x + st.a.from.x, box.y + st.a.from.y); await page.mouse.down(); await page.mouse.move(box.x + st.a.to.x, box.y + st.a.to.y, { steps: 8 }); await page.mouse.up(); await wait(800); }
+  }
+  await page.waitForSelector('#session-again', { timeout: 15000 });
+  const count = await page.evaluate(() => new Promise((resolve) => {
+    const req = indexedDB.open('ab_gallery', 1);
+    req.onsuccess = () => { const c = req.result.transaction('works').objectStore('works').count(); c.onsuccess = () => resolve(c.result); c.onerror = () => resolve(-1); };
+    req.onerror = () => resolve(-1);
+  }));
+  if (count >= 1) pass('a construção virou uma foto na galeria'); else fail(`galeria vazia (${count})`);
+  await page.click('#btn-home-logo'); await page.waitForSelector('[data-world]');
+  await openGate(page);
+  await page.waitForSelector('.gal-item', { timeout: 5000 }).then(() => pass('a foto aparece na Área da Família'), () => fail('a galeria não mostrou a foto'));
+  const imgOk = await page.$eval('.gal-item img', (img) => new Promise((r) => { if (img.complete && img.naturalWidth > 0) r(true); else { img.onload = () => r(img.naturalWidth > 0); img.onerror = () => r(false); } }));
+  if (imgOk) pass('a foto tem imagem de verdade'); else fail('a foto veio em branco');
+  await page.click('#btn-meu-livro');
+  await page.waitForSelector('.book-print .book-page');
+  const pages = await page.$$eval('.book-print .book-page', (els) => els.length);
+  if (pages >= 3) pass(`Meu Livro com ${pages} páginas (capa, obras e fim)`); else fail(`Meu Livro com ${pages} páginas`);
+  const cover = await page.textContent('.book-cover');
+  if (/Meu Livro/.test(cover) && /Ana/.test(cover)) pass('a capa leva o nome da criança'); else fail('capa sem o nome');
+  await page.click('#book-close');
+  if (!(await page.$('.book-print'))) pass('o livro fecha'); else fail('o livro não fechou');
+  if (errors.length) fail(`erros de JavaScript: ${errors.slice(0, 2).join(' | ')}`); else pass('sem erros de JavaScript');
+  await page.close();
+}
+
 try {
   unitTests();
   await waitForServer();
@@ -144,6 +183,7 @@ try {
   const context = await browser.newContext({ viewport: { width: 420, height: 860 }, serviceWorkers: 'block', permissions: ['microphone'] });
   await homeAndDiary(context);
   await voice(context);
+  await galleryAndBook(context);
   await browser.close();
 } catch (error) {
   fail(`falha inesperada: ${error.message}`);

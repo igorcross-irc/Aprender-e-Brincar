@@ -633,3 +633,26 @@ img { -webkit-user-drag: none; }
 .home-hero .child-mascot { animation: mascot-bob 3.2s ease-in-out infinite; transform-origin: 50% 90%; }
 @keyframes mascot-bob { 0%, 100% { transform: translateY(0) rotate(0); } 40% { transform: translateY(-5px) rotate(-2deg); } 70% { transform: translateY(0) rotate(2deg); } }
 @media (prefers-reduced-motion: reduce) { .home-hero .child-mascot { animation: none; } }
+
+/* Galeria e Meu Livro */
+.gal-grid { display: flex; flex-wrap: wrap; margin: 6px -4px 10px; }
+.gal-item { width: calc(50% - 8px); margin: 4px; background: #fff; border: 2px solid #ddd6fe; border-radius: 14px; padding: 6px; box-sizing: border-box; }
+.gal-item img { width: 100%; display: block; border-radius: 10px; }
+.gal-item figcaption { font-size: 12px; line-height: 1.3; margin-top: 4px; position: relative; padding-right: 30px; text-align: left; }
+.gal-del { position: absolute; right: 0; top: -2px; min-width: 32px; min-height: 32px; border: 0; background: transparent; }
+.book-print { position: fixed; inset: 0; z-index: 1000; overflow: auto; background: #fff7ed; padding: 12px; text-align: center; }
+.book-toolbar { max-width: 28rem; margin: 0 auto 12px; }
+.book-page { max-width: 28rem; margin: 0 auto 16px; background: #fff; border: 3px solid #2a1b3d; border-radius: 20px; padding: 18px; page-break-inside: avoid; }
+.book-page h1 { font-size: 2.4rem; margin: 8px 0; color: #7c3aed; }
+.book-page h2 { font-size: 1.5rem; margin: 6px 0 10px; color: #7c3aed; }
+.book-page img { width: 100%; border-radius: 14px; border: 3px solid #2a1b3d; }
+.book-page p { font-size: 1.1rem; font-weight: 700; margin: 8px 0 2px; }
+.book-name { font-size: 1.5rem !important; }
+.book-owl { font-size: 4rem !important; line-height: 1; }
+.book-end ul { text-align: left; padding-left: 1.2rem; }
+@media print {
+  body.printing-book > *:not(.book-print) { display: none !important; }
+  .book-print { position: static; background: #fff; padding: 0; overflow: visible; }
+  .book-toolbar { display: none !important; }
+  .book-page { page-break-after: always; margin: 0 auto; border-width: 2px; }
+}

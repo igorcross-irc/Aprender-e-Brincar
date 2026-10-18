@@ -7,6 +7,7 @@ import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js
 import { APP_VERSION, APK_URL } from '../../core/app-update.js';
 import { buildDiary } from '../../core/family-diary.js';
 import { openFamilyVoicePanel } from './family-voice-panel.js';
+import { renderGallery, openMeuLivro } from './meu-livro.js';
 
 function liteGraphics() { try { return localStorage.getItem('ab_lite_graphics') === '1'; } catch (e) { return false; } }
 
@@ -178,6 +179,13 @@ export class FamilySettings {
           <p id="diary-copied" class="family-hint" aria-live="polite"></p>
         </section>
 
+        <section class="family-section" id="family-gallery-section">
+          <h4>🖼️ Galeria e Meu Livro</h4>
+          <p class="family-hint">Uma foto de cada coisa que ela termina: desenhos que ganharam vida, pratos e construções. Ficam só neste aparelho.</p>
+          <div id="gallery-grid" class="gal-grid"></div>
+          <button id="btn-meu-livro" class="family-button">📖 Abrir o Meu Livro para imprimir</button>
+        </section>
+
         <section class="family-section" id="family-voice-section">
           <h4>🎙️ Voz da família nas histórias</h4>
           <p class="family-hint">Grave a história com a sua voz e a criança ouve quem ela ama. As gravações ficam só neste aparelho.</p>
@@ -257,6 +265,9 @@ export class FamilySettings {
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
     modal.querySelector('#btn-family-voice').addEventListener('click', () => openFamilyVoicePanel());
+    let galleryHandle = null;
+    renderGallery(modal.querySelector('#gallery-grid')).then((handle) => { galleryHandle = handle; });
+    modal.querySelector('#btn-meu-livro').addEventListener('click', () => { galleryHandle?.release?.(); modal.remove(); openMeuLivro({ childName: app.storage.getChildName(), progress: app.core.progress.snapshot() }); });
     modal.querySelector('#btn-copy-diary').addEventListener('click', async () => {
       const note = modal.querySelector('#diary-copied');
       try { await navigator.clipboard.writeText(diary.text); note.textContent = 'Resumo copiado! Cole numa conversa ou anotação.'; } catch (error) {

@@ -1,3 +1,4 @@
+import { gallery } from '../../../core/gallery.js';
 import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 import { playSfx, playInstrument } from '../../engine/sfx.js';
 import { gameShellMarkup, prefersReducedMotion } from '../game-shell.js';
@@ -382,6 +383,8 @@ export class BlocosGame {
     playSfx('celebrate');
     this.particles.burst(this.x0, this.groundY - this.u * 1.5, 'star', 18, { tint: [0xffcf1f, 0xff6fa5, 0x2fb6ee, 0xb6e03a], speed: 320, life: 1.2, size: 1.2 });
     this.say('muito-bem.mp3', 'Muito bem! Ficou igualzinho!');
+    const label = this.model.label;
+    this.later(() => gallery.saveStage(this.app, 'blocos', label, { alive: () => !this.destroyed }), 600);
     this.placed.forEach((p, i) => {
       const y0 = p.node.y;
       this.later(() => { if (!p.node.destroyed) this.tweens.run(420, ease.outElastic, (k) => { if (p.node.destroyed) return; p.node.scale.set(1 + 0.08 * Math.sin(k * Math.PI)); p.node.y = y0 - 10 * Math.sin(k * Math.PI); }); }, i * 120);
@@ -407,6 +410,7 @@ export class BlocosGame {
     this.knocked = true;
     this.busy += 1;
     if (this.knock) this.knock.visible = false;
+    gallery.saveStage(this.app, 'blocos', 'Torre livre', { alive: () => !this.destroyed });
     playSfx('pop');
     const items = this.placed.slice().sort((a, b) => b.row - a.row);
     items.forEach((p, i) => {

@@ -1,3 +1,4 @@
+import { gallery } from '../../../core/gallery.js';
 import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 import { playSfx, playInstrument } from '../../engine/sfx.js';
 import { gameShellMarkup, prefersReducedMotion } from '../game-shell.js';
@@ -256,6 +257,7 @@ export class AtelieGame {
       const px = x + Math.random() * size; const py = y + Math.random() * size * 0.7;
       this.particles.burst(px, py, this.page.hearts ? 'heart' : 'star', 2, { tint: [0xff6fa5, 0xffcf1f, 0xffffff], speed: 70, gravity: -40, life: 1.2, size: 1.1, spread: 2 });
     }, 320);
+    this.later(() => gallery.saveStage(this.app, 'atelie', this.page.title, { crop: { x, y, w: size, h: size }, alive: () => !this.destroyed }), 1500);
     this.later(() => this.finish(), 7200);
   }
 
