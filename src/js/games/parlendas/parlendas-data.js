@@ -60,7 +60,7 @@ export const PARLENDAS = {
     id: 'dedinhos', title: 'Mindinho, seu vizinho', icon: '🖐️', bpm: 76,
     lines: [
       { text: 'Mindinho, seu vizinho', gesture: '🤙', how: 'Mostre o dedo mindinho' },
-      { text: 'Pai de todos', gesture: '🖕', how: 'Mostre o dedo do meio' },
+      { text: 'Pai de todos', gesture: '☝️', how: 'Levante o dedo grande do meio' },
       { text: 'Fura-bolo', gesture: '🎂', how: 'Faça de conta que fura um bolo' },
       { text: 'Cata-piolho', gesture: '👍', how: 'Mostre o polegar' }
     ]
