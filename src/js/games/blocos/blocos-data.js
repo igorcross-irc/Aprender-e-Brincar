@@ -16,6 +16,8 @@ export const MODELS = {
   ponte: { id: 'ponte', label: 'Ponte', emoji: '🌉', slots: [{ piece: 'cubo', cx: -1, row: 0 }, { piece: 'cubo', cx: 1, row: 0 }, { piece: 'prancha', cx: 0, row: 1 }] },
   escada: { id: 'escada', label: 'Escada', emoji: '🪜', slots: [{ piece: 'prancha', cx: 0, row: 0 }, { piece: 'tijolo', cx: -0.5, row: 1 }, { piece: 'cubo', cx: -1, row: 2 }] },
   farol: { id: 'farol', label: 'Farol', emoji: '🗼', slots: [{ piece: 'coluna', cx: 0, row: 0 }, { piece: 'cubo', cx: 0, row: 2 }, { piece: 'telhado', cx: 0, row: 3 }] },
+  piramide: { id: 'piramide', label: 'Pirâmide', emoji: '🔺', slots: [{ piece: 'prancha', cx: 0, row: 0 }, { piece: 'tijolo', cx: 0, row: 1 }, { piece: 'cubo', cx: 0, row: 2 }] },
+  portal: { id: 'portal', label: 'Portal', emoji: '🚪', slots: [{ piece: 'coluna', cx: -1, row: 0 }, { piece: 'coluna', cx: 1, row: 0 }, { piece: 'prancha', cx: 0, row: 2 }, { piece: 'cubo', cx: 0, row: 3 }] },
   castelo: { id: 'castelo', label: 'Castelo', emoji: '🏰', slots: [{ piece: 'tijolo', cx: 0, row: 0 }, { piece: 'cubo', cx: -0.5, row: 1 }, { piece: 'cubo', cx: 0.5, row: 1 }, { piece: 'cupula', cx: 0, row: 2 }] }
 };
 
@@ -25,8 +27,8 @@ export const PLAN_BY_AGE = {
   '12-18m': { mode: 'free', pieces: ['cubo', 'tijolo'], goal: 4, count: false },
   '18-24m': { mode: 'free', pieces: ['cubo', 'tijolo'], goal: 5, count: false },
   '2-3y': { mode: 'free', pieces: ['cubo', 'tijolo', 'coluna'], goal: 6, count: true },
-  '3-4y': { mode: 'models', models: ['torre', 'casa', 'escada'], assist: true },
-  '4-5y': { mode: 'models', models: ['casa', 'ponte', 'castelo', 'farol'], assist: false }
+  '3-4y': { mode: 'models', models: ['torre', 'casa', 'escada', 'piramide'], assist: true },
+  '4-5y': { mode: 'models', models: ['casa', 'ponte', 'castelo', 'farol', 'portal'], assist: false }
 };
 
 // Modelos de uma visita: a lista da faixa gira a cada visita, e a brincadeira parece nova.
