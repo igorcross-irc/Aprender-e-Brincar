@@ -14,7 +14,8 @@ O que ainda é comum: a lista de atividades antigas (81), a narração provisór
 
 ## Estado
 - ✅ Leitura em dupla (perguntas para o adulto nas histórias) · ✅ Meu Livro e Galeria · ✅ Hora de dormir · ✅ Comunicação com foto e voz da família · ✅ Sentimentos (jogo novo) · ✅ Campos da BNCC no Diário · ✅ Orçamento de tamanho no CI (código principal 476 → 299 kB) · ✅ Guia de publicação (`docs/PUBLICACAO.md`)
-- ⏳ Teste em aparelho real e com criança · ⏳ Folclore e cantigas com arte própria (depende de créditos de imagem) · ⏳ Revisão de pedagoga e fonoaudióloga · ⏳ Revisão jurídica da política · ⏳ Conta de desenvolvedor nas lojas
+- ✅ Parlendas e Gestos (folclore falado, sem precisar de ilustração nova)
+- ⏳ Teste em aparelho real e com criança · ⏳ Cantigas de roda cantadas e ilustradas (depende de créditos de imagem e de voz) · ⏳ Revisão de pedagoga e fonoaudióloga · ⏳ Revisão jurídica da política · ⏳ Conta de desenvolvedor nas lojas
 
 ### 1. Confiança e qualidade (sem isso o resto não vale)
 1. **Teste em aparelho real e com criança.** Um Android modesto, um iPhone antigo e a sua filha. Anotar travadas, toques que a criança errou e o que ela pediu de novo. É a única forma de saber se a dificuldade por idade está certa.

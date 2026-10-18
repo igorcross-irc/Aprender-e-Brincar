@@ -692,3 +692,19 @@ img { -webkit-user-drag: none; }
 .cc-icon { font-size: 30px; width: 44px; text-align: center; flex-shrink: 0; }
 .cc-photo { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 12px; border: 2px solid #7c3aed; background: #fff; font-size: 20px; cursor: pointer; }
 .cc-stop { background: #fecaca !important; border-color: #dc2626 !important; }
+
+/* Parlendas e Gestos */
+.parl { text-align: center; padding: 8px; }
+.parl-title { font-size: 20px; font-weight: 900; color: #2a1b3d; margin: 4px 0 8px; }
+.parl-gesture { display: flex; align-items: center; justify-content: center; width: 220px; height: 220px; margin: 8px auto; border-radius: 50%; background: #fff7d6; border: 5px solid #2a1b3d; font-size: 110px; line-height: 1; }
+.parl-gesture.beat { animation: parl-beat .5s ease-out; }
+.parl-win { background: #b6f0b8; }
+@keyframes parl-beat { 0% { transform: scale(1); } 30% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.parl-line { font-size: 22px; font-weight: 800; color: #2a1b3d; margin: 10px 8px; line-height: 1.3; }
+.parl-beat { display: block; margin: 12px auto; width: 120px; height: 120px; border-radius: 50%; font-size: 64px; background: #ffcf1f; border: 5px solid #2a1b3d; box-shadow: 0 7px 0 rgba(42, 27, 61, .3); }
+.parl-beat.pop { animation: studio-pop .25s ease-out; }
+.parl-bar { display: flex; align-items: center; justify-content: center; margin-top: 10px; }
+.parl-dots i { display: inline-block; width: 14px; height: 14px; margin: 0 4px; border-radius: 50%; background: #d4d4d8; border: 2px solid #2a1b3d; }
+.parl-dots i.done { background: #7ddc4a; }
+.parl-dots i.current { background: #ffcf1f; transform: scale(1.3); }
+.parl-next { margin-left: 18px; min-width: 56px; min-height: 56px; border-radius: 50%; border: 3px solid #2a1b3d; background: #fff; font-size: 24px; }

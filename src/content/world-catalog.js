@@ -39,7 +39,7 @@ export const learningWorlds = [
     id: 'create-move', title: 'Criar & Mexer', icon: '✨', color: 'orange',
     description: 'Desenho, movimento, ritmo e expressão pelo brincar.',
     ages: ['18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['blocos','cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
+    activityIds: ['parlendas','blocos','cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
   }
 ];
 

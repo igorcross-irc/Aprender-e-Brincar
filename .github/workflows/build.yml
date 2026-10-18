@@ -57,5 +57,7 @@ jobs:
         run: node scripts/budget-check.mjs
       - name: Início, Diário e Voz da família
         run: node scripts/familia-test.mjs
+      - name: Parlendas e Gestos
+        run: node scripts/parlendas-test.mjs
       - name: Como eu me sinto?
         run: node scripts/sentimentos-test.mjs

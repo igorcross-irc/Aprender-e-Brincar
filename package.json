@@ -21,6 +21,7 @@
     "audit:budget": "npm run build && node scripts/budget-check.mjs",
     "test:blocos": "npm run build && node scripts/blocos-test.mjs",
     "test:familia": "npm run build && node scripts/familia-test.mjs",
+    "test:parlendas": "npm run build && node scripts/parlendas-test.mjs",
     "test:sentimentos": "npm run build && node scripts/sentimentos-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
     "prebuild": "node scripts/audio-index.mjs && node scripts/stories-index.mjs && node scripts/native-fingerprint.mjs",

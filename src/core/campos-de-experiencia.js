@@ -18,6 +18,7 @@ const BY_ACTIVITY = {
   blocos: ['et', 'cg'],
   storybook: ['ef', 'eo'],
   sentimentos: ['eo', 'ef'],
+  parlendas: ['ef', 'ts', 'cg'],
   communication: ['eo', 'ef'],
   movement: ['cg'], rhythm: ['ts', 'cg'], 'guided-movement': ['cg'], 'movement-copy': ['cg'], 'rhythm-copy': ['ts', 'cg'], 'music-keys': ['ts'], canvas: ['ts']
 };
