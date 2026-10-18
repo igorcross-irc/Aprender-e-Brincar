@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,29 +35,48 @@ jobs:
         run: npm run audit:stories
       - name: Build
         run: npm run build
+      - name: Orçamento de tamanho
+        run: node scripts/budget-check.mjs
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: End-to-end
         run: node scripts/e2e-test.mjs
       - name: Aparelhos antigos (iOS 9, Android 5)
         run: node scripts/legacy-audit.mjs
-      - name: Fazendinha (WebGL e modo lite)
-        run: node scripts/farm-test.mjs
-      - name: Mundo das Cenas (WebGL e modo lite)
-        run: node scripts/scene-test.mjs
-      - name: Estúdio dos Bichos (WebGL e modo lite)
-        run: node scripts/studio-test.mjs
-      - name: Ateliê Mágico (WebGL e modo lite)
-        run: node scripts/atelie-test.mjs
-      - name: Cozinha Maluca (WebGL e modo lite)
-        run: node scripts/cozinha-test.mjs
-      - name: Torre de Blocos (WebGL e modo lite)
-        run: node scripts/blocos-test.mjs
-      - name: Orçamento de tamanho
-        run: node scripts/budget-check.mjs
-      - name: Início, Diário e Voz da família
-        run: node scripts/familia-test.mjs
-      - name: Parlendas e Gestos
-        run: node scripts/parlendas-test.mjs
-      - name: Como eu me sinto?
-        run: node scripts/sentimentos-test.mjs
+
+  # Os testes de cada jogo rodam em paralelo (cada um gera o próprio build).
+  games:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Fazendinha, Cenas e Estúdio
+            scripts: farm-test scene-test studio-test
+          - name: Ateliê, Cozinha e Torre de Blocos
+            scripts: atelie-test cozinha-test blocos-test
+          - name: Início, Parlendas e Sentimentos
+            scripts: familia-test parlendas-test sentimentos-test
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Testes (${{ matrix.name }})
+        run: |
+          for t in ${{ matrix.scripts }}; do
+            echo "::group::$t"
+            node scripts/$t.mjs
+            echo "::endgroup::"
+          done
