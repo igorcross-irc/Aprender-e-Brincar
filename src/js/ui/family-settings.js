@@ -7,6 +7,7 @@ import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js
 import { APP_VERSION, APK_URL } from '../../core/app-update.js';
 import { buildDiary } from '../../core/family-diary.js';
 import { openFamilyVoicePanel } from './family-voice-panel.js';
+import { openCommCardsPanel } from './comm-cards-panel.js';
 import { renderGallery, openMeuLivro } from './meu-livro.js';
 import { readTogetherEnabled, setReadTogether } from '../../content/stories/read-together.js';
 
@@ -194,6 +195,12 @@ export class FamilySettings {
           <label class="family-toggle"><input type="checkbox" id="read-together-toggle" ${readTogetherEnabled() ? 'checked' : ''} /> Mostrar as perguntas durante a história</label>
         </section>
 
+        <section class="family-section" id="family-comm-section">
+          <h4>💬 Cartões de comunicação (Eu quero…)</h4>
+          <p class="family-hint">Troque as figuras pelas fotos de verdade, grave a sua voz em cada cartão e crie cartões novos (a vovó, o cachorro, a mamadeira). Ajuda crianças que ainda falam pouco a pedir o que querem.</p>
+          <button id="btn-comm-cards" class="family-button">Personalizar os cartões</button>
+        </section>
+
         <section class="family-section" id="family-voice-section">
           <h4>🎙️ Voz da família nas histórias</h4>
           <p class="family-hint">Grave a história com a sua voz e a criança ouve quem ela ama. As gravações ficam só neste aparelho.</p>
@@ -273,6 +280,7 @@ export class FamilySettings {
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
     modal.querySelector('#btn-family-voice').addEventListener('click', () => openFamilyVoicePanel());
+    modal.querySelector('#btn-comm-cards').addEventListener('click', () => openCommCardsPanel());
     let galleryHandle = null;
     renderGallery(modal.querySelector('#gallery-grid')).then((handle) => { galleryHandle = handle; });
     modal.querySelector('#btn-meu-livro').addEventListener('click', () => { galleryHandle?.release?.(); modal.remove(); openMeuLivro({ childName: app.storage.getChildName(), progress: app.core.progress.snapshot() }); });

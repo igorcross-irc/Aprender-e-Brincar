@@ -18,6 +18,7 @@
     "test:studio": "npm run build && node scripts/studio-test.mjs",
     "test:atelie": "npm run build && node scripts/atelie-test.mjs",
     "test:cozinha": "npm run build && node scripts/cozinha-test.mjs",
+    "audit:budget": "npm run build && node scripts/budget-check.mjs",
     "test:blocos": "npm run build && node scripts/blocos-test.mjs",
     "test:familia": "npm run build && node scripts/familia-test.mjs",
     "test:sentimentos": "npm run build && node scripts/sentimentos-test.mjs",

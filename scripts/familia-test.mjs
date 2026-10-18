@@ -237,6 +237,34 @@ async function bedtime(context) {
   await page.close();
 }
 
+async function commCardsTest(context) {
+  console.log('Cartões de comunicação da família');
+  const { page, errors } = await setup(context, '3-4y');
+  await openGate(page);
+  await page.click('#btn-comm-cards');
+  await page.waitForSelector('#cc-new-label');
+  await page.fill('#cc-new-label', 'Vovó'); await page.fill('#cc-new-phrase', 'Eu quero ver a vovó');
+  await page.click('#cc-add');
+  await page.waitForSelector('.fv-row[data-id^="c-"]');
+  pass('criou o cartão "Vovó"');
+  const id = await page.$eval('.fv-row[data-id^="c-"]', (el) => el.dataset.id);
+  const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==', 'base64');
+  await page.setInputFiles(`.cc-file[data-id="${id}"]`, { name: 'vovo.png', mimeType: 'image/png', buffer: png });
+  await page.waitForSelector(`.fv-row[data-id="${id}"] .cc-thumb`, { timeout: 8000 }).then(() => pass('a foto foi guardada no cartão'), () => fail('a foto não apareceu'));
+  await page.click(`.cc-rec[data-id="${id}"]`); await page.waitForSelector('.cc-stop'); await wait(1200); await page.click('.cc-stop');
+  await page.waitForSelector(`.cc-play[data-id="${id}"]`, { timeout: 8000 }).then(() => pass('a voz da família foi gravada no cartão'), () => fail('a voz não foi guardada'));
+  await page.click('#cc-done'); await page.click('#btn-save-settings'); await page.waitForSelector('[data-world]');
+  await page.evaluate(() => { window.__played = []; });
+  await page.click('[data-world="language"]'); await page.click('[data-game="communication"]');
+  await page.waitForSelector('.talk-photo', { timeout: 8000 }).then(() => pass('a prancha mostra a foto da família'), () => fail('a prancha não mostrou a foto'));
+  const cards = await page.$$('.talk-card');
+  if (cards.length >= 9) pass(`a prancha tem os cartões padrão e o novo (${cards.length})`); else fail(`poucos cartões: ${cards.length}`);
+  await page.click(`[data-talk="${id}"]`);
+  await page.waitForFunction(() => window.__played.some((s) => String(s).startsWith('blob:')), null, { timeout: 5000 }).then(() => pass('tocar no cartão fala com a voz da família'), () => fail('o cartão não tocou a voz da família'));
+  if (errors.length) fail(`erros de JavaScript: ${errors.slice(0, 2).join(' | ')}`); else pass('sem erros de JavaScript');
+  await page.close();
+}
+
 try {
   unitTests();
   await waitForServer();
@@ -247,6 +275,7 @@ try {
   await galleryAndBook(context);
   await readTogether(context);
   await bedtime(context);
+  await commCardsTest(context);
   await browser.close();
 } catch (error) {
   fail(`falha inesperada: ${error.message}`);

@@ -685,3 +685,10 @@ img { -webkit-user-drag: none; }
 .sent-face.shake, .sent-action.shake { animation: cozinha-shake .35s linear; }
 .sent-face.hint, .sent-action.hint { animation: studio-pop 1s ease-in-out infinite; border-color: #ff8a1f; }
 .campo-vazio { opacity: .5; }
+
+/* Cartões de comunicação da família */
+.talk-photo { width: 84px; height: 84px; object-fit: cover; border-radius: 22px; border: 3px solid #2a1b3d; }
+.cc-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 12px; border: 2px solid #2a1b3d; flex-shrink: 0; }
+.cc-icon { font-size: 30px; width: 44px; text-align: center; flex-shrink: 0; }
+.cc-photo { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 12px; border: 2px solid #7c3aed; background: #fff; font-size: 20px; cursor: pointer; }
+.cc-stop { background: #fecaca !important; border-color: #dc2626 !important; }

@@ -53,6 +53,8 @@ jobs:
         run: node scripts/cozinha-test.mjs
       - name: Torre de Blocos (WebGL e modo lite)
         run: node scripts/blocos-test.mjs
+      - name: Orçamento de tamanho
+        run: node scripts/budget-check.mjs
       - name: Início, Diário e Voz da família
         run: node scripts/familia-test.mjs
       - name: Como eu me sinto?
