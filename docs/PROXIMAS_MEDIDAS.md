@@ -1,6 +1,6 @@
 # Próximas medidas: sair do básico que qualquer lugar tem
 
-Escrito em 18/10/2026, depois dos 6 jogos-âncora, do início "Para brincar agora", do Diário da Família e da Voz da família.
+Escrito em 18/10/2026 e atualizado no mesmo dia. Marcas: ✅ feito, ⏳ falta.
 
 ## O que já nos separa do comum
 - **Sem anúncios, sem cadastro, sem rastreio**, e tudo guardado no aparelho (ver `docs/PRIVACY.md` e `/privacidade.html`).
@@ -11,6 +11,10 @@ Escrito em 18/10/2026, depois dos 6 jogos-âncora, do início "Para brincar agor
 O que ainda é comum: a lista de atividades antigas (81), a narração provisória, o menu em "mundos" e a falta de validação com criança real.
 
 ## Medidas, em ordem de valor
+
+## Estado
+- ✅ Leitura em dupla (perguntas para o adulto nas histórias) · ✅ Meu Livro e Galeria · ✅ Hora de dormir · ✅ Comunicação com foto e voz da família · ✅ Sentimentos (jogo novo) · ✅ Campos da BNCC no Diário · ✅ Orçamento de tamanho no CI (código principal 476 → 299 kB) · ✅ Guia de publicação (`docs/PUBLICACAO.md`)
+- ⏳ Teste em aparelho real e com criança · ⏳ Folclore e cantigas com arte própria (depende de créditos de imagem) · ⏳ Revisão de pedagoga e fonoaudióloga · ⏳ Revisão jurídica da política · ⏳ Conta de desenvolvedor nas lojas
 
 ### 1. Confiança e qualidade (sem isso o resto não vale)
 1. **Teste em aparelho real e com criança.** Um Android modesto, um iPhone antigo e a sua filha. Anotar travadas, toques que a criança errou e o que ela pediu de novo. É a única forma de saber se a dificuldade por idade está certa.

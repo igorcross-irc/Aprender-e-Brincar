@@ -10,7 +10,7 @@ Este guia junta o que as lojas costumam exigir de apps para crianças e o que o 
 | Política de privacidade pública | `public/privacidade.html` (o endereço fica `/privacidade.html` do site do app). |
 | Área para adultos | Atrás de uma conta de multiplicar; tempo de tela, apagar progresso, gravações e galeria ficam lá. |
 | Conteúdo | Sem chat, rede social, compras ou links para fora na tela da criança. |
-| Microfone | Só dentro da Área da Família, ao tocar em Gravar. |
+| Microfone e fotos | O microfone só é pedido dentro da Área da Família, ao tocar em Gravar. Fotos são escolhidas ou tiradas pelo adulto, também só ali. |
 | Funciona sem internet | Sim (PWA e aplicativo Android). |
 
 ## Para fazer antes de publicar
