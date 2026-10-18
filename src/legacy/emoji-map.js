@@ -41,6 +41,7 @@ export const EMOJI_IMAGES = {
   '🧽': '1f9fd',
   '🪆': '1fa86',
   '🪚': '1fa9a',
+  '🪜': '1fa9c',
   '🪟': '1fa9f',
   '🪥': '1faa5',
   '🪴': '1fab4',
