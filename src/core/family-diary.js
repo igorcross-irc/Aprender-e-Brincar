@@ -77,6 +77,7 @@ export function buildDiary({ storage = localStorage, progress = {}, childName = 
     { icon: '🍳', label: 'pratos', value: dishes },
     { icon: '🧱', label: 'construções', value: buildings }
   ];
+  const recipes = Object.values(RECIPES).map((r) => ({ id: r.id, label: r.label, emoji: r.emoji, count: Number((cozinha.made || {})[r.id]) || 0 }));
   const campos = resumoPorCampo(progress.activities || {}, activityCatalog);
   const title = name ? `Diário de ${name}` : 'Diário da criança';
   const text = [
@@ -89,7 +90,7 @@ export function buildDiary({ storage = localStorage, progress = {}, childName = 
     '',
     'Um retrato das brincadeiras, não uma avaliação. Não substitui acompanhamento profissional.'
   ].join('\n');
-  return { title, stats, highlights, ideas, recent, campos, text };
+  return { title, stats, highlights, ideas, recent, campos, recipes, text };
 }
 
 export const DIARY_KEYS = KEYS;

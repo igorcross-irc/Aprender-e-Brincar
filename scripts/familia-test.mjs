@@ -7,6 +7,7 @@ import { buildDiary } from '../src/core/family-diary.js';
 import { todayPicks } from '../src/js/ui/app-screens.js';
 import { promptFor, hasSpecificPrompts } from '../src/content/stories/read-together.js';
 import { stories } from '../src/content/stories/index.js';
+import { RECIPES } from '../src/js/games/cozinha/cozinha-data.js';
 import { camposDe, resumoPorCampo, CAMPOS } from '../src/core/campos-de-experiencia.js';
 import { activityCatalog } from '../src/content/activity-catalog.js';
 import { STORY_ART } from '../src/content/stories/available.js';
@@ -42,6 +43,7 @@ function unitTests() {
   if (/3 vezes: .*Torre.*Casinha|3 vezes: .*Casinha.*Torre/.test(joined)) pass('conta construções'); else fail(`construções: ${joined}`);
   if (/3 dias seguidos/.test(joined)) pass('conta dias seguidos'); else fail(`sequência: ${joined}`);
   if (d.ideas.length >= 1 && d.text.includes('Ideias para brincar fora da tela')) pass('sugere brincadeiras fora da tela'); else fail('sem ideias');
+  if (d.recipes.length === Object.keys(RECIPES).length && d.recipes.find((r) => r.id === 'suco')?.count === 2 && d.recipes.find((r) => r.id === 'sopa')?.count === 0) pass('caderno de receitas mostra feitas e a fazer'); else fail('caderno de receitas errado');
   const empty = buildDiary({ storage: { getItem: () => null }, progress: {}, childName: '' });
   if (empty.highlights.length === 0 && empty.text.includes('Ainda está começando')) pass('diário vazio é gentil'); else fail('diário vazio estranho');
   console.log('Campos de experiência (BNCC)');

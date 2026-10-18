@@ -97,7 +97,7 @@ async function playLite(context, age) {
   const { page, errors } = await openBlocos(context, age, { lite: true });
   await page.waitForSelector('#blocos-lite .blocos-lite-btn', { timeout: 10000 });
   const plan = PLAN_BY_AGE[age];
-  for (let i = 0; i < 40; i += 1) {
+  for (let i = 0; i < 220; i += 1) {
     const bell = await page.$('#blocos-lite-bell');
     if (bell) { await bell.dispatchEvent('click'); break; }
     if (await page.$('#session-again')) break;
