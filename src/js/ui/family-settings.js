@@ -5,6 +5,8 @@ import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
 import { APP_VERSION, APK_URL } from '../../core/app-update.js';
+import { buildDiary } from '../../core/family-diary.js';
+import { openFamilyVoicePanel } from './family-voice-panel.js';
 
 function liteGraphics() { try { return localStorage.getItem('ab_lite_graphics') === '1'; } catch (e) { return false; } }
 
@@ -101,6 +103,7 @@ export class FamilySettings {
     const { app } = this;
     const esc = (value) => app.escape(value);
     const report = this.buildReport();
+    const diary = buildDiary({ storage: localStorage, progress: app.core.progress.snapshot(), childName: app.storage.getChildName() });
     const currentAge = app.storage.getChildAge();
     const canInstall = app.pwa?.canInstall?.();
     const { screenTime } = app;
@@ -166,6 +169,21 @@ export class FamilySettings {
           <p class="family-hint">Ligue se a Fazendinha ficar lenta. O jogo continua o mesmo, só com desenhos mais simples.</p>
         </section>
 
+        <section class="family-section" id="family-diary">
+          <h4>📔 Diário da família</h4>
+          <ul class="diary-list">${diary.highlights.map((item) => `<li>${esc(item)}</li>`).join('') || '<li>Ainda está começando: brinquem juntos e volte aqui depois.</li>'}</ul>
+          <p class="family-label">Ideias para brincar fora da tela</p>
+          <ul class="diary-list diary-ideas">${diary.ideas.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>
+          <button id="btn-copy-diary" class="family-button">📋 Copiar o resumo</button>
+          <p id="diary-copied" class="family-hint" aria-live="polite"></p>
+        </section>
+
+        <section class="family-section" id="family-voice-section">
+          <h4>🎙️ Voz da família nas histórias</h4>
+          <p class="family-hint">Grave a história com a sua voz e a criança ouve quem ela ama. As gravações ficam só neste aparelho.</p>
+          <button id="btn-family-voice" class="family-button">Gravar histórias com a minha voz</button>
+        </section>
+
         <section class="family-section">
           <h4>Resumo</h4>
           <div class="family-stats">
@@ -208,7 +226,7 @@ export class FamilySettings {
 
         <section class="family-section">
           <h4>Privacidade</h4>
-          <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo.</p>
+          <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo. <a href="/privacidade.html">Política de privacidade completa</a></p>
         </section>
 
         <button id="btn-reset-stars" class="family-danger">Zerar progresso</button>
@@ -238,6 +256,15 @@ export class FamilySettings {
       app.renderHome();
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
+    modal.querySelector('#btn-family-voice').addEventListener('click', () => openFamilyVoicePanel());
+    modal.querySelector('#btn-copy-diary').addEventListener('click', async () => {
+      const note = modal.querySelector('#diary-copied');
+      try { await navigator.clipboard.writeText(diary.text); note.textContent = 'Resumo copiado! Cole numa conversa ou anotação.'; } catch (error) {
+        const area = document.createElement('textarea'); area.value = diary.text; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select();
+        let ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; } area.remove();
+        note.textContent = ok ? 'Resumo copiado! Cole numa conversa ou anotação.' : 'Não consegui copiar neste aparelho.';
+      }
+    });
     const updateStatus = modal.querySelector('#update-status');
     if (updateStatus) {
       const texts = {

@@ -2,6 +2,7 @@ import { playSfx } from '../../engine/sfx.js';
 import { gameShellMarkup } from '../game-shell.js';
 import { stories, storyById } from '../../../content/stories/index.js';
 import { STORY_ART, STORY_AUDIO } from '../../../content/stories/available.js';
+import { familyVoice } from '../../../core/family-voice.js';
 
 // Hora da Historinha: estante de capas e livro ilustrado narrado.
 // Funciona em HTML/CSS puro (serve também para aparelhos antigos). A narração é um MP3 por página quando existir
@@ -69,6 +70,9 @@ export class StorybookGame {
     this.story = storyById(id);
     this.page = 0;
     this.finished = false;
+    this.familyUrls = {};
+    const opening = this.story.id;
+    const loading = familyVoice.urlsFor(opening, this.story.pages.length).then((urls) => { if (this.story?.id === opening) this.familyUrls = urls; }, () => {});
     const total = this.story.pages.length;
     this.container.innerHTML = gameShellMarkup({
       backId: 'story-back',
@@ -100,7 +104,9 @@ export class StorybookGame {
     const page = q('#sb-page');
     page.addEventListener('touchstart', (e) => { startX = e.changedTouches[0].clientX; }, { passive: true });
     page.addEventListener('touchend', (e) => { if (startX == null) return; const dx = e.changedTouches[0].clientX - startX; startX = null; if (Math.abs(dx) > 45) this.go(dx < 0 ? 1 : -1); }, { passive: true });
-    this.paint(true);
+    this.paint(false);
+    // A voz da família chega do IndexedDB em milissegundos; a primeira página espera por ela.
+    loading.then(() => { if (this.story?.id === opening && !this.finished && this.page === 0) this.narrate(); });
   }
 
   go(step) {
@@ -155,6 +161,18 @@ export class StorybookGame {
     if (this.audio?.isMuted) return this.later(done, 2200);
     if (isEnd) return this.later(done, 900);
     const text = this.story.pages[this.page][0];
+    const family = this.familyUrls?.[this.page];
+    if (family) {
+      try {
+        const sound = new Audio(family);
+        this.sound = sound;
+        sound.onended = done;
+        sound.onerror = () => this.speak(text, done);
+        const p = sound.play();
+        if (p && p.catch) p.catch(() => this.later(done, 2500));
+        return undefined;
+      } catch (error) { /* cai para a narração padrão */ }
+    }
     const hasMp3 = (STORY_AUDIO[this.story.id] || '')[this.page] === '1';
     if (hasMp3) {
       try {

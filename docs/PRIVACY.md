@@ -5,6 +5,8 @@ O Aprender & Brincar é uma aplicação pública para crianças de 6 meses a 5 a
 ## O que é guardado
 - Nome ou apelido da criança (opcional) e faixa etária, informados pelo responsável.
 - Progresso das brincadeiras (estrelas, brincadeiras concluídas, tempo aproximado).
+- **Voz da família (opcional):** se um responsável gravar a narração de uma história, o áudio fica no IndexedDB do aparelho. O microfone só é pedido na Área da Família, quando o adulto toca em Gravar, e só enquanto a gravação dura. As gravações nunca são enviadas e podem ser apagadas página a página.
+- **Diário da Família:** é montado na hora, só com o que já está guardado no aparelho, e aparece apenas na Área da Família. O botão "Copiar o resumo" copia o texto para a área de transferência do aparelho quando o adulto toca nele.
 
 Tudo fica **apenas no armazenamento local do navegador do aparelho** (`localStorage`/`sessionStorage`). Nada é enviado a servidores.
 

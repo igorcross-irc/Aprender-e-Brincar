@@ -37,6 +37,20 @@ export const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age
 
 const CONFETTI_COLORS = ['#f472b6', '#facc15', '#34d399', '#60a5fa', '#a78bfa', '#fb923c'];
 
+// Os jogos-âncora que a criança pode brincar hoje: começa pelos que ela brincou há mais tempo (ou nunca),
+// e a ordem muda de dia para dia. Sem números nem palavras para a criança: só figura, nome falado e um toque.
+const TODAY_ANCHORS = ['farm', 'scene-sea', 'blocos', 'atelie', 'cozinha', 'studio', 'storybook'];
+export function todayPicks(ageId, activities = {}, now = Date.now(), count = 3) {
+  const day = Math.floor(now / 86400000);
+  return TODAY_ANCHORS
+    .map((id) => activityCatalog.find((a) => a.id === id))
+    .filter((a) => a && a.ages.includes(ageId))
+    .map((activity, i, all) => ({ activity, last: Date.parse(activities[activity.id]?.lastPlayedAt || '') || 0, turn: (i + day) % all.length }))
+    .sort((a, b) => a.last - b.last || a.turn - b.turn)
+    .slice(0, count)
+    .map((entry) => entry.activity);
+}
+
 function worldActivities(world, ageId) {
   return world.activityIds
     .map((id) => activityCatalog.find((activity) => activity.id === id))
@@ -62,6 +76,7 @@ export class AppScreens {
     const worlds = learningWorlds
       .map((world) => ({ ...world, activities: worldActivities(world, ageId) }))
       .filter((world) => world.activities.length);
+    const picks = todayPicks(ageId, this.core.progress.snapshot().activities);
 
     this.container.innerHTML = `
       <div class="screen page-enter">
@@ -69,6 +84,12 @@ export class AppScreens {
           ${childMascotMarkup({ size: 'medium', mood: 'happy' })}
           <h2 class="home-greeting">${this.escape(greeting)}</h2>
         </section>
+        ${picks.length ? `<section class="home-today" aria-label="Para brincar agora">
+          ${picks.map((activity) => `<button data-today="${activity.id}" class="today-tile" aria-label="${this.escape(activity.title)}">
+            <span class="today-tile-icon ${GAME_IMAGES[activity.id] ? 'has-image' : ''}" aria-hidden="true">${gameIconMarkup(activity.id)}</span>
+            <span class="today-tile-title">${this.escape(activity.title)}</span>
+          </button>`).join('')}
+        </section>` : ''}
         <div class="world-grid">
           ${worlds.map((world) => `
             <button data-world="${world.id}" class="world-tile world-${world.color}" aria-label="${this.escape(world.title)}">
@@ -85,7 +106,8 @@ export class AppScreens {
       </div>`;
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
     this.container.querySelector('#btn-album').addEventListener('click', () => this.renderAlbum());
-    this.audio.prompt?.(null, greeting);
+    this.container.querySelectorAll('[data-today]').forEach((button) => button.addEventListener('click', () => { playSfx('tap'); this.launchGame(button.dataset.today, ageId); }));
+    this.audio.prompt?.(null, picks.length ? `${greeting} Que tal ${picks[0].title}?` : greeting);
   }
 
   // Mantido para compatibilidade com chamadas antigas: a idade vem do perfil.
