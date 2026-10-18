@@ -656,3 +656,20 @@ img { -webkit-user-drag: none; }
   .book-toolbar { display: none !important; }
   .book-page { page-break-after: always; margin: 0 auto; border-width: 2px; }
 }
+
+/* Leitura em dupla */
+.sb-ask { margin: 8px auto 0; max-width: 30rem; background: #e0f2fe; border: 3px dashed #2fb6ee; border-radius: 16px; padding: 8px 12px; font-size: 15px; font-weight: 700; color: #1e3a8a; text-align: center; line-height: 1.35; }
+
+/* Hora de dormir */
+.bedtime-tile { background: linear-gradient(160deg, #312e81, #1e1b4b) !important; color: #e0e7ff; }
+.sb-night { background: #0f0a2e; border-radius: var(--ab-radius-lg); padding-bottom: 12px; }
+.sb-night .sb-img { filter: brightness(.78) saturate(.85); }
+.sb-night .sb-tools, .sb-night .sb-arrow, .sb-night .sb-text, .sb-night .sb-ask { display: none; }
+.sb-night .sb-dots i { background: #4338ca; }
+.sb-night .sb-dots i.current { background: #fde68a; }
+.bedtime-screen { background: radial-gradient(circle at 50% 20%, #312e81, #0f0a2e 70%); min-height: 100%; }
+.bedtime-card { text-align: center; padding: 28px 12px; color: #e0e7ff; }
+.bedtime-title { font-size: 2rem; font-weight: 900; margin: 12px 0; color: #fde68a; }
+.bedtime-stars { font-size: 28px; opacity: .9; animation: mascot-bob 4s ease-in-out infinite; }
+.bedtime-zzz { font-size: 40px; margin: 4px 0 18px; animation: mascot-bob 3s ease-in-out infinite; }
+.bedtime-home { min-width: 64px; min-height: 64px; font-size: 28px; border-radius: 50%; border: 3px solid #4338ca; background: #1e1b4b; opacity: .5; }

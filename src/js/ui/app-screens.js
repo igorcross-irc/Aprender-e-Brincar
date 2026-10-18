@@ -4,6 +4,8 @@ import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
 import { childMascotMarkup } from '../../core/child-mascot.js';
+import { shelfFor, startBedtime, consumeBedtimeEnd } from '../games/language/storybook.js';
+import { STORY_AUDIO } from '../../content/stories/available.js';
 
 export const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨', 'attention-auditory': '👂',
@@ -97,6 +99,11 @@ export class AppScreens {
               <span class="world-tile-icon ${WORLD_IMAGES[world.id] ? 'has-image' : ''}" aria-hidden="true">${WORLD_IMAGES[world.id] ? imageTag(WORLD_IMAGES[world.id]) : world.icon}</span>
               <span class="world-tile-title">${this.escape(world.title)}</span>
             </button>`).join('')}
+          <button id="btn-bedtime" class="world-tile bedtime-tile" aria-label="Hora de dormir">
+            <span class="world-tile-deco" aria-hidden="true">✨</span>
+            <span class="world-tile-icon" aria-hidden="true">🌙</span>
+            <span class="world-tile-title">Hora de dormir</span>
+          </button>
           <button id="btn-album" class="world-tile album-tile" aria-label="Meus adesivos">
             <span class="world-tile-deco" aria-hidden="true">⭐</span>
             <span class="world-tile-icon has-image" aria-hidden="true">${imageTag('trophy')}</span>
@@ -106,8 +113,38 @@ export class AppScreens {
       </div>`;
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
     this.container.querySelector('#btn-album').addEventListener('click', () => this.renderAlbum());
+    this.container.querySelector('#btn-bedtime').addEventListener('click', () => this.startBedtimeStory(ageId));
     this.container.querySelectorAll('[data-today]').forEach((button) => button.addEventListener('click', () => { playSfx('tap'); this.launchGame(button.dataset.today, ageId); }));
     this.audio.prompt?.(null, picks.length ? `${greeting} Que tal ${picks[0].title}?` : greeting);
+  }
+
+  // Hora de dormir: uma história calma e narrada (rodando por dia), tela escura, cantiga e boa noite.
+  startBedtimeStory(ageId) {
+    const narrated = (s) => String(STORY_AUDIO[s.id] || '').length >= s.pages.length && !String(STORY_AUDIO[s.id]).includes('0');
+    const options = shelfFor(ageId).filter(narrated);
+    const pool = options.length ? options : shelfFor(ageId);
+    if (!pool.length) return this.launchGame('storybook', ageId);
+    const day = Math.floor(Date.now() / 86400000);
+    startBedtime(pool[day % pool.length].id);
+    return this.launchGame('storybook', ageId);
+  }
+
+  renderBedtimeEnd() {
+    this.container.scrollTop = 0;
+    const name = this.storage.getChildName();
+    const message = name ? `Boa noite, ${name}!` : 'Boa noite!';
+    this.container.innerHTML = `
+      <div class="screen page-enter bedtime-screen">
+        <section class="bedtime-card">
+          <div class="bedtime-stars" aria-hidden="true">✨ ⭐ ✨</div>
+          ${childMascotMarkup({ size: 'large', mood: 'sleepy', label: 'Corujinha dormindo' })}
+          <h2 class="bedtime-title">${this.escape(message)}</h2>
+          <p class="bedtime-zzz" aria-hidden="true">💤</p>
+          <button id="bedtime-home" class="bedtime-home" aria-label="Voltar ao início">🏠</button>
+        </section>
+      </div>`;
+    this.container.querySelector('#bedtime-home').addEventListener('click', () => this.renderHome());
+    this.audio.prompt?.(null, message);
   }
 
   // Mantido para compatibilidade com chamadas antigas: a idade vem do perfil.
@@ -197,6 +234,7 @@ export class AppScreens {
   }
 
   renderSessionResult(result) {
+    if (consumeBedtimeEnd()) return this.renderBedtimeEnd();
     this.container.scrollTop = 0;
     const name = this.storage.getChildName();
     const message = name ? `Muito bem, ${name}!` : 'Muito bem!';

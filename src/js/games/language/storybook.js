@@ -1,8 +1,9 @@
-import { playSfx } from '../../engine/sfx.js';
+import { playSfx, playInstrument } from '../../engine/sfx.js';
 import { gameShellMarkup } from '../game-shell.js';
 import { stories, storyById } from '../../../content/stories/index.js';
 import { STORY_ART, STORY_AUDIO } from '../../../content/stories/available.js';
 import { familyVoice } from '../../../core/family-voice.js';
+import { promptFor, readTogetherEnabled } from '../../../content/stories/read-together.js';
 
 // Hora da Historinha: estante de capas e livro ilustrado narrado.
 // Funciona em HTML/CSS puro (serve também para aparelhos antigos). A narração é um MP3 por página quando existir
@@ -10,6 +11,12 @@ import { familyVoice } from '../../../core/family-voice.js';
 const TEXT_BY_DEFAULT = new Set(['2-3y', '3-4y', '4-5y']);
 const BASE = '/assets/stories/';
 const READ_KEY = 'ab_stories_v1';
+
+// Hora de dormir: a tela inicial escolhe a história e liga este modo antes de abrir o leitor.
+const night = { storyId: null, done: false };
+export function startBedtime(storyId) { night.storyId = storyId; night.done = false; }
+export function consumeBedtimeEnd() { const was = night.done; night.done = false; return was; }
+const LULLABY = [392, 440, 523.25, 440, 392, 329.63, 392, 440, 392, 329.63, 293.66, 329.63, 261.63];
 
 function loadRead() {
   try { const v = JSON.parse(localStorage.getItem(READ_KEY) || 'null'); if (v && typeof v === 'object') return v; } catch (error) { /* sem armazenamento */ }
@@ -46,6 +53,12 @@ export class StorybookGame {
     this.read = loadRead();
     this.showText = TEXT_BY_DEFAULT.has(this.ageId);
     this.auto = false;
+    this.bedtime = Boolean(night.storyId);
+    if (this.bedtime) {
+      const id = night.storyId; night.storyId = null;
+      this.showText = false; this.auto = true;
+      return this.openBook(id);
+    }
     this.renderShelf();
   }
 
@@ -80,6 +93,7 @@ export class StorybookGame {
       body: `<div class="storybook" id="storybook">
         <div class="sb-page" id="sb-page"><img class="sb-img" id="sb-img" alt="" draggable="false" /></div>
         <p class="sb-text" id="sb-text"></p>
+        <p class="sb-ask" id="sb-ask" hidden></p>
         <div class="sb-nav">
           <button class="sb-arrow sb-prev" id="sb-prev" aria-label="Página anterior"><span></span></button>
           <div class="sb-dots" aria-hidden="true">${Array.from({ length: total + 1 }, () => '<i></i>').join('')}</div>
@@ -93,7 +107,9 @@ export class StorybookGame {
       </div>`
     });
     const q = (sel) => this.container.querySelector(sel);
-    q('#story-back').addEventListener('click', () => { this.stopSound(); this.renderShelf(); });
+    if (this.bedtime) this.container.classList.add('sb-night');
+    else this.container.classList.remove('sb-night');
+    q('#story-back').addEventListener('click', () => { this.stopSound(); if (this.bedtime) { this.container.classList.remove('sb-night'); this.stop(); this.onBack(); } else this.renderShelf(); });
     q('#sb-next').addEventListener('click', () => this.go(1));
     q('#sb-prev').addEventListener('click', () => this.go(-1));
     q('#sb-replay').addEventListener('click', () => this.narrate());
@@ -134,6 +150,8 @@ export class StorybookGame {
     text.hidden = !this.showText;
     text.textContent = isEnd ? `Fim · ${this.story.credit}` : this.story.pages[this.page][0];
     text.classList.toggle('sb-credit', isEnd);
+    const ask = this.container.querySelector('#sb-ask');
+    if (ask) { ask.hidden = !readTogetherEnabled(); ask.textContent = readTogetherEnabled() ? `💬 ${promptFor(this.story.id, this.page, total)}` : ''; }
     this.container.querySelectorAll('.sb-dots i').forEach((dot, i) => { dot.className = i < this.page ? 'done' : i === this.page ? 'current' : ''; });
     this.container.querySelector('#sb-prev').style.visibility = this.page === 0 ? 'hidden' : 'visible';
     this.container.querySelector('#sb-next').classList.remove('pulse');
@@ -156,7 +174,7 @@ export class StorybookGame {
     const done = () => {
       const next = this.container.querySelector('#sb-next');
       next?.classList.add('pulse');
-      if (this.auto && !this.finished) this.later(() => this.go(1), isEnd ? 600 : 1400);
+      if (this.auto && !this.finished) this.later(() => this.go(1), (isEnd ? 600 : 1400) + (readTogetherEnabled() ? 7000 : 0));
     };
     if (this.audio?.isMuted) return this.later(done, 2200);
     if (isEnd) return this.later(done, 900);
@@ -200,8 +218,15 @@ export class StorybookGame {
     this.stopSound();
     this.read[this.story.id] = (this.read[this.story.id] || 0) + 1;
     saveRead(this.read);
+    const result = { mode: 'explore', score: 1, rounds: 1, correct: 1, attempts: 1, maxScore: 1, completedRounds: 1, difficulty: this.difficulty.level || 1, ageId: this.ageId };
+    if (this.bedtime) {
+      // Sem festa: uma cantiga de ninar bem baixinha e a tela da corujinha dormindo.
+      LULLABY.forEach((f, i) => this.later(() => playInstrument('bell', f, 0.28), 400 + i * 900));
+      this.later(() => { night.done = true; this.container.classList.remove('sb-night'); this.onComplete?.(result); }, 400 + LULLABY.length * 900 + 600);
+      return;
+    }
     playSfx('celebrate');
-    this.later(() => this.onComplete?.({ mode: 'explore', score: 1, rounds: 1, correct: 1, attempts: 1, maxScore: 1, completedRounds: 1, difficulty: this.difficulty.level || 1, ageId: this.ageId }), 500);
+    this.later(() => this.onComplete?.(result), 500);
   }
 
   stop() {

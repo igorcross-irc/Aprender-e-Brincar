@@ -5,6 +5,9 @@ import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { buildDiary } from '../src/core/family-diary.js';
 import { todayPicks } from '../src/js/ui/app-screens.js';
+import { promptFor, hasSpecificPrompts } from '../src/content/stories/read-together.js';
+import { stories } from '../src/content/stories/index.js';
+import { STORY_ART } from '../src/content/stories/available.js';
 
 const PORT = 4184;
 const BASE = `http://localhost:${PORT}`;
@@ -39,6 +42,13 @@ function unitTests() {
   if (d.ideas.length >= 1 && d.text.includes('Ideias para brincar fora da tela')) pass('sugere brincadeiras fora da tela'); else fail('sem ideias');
   const empty = buildDiary({ storage: { getItem: () => null }, progress: {}, childName: '' });
   if (empty.highlights.length === 0 && empty.text.includes('Ainda está começando')) pass('diário vazio é gentil'); else fail('diário vazio estranho');
+  console.log('Perguntas da leitura em dupla');
+  const shelf = stories.filter((st) => STORY_ART[st.id] === st.pages.length);
+  const missing = shelf.filter((st) => !hasSpecificPrompts(st.id)).map((st) => st.id);
+  if (!missing.length) pass(`as ${shelf.length} histórias ilustradas têm perguntas próprias`); else fail(`sem perguntas próprias: ${missing.join(', ')}`);
+  const bad = shelf.filter((st) => st.pages.some((_, i) => { const q = promptFor(st.id, i, st.pages.length); return !q || q.length < 12 || q.length > 140; }));
+  if (!bad.length) pass('todas as perguntas têm tamanho de conversa (12 a 140 letras)'); else fail(`perguntas fora do tamanho: ${bad.map((b) => b.id)}`);
+  if (promptFor('historia-sem-perguntas', 0, 4).length > 12 && promptFor('x', 4, 4).includes('história')) pass('história nova usa perguntas gerais e fecha com pergunta final'); else fail('perguntas gerais falharam');
   console.log('Hoje (escolha dos jogos)');
   const picks = todayPicks('3-4y', {}, Date.parse('2026-10-18T10:00:00Z'));
   if (picks.length === 3 && new Set(picks.map((p) => p.id)).size === 3) pass(`3 jogos diferentes: ${picks.map((p) => p.id).join(', ')}`); else fail(`escolha: ${picks.map((p) => p.id)}`);
@@ -176,6 +186,48 @@ async function galleryAndBook(context) {
   await page.close();
 }
 
+async function readTogether(context) {
+  console.log('Leitura em dupla');
+  const { page, errors } = await setup(context, '3-4y');
+  await page.click('[data-world="discover"]'); await page.click('[data-game="storybook"]'); await page.waitForSelector('[data-story]');
+  await page.click('[data-story]'); await page.waitForSelector('#sb-text');
+  const hiddenByDefault = await page.$eval('#sb-ask', (el) => el.hidden);
+  if (hiddenByDefault) pass('as perguntas começam desligadas (a criança vê só o livro)'); else fail('perguntas ligadas sem o adulto pedir');
+  await page.click('#btn-home-logo'); await page.waitForSelector('[data-world]');
+  await openGate(page);
+  await page.check('#read-together-toggle');
+  await page.click('#btn-save-settings'); await page.waitForSelector('[data-world]');
+  await page.click('[data-world="discover"]'); await page.click('[data-game="storybook"]'); await page.waitForSelector('[data-story]');
+  await page.click('[data-story]'); await page.waitForSelector('#sb-ask:not([hidden])');
+  const first = await page.textContent('#sb-ask');
+  if (first.startsWith('💬') && first.length > 12) pass(`pergunta na página 1: ${first.slice(2, 60)}…`); else fail(`pergunta estranha: ${first}`);
+  await page.click('#sb-next'); await wait(300);
+  const second = await page.textContent('#sb-ask');
+  if (second !== first) pass('a pergunta muda a cada página'); else fail('a pergunta não mudou na página 2');
+  if (errors.length) fail(`erros de JavaScript: ${errors.slice(0, 2).join(' | ')}`); else pass('sem erros de JavaScript');
+  await page.close();
+}
+
+async function bedtime(context) {
+  console.log('Hora de dormir');
+  const { page, errors } = await setup(context, '18-24m');
+  if (await page.$('#btn-bedtime')) pass('o início tem o botão "Hora de dormir"'); else fail('sem botão de dormir');
+  await page.click('#btn-bedtime');
+  await page.waitForSelector('.sb-night #sb-img', { timeout: 10000 }).then(() => pass('abre uma história com a tela escura'), () => fail('não abriu a história noturna'));
+  const textHidden = await page.$eval('#sb-text', (el) => el.hidden || getComputedStyle(el).display === 'none');
+  if (textHidden) pass('sem texto nem botões na tela de dormir'); else fail('texto visível no modo noite');
+  await page.waitForSelector('.bedtime-screen', { timeout: 120000 }).then(() => pass('a história termina sozinha na tela de boa noite'), () => fail('não chegou à tela de boa noite'));
+  const owl = await page.$('.bedtime-screen .mascot-sleepy');
+  if (owl) pass('a corujinha está dormindo'); else fail('corujinha acordada');
+  const stars = await page.$('.result-star, .confetti');
+  if (!stars) pass('sem estrela nem confete na hora de dormir'); else fail('festa na hora de dormir');
+  await page.click('#bedtime-home'); await page.waitForSelector('[data-world]');
+  await page.click('[data-world="discover"]'); await page.click('[data-game="storybook"]'); await page.waitForSelector('[data-story]');
+  pass('depois da noite, a estante normal continua funcionando');
+  if (errors.length) fail(`erros de JavaScript: ${errors.slice(0, 2).join(' | ')}`); else pass('sem erros de JavaScript');
+  await page.close();
+}
+
 try {
   unitTests();
   await waitForServer();
@@ -184,6 +236,8 @@ try {
   await homeAndDiary(context);
   await voice(context);
   await galleryAndBook(context);
+  await readTogether(context);
+  await bedtime(context);
   await browser.close();
 } catch (error) {
   fail(`falha inesperada: ${error.message}`);

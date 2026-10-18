@@ -10,6 +10,9 @@ const EYES = {
     <circle cx="44" cy="52" r="14" fill="#fff"/><circle cx="76" cy="52" r="14" fill="#fff"/>
     <circle cx="50" cy="50" r="7" fill="#2e1065"/><circle cx="82" cy="50" r="7" fill="#2e1065"/>
     <circle cx="52" cy="47" r="2.4" fill="#fff"/><circle cx="84" cy="47" r="2.4" fill="#fff"/>`,
+  sleepy: `
+    <circle cx="44" cy="52" r="13" fill="#fff"/><circle cx="76" cy="52" r="13" fill="#fff"/>
+    <path d="M34 52q10 9 20 0M66 52q10 9 20 0" fill="none" stroke="#2e1065" stroke-width="4.5" stroke-linecap="round"/>`,
   celebrate: `
     <circle cx="44" cy="52" r="13" fill="#fff"/><circle cx="76" cy="52" r="13" fill="#fff"/>
     <path d="M36 55q8-10 16 0M68 55q8-10 16 0" fill="none" stroke="#2e1065" stroke-width="4.5" stroke-linecap="round"/>`
@@ -18,12 +21,14 @@ const EYES = {
 const BEAK = {
   happy: '<path d="M54 66l6 8 6-8z" fill="#f59e0b" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>',
   curious: '<ellipse cx="60" cy="70" rx="5" ry="6" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>',
+  sleepy: '<path d="M54 67l6 6 6-6z" fill="#f59e0b" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>',
   celebrate: '<path d="M52 65q8 14 16 0z" fill="#f97316" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>'
 };
 
 const WINGS = {
   happy: '<path d="M22 72q-8 14 4 24q6-12 8-22z" fill="#7c3aed"/><path d="M98 72q8 14-4 24q-6-12-8-22z" fill="#7c3aed"/>',
   curious: '<path d="M22 72q-8 14 4 24q6-12 8-22z" fill="#7c3aed"/><path d="M98 72q8 14-4 24q-6-12-8-22z" fill="#7c3aed"/>',
+  sleepy: '<path d="M22 74q-6 12 6 20q4-10 6-20z" fill="#7c3aed"/><path d="M98 74q6 12-6 20q-4-10-6-20z" fill="#7c3aed"/>',
   celebrate: '<path d="M24 70q-16-8-18-26q16 4 22 20z" fill="#7c3aed"/><path d="M96 70q16-8 18-26q-16 4-22 20z" fill="#7c3aed"/>'
 };
 

@@ -8,6 +8,7 @@ import { APP_VERSION, APK_URL } from '../../core/app-update.js';
 import { buildDiary } from '../../core/family-diary.js';
 import { openFamilyVoicePanel } from './family-voice-panel.js';
 import { renderGallery, openMeuLivro } from './meu-livro.js';
+import { readTogetherEnabled, setReadTogether } from '../../content/stories/read-together.js';
 
 function liteGraphics() { try { return localStorage.getItem('ab_lite_graphics') === '1'; } catch (e) { return false; } }
 
@@ -186,6 +187,12 @@ export class FamilySettings {
           <button id="btn-meu-livro" class="family-button">📖 Abrir o Meu Livro para imprimir</button>
         </section>
 
+        <section class="family-section" id="family-read-together">
+          <h4>💬 Perguntas para conversar nas histórias</h4>
+          <p class="family-hint">Em cada página aparece uma perguntinha para você fazer em voz alta. Espere a resposta, repita o que ela disse e acrescente um pouquinho. Conversar sobre a história ajuda a linguagem mais do que só ouvir.</p>
+          <label class="family-toggle"><input type="checkbox" id="read-together-toggle" ${readTogetherEnabled() ? 'checked' : ''} /> Mostrar as perguntas durante a história</label>
+        </section>
+
         <section class="family-section" id="family-voice-section">
           <h4>🎙️ Voz da família nas histórias</h4>
           <p class="family-hint">Grave a história com a sua voz e a criança ouve quem ela ama. As gravações ficam só neste aparelho.</p>
@@ -315,6 +322,7 @@ export class FamilySettings {
       screenTime.setLimit(selectedLimit);
       const wantLock = modal.querySelector('#kid-lock-toggle').checked;
       if (wantLock !== kidLock.enabled) kidLock.setEnabled(wantLock);
+      setReadTogether(modal.querySelector('#read-together-toggle').checked);
       const wantSound = modal.querySelector('#sound-toggle').checked;
       if (wantSound === app.audio.isMuted) app.audio.toggleMute();
       try { if (modal.querySelector('#lite-toggle').checked) localStorage.setItem('ab_lite_graphics', '1'); else localStorage.removeItem('ab_lite_graphics'); } catch (e) { /* sem armazenamento */ }
