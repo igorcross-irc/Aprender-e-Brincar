@@ -46,16 +46,34 @@ export const PARLENDAS = {
       { text: 'Lencinho na mão, caiu no chão', gesture: '🧣', how: 'Deixe o lencinho cair' },
       { text: 'Moça bonita do meu coração', gesture: '💖', how: 'Mande um beijinho' }
     ]
+  },
+  domingo: {
+    id: 'domingo', title: 'Hoje é domingo', icon: '☀️', bpm: 84,
+    lines: [
+      { text: 'Hoje é domingo, pé de cachimbo', gesture: '☀️', how: 'Faça um sol com os braços' },
+      { text: 'Cachimbo é de ouro, bate no touro', gesture: '🐂', how: 'Faça chifrinhos com os dedos' },
+      { text: 'O touro é valente, bate na gente', gesture: '🤗', how: 'Dê um abraço' },
+      { text: 'A gente é fraco, cai no buraco', gesture: '🕳️', how: 'Agache devagarinho' }
+    ]
+  },
+  dedinhos: {
+    id: 'dedinhos', title: 'Mindinho, seu vizinho', icon: '🖐️', bpm: 76,
+    lines: [
+      { text: 'Mindinho, seu vizinho', gesture: '🤙', how: 'Mostre o dedo mindinho' },
+      { text: 'Pai de todos', gesture: '🖕', how: 'Mostre o dedo do meio' },
+      { text: 'Fura-bolo', gesture: '🎂', how: 'Faça de conta que fura um bolo' },
+      { text: 'Cata-piolho', gesture: '👍', how: 'Mostre o polegar' }
+    ]
   }
 };
 
 // Quantas parlendas por visita e o que aparece, por faixa. Até 2 anos só o gesto de palmas e um verso por vez.
 export const PLAN_BY_AGE = {
   '12-18m': { picks: ['feijao'], clapOnly: true, text: false },
-  '18-24m': { picks: ['feijao', 'galinha'], clapOnly: true, text: false, count: 1 },
-  '2-3y': { picks: ['galinha', 'feijao', 'batatinha'], count: 2, text: false },
-  '3-4y': { picks: ['batatinha', 'serra', 'galinha', 'feijao'], count: 2, text: true },
-  '4-5y': { picks: ['cotia', 'serra', 'batatinha', 'galinha', 'feijao'], count: 3, text: true }
+  '18-24m': { picks: ['dedinhos', 'feijao', 'galinha'], clapOnly: true, text: false, count: 1 },
+  '2-3y': { picks: ['galinha', 'dedinhos', 'feijao', 'batatinha'], count: 2, text: false },
+  '3-4y': { picks: ['batatinha', 'domingo', 'serra', 'galinha', 'feijao'], count: 2, text: true },
+  '4-5y': { picks: ['cotia', 'domingo', 'serra', 'batatinha', 'galinha', 'feijao'], count: 3, text: true }
 };
 
 // Parlendas de uma visita: gira pela lista da faixa para a brincadeira parecer nova.
