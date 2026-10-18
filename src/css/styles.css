@@ -673,3 +673,15 @@ img { -webkit-user-drag: none; }
 .bedtime-stars { font-size: 28px; opacity: .9; animation: mascot-bob 4s ease-in-out infinite; }
 .bedtime-zzz { font-size: 40px; margin: 4px 0 18px; animation: mascot-bob 3s ease-in-out infinite; }
 .bedtime-home { min-width: 64px; min-height: 64px; font-size: 28px; border-radius: 50%; border: 3px solid #4338ca; background: #1e1b4b; opacity: .5; }
+
+/* Como eu me sinto? */
+.sent { text-align: center; padding: 8px; }
+.sent-scene { display: flex; align-items: center; justify-content: center; min-height: 150px; margin: 10px auto; background: #fff; border: 4px solid #2a1b3d; border-radius: 28px; max-width: 22rem; font-size: 84px; line-height: 1; }
+.sent-options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+.sent-face, .sent-action { margin: 6px; padding: 8px; background: #fff; border: 4px solid #2a1b3d; border-radius: 26px; min-width: 104px; min-height: 104px; box-shadow: 0 6px 0 rgba(42, 27, 61, .25); }
+.sent-action { display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 48px; width: 130px; }
+.sent-action small { font-size: 14px; font-weight: 800; color: #2a1b3d; line-height: 1.2; }
+.sent-face.right, .sent-action.right { background: #b6f0b8; transform: scale(1.08); }
+.sent-face.shake, .sent-action.shake { animation: cozinha-shake .35s linear; }
+.sent-face.hint, .sent-action.hint { animation: studio-pop 1s ease-in-out infinite; border-color: #ff8a1f; }
+.campo-vazio { opacity: .5; }

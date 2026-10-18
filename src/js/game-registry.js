@@ -24,12 +24,13 @@ import { StudioGame } from './games/studio/studio-game.js';
 import { AtelieGame } from './games/atelie/atelie-game.js';
 import { CozinhaGame } from './games/cozinha/cozinha-game.js';
 import { BlocosGame } from './games/blocos/blocos-game.js';
+import { SentimentosGame } from './games/sentimentos/sentimentos-game.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','blocos','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','blocos','sentimentos','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -74,6 +75,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['atelie'], AtelieGame);
   addIndependent(['cozinha'], CozinhaGame);
   addIndependent(['blocos'], BlocosGame);
+  addIndependent(['sentimentos'], SentimentosGame);
   addIndependent(['storybook'], StorybookGame);
   addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
   addIndependent(['count-tap'], CountTapGame, developmentContent.objects);

@@ -174,6 +174,7 @@ export class FamilySettings {
         <section class="family-section" id="family-diary">
           <h4>📔 Diário da família</h4>
           <ul class="diary-list">${diary.highlights.map((item) => `<li>${esc(item)}</li>`).join('') || '<li>Ainda está começando: brinquem juntos e volte aqui depois.</li>'}</ul>
+          ${diary.campos.some((c) => c.count) ? `<p class="family-label">Por onde brincou</p><div class="domain-list">${diary.campos.map((c) => `<span class="${c.count ? '' : 'campo-vazio'}" title="${esc(c.label)}">${esc(c.short)} · ${c.count}</span>`).join('')}</div><p class="family-hint">São os cinco campos de experiência da BNCC da Educação Infantil. Não é nota: só mostra por onde ela tem brincado. Os campos com zero são convites para brincar de outro jeito.</p>` : ''}
           <p class="family-label">Ideias para brincar fora da tela</p>
           <ul class="diary-list diary-ideas">${diary.ideas.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>
           <button id="btn-copy-diary" class="family-button">📋 Copiar o resumo</button>

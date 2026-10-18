@@ -9,7 +9,7 @@ export const learningWorlds = [
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',
     description: 'Palavras, comunicação, sílabas, rimas e histórias.',
     ages: ['2-3y','3-4y','4-5y'],
-    activityIds: ['storybook','communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
+    activityIds: ['storybook','sentimentos','communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
   },
   {
     id: 'colors-shapes', title: 'Cores & Formas', icon: '🎨', color: 'sky',

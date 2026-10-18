@@ -20,6 +20,7 @@
     "test:cozinha": "npm run build && node scripts/cozinha-test.mjs",
     "test:blocos": "npm run build && node scripts/blocos-test.mjs",
     "test:familia": "npm run build && node scripts/familia-test.mjs",
+    "test:sentimentos": "npm run build && node scripts/sentimentos-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
     "prebuild": "node scripts/audio-index.mjs && node scripts/stories-index.mjs && node scripts/native-fingerprint.mjs",
     "test:play-all": "npm run build && node scripts/play-all.mjs",

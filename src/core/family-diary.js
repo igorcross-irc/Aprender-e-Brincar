@@ -2,6 +2,7 @@ import { stories } from '../content/stories/index.js';
 import { MODELS } from '../js/games/blocos/blocos-data.js';
 import { RECIPES } from '../js/games/cozinha/cozinha-data.js';
 import { activityCatalog } from '../content/activity-catalog.js';
+import { resumoPorCampo } from './campos-de-experiencia.js';
 
 // Diário da Família: um retrato afetuoso do que a criança viveu no app, montado só com o que já está guardado
 // no aparelho (nada é enviado). Não avalia nem compara: conta o que ela fez e sugere brincadeiras fora da tela.
@@ -76,17 +77,19 @@ export function buildDiary({ storage = localStorage, progress = {}, childName = 
     { icon: '🍳', label: 'pratos', value: dishes },
     { icon: '🧱', label: 'construções', value: buildings }
   ];
+  const campos = resumoPorCampo(progress.activities || {}, activityCatalog);
   const title = name ? `Diário de ${name}` : 'Diário da criança';
   const text = [
     title,
     ...(highlights.length ? highlights.map((h) => `• ${h}`) : ['• Ainda está começando: brinquem juntos e volte aqui depois.']),
+    ...(campos.some((c) => c.count) ? ['', `Por onde brincou (campos de experiência da BNCC): ${campos.filter((c) => c.count).map((c) => `${c.short} (${c.count})`).join(', ')}.`] : []),
     '',
     'Ideias para brincar fora da tela:',
     ...ideas.map((i) => `- ${i}`),
     '',
     'Um retrato das brincadeiras, não uma avaliação. Não substitui acompanhamento profissional.'
   ].join('\n');
-  return { title, stats, highlights, ideas, recent, text };
+  return { title, stats, highlights, ideas, recent, campos, text };
 }
 
 export const DIARY_KEYS = KEYS;

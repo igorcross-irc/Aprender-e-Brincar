@@ -7,6 +7,8 @@ import { buildDiary } from '../src/core/family-diary.js';
 import { todayPicks } from '../src/js/ui/app-screens.js';
 import { promptFor, hasSpecificPrompts } from '../src/content/stories/read-together.js';
 import { stories } from '../src/content/stories/index.js';
+import { camposDe, resumoPorCampo, CAMPOS } from '../src/core/campos-de-experiencia.js';
+import { activityCatalog } from '../src/content/activity-catalog.js';
 import { STORY_ART } from '../src/content/stories/available.js';
 
 const PORT = 4184;
@@ -42,6 +44,13 @@ function unitTests() {
   if (d.ideas.length >= 1 && d.text.includes('Ideias para brincar fora da tela')) pass('sugere brincadeiras fora da tela'); else fail('sem ideias');
   const empty = buildDiary({ storage: { getItem: () => null }, progress: {}, childName: '' });
   if (empty.highlights.length === 0 && empty.text.includes('Ainda está começando')) pass('diário vazio é gentil'); else fail('diário vazio estranho');
+  console.log('Campos de experiência (BNCC)');
+  const allCovered = activityCatalog.every((a) => camposDe(a).length > 0);
+  if (allCovered) pass(`as ${activityCatalog.length} atividades pertencem a algum campo de experiência`); else fail(`sem campo: ${activityCatalog.filter((a) => !camposDe(a).length).map((a) => a.id).join(', ')}`);
+  const sum = resumoPorCampo({ cozinha: { completions: 2 }, sentimentos: { completions: 1 }, storybook: { completions: 3 } }, activityCatalog);
+  const byId = Object.fromEntries(sum.map((c) => [c.id, c.count]));
+  if (Object.keys(CAMPOS).every((id) => id in byId)) pass('o resumo sempre traz os cinco campos'); else fail('faltou campo no resumo');
+  if (byId.et === 2 && byId.eo >= 2 && byId.ef >= 3) pass('a soma por campo dá o peso certo (principal conta 1, secundário 1/2)'); else fail(`soma estranha: ${JSON.stringify(byId)}`);
   console.log('Perguntas da leitura em dupla');
   const shelf = stories.filter((st) => STORY_ART[st.id] === st.pages.length);
   const missing = shelf.filter((st) => !hasSpecificPrompts(st.id)).map((st) => st.id);
