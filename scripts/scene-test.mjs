@@ -49,9 +49,8 @@ async function playWebgl(context, age, visits) {
   const info = await page.evaluate(() => ({ target: window.__scene.plan.target, creatures: window.__scene.entities.length, mood: window.__scene.mood.id }));
   const expected = { '12-18m': [6, 3], '2-3y': [10, 5], '4-5y': [15, 7] }[age];
   if (info.creatures === expected[0] && info.target === expected[1]) pass(`${tag}: ${info.creatures} bichos e ${info.target} descobertas (${info.mood})`); else fail(`${tag}: esperava ${expected}, veio ${info.creatures}/${info.target}`);
-  let guard = 0;
-  while (guard < 60) {
-    guard += 1;
+  const deadline = Date.now() + 70000; // por tempo, não por tentativas: num aparelho lento as esperas gastavam as 60 tentativas
+  while (Date.now() < deadline) {
     const next = await page.evaluate(() => {
       const s = window.__scene;
       if (s.finished) return null;
