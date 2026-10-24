@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-16 (2) — Ateliê Mágico (4º jogo-âncora)
+- **Ateliê Mágico:** 5 desenhos para pintar (borboleta, peixinho, jardim, casinha, trenzinho). A criança escolhe uma cor e toca nas partes; cada cor toca a sua nota. Ao pintar boa parte, o desenho **ganha vida** (asas batendo, rabo do peixe, roda do trem girando, fumaça subindo…) e toca uma música. Aos 18–24 meses as cores vêm sozinhas, em arco-íris. Um desenho por visita; o desenho pronto fica guardado no aparelho.
+- Desenhos descritos em caminhos SVG: o mesmo dado serve ao PixiJS e ao modo lite (SVG puro). Teste: `npm run test:atelie`.
+
 ## 2026-10-16 — Estúdio dos Bichos (3º jogo-âncora) e histórias narradas
 - **Estúdio dos Bichos:** banda de bichos (vaca, galinha, cachorro, gato) com instrumentos sintetizados no aparelho (bumbo, xilofone, tambor, sininho). Até 3 anos: tocar nos bichos (2 a 4 bichos, sem objetivo). A partir de 3 anos: sequenciador de quadradinhos com 4 trilhas (4 ou 8 passos), a música fica guardada no aparelho. Modo lite em HTML/CSS. Teste: `npm run test:studio`.
 - **Narração provisória:** as 31 histórias narradas com a voz Kokoro `pf_dora` (grátis, offline). `scripts/narrate-kokoro.py`, `docs/NARRACAO.md`.

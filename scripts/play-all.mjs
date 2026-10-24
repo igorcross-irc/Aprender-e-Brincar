@@ -160,6 +160,12 @@ async function playSpecial(page) {
     await page.waitForTimeout(5000);
     return true;
   }
+  if (await page.$('#atelie-lite')) {
+    const parts = await page.$$('.atelie-lite-region');
+    for (const part of parts.slice(0, 12)) { await part.dispatchEvent('click'); await page.waitForTimeout(120); }
+    await page.waitForTimeout(8000);
+    return true;
+  }
   if (await page.$('#studio-lite')) {
     const cells = await page.$$('.studio-lite-cell');
     if (cells.length) {

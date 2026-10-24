@@ -11,7 +11,7 @@ import { installPointerShim } from './pointer-shim.js';
 import { installEmojiFallback } from './emoji-fallback.js';
 
 // Elementos com aspect-ratio: 1 em src/css/styles.css (o legacy-audit confere a lista).
-export const SQUARE_SELECTORS = ['.world-tile', '.peek-spot', '.story-slot', '.story-card', '.sticker', '.memory-card', '.studio-lite-animal', '.studio-lite-cell'];
+export const SQUARE_SELECTORS = ['.world-tile', '.peek-spot', '.story-slot', '.story-card', '.sticker', '.memory-card', '.studio-lite-animal', '.studio-lite-cell', '.atelie-lite-board'];
 
 const WEBP_PROBE = 'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
 

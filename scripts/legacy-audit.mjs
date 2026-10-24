@@ -198,6 +198,13 @@ async function run() {
   if (band) { await band.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.studio-lite-animal.hit')) pass('estúdio lite: tocar no bicho faz ele tocar'); else fail('estúdio lite: o bicho não reagiu'); }
   await checkEmoji('estúdio dos bichos');
   await shot('02e-estudio-lite');
+  // Ateliê Mágico: desenho em SVG no aparelho antigo; tocar numa parte pinta.
+  await openGame('3-4y', 'atelie');
+  if (await page.$('#atelie-lite svg')) pass('ateliê mágico usa o modo lite (SVG) no aparelho antigo');
+  else fail('ateliê mágico não entrou no modo lite');
+  const part = await page.$('.atelie-lite-region');
+  if (part) { const before = await part.getAttribute('fill'); await part.dispatchEvent('click'); await page.waitForTimeout(300); const after = await part.getAttribute('fill'); if (after && after !== before) pass('ateliê lite: tocar numa parte pinta'); else fail('ateliê lite: a parte não foi pintada'); }
+  await shot('02f-atelie-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

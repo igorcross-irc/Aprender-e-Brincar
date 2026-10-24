@@ -543,3 +543,15 @@ img { -webkit-user-drag: none; }
 .studio-lite-play { background: #3dc15d; }
 .studio-lite-clear { background: #2f7de1; width: 52px; height: 52px; margin-left: 6px; }
 @keyframes studio-pop { 0% { transform: scale(1); } 40% { transform: scale(1.18, .86); } 100% { transform: scale(1); } }
+
+/* Ateliê Mágico */
+.atelie-stage { position: relative; width: 100%; height: min(78vh, 760px); min-height: 380px; border-radius: var(--ab-radius-lg); overflow: hidden; background: #ffe9b8; box-shadow: 0 8px 24px rgba(0, 0, 0, .14); touch-action: none; -webkit-user-select: none; user-select: none; }
+.atelie-lite { position: relative; width: 100%; border-radius: var(--ab-radius-lg); background: #ffe9b8; padding: 10px; box-sizing: border-box; text-align: center; }
+.atelie-lite-board { width: min(100%, 62vh); margin: 0 auto; border: 5px solid #2a1b3d; border-radius: 18px; background: #fff; overflow: hidden; }
+.atelie-lite-board svg { display: block; width: 100%; height: auto; }
+.atelie-lite-board.alive svg { animation: atelie-dance 1.2s ease-in-out infinite; }
+.atelie-lite-palette { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; padding: 12px 0 4px; }
+.atelie-lite-pot { width: 54px; height: 54px; border-radius: 50%; border: 4px solid #2a1b3d; padding: 0; }
+.atelie-lite-pot.on { border-color: #fff; box-shadow: 0 0 0 4px #2a1b3d; transform: scale(1.12); }
+.atelie-lite-next { display: inline-block; width: 64px; height: 64px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 0 4px #2a1b3d; }
+@keyframes atelie-dance { 0%, 100% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.03) rotate(1.2deg); } 75% { transform: scale(1.03) rotate(-1.2deg); } }
