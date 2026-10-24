@@ -49,3 +49,5 @@ jobs:
         run: node scripts/studio-test.mjs
       - name: Ateliê Mágico (WebGL e modo lite)
         run: node scripts/atelie-test.mjs
+      - name: Cozinha Maluca (WebGL e modo lite)
+        run: node scripts/cozinha-test.mjs

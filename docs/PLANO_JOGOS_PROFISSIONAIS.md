@@ -169,7 +169,7 @@ Os prazos assumem arte entregue em paralelo; sem artista dedicado, a Fase 1 dobr
 2. Mundo das Cenas — Fundo do Mar feito (mais cenas: floresta, quintal, noite e espaço)
 3. Estúdio dos Bichos — feito (tocar nos bichos até 3 anos; sequenciador de 4 trilhas a partir de 3 anos; modo lite)
 4. Ateliê Mágico — feito (5 desenhos para pintar que ganham vida; cada cor tem a sua nota; modo lite em SVG). Ficam para depois: pincéis livres e galeria de obras
-5. Cozinha Maluca
+5. Cozinha Maluca — feita (3–5 anos: pedido por figura, receitas em etapas visuais com contagem de colheres, mexer, assar e servir; 6 receitas; livro de receitas guardado no aparelho; modo lite). Ficam para depois: mais receitas (meta de 30) e a tela do livro de receitas para a família
 6. (opcional) Histórias Vivas
 
 Trem das Letras e Números e o app de 6 a 8 anos saíram: pertencem ao território escolar.

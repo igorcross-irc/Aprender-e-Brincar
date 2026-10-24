@@ -15,6 +15,7 @@ Tudo o que foi feito está na branch `claude/plano-jogos-profissionais`. **Nada 
 | Testes automáticos | prontos | núcleo, auditorias, aparelho antigo, ponta a ponta, Fazendinha, Cenas, Histórias |
 | Estúdio dos Bichos | pronto, com modo lite | até 3 anos toca nos bichos; de 3 a 5 anos monta e guarda uma música (4 trilhas) |
 | Ateliê Mágico (branch `claude/atelie-magico`) | pronto, com modo lite | 5 desenhos para pintar; ao pintar bastante o desenho ganha vida e toca uma música |
+| Cozinha Maluca (branch `claude/cozinha-maluca`) | pronta, com modo lite | 3–5 anos: 6 receitas em etapas, clientes bichinhos, contar colheres, mexer, assar, servir |
 | Anúncios | **não** implementados, de propósito | critérios em `docs/MONETIZACAO_E_ANUNCIOS.md` |
 
 ## 2. Regras de entrega

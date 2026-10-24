@@ -205,6 +205,14 @@ async function run() {
   const part = await page.$('.atelie-lite-region');
   if (part) { const before = await part.getAttribute('fill'); await part.dispatchEvent('click'); await page.waitForTimeout(300); const after = await part.getAttribute('fill'); if (after && after !== before) pass('ateliê lite: tocar numa parte pinta'); else fail('ateliê lite: a parte não foi pintada'); }
   await shot('02f-atelie-lite');
+  // Cozinha Maluca: pedido por figura e etapas em HTML/CSS no aparelho antigo.
+  await openGame('3-4y', 'cozinha');
+  if (await page.$('#cozinha-lite .cozinha-lite-order')) pass('cozinha maluca usa o modo lite no aparelho antigo');
+  else fail('cozinha maluca não entrou no modo lite');
+  const ingredient = await page.$('.cozinha-lite-ing.hint');
+  if (ingredient) { await ingredient.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.cozinha-lite-step.done')) pass('cozinha lite: o ingrediente certo cumpre a etapa'); else fail('cozinha lite: a etapa não foi cumprida'); }
+  await checkEmoji('cozinha maluca');
+  await shot('02g-cozinha-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

@@ -160,6 +160,18 @@ async function playSpecial(page) {
     await page.waitForTimeout(5000);
     return true;
   }
+  if (await page.$('#cozinha-lite')) {
+    for (let i = 0; i < 30; i += 1) {
+      const hint = await page.$('.cozinha-lite-ing.hint');
+      const oven = await page.$('.cozinha-lite-oven.now');
+      if (hint) await hint.dispatchEvent('click');
+      else if (oven) { await oven.dispatchEvent('click'); await page.waitForTimeout(2600); }
+      else { const v = await page.$('#cozinha-lite-vessel'); if (v) await v.dispatchEvent('click'); }
+      await page.waitForTimeout(260);
+      if (await page.$('#session-again')) break;
+    }
+    return true;
+  }
   if (await page.$('#atelie-lite')) {
     const parts = await page.$$('.atelie-lite-region');
     for (const part of parts.slice(0, 12)) { await part.dispatchEvent('click'); await page.waitForTimeout(120); }

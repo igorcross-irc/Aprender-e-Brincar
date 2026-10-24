@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-16 (3) — Cozinha Maluca (5º jogo-âncora)
+- **Cozinha Maluca (3–5 anos):** um bichinho chega e pede um prato **por figura**; a criança prepara em etapas visuais: juntar ingredientes (na ordem das figurinhas), **contar colheres** (voz diz um, dois, três), **mexer** (tocando ou girando o dedo), **assar** (forno com contagem em anel e sininho) e **servir**. Seis receitas (sanduíche, suco, salada, peixe assado, bolo de morango, sopa), 2 pedidos aos 3–4 anos e 3 aos 4–5. Ingrediente errado só balança e volta; nada de derrota. O livro de receitas feitas fica guardado no aparelho. Teste: `npm run test:cozinha`.
+- Fallback de emojis (iOS antigo) atualizado para os novos ingredientes.
+- Teste da Fazendinha ficou mais robusto: espera os legumes crescerem e repete o toque quando um enfeite passa na frente do canteiro.
+
 ## 2026-10-16 (2) — Ateliê Mágico (4º jogo-âncora)
 - **Ateliê Mágico:** 5 desenhos para pintar (borboleta, peixinho, jardim, casinha, trenzinho). A criança escolhe uma cor e toca nas partes; cada cor toca a sua nota. Ao pintar boa parte, o desenho **ganha vida** (asas batendo, rabo do peixe, roda do trem girando, fumaça subindo…) e toca uma música. Aos 18–24 meses as cores vêm sozinhas, em arco-íris. Um desenho por visita; o desenho pronto fica guardado no aparelho.
 - Desenhos descritos em caminhos SVG: o mesmo dado serve ao PixiJS e ao modo lite (SVG puro). Teste: `npm run test:atelie`.
