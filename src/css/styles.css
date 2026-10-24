@@ -708,3 +708,38 @@ img { -webkit-user-drag: none; }
 .parl-dots i.done { background: #7ddc4a; }
 .parl-dots i.current { background: #ffcf1f; transform: scale(1.3); }
 .parl-next { margin-left: 18px; min-width: 56px; min-height: 56px; border-radius: 50%; border: 3px solid #2a1b3d; background: #fff; font-size: 24px; }
+
+/* Rotina do Dia */
+.rot { position: relative; text-align: center; padding: 8px; }
+.rot-title { font-size: 64px; line-height: 1; margin: 4px auto; }
+.rot-scene { position: relative; width: min(92vw, 22rem); aspect-ratio: 5 / 3; margin: 6px auto; background: #fff; border: 4px solid #2a1b3d; border-radius: 28px; overflow: hidden; }
+.rot-dentes { background: #d9f3ff; }
+.rot-banho { background: #fff4d6; }
+.rot-art { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.rot-spot { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; background: transparent; border: 0; font-size: 40px; line-height: 56px; transition: transform .25s, opacity .25s; }
+.rot-spot.clean { transform: scale(1.6); opacity: 0; pointer-events: none; }
+.rot-tool { font-size: 56px; margin-top: 6px; }
+.rot-toys, .rot-boxes { display: flex; flex-wrap: wrap; justify-content: center; margin: 8px auto; max-width: 24rem; }
+.rot-toy, .rot-box { position: relative; margin: 6px; min-width: 92px; min-height: 92px; padding: 8px; background: #fff; border: 4px solid #2a1b3d; border-radius: 24px; font-size: 52px; line-height: 1; box-shadow: 0 6px 0 rgba(42, 27, 61, .25); transition: transform .25s, opacity .25s; }
+.rot-box { min-width: 108px; min-height: 108px; background: #ffe9b8; }
+.rot-box-icon { display: block; }
+.rot-count { position: absolute; right: 6px; bottom: 4px; min-width: 28px; padding: 0 6px; font-size: 20px; font-weight: 700; color: #2a1b3d; background: #fff; border: 3px solid #2a1b3d; border-radius: 14px; }
+.rot-count:empty { display: none; }
+.rot-toy.sel { transform: scale(1.12); border-color: #ff8a1f; }
+.rot-toy.in { transform: scale(.2); opacity: 0; pointer-events: none; }
+.rot-box.shake { animation: cozinha-shake .35s linear; }
+.rot-box.hint { animation: studio-pop 1s ease-in-out infinite; border-color: #ff8a1f; }
+.rot-banner { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); padding: 14px 22px; font-size: 26px; font-weight: 800; color: #2a1b3d; background: #b6f0b8; border: 4px solid #2a1b3d; border-radius: 26px; box-shadow: 0 8px 0 rgba(42, 27, 61, .25); }
+@media (prefers-reduced-motion: reduce) { .rot-spot, .rot-toy, .rot-box { transition: none; animation: none; } }
+
+/* Que roupa eu visto? */
+.clima { text-align: center; padding: 8px; }
+.clima-scene { position: relative; display: flex; align-items: flex-end; justify-content: center; width: min(92vw, 22rem); height: 220px; margin: 10px auto; background: linear-gradient(#bfe8ff, #fff8d8); border: 4px solid #2a1b3d; border-radius: 28px; overflow: hidden; }
+.clima-sky { position: absolute; top: 12px; right: 18px; font-size: 76px; line-height: 1; }
+.clima-kid { font-size: 110px; line-height: 1; margin-bottom: 6px; }
+.clima-options { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+.clima-item { margin: 6px; padding: 8px; min-width: 104px; min-height: 104px; font-size: 56px; line-height: 1; background: #fff; border: 4px solid #2a1b3d; border-radius: 26px; box-shadow: 0 6px 0 rgba(42, 27, 61, .25); }
+.clima-item.right { background: #b6f0b8; transform: scale(1.08); }
+.clima-item.shake { animation: cozinha-shake .35s linear; }
+.clima-item.hint { animation: studio-pop 1s ease-in-out infinite; border-color: #ff8a1f; }
+@media (prefers-reduced-motion: reduce) { .clima-item { animation: none; transition: none; } }

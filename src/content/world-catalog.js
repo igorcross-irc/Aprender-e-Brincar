@@ -3,7 +3,7 @@ export const learningWorlds = [
     id: 'discover', title: 'Descobrir', icon: '🌱', color: 'emerald',
     description: 'Experiências livres para observar, tocar, ouvir e descobrir.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['storybook','farm','scene-sea','studio','blocos','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
+    activityIds: ['storybook','clima','farm','scene-sea','studio','blocos','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
   },
   {
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',
@@ -39,7 +39,7 @@ export const learningWorlds = [
     id: 'create-move', title: 'Criar & Mexer', icon: '✨', color: 'orange',
     description: 'Desenho, movimento, ritmo e expressão pelo brincar.',
     ages: ['18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['parlendas','blocos','cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
+    activityIds: ['rotina','parlendas','blocos','cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
   }
 ];
 
