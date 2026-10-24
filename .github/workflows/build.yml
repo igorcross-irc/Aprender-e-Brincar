@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout
@@ -46,7 +46,7 @@ jobs:
 
   # Os testes de cada jogo rodam em paralelo (cada um gera o próprio build).
   games:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -56,8 +56,8 @@ jobs:
             scripts: farm-test scene-test studio-test
           - name: Ateliê, Cozinha e Torre de Blocos
             scripts: atelie-test cozinha-test blocos-test
-          - name: Início, Parlendas e Sentimentos
-            scripts: familia-test parlendas-test sentimentos-test
+          - name: Início, Parlendas, Sentimentos e Rotina
+            scripts: familia-test parlendas-test sentimentos-test rotina-test
     name: ${{ matrix.name }}
     steps:
       - name: Checkout

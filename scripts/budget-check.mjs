@@ -24,8 +24,8 @@ else check('código principal', size(entryFile), LIMITS.entry);
 if (legacyFile) check('código principal (aparelho antigo)', size(legacyFile), LIMITS.entryLegacy);
 
 const files = readdirSync(dir).filter((f) => f.endsWith('.js') && !f.includes('legacy'));
-const games = files.filter((f) => /^(farm|scene|studio|atelie|cozinha|blocos|sentimentos|parlendas)-game-/.test(f));
-if (games.length < 8) failures.push(`esperava 8 jogos separados do código principal, achei ${games.length}`);
+const games = files.filter((f) => /^(farm|scene|studio|atelie|cozinha|blocos|sentimentos|parlendas|rotina)-game-/.test(f));
+if (games.length < 9) failures.push(`esperava 9 jogos separados do código principal, achei ${games.length}`);
 games.forEach((f) => check(f.replace(/-[A-Za-z0-9_-]{8}\.js$/, ''), size(f), LIMITS.game));
 const pixi = files.map((f) => ({ f, s: size(f) })).filter((x) => x.f !== entryFile).sort((a, b) => b.s - a.s)[0];
 if (pixi) check('motor gráfico (PixiJS)', pixi.s, LIMITS.pixi);

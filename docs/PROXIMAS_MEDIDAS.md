@@ -15,6 +15,7 @@ O que ainda é comum: a lista de atividades antigas (81), a narração provisór
 ## Estado
 - ✅ Leitura em dupla (perguntas para o adulto nas histórias) · ✅ Meu Livro e Galeria · ✅ Hora de dormir · ✅ Comunicação com foto e voz da família · ✅ Sentimentos (jogo novo) · ✅ Campos da BNCC no Diário · ✅ Orçamento de tamanho no CI (código principal 476 → 299 kB) · ✅ Guia de publicação (`docs/PUBLICACAO.md`)
 - ✅ Parlendas e Gestos (folclore falado, sem precisar de ilustração nova)
+- ✅ Rotina do Dia (escovar os dentes, banho e guardar brinquedos; 12 meses a 5 anos)
 - ⏳ Teste em aparelho real e com criança · ⏳ Cantigas de roda cantadas e ilustradas (depende de créditos de imagem e de voz) · ⏳ Revisão de pedagoga e fonoaudióloga · ⏳ Revisão jurídica da política · ⏳ Conta de desenvolvedor nas lojas
 
 ### 1. Confiança e qualidade (sem isso o resto não vale)
