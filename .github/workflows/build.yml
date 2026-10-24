@@ -56,8 +56,8 @@ jobs:
             scripts: farm-test scene-test studio-test
           - name: Ateliê, Cozinha e Torre de Blocos
             scripts: atelie-test cozinha-test blocos-test
-          - name: Início, Parlendas, Sentimentos e Rotina
-            scripts: familia-test parlendas-test sentimentos-test rotina-test
+          - name: Início, Parlendas, Sentimentos, Rotina e Clima
+            scripts: familia-test parlendas-test sentimentos-test rotina-test clima-test
     name: ${{ matrix.name }}
     steps:
       - name: Checkout

@@ -42,8 +42,9 @@ const CozinhaGame = lazyGame(() => import('./games/cozinha/cozinha-game.js').the
 const BlocosGame = lazyGame(() => import('./games/blocos/blocos-game.js').then((m) => m.BlocosGame));
 const ParlendasGame = lazyGame(() => import('./games/parlendas/parlendas-game.js').then((m) => m.ParlendasGame));
 const RotinaGame = lazyGame(() => import('./games/rotina/rotina-game.js').then((m) => m.RotinaGame));
+const ClimaGame = lazyGame(() => import('./games/clima/clima-game.js').then((m) => m.ClimaGame));
 const SentimentosGame = lazyGame(() => import('./games/sentimentos/sentimentos-game.js').then((m) => m.SentimentosGame));
-const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','blocos','sentimentos','rotina','parlendas','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','blocos','sentimentos','rotina','clima','parlendas','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -90,6 +91,7 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['blocos'], BlocosGame);
   addIndependent(['sentimentos'], SentimentosGame);
   addIndependent(['rotina'], RotinaGame);
+  addIndependent(['clima'], ClimaGame);
   addIndependent(['parlendas'], ParlendasGame);
   addIndependent(['storybook'], StorybookGame);
   addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);

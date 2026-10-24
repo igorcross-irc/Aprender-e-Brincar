@@ -22,6 +22,7 @@
     "test:blocos": "npm run build && node scripts/blocos-test.mjs",
     "test:familia": "npm run build && node scripts/familia-test.mjs",
     "test:parlendas": "npm run build && node scripts/parlendas-test.mjs",
+    "test:clima": "npm run build && node scripts/clima-test.mjs",
     "test:rotina": "npm run build && node scripts/rotina-test.mjs",
     "test:sentimentos": "npm run build && node scripts/sentimentos-test.mjs",
     "audio:coverage": "node scripts/audio-coverage.mjs",
