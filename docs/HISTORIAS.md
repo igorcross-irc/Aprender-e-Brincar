@@ -11,17 +11,17 @@ Atualizado em 07/10/2026. **31 histórias** (mínimo de 5 por faixa), todas em d
 ## Catálogo
 | Faixa | História | Origem / autor (morte) | Páginas | Arte | Narração |
 |---|---|---|---|---|---|
-| 6–12 m | A Dona Aranha | cantiga de roda (tradição) | 4 | ✅ | ⏳ |
-| 6–12 m | Borboletinha | cantiga de roda (tradição) | 4 | ✅ | ⏳ |
-| 6–12 m | Dedinhos | brincadeira de dedos (tradição) | 4 | ✅ | ⏳ |
-| 6–12 m | Pombinha Branca | cantiga de roda (tradição) | 4 | ✅ | ⏳ |
-| 6–12 m | Palma, Palma, Palma | brincadeira de roda (tradição) | 4 | ✅ | ⏳ |
-| 12–18 m | O Sapo Não Lava o Pé | cantiga popular | 4 | ✅ | ⏳ |
-| 12–18 m | Sapo Cururu | cantiga de roda | 4 | ⏳ | ⏳ |
-| 12–18 m | Pirulito que Bate, Bate | cantiga popular | 4 | ✅ (provisória) | ⏳ |
-| 12–18 m | Cai, Cai, Balão | cantiga popular | 4 | ✅ | ⏳ |
-| 12–18 m | A Barata Diz Que Tem | cantiga popular | 4 | ✅ (provisória) | ⏳ |
-| 18–24 m | O Nabo Gigante | conto popular russo (reconto) | 4 | ⏳ | ⏳ |
+| 6–12 m | A Dona Aranha | cantiga de roda (tradição) | 4 | ✅ | ✅ (Dora) |
+| 6–12 m | Borboletinha | cantiga de roda (tradição) | 4 | ✅ | ✅ (Dora) |
+| 6–12 m | Dedinhos | brincadeira de dedos (tradição) | 4 | ✅ | ✅ (Dora) |
+| 6–12 m | Pombinha Branca | cantiga de roda (tradição) | 4 | ✅ | ✅ (Dora) |
+| 6–12 m | Palma, Palma, Palma | brincadeira de roda (tradição) | 4 | ✅ | ✅ (Dora) |
+| 12–18 m | O Sapo Não Lava o Pé | cantiga popular | 4 | ✅ | ✅ (Dora) |
+| 12–18 m | Sapo Cururu | cantiga de roda | 4 | ⏳ | ✅ (Dora) |
+| 12–18 m | Pirulito que Bate, Bate | cantiga popular | 4 | ✅ (provisória) | ✅ (Dora) |
+| 12–18 m | Cai, Cai, Balão | cantiga popular | 4 | ✅ | ✅ (Dora) |
+| 12–18 m | A Barata Diz Que Tem | cantiga popular | 4 | ✅ (provisória) | ✅ (Dora) |
+| 18–24 m | O Nabo Gigante | conto popular russo (reconto) | 4 | ⏳ | ✅ (Dora) |
 | 18–24 m | O Leão e o Ratinho | Esopo (séc. VI a.C.) | 4 | ⏳ | ⏳ |
 | 18–24 m | Quem Mora na Luva? | conto popular ucraniano | 4 | ⏳ | ⏳ |
 | 18–24 m | O Corvo e a Jarra | Esopo | 4 | ⏳ | ⏳ |

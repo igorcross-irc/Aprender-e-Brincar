@@ -14,4 +14,4 @@ Gera um MP3 por página em `public/assets/stories/<id>/pN.mp3` (mono 64 kbps, �
 ## Definitiva: Dora (ElevenLabs)
 Voz `OARkYvAPkwW2xOP8T9FE`, modelo `eleven_multilingual_v2`, ≈ 12.890 créditos para tudo. Um áudio por história: `node scripts/narration-plan.mjs <id>` → gerar → `python3 scripts/split-narration.py <audio> <id>` (sobrescreve os `pN.mp3`).
 
-**Estado (17/10/2026):** 3 histórias já estão com a Dora (`o-nabo-gigante`, `borboletinha`, `o-sapo-nao-lava-o-pe`, ≈ 570 créditos); as outras 28 seguem com a voz provisória. Para trocar todas: cerca de 12.300 créditos restantes.
+**Estado (24/10/2026):** 11 histórias já estão com a Dora (`o-nabo-gigante`, `borboletinha`, `o-sapo-nao-lava-o-pe`, `dedinhos`, `a-dona-aranha`, `pombinha-branca`, `palma-palma-palma`, `sapo-cururu`, `pirulito-que-bate-bate`, `cai-cai-balao`, `a-barata-diz-que-tem`); as outras 20 seguem com a voz provisória (≈ 11.000 créditos restantes). A geração esbarrou em limite de requisições (429) e em um bloqueio de conta no ElevenLabs ("Free Tier access has been disabled"); retomar a partir de `o-leao-e-o-ratinho`, uma geração por vez.
