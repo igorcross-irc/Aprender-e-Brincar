@@ -163,6 +163,41 @@ async function run() {
     throw new Error(`${gameId} não está disponível para ${age}`);
   };
 
+  // Fazendinha: aparelho antigo recebe a versão lite (HTML/CSS), não a de WebGL.
+  await openGame('2-3y', 'farm');
+  if (await page.$('#farm-lite')) pass('fazendinha usa o modo lite no aparelho antigo');
+  else fail('fazendinha não entrou no modo lite');
+  const foods = await page.$$('[data-food]');
+  if (foods.length) { await foods[0].tap(); await page.waitForTimeout(700); if (await page.$('.farm-lite-animal.fed')) pass('fazendinha lite: tocar na comida alimenta o bicho'); else fail('fazendinha lite não alimentou o bicho'); }
+  await shot('02b-fazendinha-lite');
+  // Hora da Historinha: estante e livro no aparelho antigo.
+  await openGame('6-12m', 'storybook');
+  const covers = await page.$$('.story-cover');
+  if (covers.length) pass(`historinhas: ${covers.length} capas na estante`); else fail('historinhas: estante vazia');
+  if (covers.length) {
+    await covers[0].tap(); await page.waitForTimeout(400);
+    if (await page.$('#storybook')) pass('historinhas: livro abre'); else fail('historinhas: livro não abriu');
+    await page.tap('#sb-next'); await page.waitForTimeout(300);
+    const page2 = await page.$eval('.sb-dots i.current', (el) => Array.prototype.indexOf.call(el.parentNode.children, el));
+    if (page2 === 1) pass('historinhas: avançar a página funciona'); else fail('historinhas: não avançou');
+  }
+  await shot('02d-historinhas');
+  // Cena do fundo do mar: aparelho antigo recebe a versão lite (HTML/CSS).
+  await openGame('2-3y', 'scene-sea');
+  if (await page.$('#scene-lite')) pass('fundo do mar usa o modo lite no aparelho antigo');
+  else fail('fundo do mar não entrou no modo lite');
+  const creature = await page.$('.scene-lite-c');
+  if (creature) { await creature.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.scene-lite-dot.on')) pass('fundo do mar lite: tocar no bicho conta uma descoberta'); else fail('fundo do mar lite não contou a descoberta'); }
+  await checkEmoji('fundo do mar');
+  await shot('02c-fundo-do-mar-lite');
+  // Estúdio dos Bichos: aparelho antigo recebe a versão lite (HTML/CSS) e os bichos respondem ao toque.
+  await openGame('2-3y', 'studio');
+  if (await page.$('#studio-lite')) pass('estúdio dos bichos usa o modo lite no aparelho antigo');
+  else fail('estúdio dos bichos não entrou no modo lite');
+  const band = await page.$('.studio-lite-animal');
+  if (band) { await band.dispatchEvent('click'); await page.waitForTimeout(300); if (await page.$('.studio-lite-animal.hit')) pass('estúdio lite: tocar no bicho faz ele tocar'); else fail('estúdio lite: o bicho não reagiu'); }
+  await checkEmoji('estúdio dos bichos');
+  await shot('02e-estudio-lite');
   // Toques: bolhas, piano e balões usam pointerdown (via adaptador de toque).
   await openGame('2-3y', 'bubbles');
   const bubble = await page.$('.bubble');

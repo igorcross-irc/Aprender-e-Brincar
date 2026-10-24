@@ -150,6 +150,34 @@ async function playSpecial(page) {
     if (item) await item.click(); else await page.waitForTimeout(500);
     return true;
   }
+  if (await page.$('.story-cover')) { await page.click('.story-cover'); await page.waitForTimeout(500); return true; }
+  if (await page.$('#storybook')) {
+    for (let i = 0; i < 8 && !(await page.$('#session-again')); i += 1) { await page.click('#sb-next'); await page.waitForTimeout(300); }
+    return true;
+  }
+  if (await page.$('#scene-lite')) {
+    for (const creature of await page.$$('.scene-lite-c')) { await creature.dispatchEvent('click'); await page.waitForTimeout(250); }
+    await page.waitForTimeout(5000);
+    return true;
+  }
+  if (await page.$('#studio-lite')) {
+    const cells = await page.$$('.studio-lite-cell');
+    if (cells.length) {
+      for (let i = 0; i < cells.length && i < 20; i += 5) { await cells[i].dispatchEvent('click'); await page.waitForTimeout(150); }
+      const play = await page.$('#studio-lite-play');
+      if (play) await play.dispatchEvent('click');
+      await page.waitForTimeout(9000);
+    } else {
+      for (let i = 0; i < 14; i += 1) { const animals = await page.$$('.studio-lite-animal'); await animals[i % animals.length].dispatchEvent('click'); await page.waitForTimeout(150); }
+      await page.waitForTimeout(3500);
+    }
+    return true;
+  }
+  if (await page.$('#farm-lite')) {
+    for (const food of await page.$$('[data-food]:not([disabled])')) { await food.click(); await page.waitForTimeout(500); }
+    await page.waitForTimeout(6000);
+    return true;
+  }
   if (await page.$('.piano-key')) {
     for (let i = 0; i < 10; i += 1) await page.dispatchEvent(`[data-key="${i % 5}"]`, POINTER);
     await page.click('#music-done');
@@ -239,7 +267,7 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce', serviceWorkers: 'block' });
-  await context.addInitScript(() => localStorage.setItem('ab_kid_lock', 'off'));
+  await context.addInitScript(() => { localStorage.setItem('ab_kid_lock', 'off'); localStorage.setItem('ab_lite_graphics', '1'); });
   if (LEGACY) {
     const legacyHtml = readFileSync('dist/index.html', 'utf8')
       .replace(/<script type="module"[^>]*>[\s\S]*?<\/script>/g, '')

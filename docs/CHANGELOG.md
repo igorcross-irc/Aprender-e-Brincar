@@ -1,5 +1,45 @@
 # Changelog
 
+## 2026-10-16 — Estúdio dos Bichos (3º jogo-âncora) e histórias narradas
+- **Estúdio dos Bichos:** banda de bichos (vaca, galinha, cachorro, gato) com instrumentos sintetizados no aparelho (bumbo, xilofone, tambor, sininho). Até 3 anos: tocar nos bichos (2 a 4 bichos, sem objetivo). A partir de 3 anos: sequenciador de quadradinhos com 4 trilhas (4 ou 8 passos), a música fica guardada no aparelho. Modo lite em HTML/CSS. Teste: `npm run test:studio`.
+- **Narração provisória:** as 31 histórias narradas com a voz Kokoro `pf_dora` (grátis, offline). `scripts/narrate-kokoro.py`, `docs/NARRACAO.md`.
+- **Ilustrações:** Patinho Feio e Sapo-Cururu (Canva). 11 de 31 ilustradas; o resto espera créditos de imagem.
+
+## 2026-10-07 (4) — Hora da Historinha: 31 histórias de domínio público (9 já ilustradas)
+- **Catálogo de 31 histórias** em domínio público ou tradição popular, 5 a 6 por faixa de idade (6–12 m a 4–5 anos): cantigas de roda para os bebês, fábulas de Esopo, contos de Perrault, Grimm, Andersen, Jacobs, Southey, Kipling, Beatrix Potter, Monteiro Lobato e folclore brasileiro (A Festa no Céu, O Curupira). Textos recontados por nós; direitos e créditos em `docs/HISTORIAS.md`.
+- **Leitor** (`storybook.js`, HTML/CSS, funciona em aparelho antigo): estante de capas, páginas ilustradas, botão grande de avançar que pulsa ao fim da fala, deslizar o dedo, "Aa" (mostrar texto), "Auto" (vira sozinho), estrela nas já lidas e crédito do autor na última página.
+- **9 histórias já ilustradas** (6–12 m completa, 12–18 m com 4 de 5); as outras 22 têm texto e cenas prontos e esperam créditos de imagem.
+- **Narração**: o leitor usa MP3 por página quando existir e, enquanto isso, a voz do navegador. Fluxo pronto: `narration-plan.mjs`, `split-narration.py`. **Pendente**: a conta do ElevenLabs está sem créditos e sem acesso às vozes brasileiras (plano grátis).
+- Novos scripts: `story-prompts.mjs`, `slice-panels.py`, `stories-index.mjs` (no prebuild), `stories-audit.mjs` (`npm run audit:stories`, também na integração contínua).
+
+## 2026-10-07 (3) — Mundo das Cenas: Fundo do Mar (2º jogo-âncora)
+- **Cena ilustrada de verdade**: fundo de recife em estilo chapado e vibrante, 15 bichos e objetos (peixe-palhaço, tartaruga, golfinho, caranguejo, estrela-do-mar, baleia, baiacu, água-viva, polvo, baú do tesouro, concha, cavalo-marinho, tubarão amigo, peixe-anjo e um cardume), feitos com IA (Figma) e recortados por `scripts/slice-sheet.py`. Originais sem perda em `design/scenes/originais/`.
+- **Motor de cenas** (`src/js/games/scenes/`): uma cena nova é só um arquivo de dados (`sea-scene.js`) mais a arte. Raios de luz, bolhas que a criança estoura, plâncton brilhante, peixes que atravessam a tela, tubarão que espanta o cardume, golfinho que salta, baleia que solta jato e canta.
+- **Cada bicho reage do seu jeito**: baiacu infla, polvo muda de cor, baú e concha abrem com brilho, estrela gira, cavalo-marinho faz looping, água-viva pula, caranguejo corre de lado.
+- **Descobertas, sem pressa e sem derrota**: cada bicho tocado pela primeira vez entra numa fileira de medalhas no topo. Ao juntar 3 a 7 (conforme a idade) a cena comemora. O **peixinho guia** aparece se a criança parar e aponta um bicho que ela ainda não achou.
+- **A cena muda a cada visita**: dia, entardecer e noite (com plâncton e água-viva brilhando). Descobertas ficam guardadas só no aparelho.
+- **Modo lite** (`scene-lite.js`): mesma ilustração com figuras em HTML/CSS para aparelhos antigos.
+- Novo `npm run test:scenes` (jogo completo em 3 idades, reação de cada bicho, modo lite) e etapa na integração contínua; `legacy-audit` e `play-all` conhecem a cena.
+- `shouldUseLite()` passou para `src/engine/stage.js` (compartilhado pelos dois jogos).
+- Documentos: `docs/FERRAMENTAS_DE_ARTE_IA.md` (o que testamos e como gerar mais arte) e fila de locuções atualizada.
+
+## 2026-10-07 (2) — Fazendinha Viva: novo visual, horta, desbloqueios e modo lite
+- **Novo visual** (estilo chapado e vibrante, inspirado em animação infantil brasileira): sol e lua com carinha, listras e bolinhas nos morros, celeiro com telhado de escamas, bandeirinhas, cerca colorida, textura leve de guache. Bichos redesenhados com acessórios (lenço, gravata-borboleta, coleira com sino), padrões e olhos grandes.
+- **Horta**: depois de alimentar os bichos, a criança rega (arrastando o regador ou tocando na terra), vê o brotinho crescer e colhe cenoura, tomate ou abóbora. A colheita e os ovos vão para a mesma cesta e são contados em voz alta (até 6).
+- **Dia inteiro**: manhã (bichos), tarde (horta), noite (todos dormem com cantiga, lua com carinha, vaga-lumes).
+- **A fazenda cresce a cada visita** (guardado só no aparelho): 2ª visita borboletas, 3ª moinho, 4ª balão, 5ª arco-íris, 6ª pintinho que segue a galinha. Aparece "Olha só! Uma novidade na fazenda!".
+- **Modo lite de verdade** (`farm-lite.js`, HTML/CSS): aparelhos antigos, sem WebGL, com pouca memória ou escolhido em Área da Família → Gráficos. Mesma ideia: tocar na comida de cada bicho até a noite chegar.
+- Correção: camadas decorativas interceptavam os toques e os bichos/camas não respondiam; agora só o que é interativo recebe toque.
+- Em telas estreitas a fazenda mostra no máximo 4 bichos, em fila, para não amontoar.
+- Documentos novos: `docs/MONETIZACAO_E_ANUNCIOS.md` (marco para reabrir anúncios) e decisões em `docs/PLANO_JOGOS_PROFISSIONAIS.md`.
+
+## 2026-10-07 — Novo motor gráfico e primeiro jogo-âncora: Fazendinha Viva
+- **Motor 2D novo** (`src/engine/`): PixiJS (WebGL), animações com suavização (`tween.js`) e partículas (`particles.js`). Carrega só quando o jogo abre; aparelhos sem WebGL ou muito antigos caem automaticamente para as Bolhas.
+- **Fazendinha Viva** (12 meses+, mundo Descobrir): cenário em camadas com sol, nuvens, celeiro, árvores e grama balançando; 5 bichos desenhados em vetor com respiração, piscadas, rabo e orelhas; arrastar a comida certa para cada bicho (balão mostra o que ele quer); erro nunca pune (o bicho balança a cabeça e a comida volta); dica automática após alguns segundos parado.
+- O dia passa conforme os bichos comem (amanhecer → dia → pôr do sol → noite com lua, estrelas e vaga-lumes) e no fim todos dormem ao som de uma cantiga. A galinha põe ovos que a criança coleta e conta em voz alta (até 5).
+- Até 18 meses basta tocar na comida; 2 bichos aos 12–24 m, até 5 aos 4–5 anos.
+- Plano completo dos próximos jogos: `docs/PLANO_JOGOS_PROFISSIONAIS.md`.
+
 ## 2026-10-01 — Novas brincadeiras e jogos antigos padronizados
 - **Esconde-esconde** (6 meses a 4 anos): um animal se esconde atrás de 1 a 5 esconderijos (conforme a idade); a criança toca para achar. Trabalha permanência do objeto.
 - **Separar por Cor** (18 meses+) e **Encaixe as Formas** (12 meses+): um objeto aparece e a criança toca no cesto/buraco certo — sem arrastar. Até 3 anos a voz dá a pista ("No cesto vermelho!").

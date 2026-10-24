@@ -31,6 +31,8 @@ jobs:
         run: npm run audit:child-interface
       - name: Audio audit
         run: npm run audit:audio
+      - name: Histórias (catálogo, ilustrações e narração)
+        run: npm run audit:stories
       - name: Build
         run: npm run build
       - name: Install Chromium
@@ -39,3 +41,9 @@ jobs:
         run: node scripts/e2e-test.mjs
       - name: Aparelhos antigos (iOS 9, Android 5)
         run: node scripts/legacy-audit.mjs
+      - name: Fazendinha (WebGL e modo lite)
+        run: node scripts/farm-test.mjs
+      - name: Mundo das Cenas (WebGL e modo lite)
+        run: node scripts/scene-test.mjs
+      - name: Estúdio dos Bichos (WebGL e modo lite)
+        run: node scripts/studio-test.mjs

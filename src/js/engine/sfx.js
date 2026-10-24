@@ -37,6 +37,41 @@ export function playNote(freq, duration = 0.5) {
   } catch {}
 }
 
+// Instrumentos sintetizados para o Estúdio dos Bichos: bumbo, tambor, xilofone e sininho.
+let noiseBuffer = null;
+export function playInstrument(kind, freq = 440, volume = 1) {
+  if (!engine || engine.isMuted) return;
+  const ctx = engine.getContext?.();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume?.().catch?.(() => {});
+  const now = ctx.currentTime;
+  const tone = (type, f, start, dur, peak, sweepTo) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(f, now + start);
+    if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, now + start + dur);
+    gain.gain.setValueAtTime(0.0001, now + start);
+    gain.gain.exponentialRampToValueAtTime(peak * volume, now + start + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now + start);
+    osc.stop(now + start + dur + 0.03);
+  };
+  try {
+    if (kind === 'kick') { tone('sine', 150, 0, 0.32, 0.9, 45); tone('triangle', 90, 0, 0.12, 0.3, 50); }
+    else if (kind === 'snare') {
+      if (!noiseBuffer) { noiseBuffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.25), ctx.sampleRate); const d = noiseBuffer.getChannelData(0); for (let i = 0; i < d.length; i += 1) d[i] = Math.random() * 2 - 1; }
+      const src = ctx.createBufferSource(); const hp = ctx.createBiquadFilter(); const gain = ctx.createGain();
+      src.buffer = noiseBuffer; hp.type = 'highpass'; hp.frequency.value = 1800;
+      gain.gain.setValueAtTime(0.5 * volume, now); gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      src.connect(hp).connect(gain).connect(ctx.destination); src.start(now); src.stop(now + 0.2);
+      tone('triangle', 210, 0, 0.1, 0.35, 150);
+    } else if (kind === 'xylo') { tone('sine', freq, 0, 0.45, 0.5); tone('sine', freq * 3, 0, 0.12, 0.18); }
+    else { tone('sine', freq, 0, 0.9, 0.4); tone('sine', freq * 2.76, 0, 0.5, 0.16); tone('sine', freq * 5.4, 0, 0.2, 0.07); }
+  } catch {}
+}
+
 export function playSfx(name = 'tap') {
   const pattern = PATTERNS[name];
   if (!pattern || !engine || engine.isMuted) return;
