@@ -18,17 +18,31 @@ import { SortIntoGame } from './games/toddler/sort-into.js';
 import { WordSoundsGame } from './games/language/word-sounds.js';
 import { StorySequenceGame } from './games/language/story-sequence.js';
 import { StorybookGame } from './games/language/storybook.js';
-import { FarmGame } from './games/farm/farm-game.js';
-import { SeaSceneGame } from './games/scenes/scene-game.js';
-import { StudioGame } from './games/studio/studio-game.js';
-import { AtelieGame } from './games/atelie/atelie-game.js';
-import { CozinhaGame } from './games/cozinha/cozinha-game.js';
 import { vocabularyData } from '../data/vocabulary.js';
 import { developmentContent } from '../content/development-content.js';
 import { getAgeExperienceConfig } from '../core/age-experience-policy.js';
 
 const WORLD = 'world';
-const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
+
+// Os jogos-âncora são grandes (arte, motor, testes de cena): o código de cada um só é baixado quando a criança abre o jogo.
+// Este representante tem a mesma cara de um jogo (start/stop) e cria o jogo de verdade quando o código chega.
+const lazyGame = (load) => class LazyGame {
+  constructor(...args) { this.args = args; this.real = null; this.stopped = false; }
+  start(...a) {
+    load().then((Game) => { if (this.stopped) return; this.real = new Game(...this.args); this.real.start(...a); })
+      .catch((error) => { console.error('[game-registry] falha ao carregar o jogo', error); if (!this.stopped) this.args[3]?.(); });
+  }
+  stop() { this.stopped = true; this.real?.stop?.(); }
+};
+const FarmGame = lazyGame(() => import('./games/farm/farm-game.js').then((m) => m.FarmGame));
+const SeaSceneGame = lazyGame(() => import('./games/scenes/scene-game.js').then((m) => m.SeaSceneGame));
+const StudioGame = lazyGame(() => import('./games/studio/studio-game.js').then((m) => m.StudioGame));
+const AtelieGame = lazyGame(() => import('./games/atelie/atelie-game.js').then((m) => m.AtelieGame));
+const CozinhaGame = lazyGame(() => import('./games/cozinha/cozinha-game.js').then((m) => m.CozinhaGame));
+const BlocosGame = lazyGame(() => import('./games/blocos/blocos-game.js').then((m) => m.BlocosGame));
+const ParlendasGame = lazyGame(() => import('./games/parlendas/parlendas-game.js').then((m) => m.ParlendasGame));
+const SentimentosGame = lazyGame(() => import('./games/sentimentos/sentimentos-game.js').then((m) => m.SentimentosGame));
+const EXPLORATION = new Set(['storybook','scene-sea','studio','atelie','cozinha','blocos','sentimentos','parlendas','peekaboo','color-sort','shape-sort','bubbles','count-tap','music-keys','communication','phrases','phrase-builder-2','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','baby-colors','movement','rhythm','guided-movement','canvas']);
 
 export function createGameRegistry({ containerId, audio, storage }) {
   const definitions = new Map();
@@ -72,6 +86,9 @@ export function createGameRegistry({ containerId, audio, storage }) {
   addIndependent(['studio'], StudioGame);
   addIndependent(['atelie'], AtelieGame);
   addIndependent(['cozinha'], CozinhaGame);
+  addIndependent(['blocos'], BlocosGame);
+  addIndependent(['sentimentos'], SentimentosGame);
+  addIndependent(['parlendas'], ParlendasGame);
   addIndependent(['storybook'], StorybookGame);
   addIndependent(['bubbles'], BubblesGame, vocabularyData.animals);
   addIndependent(['count-tap'], CountTapGame, developmentContent.objects);

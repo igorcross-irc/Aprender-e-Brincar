@@ -4,6 +4,8 @@ import { activityCatalog } from '../../content/activity-catalog.js';
 import { learningWorlds } from '../../content/world-catalog.js';
 import { childVisualMarkup } from '../../core/child-visual-system.js';
 import { childMascotMarkup } from '../../core/child-mascot.js';
+import { shelfFor, startBedtime, consumeBedtimeEnd } from '../games/language/storybook.js';
+import { STORY_AUDIO } from '../../content/stories/available.js';
 
 export const GAME_ICONS = {
   'discovery-sounds': '👂', 'discovery-animals': '🐾', 'discovery-colors': '🎨', 'attention-auditory': '👂',
@@ -17,7 +19,7 @@ export const GAME_ICONS = {
   'action-words': '🏃', 'story-choices': '📚', 'phrase-builder-2': '💬', 'color-hunt-2': '🌈', 'shape-sequence': '🔷',
   'compare-sizes': '📏', 'animal-sound-memory': '🔊', 'animal-homes': '🏠', 'count-more': '🔢', 'number-order': '🔢',
   'memory-objects': '🧠', 'attention-path': '👀', 'rhythm-copy': '👏', 'movement-copy': '🙆',
-  storybook: '📖', farm: '🚜', 'scene-sea': '🐠', studio: '🎶', atelie: '🎨', cozinha: '🍳', bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
+  storybook: '📖', farm: '🚜', 'scene-sea': '🐠', studio: '🎶', atelie: '🎨', cozinha: '🍳', blocos: '🧱', sentimentos: '🙂', parlendas: '👏', bubbles: '🫧', 'count-tap': '👆', 'music-keys': '🎹', peekaboo: '🙈', 'color-sort': '🧺', 'shape-sort': '🔷'
 };
 
 // Ilustrações próprias (public/assets/images/icons); o que não estiver aqui usa o emoji de GAME_ICONS.
@@ -36,6 +38,20 @@ export const gameIconMarkup = (id) => (GAME_IMAGES[id] ? imageTag(GAME_IMAGES[id
 export const AGE_LABELS = Object.fromEntries(AGE_BANDS.map((age) => [age.id, age.label]));
 
 const CONFETTI_COLORS = ['#f472b6', '#facc15', '#34d399', '#60a5fa', '#a78bfa', '#fb923c'];
+
+// Os jogos-âncora que a criança pode brincar hoje: começa pelos que ela brincou há mais tempo (ou nunca),
+// e a ordem muda de dia para dia. Sem números nem palavras para a criança: só figura, nome falado e um toque.
+const TODAY_ANCHORS = ['farm', 'scene-sea', 'blocos', 'atelie', 'cozinha', 'studio', 'storybook'];
+export function todayPicks(ageId, activities = {}, now = Date.now(), count = 3) {
+  const day = Math.floor(now / 86400000);
+  return TODAY_ANCHORS
+    .map((id) => activityCatalog.find((a) => a.id === id))
+    .filter((a) => a && a.ages.includes(ageId))
+    .map((activity, i, all) => ({ activity, last: Date.parse(activities[activity.id]?.lastPlayedAt || '') || 0, turn: (i + day) % all.length }))
+    .sort((a, b) => a.last - b.last || a.turn - b.turn)
+    .slice(0, count)
+    .map((entry) => entry.activity);
+}
 
 function worldActivities(world, ageId) {
   return world.activityIds
@@ -62,6 +78,7 @@ export class AppScreens {
     const worlds = learningWorlds
       .map((world) => ({ ...world, activities: worldActivities(world, ageId) }))
       .filter((world) => world.activities.length);
+    const picks = todayPicks(ageId, this.core.progress.snapshot().activities);
 
     this.container.innerHTML = `
       <div class="screen page-enter">
@@ -69,6 +86,12 @@ export class AppScreens {
           ${childMascotMarkup({ size: 'medium', mood: 'happy' })}
           <h2 class="home-greeting">${this.escape(greeting)}</h2>
         </section>
+        ${picks.length ? `<section class="home-today" aria-label="Para brincar agora">
+          ${picks.map((activity) => `<button data-today="${activity.id}" class="today-tile" aria-label="${this.escape(activity.title)}">
+            <span class="today-tile-icon ${GAME_IMAGES[activity.id] ? 'has-image' : ''}" aria-hidden="true">${gameIconMarkup(activity.id)}</span>
+            <span class="today-tile-title">${this.escape(activity.title)}</span>
+          </button>`).join('')}
+        </section>` : ''}
         <div class="world-grid">
           ${worlds.map((world) => `
             <button data-world="${world.id}" class="world-tile world-${world.color}" aria-label="${this.escape(world.title)}">
@@ -76,6 +99,11 @@ export class AppScreens {
               <span class="world-tile-icon ${WORLD_IMAGES[world.id] ? 'has-image' : ''}" aria-hidden="true">${WORLD_IMAGES[world.id] ? imageTag(WORLD_IMAGES[world.id]) : world.icon}</span>
               <span class="world-tile-title">${this.escape(world.title)}</span>
             </button>`).join('')}
+          <button id="btn-bedtime" class="world-tile bedtime-tile" aria-label="Hora de dormir">
+            <span class="world-tile-deco" aria-hidden="true">✨</span>
+            <span class="world-tile-icon" aria-hidden="true">🌙</span>
+            <span class="world-tile-title">Hora de dormir</span>
+          </button>
           <button id="btn-album" class="world-tile album-tile" aria-label="Meus adesivos">
             <span class="world-tile-deco" aria-hidden="true">⭐</span>
             <span class="world-tile-icon has-image" aria-hidden="true">${imageTag('trophy')}</span>
@@ -85,7 +113,38 @@ export class AppScreens {
       </div>`;
     this.container.querySelectorAll('[data-world]').forEach((button) => button.addEventListener('click', () => this.renderWorld(button.dataset.world)));
     this.container.querySelector('#btn-album').addEventListener('click', () => this.renderAlbum());
-    this.audio.prompt?.(null, greeting);
+    this.container.querySelector('#btn-bedtime').addEventListener('click', () => this.startBedtimeStory(ageId));
+    this.container.querySelectorAll('[data-today]').forEach((button) => button.addEventListener('click', () => { playSfx('tap'); this.launchGame(button.dataset.today, ageId); }));
+    this.audio.prompt?.(null, picks.length ? `${greeting} Que tal ${picks[0].title}?` : greeting);
+  }
+
+  // Hora de dormir: uma história calma e narrada (rodando por dia), tela escura, cantiga e boa noite.
+  startBedtimeStory(ageId) {
+    const narrated = (s) => String(STORY_AUDIO[s.id] || '').length >= s.pages.length && !String(STORY_AUDIO[s.id]).includes('0');
+    const options = shelfFor(ageId).filter(narrated);
+    const pool = options.length ? options : shelfFor(ageId);
+    if (!pool.length) return this.launchGame('storybook', ageId);
+    const day = Math.floor(Date.now() / 86400000);
+    startBedtime(pool[day % pool.length].id);
+    return this.launchGame('storybook', ageId);
+  }
+
+  renderBedtimeEnd() {
+    this.container.scrollTop = 0;
+    const name = this.storage.getChildName();
+    const message = name ? `Boa noite, ${name}!` : 'Boa noite!';
+    this.container.innerHTML = `
+      <div class="screen page-enter bedtime-screen">
+        <section class="bedtime-card">
+          <div class="bedtime-stars" aria-hidden="true">✨ ⭐ ✨</div>
+          ${childMascotMarkup({ size: 'large', mood: 'sleepy', label: 'Corujinha dormindo' })}
+          <h2 class="bedtime-title">${this.escape(message)}</h2>
+          <p class="bedtime-zzz" aria-hidden="true">💤</p>
+          <button id="bedtime-home" class="bedtime-home" aria-label="Voltar ao início">🏠</button>
+        </section>
+      </div>`;
+    this.container.querySelector('#bedtime-home').addEventListener('click', () => this.renderHome());
+    this.audio.prompt?.(null, message);
   }
 
   // Mantido para compatibilidade com chamadas antigas: a idade vem do perfil.
@@ -175,6 +234,7 @@ export class AppScreens {
   }
 
   renderSessionResult(result) {
+    if (consumeBedtimeEnd()) return this.renderBedtimeEnd();
     this.container.scrollTop = 0;
     const name = this.storage.getChildName();
     const message = name ? `Muito bem, ${name}!` : 'Muito bem!';

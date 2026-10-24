@@ -1,5 +1,6 @@
 import { resolveGameDifficulty } from '../../../core/game-difficulty-policy.js';
 import { gameShellMarkup, enableDoneButton } from '../game-shell.js';
+import { mergeCards } from '../../../core/comm-cards.js';
 
 export const COMMUNICATION_CARDS = [
   { id: 'agua', icon: '💧', label: 'Água', phrase: 'Eu quero água' },
@@ -29,28 +30,44 @@ export class CommunicationBoardGame {
   start(level = 1, options = {}) {
     this.ageId = options.ageId || '2-3y';
     this.difficulty = resolveGameDifficulty(this.ageId, level, options);
-    const cards = COMMUNICATION_CARDS.slice(0, CARD_COUNT[this.ageId] || 8);
     this.used = new Set();
     this.completed = false;
+    this.stopped = false;
+    const defaults = COMMUNICATION_CARDS.slice(0, CARD_COUNT[this.ageId] || 8);
+    // Cartões da família (foto e voz) chegam do IndexedDB em milissegundos; sem eles a prancha é a de sempre.
+    mergeCards(COMMUNICATION_CARDS).then(({ cards, release }) => {
+      this.release = release;
+      const mine = cards.filter((c) => c.custom);
+      const shown = [...defaults.map((d) => cards.find((c) => c.id === d.id) || d), ...mine];
+      if (!this.stopped) this.render(shown);
+    }, () => this.render(defaults));
+  }
+
+  render(cards) {
+    if (this.stopped) return;
+    const face = (card) => (card.photoUrl ? `<img class="talk-photo" src="${card.photoUrl}" alt="" draggable="false" />` : `<span aria-hidden="true">${card.icon}</span>`);
     this.container.innerHTML = gameShellMarkup({
       backId: 'talk-back',
       title: '💬 Eu Quero…',
-      body: `<div class="talk-board">${cards.map((card) => `<button class="talk-card" data-talk="${card.id}" aria-label="${card.phrase}"><span aria-hidden="true">${card.icon}</span><small>${card.label}</small></button>`).join('')}</div>`,
+      body: `<div class="talk-board">${cards.map((card) => `<button class="talk-card" data-talk="${card.id}" aria-label="${card.phrase}">${face(card)}<small>${card.label}</small></button>`).join('')}</div>`,
       done: { id: 'talk-done', enabled: false }
     });
-    this.container.querySelector('#talk-back').addEventListener('click', () => this.onBack());
+    this.container.querySelector('#talk-back').addEventListener('click', () => { this.stop(); this.onBack(); });
     this.container.querySelectorAll('[data-talk]').forEach((button) => button.addEventListener('click', () => {
       const card = cards.find((item) => item.id === button.dataset.talk);
       if (!card) return;
       this.container.querySelectorAll('.talk-card.speaking').forEach((item) => item.classList.remove('speaking'));
       button.classList.add('speaking');
-      this.audio?.play(null, card.phrase);
+      if (card.voiceUrl) { try { this.voice?.pause(); this.voice = new Audio(card.voiceUrl); this.voice.play().catch(() => this.audio?.play(null, card.phrase)); } catch (error) { this.audio?.play(null, card.phrase); } }
+      else this.audio?.play(null, card.phrase);
       this.used.add(card.id);
       if (this.used.size >= 3) enableDoneButton(this.container.querySelector('#talk-done'));
     }));
     this.container.querySelector('#talk-done').addEventListener('click', () => this.finish());
     this.audio?.prompt?.(null, 'O que você quer dizer? Toque num cartão.');
   }
+
+  stop() { this.stopped = true; try { this.voice?.pause(); } catch (error) { /* ok */ } this.release?.(); }
 
   finish() {
     if (this.completed || this.used.size < 3) return;

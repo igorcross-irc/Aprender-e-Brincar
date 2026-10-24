@@ -3,13 +3,13 @@ export const learningWorlds = [
     id: 'discover', title: 'Descobrir', icon: '🌱', color: 'emerald',
     description: 'Experiências livres para observar, tocar, ouvir e descobrir.',
     ages: ['6-12m','12-18m','18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['storybook','farm','scene-sea','studio','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
+    activityIds: ['storybook','farm','scene-sea','studio','blocos','peekaboo','bubbles','discovery-sounds','discovery-animals','discovery-colors','discover-objects','baby-discover','animals','body-parts','object-hunt','animal-families']
   },
   {
     id: 'language', title: 'Falar & Comunicar', icon: '🗣️', color: 'violet',
     description: 'Palavras, comunicação, sílabas, rimas e histórias.',
     ages: ['2-3y','3-4y','4-5y'],
-    activityIds: ['storybook','communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
+    activityIds: ['storybook','sentimentos','communication','phrases','syllables','rhymes','sound-initial','story-sequence','story-interactive','vocabulary','opposites','action-words','story-choices','phrase-builder-2']
   },
   {
     id: 'colors-shapes', title: 'Cores & Formas', icon: '🎨', color: 'sky',
@@ -39,7 +39,7 @@ export const learningWorlds = [
     id: 'create-move', title: 'Criar & Mexer', icon: '✨', color: 'orange',
     description: 'Desenho, movimento, ritmo e expressão pelo brincar.',
     ages: ['18-24m','2-3y','3-4y','4-5y'],
-    activityIds: ['cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
+    activityIds: ['parlendas','blocos','cozinha','atelie','studio','music-keys','canvas','puzzle','movement','rhythm','music-rhythm','guided-movement','rhythm-copy','movement-copy']
   }
 ];
 

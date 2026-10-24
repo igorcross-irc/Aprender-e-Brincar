@@ -5,6 +5,11 @@ import { AGE_BANDS } from '../../core/activity-registry.js';
 import { SCREEN_TIME_OPTIONS } from '../../core/screen-time.js';
 import { canFullscreen, isStandalone, isNativeApp } from '../../core/kid-lock.js';
 import { APP_VERSION, APK_URL } from '../../core/app-update.js';
+import { buildDiary } from '../../core/family-diary.js';
+import { openFamilyVoicePanel } from './family-voice-panel.js';
+import { openCommCardsPanel } from './comm-cards-panel.js';
+import { renderGallery, openMeuLivro } from './meu-livro.js';
+import { readTogetherEnabled, setReadTogether } from '../../content/stories/read-together.js';
 
 function liteGraphics() { try { return localStorage.getItem('ab_lite_graphics') === '1'; } catch (e) { return false; } }
 
@@ -101,6 +106,7 @@ export class FamilySettings {
     const { app } = this;
     const esc = (value) => app.escape(value);
     const report = this.buildReport();
+    const diary = buildDiary({ storage: localStorage, progress: app.core.progress.snapshot(), childName: app.storage.getChildName() });
     const currentAge = app.storage.getChildAge();
     const canInstall = app.pwa?.canInstall?.();
     const { screenTime } = app;
@@ -166,6 +172,42 @@ export class FamilySettings {
           <p class="family-hint">Ligue se a Fazendinha ficar lenta. O jogo continua o mesmo, só com desenhos mais simples.</p>
         </section>
 
+        <section class="family-section" id="family-diary">
+          <h4>📔 Diário da família</h4>
+          <ul class="diary-list">${diary.highlights.map((item) => `<li>${esc(item)}</li>`).join('') || '<li>Ainda está começando: brinquem juntos e volte aqui depois.</li>'}</ul>
+          ${diary.campos.some((c) => c.count) ? `<p class="family-label">Por onde brincou</p><div class="domain-list">${diary.campos.map((c) => `<span class="${c.count ? '' : 'campo-vazio'}" title="${esc(c.label)}">${esc(c.short)} · ${c.count}</span>`).join('')}</div><p class="family-hint">São os cinco campos de experiência da BNCC da Educação Infantil. Não é nota: só mostra por onde ela tem brincado. Os campos com zero são convites para brincar de outro jeito.</p>` : ''}
+          ${diary.recipes.some((r) => r.count) ? `<p class="family-label">📒 Caderno de receitas (${diary.recipes.filter((r) => r.count).length} de ${diary.recipes.length})</p><div class="domain-list">${diary.recipes.map((r) => `<span class="${r.count ? '' : 'campo-vazio'}">${r.emoji} ${esc(r.label)}${r.count ? ` ×${r.count}` : ''}</span>`).join('')}</div>` : ''}
+          <p class="family-label">Ideias para brincar fora da tela</p>
+          <ul class="diary-list diary-ideas">${diary.ideas.map((item) => `<li>${esc(item)}</li>`).join('')}</ul>
+          <button id="btn-copy-diary" class="family-button">📋 Copiar o resumo</button>
+          <p id="diary-copied" class="family-hint" aria-live="polite"></p>
+        </section>
+
+        <section class="family-section" id="family-gallery-section">
+          <h4>🖼️ Galeria e Meu Livro</h4>
+          <p class="family-hint">Uma foto de cada coisa que ela termina: desenhos que ganharam vida, pratos e construções. Ficam só neste aparelho.</p>
+          <div id="gallery-grid" class="gal-grid"></div>
+          <button id="btn-meu-livro" class="family-button">📖 Abrir o Meu Livro para imprimir</button>
+        </section>
+
+        <section class="family-section" id="family-read-together">
+          <h4>💬 Perguntas para conversar nas histórias</h4>
+          <p class="family-hint">Em cada página aparece uma perguntinha para você fazer em voz alta. Espere a resposta, repita o que ela disse e acrescente um pouquinho. Conversar sobre a história ajuda a linguagem mais do que só ouvir.</p>
+          <label class="family-toggle"><input type="checkbox" id="read-together-toggle" ${readTogetherEnabled() ? 'checked' : ''} /> Mostrar as perguntas durante a história</label>
+        </section>
+
+        <section class="family-section" id="family-comm-section">
+          <h4>💬 Cartões de comunicação (Eu quero…)</h4>
+          <p class="family-hint">Troque as figuras pelas fotos de verdade, grave a sua voz em cada cartão e crie cartões novos (a vovó, o cachorro, a mamadeira). Ajuda crianças que ainda falam pouco a pedir o que querem.</p>
+          <button id="btn-comm-cards" class="family-button">Personalizar os cartões</button>
+        </section>
+
+        <section class="family-section" id="family-voice-section">
+          <h4>🎙️ Voz da família nas histórias</h4>
+          <p class="family-hint">Grave a história com a sua voz e a criança ouve quem ela ama. As gravações ficam só neste aparelho.</p>
+          <button id="btn-family-voice" class="family-button">Gravar histórias com a minha voz</button>
+        </section>
+
         <section class="family-section">
           <h4>Resumo</h4>
           <div class="family-stats">
@@ -208,7 +250,7 @@ export class FamilySettings {
 
         <section class="family-section">
           <h4>Privacidade</h4>
-          <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo.</p>
+          <p class="family-hint">Nome, idade e progresso ficam guardados só neste aparelho. O app não tem anúncios, cadastro, rastreamento nem envio de dados. Apagar os dados do navegador ou usar "Zerar progresso" remove tudo. <a href="/privacidade.html">Política de privacidade completa</a></p>
         </section>
 
         <button id="btn-reset-stars" class="family-danger">Zerar progresso</button>
@@ -238,6 +280,19 @@ export class FamilySettings {
       app.renderHome();
     });
     modal.querySelector('#btn-close-settings').addEventListener('click', () => modal.remove());
+    modal.querySelector('#btn-family-voice').addEventListener('click', () => openFamilyVoicePanel());
+    modal.querySelector('#btn-comm-cards').addEventListener('click', () => openCommCardsPanel());
+    let galleryHandle = null;
+    renderGallery(modal.querySelector('#gallery-grid')).then((handle) => { galleryHandle = handle; });
+    modal.querySelector('#btn-meu-livro').addEventListener('click', () => { galleryHandle?.release?.(); modal.remove(); openMeuLivro({ childName: app.storage.getChildName(), progress: app.core.progress.snapshot() }); });
+    modal.querySelector('#btn-copy-diary').addEventListener('click', async () => {
+      const note = modal.querySelector('#diary-copied');
+      try { await navigator.clipboard.writeText(diary.text); note.textContent = 'Resumo copiado! Cole numa conversa ou anotação.'; } catch (error) {
+        const area = document.createElement('textarea'); area.value = diary.text; area.setAttribute('readonly', ''); area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select();
+        let ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; } area.remove();
+        note.textContent = ok ? 'Resumo copiado! Cole numa conversa ou anotação.' : 'Não consegui copiar neste aparelho.';
+      }
+    });
     const updateStatus = modal.querySelector('#update-status');
     if (updateStatus) {
       const texts = {
@@ -277,6 +332,7 @@ export class FamilySettings {
       screenTime.setLimit(selectedLimit);
       const wantLock = modal.querySelector('#kid-lock-toggle').checked;
       if (wantLock !== kidLock.enabled) kidLock.setEnabled(wantLock);
+      setReadTogether(modal.querySelector('#read-together-toggle').checked);
       const wantSound = modal.querySelector('#sound-toggle').checked;
       if (wantSound === app.audio.isMuted) app.audio.toggleMute();
       try { if (modal.querySelector('#lite-toggle').checked) localStorage.setItem('ab_lite_graphics', '1'); else localStorage.removeItem('ab_lite_graphics'); } catch (e) { /* sem armazenamento */ }

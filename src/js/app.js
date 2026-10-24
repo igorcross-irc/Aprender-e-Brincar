@@ -15,7 +15,7 @@ import { ScreenTime } from '../core/screen-time.js';
 import { KidLock } from '../core/kid-lock.js';
 import { AppUpdater } from '../core/app-update.js';
 
-const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest'];
+const SCREEN_METHODS = ['childAge', 'renderHome', 'renderAgeSelection', 'renderWorldMap', 'renderWorld', 'renderSessionResult', 'renderGuidedExperience', 'renderSetup', 'renderAlbum', 'renderRest', 'startBedtimeStory', 'renderBedtimeEnd'];
 
 class App {
   constructor() {

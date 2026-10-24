@@ -40,22 +40,38 @@ export const RECIPES = {
   peixe: {
     id: 'peixe', label: 'Peixe assado', emoji: '🐟', level: 2, color: 0xd9a066,
     steps: [{ t: 'add', ing: 'peixe' }, { t: 'add', ing: 'tomate' }, { t: 'bake' }, { t: 'serve' }]
+  },
+  omelete: {
+    id: 'omelete', label: 'Omelete', emoji: '🍳', level: 2, color: 0xffd84a,
+    steps: [{ t: 'add', ing: 'ovo', n: 2 }, { t: 'add', ing: 'queijo' }, { t: 'mix' }, { t: 'bake' }, { t: 'serve' }]
+  },
+  frutas: {
+    id: 'frutas', label: 'Salada de frutas', emoji: '🍓', level: 2, color: 0xff9a7a,
+    steps: [{ t: 'add', ing: 'laranja' }, { t: 'add', ing: 'morango', n: 2 }, { t: 'mix' }, { t: 'serve' }]
+  },
+  sucomorango: {
+    id: 'sucomorango', label: 'Suco de morango', emoji: '🍓', level: 1, color: 0xff5a6e, dish: 'suco', liquid: 0xff5a6e,
+    steps: [{ t: 'add', ing: 'morango', n: 2 }, { t: 'mix' }, { t: 'serve' }]
+  },
+  bolocenoura: {
+    id: 'bolocenoura', label: 'Bolo de cenoura', emoji: '🥕', level: 3, color: 0xf0a04a,
+    steps: [{ t: 'count', ing: 'farinha', n: 2 }, { t: 'add', ing: 'cenoura' }, { t: 'add', ing: 'ovo', n: 2 }, { t: 'mix' }, { t: 'bake' }, { t: 'serve' }]
   }
 };
 
 export const CUSTOMERS = [
-  { id: 'vaca', label: 'Vaca', likes: ['salada', 'suco', 'sanduiche', 'bolo', 'sopa'] },
-  { id: 'galinha', label: 'Galinha', likes: ['salada', 'sopa', 'suco', 'sanduiche'] },
-  { id: 'cachorro', label: 'Cachorro', likes: ['sanduiche', 'sopa', 'bolo', 'peixe'] },
-  { id: 'gato', label: 'Gato', likes: ['peixe', 'suco', 'bolo', 'sanduiche'] },
-  { id: 'pato', label: 'Pato', likes: ['salada', 'sanduiche', 'suco', 'sopa'] }
+  { id: 'vaca', label: 'Vaca', likes: ['salada', 'suco', 'sanduiche', 'bolo', 'sopa', 'frutas', 'sucomorango', 'bolocenoura'] },
+  { id: 'galinha', label: 'Galinha', likes: ['salada', 'sopa', 'suco', 'sanduiche', 'omelete', 'sucomorango'] },
+  { id: 'cachorro', label: 'Cachorro', likes: ['sanduiche', 'sopa', 'bolo', 'peixe', 'omelete', 'bolocenoura'] },
+  { id: 'gato', label: 'Gato', likes: ['peixe', 'suco', 'bolo', 'sanduiche', 'omelete', 'frutas'] },
+  { id: 'pato', label: 'Pato', likes: ['salada', 'sanduiche', 'suco', 'sopa', 'frutas', 'sucomorango'] }
 ];
 
 // pool: receitas possíveis na faixa; orders: pedidos por brincadeira; distractors: ingredientes a mais na prateleira;
 // hint: o ingrediente certo pisca (3–4 anos); sem pista nos 4–5 anos, só o alinhamento das etapas.
 export const PLAN_BY_AGE = {
-  '3-4y': { pool: ['sanduiche', 'suco', 'salada', 'peixe'], orders: 2, distractors: 0, hint: true },
-  '4-5y': { pool: ['sanduiche', 'suco', 'salada', 'bolo', 'sopa', 'peixe'], orders: 3, distractors: 2, hint: false }
+  '3-4y': { pool: ['sanduiche', 'suco', 'sucomorango', 'salada', 'peixe', 'frutas'], orders: 2, distractors: 0, hint: true },
+  '4-5y': { pool: ['sanduiche', 'suco', 'salada', 'bolo', 'omelete', 'sopa', 'frutas', 'peixe', 'bolocenoura', 'sucomorango'], orders: 3, distractors: 2, hint: false }
 };
 
 export const NUMBER_WORDS = { 1: 'um', 2: 'dois', 3: 'três', 4: 'quatro' };
