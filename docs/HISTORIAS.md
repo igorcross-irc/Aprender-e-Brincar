@@ -22,7 +22,7 @@ Atualizado em 07/10/2026. **31 histórias** (mínimo de 5 por faixa), todas em d
 | 12–18 m | Cai, Cai, Balão | cantiga popular | 4 | ✅ | ⏳ |
 | 12–18 m | A Barata Diz Que Tem | cantiga popular | 4 | ✅ (provisória) | ⏳ |
 | 18–24 m | O Nabo Gigante | conto popular russo (reconto) | 4 | ⏳ | ⏳ |
-| 18–24 m | O Leão e o Ratinho | Esopo (séc. VI a.C.) | 4 | ⏳ | ⏳ |
+| 18–24 m | O Leão e o Ratinho | Esopo (séc. VI a.C.) | 4 | ✅ | ⏳ |
 | 18–24 m | Quem Mora na Luva? | conto popular ucraniano | 4 | ⏳ | ⏳ |
 | 18–24 m | O Corvo e a Jarra | Esopo | 4 | ⏳ | ⏳ |
 | 18–24 m | A Galinha Ruiva | conto popular inglês | 4 | ⏳ | ⏳ |
